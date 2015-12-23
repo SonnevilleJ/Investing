@@ -54,11 +54,19 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="Class1Tests.cs" />
+    <Compile Include="Accounting\CashAccountTests.cs" />
+    <Compile Include="Accounting\Transactions\DepositTests.cs" />
+    <Compile Include="Accounting\Transactions\WithdrawalTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sonneville.Investing\Sonneville.Investing.csproj">
+      <Project>{89a1a8e9-dd0f-40bc-b4f1-fcded6910e35}</Project>
+      <Name>Sonneville.Investing</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
