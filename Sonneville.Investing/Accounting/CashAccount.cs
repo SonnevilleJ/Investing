@@ -14,6 +14,8 @@ namespace Sonneville.Investing.Accounting
             _transactions = new List<ICashTransaction>();
         }
 
+        public IReadOnlyCollection<ICashTransaction> Transactions => _transactions.AsReadOnly();
+
         public CashAccount Deposit(Deposit deposit)
         {
             if (!DepositIsValid(deposit))

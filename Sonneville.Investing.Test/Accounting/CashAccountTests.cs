@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Sonneville.Investing.Accounting;
 using Sonneville.Investing.Accounting.Transactions;
@@ -113,6 +114,14 @@ namespace Sonneville.Investing.Test.Accounting
             var withdrawal = new Withdrawal(new DateTime(2015, 12, 22), 0m);
 
             Assert.Throws<InvalidOperationException>(() => _cashAccount.Withdraw(withdrawal));
+        }
+
+        [Test]
+        public void TransactionsAreReadonly()
+        {
+            var transactions = _cashAccount.Transactions;
+
+            Assert.IsInstanceOf<IReadOnlyCollection<ICashTransaction>>(transactions);
         }
     }
 }
