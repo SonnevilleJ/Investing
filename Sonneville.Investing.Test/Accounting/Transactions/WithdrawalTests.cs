@@ -15,7 +15,7 @@ namespace Sonneville.Investing.Test.Accounting.Transactions
             var deposit = new Withdrawal(dateTime, amount);
 
             Assert.AreEqual(dateTime, deposit.SettlementDate);
-            Assert.AreEqual(amount, deposit.Amount);
+            Assert.AreEqual(amount, -deposit.Amount);
         }
     }
 }

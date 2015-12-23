@@ -7,7 +7,7 @@ namespace Sonneville.Investing.Accounting.Transactions
         public Withdrawal(DateTime settlementDate, decimal amount)
         {
             SettlementDate = settlementDate;
-            Amount = amount;
+            Amount = -amount;
         }
 
         public DateTime SettlementDate { get; }

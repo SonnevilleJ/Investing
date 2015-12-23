@@ -33,8 +33,8 @@ namespace Sonneville.Investing.Test.Accounting
         {
             var deposit1 = new Deposit(new DateTime(2010, 1, 16), 500.00m);
             var deposit2 = new Deposit(new DateTime(2010, 1, 17), 100.00m);
-            var withdrawal1 = new Withdrawal(new DateTime(2015, 12, 22), -200m);
-            var withdrawal2 = new Withdrawal(new DateTime(2015, 12, 23), -100m);
+            var withdrawal1 = new Withdrawal(new DateTime(2015, 12, 22), 200m);
+            var withdrawal2 = new Withdrawal(new DateTime(2015, 12, 23), 100m);
             _cashAccount.Deposit(deposit1)
                 .Deposit(deposit2)
                 .Withdraw(withdrawal1)
@@ -51,7 +51,7 @@ namespace Sonneville.Investing.Test.Accounting
             var deposit1 = new Deposit(new DateTime(2010, 1, 16), 500.00m);
             var deposit2 = new Deposit(new DateTime(2010, 1, 17), 100.00m);
             var deposit3 = new Deposit(new DateTime(2010, 1, 18), 1000.00m);
-            var withdrawal = new Withdrawal(new DateTime(2015, 12, 22), -200m);
+            var withdrawal = new Withdrawal(new DateTime(2015, 12, 22), 200m);
             _cashAccount.Deposit(deposit1)
                 .Deposit(deposit2)
                 .Deposit(deposit3)
@@ -75,7 +75,7 @@ namespace Sonneville.Investing.Test.Accounting
         {
             var deposit = new Deposit(new DateTime(2010, 1, 16), 500.00m);
             _cashAccount.Deposit(deposit);
-            var withdrawal = new Withdrawal(new DateTime(2015, 12, 22), -200m);
+            var withdrawal = new Withdrawal(new DateTime(2015, 12, 22), 200m);
             _cashAccount.Withdraw(withdrawal);
 
             var accountBalance = _cashAccount.CalculateBalance(withdrawal.SettlementDate);
@@ -88,7 +88,7 @@ namespace Sonneville.Investing.Test.Accounting
         {
             var deposit = new Deposit(new DateTime(2010, 1, 16), 500.00m);
             _cashAccount.Deposit(deposit);
-            var withdrawal = new Withdrawal(new DateTime(1776, 7, 4), -200m);
+            var withdrawal = new Withdrawal(new DateTime(1776, 7, 4), 200m);
             _cashAccount.Withdraw(withdrawal);
 
             var accountBalance = _cashAccount.CalculateBalance(deposit.SettlementDate);
@@ -101,7 +101,7 @@ namespace Sonneville.Investing.Test.Accounting
         {
             var deposit = new Deposit(new DateTime(2010, 1, 16), 500.00m);
             _cashAccount.Deposit(deposit);
-            var withdrawal = new Withdrawal(new DateTime(2015, 12, 22), 200m);
+            var withdrawal = new Withdrawal(new DateTime(2015, 12, 22), -200m);
 
             Assert.Throws<InvalidOperationException>(() => _cashAccount.Withdraw(withdrawal));
         }
