@@ -11,7 +11,5 @@ namespace Sonneville.Investing.Accounting
         ICashAccount Deposit(IDeposit deposit);
 
         ICashAccount Withdraw(IWithdrawal withdrawal);
-
-        decimal CalculateBalance(DateTime dateTime);
     }
 }

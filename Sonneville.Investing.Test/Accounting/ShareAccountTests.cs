@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
 using Sonneville.Investing.Accounting;
@@ -40,6 +41,18 @@ namespace Sonneville.Investing.Test.Accounting
             
             _cashAccountMock.Verify(cashAccount => cashAccount.Withdraw(withdrawal));
             Assert.AreSame(_shareAccount, shareAccount);
+        }
+
+        [Test]
+        public void CashTransactionsShouldIncludeThoseFromCashAccount()
+        {
+            var cashTransactions = new List<ICashTransaction> {new Deposit(DateTime.Today, 1234.5m)};
+            _cashAccountMock.Setup(cashAccount => cashAccount.CashTransactions)
+                .Returns(cashTransactions.AsReadOnly());
+
+            var actual = _shareAccount.CashTransactions;
+
+            CollectionAssert.AreEquivalent(cashTransactions, actual);
         }
     }
 }

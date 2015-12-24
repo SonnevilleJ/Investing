@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Sonneville.Investing.Accounting.Transactions;
 
@@ -25,11 +24,6 @@ namespace Sonneville.Investing.Accounting
         {
             _cashAccount.Withdraw(withdrawal);
             return this;
-        }
-
-        public decimal CalculateBalance(DateTime dateTime)
-        {
-            throw new NotImplementedException();
         }
     }
 }

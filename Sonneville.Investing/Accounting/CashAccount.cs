@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Sonneville.Investing.Accounting.Transactions;
 
 namespace Sonneville.Investing.Accounting
@@ -34,13 +33,6 @@ namespace Sonneville.Investing.Accounting
             }
             _transactions.Add(withdrawal);
             return this;
-        }
-
-        public decimal CalculateBalance(DateTime dateTime)
-        {
-            return _transactions
-                .Where(transaction => transaction.SettlementDate <= dateTime)
-                .Sum(transaction => transaction.Amount);
         }
 
         private bool DepositIsValid(IDeposit deposit)

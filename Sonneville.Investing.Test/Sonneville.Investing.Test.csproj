@@ -54,6 +54,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Accounting\CashAccountBalanceCalculatorTests.cs" />
     <Compile Include="Accounting\CashAccountTests.cs" />
     <Compile Include="Accounting\ShareAccountTests.cs" />
     <Compile Include="Accounting\Transactions\DepositTests.cs" />

@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Accounting\CashAccount.cs" />
+    <Compile Include="Accounting\CashAccountBalanceCalculator.cs" />
     <Compile Include="Accounting\ICashAccount.cs" />
     <Compile Include="Accounting\ShareAccount.cs" />
     <Compile Include="Accounting\Transactions\Deposit.cs" />
