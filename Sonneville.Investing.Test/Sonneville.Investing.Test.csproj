@@ -55,6 +55,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Accounting\CashAccountTests.cs" />
+    <Compile Include="Accounting\ShareAccountTests.cs" />
     <Compile Include="Accounting\Transactions\DepositTests.cs" />
     <Compile Include="Accounting\Transactions\WithdrawalTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

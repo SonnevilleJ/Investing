@@ -5,7 +5,7 @@ using Sonneville.Investing.Accounting.Transactions;
 
 namespace Sonneville.Investing.Accounting
 {
-    public class CashAccount
+    public class CashAccount : ICashAccount
     {
         private readonly List<ICashTransaction> _transactions;
 
@@ -14,9 +14,9 @@ namespace Sonneville.Investing.Accounting
             _transactions = new List<ICashTransaction>();
         }
 
-        public IReadOnlyCollection<ICashTransaction> Transactions => _transactions.AsReadOnly();
+        public IReadOnlyCollection<ICashTransaction> CashTransactions => _transactions.AsReadOnly();
 
-        public CashAccount Deposit(IDeposit deposit)
+        public ICashAccount Deposit(IDeposit deposit)
         {
             if (!DepositIsValid(deposit))
             {
@@ -26,7 +26,7 @@ namespace Sonneville.Investing.Accounting
             return this;
         }
 
-        public CashAccount Withdraw(IWithdrawal withdrawal)
+        public ICashAccount Withdraw(IWithdrawal withdrawal)
         {
             if (!WithdrawalIsValid(withdrawal))
             {

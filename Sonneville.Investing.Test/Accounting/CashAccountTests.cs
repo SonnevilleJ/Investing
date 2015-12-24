@@ -9,7 +9,7 @@ namespace Sonneville.Investing.Test.Accounting
     [TestFixture]
     public class CashAccountTests
     {
-        private CashAccount _cashAccount;
+        private ICashAccount _cashAccount;
 
         [SetUp]
         public void Setup()
@@ -119,7 +119,7 @@ namespace Sonneville.Investing.Test.Accounting
         [Test]
         public void TransactionsAreReadonly()
         {
-            var transactions = _cashAccount.Transactions;
+            var transactions = _cashAccount.CashTransactions;
 
             Assert.IsInstanceOf<IReadOnlyCollection<ICashTransaction>>(transactions);
         }
