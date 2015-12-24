@@ -2,7 +2,7 @@
 
 namespace Sonneville.Investing.Accounting.Transactions
 {
-    public class Deposit : ICashTransaction
+    public class Deposit : IDeposit
     {
         public Deposit(DateTime settlementDate, decimal amount)
         {

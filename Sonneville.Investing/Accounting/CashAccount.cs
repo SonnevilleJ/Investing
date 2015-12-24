@@ -16,7 +16,7 @@ namespace Sonneville.Investing.Accounting
 
         public IReadOnlyCollection<ICashTransaction> Transactions => _transactions.AsReadOnly();
 
-        public CashAccount Deposit(Deposit deposit)
+        public CashAccount Deposit(IDeposit deposit)
         {
             if (!DepositIsValid(deposit))
             {
@@ -26,7 +26,7 @@ namespace Sonneville.Investing.Accounting
             return this;
         }
 
-        public CashAccount Withdraw(Withdrawal withdrawal)
+        public CashAccount Withdraw(IWithdrawal withdrawal)
         {
             if (!WithdrawalIsValid(withdrawal))
             {
@@ -43,12 +43,12 @@ namespace Sonneville.Investing.Accounting
                 .Sum(transaction => transaction.Amount);
         }
 
-        private bool DepositIsValid(Deposit deposit)
+        private bool DepositIsValid(IDeposit deposit)
         {
             return deposit.Amount >= 0;
         }
 
-        private bool WithdrawalIsValid(Withdrawal withdrawal)
+        private bool WithdrawalIsValid(IWithdrawal withdrawal)
         {
             return withdrawal.Amount < 0;
         }
