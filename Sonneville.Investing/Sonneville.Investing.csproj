@@ -49,6 +49,9 @@
     <Compile Include="Accounting\Transactions\IDeposit.cs" />
     <Compile Include="Accounting\Transactions\IWithdrawal.cs" />
     <Compile Include="Accounting\Transactions\Withdrawal.cs" />
+    <Compile Include="Accounting\Validation\ICashTransactionValidator.cs" />
+    <Compile Include="Accounting\Validation\OnlyAcceptNegativeAmountWithdrawalsValidator.cs" />
+    <Compile Include="Accounting\Validation\OnlyAcceptPositiveOrZeroAmountDepositsValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

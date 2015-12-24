@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Sonneville.Investing.Accounting.Transactions;
+using Sonneville.Investing.Accounting.Validation;
 
 namespace Sonneville.Investing.Accounting
 {
@@ -8,41 +8,31 @@ namespace Sonneville.Investing.Accounting
     {
         private readonly List<ICashTransaction> _transactions;
 
-        public CashAccount()
+        private readonly ICashTransactionValidator<IDeposit> _depositValidator;
+
+        private readonly ICashTransactionValidator<IWithdrawal> _withdrawalValidator;
+
+        public CashAccount(ICashTransactionValidator<IDeposit> depositValidator, ICashTransactionValidator<IWithdrawal> withdrawalValidator)
         {
             _transactions = new List<ICashTransaction>();
+            _depositValidator = depositValidator;
+            _withdrawalValidator = withdrawalValidator;
         }
 
         public IReadOnlyCollection<ICashTransaction> CashTransactions => _transactions.AsReadOnly();
 
         public ICashAccount Deposit(IDeposit deposit)
         {
-            if (!DepositIsValid(deposit))
-            {
-                throw new InvalidOperationException("Cannot deposit a negative amount of funds!");
-            }
+            _depositValidator.ThrowIfInvalid(deposit, _transactions);
             _transactions.Add(deposit);
             return this;
         }
 
         public ICashAccount Withdraw(IWithdrawal withdrawal)
         {
-            if (!WithdrawalIsValid(withdrawal))
-            {
-                throw new InvalidOperationException("Cannot withdraw a positive amount of funds!");
-            }
+            _withdrawalValidator.ThrowIfInvalid(withdrawal, _transactions);
             _transactions.Add(withdrawal);
             return this;
-        }
-
-        private bool DepositIsValid(IDeposit deposit)
-        {
-            return deposit.Amount >= 0;
-        }
-
-        private bool WithdrawalIsValid(IWithdrawal withdrawal)
-        {
-            return withdrawal.Amount < 0;
         }
     }
 }

@@ -59,6 +59,8 @@
     <Compile Include="Accounting\ShareAccountTests.cs" />
     <Compile Include="Accounting\Transactions\DepositTests.cs" />
     <Compile Include="Accounting\Transactions\WithdrawalTests.cs" />
+    <Compile Include="Accounting\Validation\OnlyAcceptNegativeAmountWithdrawalsValidatorTests.cs" />
+    <Compile Include="Accounting\Validation\OnlyAcceptPositiveOrZeroAmountDepositsValidatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
