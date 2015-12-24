@@ -6,5 +6,6 @@ namespace Sonneville.Investing.Accounting.Transactions
     {
         DateTime SettlementDate { get; }
         decimal Amount { get; }
+        string Memo { get; }
     }
 }
