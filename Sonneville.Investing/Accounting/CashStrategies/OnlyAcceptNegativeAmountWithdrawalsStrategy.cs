@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using Sonneville.Investing.Accounting.Transactions;
 
-namespace Sonneville.Investing.Accounting.Validation
+namespace Sonneville.Investing.Accounting.CashStrategies
 {
-    public class OnlyAcceptNegativeAmountWithdrawalsValidator : ICashTransactionValidator<IWithdrawal>
+    public class OnlyAcceptNegativeAmountWithdrawalsStrategy : ICashTransactionStrategy<IWithdrawal>
     {
         public void ThrowIfInvalid(IWithdrawal withdrawal, IEnumerable<ICashTransaction> currentTransactions)
         {

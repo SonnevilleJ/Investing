@@ -56,14 +56,15 @@
   <ItemGroup>
     <Compile Include="Accounting\CashAccountBalanceCalculatorTests.cs" />
     <Compile Include="Accounting\CashAccountTests.cs" />
-    <Compile Include="Accounting\Strategies\WithdrawFundsBeforeBuyingStrategyTests.cs" />
+    <Compile Include="Accounting\ShareStrategies\CannotSellMoreSharesThanOwnedStrategyTests.cs" />
+    <Compile Include="Accounting\ShareStrategies\WithdrawFundsBeforeBuyingStrategyTests.cs" />
     <Compile Include="Accounting\ShareAccountTests.cs" />
     <Compile Include="Accounting\Transactions\BuyTests.cs" />
     <Compile Include="Accounting\Transactions\DepositTests.cs" />
     <Compile Include="Accounting\Transactions\SellTests.cs" />
     <Compile Include="Accounting\Transactions\WithdrawalTests.cs" />
-    <Compile Include="Accounting\Validation\OnlyAcceptNegativeAmountWithdrawalsValidatorTests.cs" />
-    <Compile Include="Accounting\Validation\OnlyAcceptPositiveOrZeroAmountDepositsValidatorTests.cs" />
+    <Compile Include="Accounting\CashStrategies\OnlyAcceptNegativeAmountWithdrawalsValidatorTests.cs" />
+    <Compile Include="Accounting\CashStrategies\OnlyAcceptPositiveOrZeroAmountDepositsValidatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

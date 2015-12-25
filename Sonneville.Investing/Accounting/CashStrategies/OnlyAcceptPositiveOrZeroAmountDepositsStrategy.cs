@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Sonneville.Investing.Accounting.Transactions;
 
-namespace Sonneville.Investing.Accounting.Validation
+namespace Sonneville.Investing.Accounting.CashStrategies
 {
-    public class OnlyAcceptPositiveOrZeroAmountDepositsValidator : ICashTransactionValidator<IDeposit>
+    public class OnlyAcceptPositiveOrZeroAmountDepositsStrategy : ICashTransactionStrategy<IDeposit>
     {
         public void ThrowIfInvalid(IDeposit deposit, IEnumerable<ICashTransaction> currentTransactions)
         {

@@ -4,8 +4,8 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 using Sonneville.Investing.Accounting;
+using Sonneville.Investing.Accounting.CashStrategies;
 using Sonneville.Investing.Accounting.Transactions;
-using Sonneville.Investing.Accounting.Validation;
 
 namespace Sonneville.Investing.Test.Accounting
 {
@@ -14,9 +14,9 @@ namespace Sonneville.Investing.Test.Accounting
     {
         private CashAccount _cashAccount;
 
-        private Mock<ICashTransactionValidator<IDeposit>> _depositValidatorMock;
+        private Mock<ICashTransactionStrategy<IDeposit>> _depositValidatorMock;
 
-        private Mock<ICashTransactionValidator<IWithdrawal>> _withdrawalValidatorMock;
+        private Mock<ICashTransactionStrategy<IWithdrawal>> _withdrawalValidatorMock;
 
         [SetUp]
         public void Setup()
@@ -28,9 +28,9 @@ namespace Sonneville.Investing.Test.Accounting
             _cashAccount = new CashAccount(_depositValidatorMock.Object, _withdrawalValidatorMock.Object);
         }
 
-        private static Mock<ICashTransactionValidator<T>> SetupCashTransactionValidator<T>() where T : ICashTransaction
+        private static Mock<ICashTransactionStrategy<T>> SetupCashTransactionValidator<T>() where T : ICashTransaction
         {
-            var validatorMock = new Mock<ICashTransactionValidator<T>>();
+            var validatorMock = new Mock<ICashTransactionStrategy<T>>();
             validatorMock.Setup(
                 validator => validator.ThrowIfInvalid(It.IsAny<T>(), It.IsAny<IEnumerable<ICashTransaction>>()))
                 .Callback<T, IEnumerable<ICashTransaction>>(

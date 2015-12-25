@@ -42,10 +42,14 @@
   <ItemGroup>
     <Compile Include="Accounting\CashAccount.cs" />
     <Compile Include="Accounting\CashAccountBalanceCalculator.cs" />
+    <Compile Include="Accounting\CashStrategies\ICashTransactionStrategy.cs" />
+    <Compile Include="Accounting\CashStrategies\OnlyAcceptNegativeAmountWithdrawalsStrategy.cs" />
+    <Compile Include="Accounting\CashStrategies\OnlyAcceptPositiveOrZeroAmountDepositsStrategy.cs" />
     <Compile Include="Accounting\ICashAccount.cs" />
     <Compile Include="Accounting\IShareAccount.cs" />
-    <Compile Include="Accounting\Strategies\IBuyStrategy.cs" />
-    <Compile Include="Accounting\Strategies\WithdrawFundsBeforeBuyingStrategy.cs" />
+    <Compile Include="Accounting\ShareStrategies\CannotSellMoreSharesThanOwnedStrategy.cs" />
+    <Compile Include="Accounting\ShareStrategies\IShareTransactionStrategy.cs" />
+    <Compile Include="Accounting\ShareStrategies\WithdrawFundsBeforeBuyingStrategy.cs" />
     <Compile Include="Accounting\ShareAccount.cs" />
     <Compile Include="Accounting\Transactions\Buy.cs" />
     <Compile Include="Accounting\Transactions\Deposit.cs" />
@@ -55,9 +59,6 @@
     <Compile Include="Accounting\Transactions\IWithdrawal.cs" />
     <Compile Include="Accounting\Transactions\Sell.cs" />
     <Compile Include="Accounting\Transactions\Withdrawal.cs" />
-    <Compile Include="Accounting\Validation\ICashTransactionValidator.cs" />
-    <Compile Include="Accounting\Validation\OnlyAcceptNegativeAmountWithdrawalsValidator.cs" />
-    <Compile Include="Accounting\Validation\OnlyAcceptPositiveOrZeroAmountDepositsValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

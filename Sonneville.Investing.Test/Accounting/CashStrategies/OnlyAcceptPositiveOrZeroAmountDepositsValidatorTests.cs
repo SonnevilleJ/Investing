@@ -1,19 +1,19 @@
 ﻿using System;
 using NUnit.Framework;
+using Sonneville.Investing.Accounting.CashStrategies;
 using Sonneville.Investing.Accounting.Transactions;
-using Sonneville.Investing.Accounting.Validation;
 
 namespace Sonneville.Investing.Test.Accounting.Validation
 {
     [TestFixture]
     public class OnlyAcceptPositiveOrZeroAmountDepositsValidatorTests
     {
-        private OnlyAcceptPositiveOrZeroAmountDepositsValidator _validator;
+        private OnlyAcceptPositiveOrZeroAmountDepositsStrategy _validator;
 
         [SetUp]
         public void Setup()
         {
-            _validator = new OnlyAcceptPositiveOrZeroAmountDepositsValidator();
+            _validator = new OnlyAcceptPositiveOrZeroAmountDepositsStrategy();
         }
 
         [Test]

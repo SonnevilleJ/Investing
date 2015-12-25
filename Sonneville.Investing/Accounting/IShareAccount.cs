@@ -8,5 +8,9 @@ namespace Sonneville.Investing.Accounting
         IReadOnlyCollection<IShareTransaction> ShareTransactions { get; }
 
         IShareAccount Buy(Buy buy);
+
+        IShareAccount Sell(Sell sell);
+
+        decimal CountHeldShares(string ticker);
     }
 }
