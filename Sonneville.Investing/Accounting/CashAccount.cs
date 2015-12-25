@@ -23,14 +23,14 @@ namespace Sonneville.Investing.Accounting
 
         public ICashAccount Deposit(IDeposit deposit)
         {
-            _depositStrategy.ThrowIfInvalid(deposit, _transactions);
+            _depositStrategy.ThrowIfInvalid(deposit, this);
             _transactions.Add(deposit);
             return this;
         }
 
         public ICashAccount Withdraw(IWithdrawal withdrawal)
         {
-            _withdrawalStrategy.ThrowIfInvalid(withdrawal, _transactions);
+            _withdrawalStrategy.ThrowIfInvalid(withdrawal, this);
             _transactions.Add(withdrawal);
             return this;
         }

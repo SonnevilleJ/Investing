@@ -6,7 +6,7 @@ namespace Sonneville.Investing.Accounting.CashStrategies
 {
     public class OnlyAcceptPositiveOrZeroAmountDepositsStrategy : ICashTransactionStrategy<IDeposit>
     {
-        public void ThrowIfInvalid(IDeposit deposit, IEnumerable<ICashTransaction> currentTransactions)
+        public void ThrowIfInvalid(IDeposit deposit, ICashAccount cashAccount)
         {
             if (deposit == null)
             {

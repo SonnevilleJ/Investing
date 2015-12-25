@@ -9,7 +9,7 @@ namespace Sonneville.Investing.Accounting
 
         IShareAccount Buy(Buy buy);
 
-        IShareAccount Sell(Sell sell);
+        IShareAccount Sell(ISell sell);
 
         decimal CountHeldShares(string ticker);
     }

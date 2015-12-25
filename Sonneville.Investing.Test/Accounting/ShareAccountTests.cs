@@ -18,7 +18,7 @@ namespace Sonneville.Investing.Test.Accounting
 
         private Mock<IShareTransactionStrategy<Buy>> _buyStrategyMock;
 
-        private Mock<IShareTransactionStrategy<Sell>> _sellStrategyMock;
+        private Mock<IShareTransactionStrategy<ISell>> _sellStrategyMock;
 
         [SetUp]
         public void Setup()
@@ -27,7 +27,7 @@ namespace Sonneville.Investing.Test.Accounting
 
             _buyStrategyMock = new Mock<IShareTransactionStrategy<Buy>>();
 
-            _sellStrategyMock = new Mock<IShareTransactionStrategy<Sell>>();
+            _sellStrategyMock = new Mock<IShareTransactionStrategy<ISell>>();
 
             _shareAccount = new ShareAccount(_cashAccountMock.Object, _buyStrategyMock.Object, _sellStrategyMock.Object);
         }
@@ -71,7 +71,7 @@ namespace Sonneville.Investing.Test.Accounting
         {
             var buy = new Buy(DateTime.Today, "DE", 1, 50m, 7.95m, "my first share!");
             _buyStrategyMock.Setup(processor => processor.ProcessTransaction(_shareAccount, buy))
-                .Callback<ICashAccount, Buy>((account, b) =>
+                .Callback<ICashAccount, IBuy>((account, b) =>
                 {
                     Assert.AreSame(_shareAccount, account);
                     Assert.IsFalse(_shareAccount.ShareTransactions.Contains(b));
@@ -92,7 +92,7 @@ namespace Sonneville.Investing.Test.Accounting
             var buy = new Buy(DateTime.Today, ticker, 1, 50m, 7.95m, "my first share!");
             var sell = new Sell(DateTime.Today, ticker, 1, 500m, 7.95m, "helluvadeal");
             _sellStrategyMock.Setup(processor => processor.ProcessTransaction(_shareAccount, sell))
-                .Callback<ICashAccount, Sell>((account, s) =>
+                .Callback<ICashAccount, ISell>((account, s) =>
                 {
                     Assert.AreSame(_shareAccount, account);
                     Assert.IsFalse(_shareAccount.ShareTransactions.Contains(s));

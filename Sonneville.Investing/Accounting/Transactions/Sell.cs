@@ -2,7 +2,7 @@
 
 namespace Sonneville.Investing.Accounting.Transactions
 {
-    public class Sell : IShareTransaction
+    public class Sell : ISell
     {
         public Sell(DateTime settlementDate, string ticker, decimal shares, decimal price, decimal commission, string memo = null)
         {

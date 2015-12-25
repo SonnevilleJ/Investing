@@ -13,9 +13,9 @@ namespace Sonneville.Investing.Accounting
 
         private readonly IShareTransactionStrategy<Buy> _buyStrategy;
 
-        private readonly IShareTransactionStrategy<Sell> _sellStrategy;
+        private readonly IShareTransactionStrategy<ISell> _sellStrategy;
 
-        public ShareAccount(ICashAccount cashAccount, IShareTransactionStrategy<Buy> buyStrategy, IShareTransactionStrategy<Sell> sellStrategy)
+        public ShareAccount(ICashAccount cashAccount, IShareTransactionStrategy<Buy> buyStrategy, IShareTransactionStrategy<ISell> sellStrategy)
         {
             _shareTransactions = new List<IShareTransaction>();
             _cashAccount = cashAccount;
@@ -46,7 +46,7 @@ namespace Sonneville.Investing.Accounting
             return this;
         }
 
-        public IShareAccount Sell(Sell sell)
+        public IShareAccount Sell(ISell sell)
         {
             _sellStrategy.ProcessTransaction(this, sell);
             _shareTransactions.Add(sell);

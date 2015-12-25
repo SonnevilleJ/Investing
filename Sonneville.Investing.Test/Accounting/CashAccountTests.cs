@@ -31,10 +31,12 @@ namespace Sonneville.Investing.Test.Accounting
         private static Mock<ICashTransactionStrategy<T>> SetupCashTransactionValidator<T>() where T : ICashTransaction
         {
             var validatorMock = new Mock<ICashTransactionStrategy<T>>();
-            validatorMock.Setup(
-                validator => validator.ThrowIfInvalid(It.IsAny<T>(), It.IsAny<IEnumerable<ICashTransaction>>()))
-                .Callback<T, IEnumerable<ICashTransaction>>(
-                    (transaction, transactions) => { Assert.IsFalse(transactions.Contains(transaction)); });
+            validatorMock.Setup(validator => validator.ThrowIfInvalid(It.IsAny<T>(), It.IsAny<ICashAccount>()))
+                .Callback<T, ICashAccount>(
+                    (transaction, cashAccount) =>
+                    {
+                        Assert.IsFalse(cashAccount.CashTransactions.Contains(transaction));
+                    });
 
             return validatorMock;
         }
@@ -46,7 +48,7 @@ namespace Sonneville.Investing.Test.Accounting
 
             var cashAccount = _cashAccount.Deposit(deposit);
 
-            _depositValidatorMock.Verify(validator => validator.ThrowIfInvalid(deposit, _cashAccount.CashTransactions));
+            _depositValidatorMock.Verify(validator => validator.ThrowIfInvalid(deposit, _cashAccount));
             Assert.AreSame(_cashAccount, cashAccount);
             Assert.IsTrue(_cashAccount.CashTransactions.Contains(deposit));
         }
@@ -60,7 +62,7 @@ namespace Sonneville.Investing.Test.Accounting
 
             var cashAccount = _cashAccount.Withdraw(withdrawal);
 
-            _withdrawalValidatorMock.Verify(validator => validator.ThrowIfInvalid(withdrawal, _cashAccount.CashTransactions));
+            _withdrawalValidatorMock.Verify(validator => validator.ThrowIfInvalid(withdrawal, _cashAccount));
             Assert.AreSame(_cashAccount, cashAccount);
             Assert.IsTrue(_cashAccount.CashTransactions.Contains(withdrawal));
         }

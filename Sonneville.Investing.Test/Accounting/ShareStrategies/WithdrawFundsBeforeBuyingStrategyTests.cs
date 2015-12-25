@@ -5,7 +5,7 @@ using Sonneville.Investing.Accounting;
 using Sonneville.Investing.Accounting.ShareStrategies;
 using Sonneville.Investing.Accounting.Transactions;
 
-namespace Sonneville.Investing.Test.Accounting.Strategies
+namespace Sonneville.Investing.Test.Accounting.ShareStrategies
 {
     [TestFixture]
     public class WithdrawFundsBeforeBuyingStrategyTests

@@ -2,7 +2,7 @@ using System;
 
 namespace Sonneville.Investing.Accounting.Transactions
 {
-    public class Buy : IShareTransaction
+    public class Buy : IBuy
     {
         public Buy(DateTime settlementDate, string ticker, decimal shares, decimal perSharePrice, decimal commission, string memo = null)
         {

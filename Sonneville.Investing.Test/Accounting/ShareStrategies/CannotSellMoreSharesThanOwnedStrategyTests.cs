@@ -30,6 +30,15 @@ namespace Sonneville.Investing.Test.Accounting.ShareStrategies
             var sell = new Sell(DateTime.Today, ticker, 2.5m, 1, 1);
 
             _strategy.ProcessTransaction(_shareAccountMock.Object, sell);
+            _shareAccountMock.Verify(
+                account => account.Deposit(It.Is<IDeposit>(deposit => VerifyDepositForSell(deposit, sell))));
+        }
+
+        private static bool VerifyDepositForSell(IDeposit deposit, ISell sell)
+        {
+            Assert.AreEqual(sell.SettlementDate, deposit.SettlementDate);
+            Assert.AreEqual(sell.Amount, deposit.Amount);
+            return true;
         }
 
         [Test]
@@ -40,6 +49,7 @@ namespace Sonneville.Investing.Test.Accounting.ShareStrategies
             var sell = new Sell(DateTime.Today, ticker, 2.5m, 1, 1);
 
             Assert.Throws<InvalidOperationException>(() => _strategy.ProcessTransaction(_shareAccountMock.Object, sell));
+            _shareAccountMock.Verify(account => account.Deposit(It.IsAny<IDeposit>()), Times.Never());
         }
     }
 }

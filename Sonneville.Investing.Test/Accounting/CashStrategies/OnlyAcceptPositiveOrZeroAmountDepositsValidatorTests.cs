@@ -3,18 +3,18 @@ using NUnit.Framework;
 using Sonneville.Investing.Accounting.CashStrategies;
 using Sonneville.Investing.Accounting.Transactions;
 
-namespace Sonneville.Investing.Test.Accounting.Validation
+namespace Sonneville.Investing.Test.Accounting.CashStrategies
 {
     [TestFixture]
     public class OnlyAcceptPositiveOrZeroAmountDepositsValidatorTests
     {
-        private OnlyAcceptPositiveOrZeroAmountDepositsStrategy _validator;
-
         [SetUp]
         public void Setup()
         {
             _validator = new OnlyAcceptPositiveOrZeroAmountDepositsStrategy();
         }
+
+        private OnlyAcceptPositiveOrZeroAmountDepositsStrategy _validator;
 
         [Test]
         public void ShouldNotThrowForPositiveAmounts()
