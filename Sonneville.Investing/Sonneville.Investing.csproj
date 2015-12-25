@@ -42,10 +42,12 @@
   <ItemGroup>
     <Compile Include="Accounting\CashAccount.cs" />
     <Compile Include="Accounting\CashAccountBalanceCalculator.cs" />
+    <Compile Include="Accounting\CashStrategies\CanOnlyWithdrawAvailableFundsStrategy.cs" />
     <Compile Include="Accounting\CashStrategies\ICashTransactionStrategy.cs" />
     <Compile Include="Accounting\CashStrategies\OnlyAcceptNegativeAmountWithdrawalsStrategy.cs" />
     <Compile Include="Accounting\CashStrategies\OnlyAcceptPositiveOrZeroAmountDepositsStrategy.cs" />
     <Compile Include="Accounting\ICashAccount.cs" />
+    <Compile Include="Accounting\ICashAccountBalanceCalculator.cs" />
     <Compile Include="Accounting\IShareAccount.cs" />
     <Compile Include="Accounting\ShareStrategies\CannotSellMoreSharesThanOwnedStrategy.cs" />
     <Compile Include="Accounting\ShareStrategies\IShareTransactionStrategy.cs" />

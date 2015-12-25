@@ -5,7 +5,7 @@ using Sonneville.Investing.Accounting.Transactions;
 
 namespace Sonneville.Investing.Accounting
 {
-    public class CashAccountBalanceCalculator
+    public class CashAccountBalanceCalculator : ICashAccountBalanceCalculator
     {
         public decimal CalculateBalance(DateTime dateTime, IEnumerable<ICashTransaction> cashTransactions)
         {
