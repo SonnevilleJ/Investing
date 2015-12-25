@@ -8,7 +8,7 @@ namespace Sonneville.Investing.Test.Accounting.Transactions
     public class DepositTests
     {
         [Test]
-        public void TestConstruction()
+        public void ConstructorTest()
         {
             var dateTime = DateTime.Today;
             const decimal amount = 5m;

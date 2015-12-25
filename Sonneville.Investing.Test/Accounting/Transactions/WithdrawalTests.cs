@@ -8,7 +8,7 @@ namespace Sonneville.Investing.Test.Accounting.Transactions
     public class WithdrawalTests
     {
         [Test]
-        public void TestConstruction()
+        public void ConstructorTest()
         {
             var dateTime = DateTime.Today;
             const decimal amount = 5m;
@@ -16,7 +16,7 @@ namespace Sonneville.Investing.Test.Accounting.Transactions
             var deposit = new Withdrawal(dateTime, amount, memo);
 
             Assert.AreEqual(dateTime, deposit.SettlementDate);
-            Assert.AreEqual(amount, -deposit.Amount);
+            Assert.AreEqual(-amount, deposit.Amount);
             Assert.AreEqual(memo, deposit.Memo);
         }
 
@@ -28,7 +28,7 @@ namespace Sonneville.Investing.Test.Accounting.Transactions
             var deposit = new Withdrawal(dateTime, amount);
 
             Assert.AreEqual(dateTime, deposit.SettlementDate);
-            Assert.AreEqual(amount, -deposit.Amount);
+            Assert.AreEqual(-amount, deposit.Amount);
             Assert.AreEqual(string.Empty, deposit.Memo);
         }
     }
