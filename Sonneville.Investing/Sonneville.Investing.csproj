@@ -43,10 +43,15 @@
     <Compile Include="Accounting\CashAccount.cs" />
     <Compile Include="Accounting\CashAccountBalanceCalculator.cs" />
     <Compile Include="Accounting\ICashAccount.cs" />
+    <Compile Include="Accounting\IShareAccount.cs" />
+    <Compile Include="Accounting\Strategies\IBuyStrategy.cs" />
+    <Compile Include="Accounting\Strategies\WithdrawFundsBeforeBuyingStrategy.cs" />
     <Compile Include="Accounting\ShareAccount.cs" />
+    <Compile Include="Accounting\Transactions\Buy.cs" />
     <Compile Include="Accounting\Transactions\Deposit.cs" />
     <Compile Include="Accounting\Transactions\ICashTransaction.cs" />
     <Compile Include="Accounting\Transactions\IDeposit.cs" />
+    <Compile Include="Accounting\Transactions\IShareTransaction.cs" />
     <Compile Include="Accounting\Transactions\IWithdrawal.cs" />
     <Compile Include="Accounting\Transactions\Withdrawal.cs" />
     <Compile Include="Accounting\Validation\ICashTransactionValidator.cs" />

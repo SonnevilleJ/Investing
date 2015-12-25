@@ -56,7 +56,9 @@
   <ItemGroup>
     <Compile Include="Accounting\CashAccountBalanceCalculatorTests.cs" />
     <Compile Include="Accounting\CashAccountTests.cs" />
+    <Compile Include="Accounting\Strategies\WithdrawFundsBeforeBuyingStrategyTests.cs" />
     <Compile Include="Accounting\ShareAccountTests.cs" />
+    <Compile Include="Accounting\Transactions\BuyTests.cs" />
     <Compile Include="Accounting\Transactions\DepositTests.cs" />
     <Compile Include="Accounting\Transactions\WithdrawalTests.cs" />
     <Compile Include="Accounting\Validation\OnlyAcceptNegativeAmountWithdrawalsValidatorTests.cs" />
