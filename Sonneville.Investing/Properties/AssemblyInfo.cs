@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Sonneville.Investing")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A module with some basic domain objects for applications interested in managing financial investments.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("John Sonneville")]
 [assembly: AssemblyProduct("Sonneville.Investing")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyCopyright("Copyright © 2015 John Sonneville")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

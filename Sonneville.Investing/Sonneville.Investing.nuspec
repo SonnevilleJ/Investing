@@ -1,0 +1,16 @@
+﻿<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://github.com/SonnevilleJ/Investing/blob/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/SonnevilleJ/Investing/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A module with some basic domain objects for applications interested in managing financial investments.</description>
+    <copyright>Copyright 2015 John Sonneville</copyright>
+    <tags>Investing</tags>
+  </metadata>
+</package>
