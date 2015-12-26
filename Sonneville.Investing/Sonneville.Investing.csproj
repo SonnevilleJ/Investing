@@ -50,6 +50,8 @@
     <Compile Include="Accounting\ICashAccount.cs" />
     <Compile Include="Accounting\ICashAccountBalanceCalculator.cs" />
     <Compile Include="Accounting\IShareAccount.cs" />
+    <Compile Include="Accounting\IHeldSharesCalculator.cs" />
+    <Compile Include="Accounting\HeldSharesCalculator.cs" />
     <Compile Include="Accounting\ShareStrategies\CannotSellMoreSharesThanOwnedStrategy.cs" />
     <Compile Include="Accounting\ShareStrategies\IShareTransactionStrategy.cs" />
     <Compile Include="Accounting\ShareStrategies\WithdrawFundsBeforeBuyingStrategy.cs" />

@@ -58,6 +58,7 @@
     <Compile Include="Accounting\CashAccountBalanceCalculatorTests.cs" />
     <Compile Include="Accounting\CashAccountTests.cs" />
     <Compile Include="Accounting\CashStrategies\CanOnlyWithdrawAvailableFundsStrategyTests.cs" />
+    <Compile Include="Accounting\HeldSharesCalculatorTests.cs" />
     <Compile Include="Accounting\ShareStrategies\CannotSellMoreSharesThanOwnedStrategyTests.cs" />
     <Compile Include="Accounting\ShareStrategies\WithdrawFundsBeforeBuyingStrategyTests.cs" />
     <Compile Include="Accounting\ShareAccountTests.cs" />

@@ -5,9 +5,16 @@ namespace Sonneville.Investing.Accounting.ShareStrategies
 {
     public class CannotSellMoreSharesThanOwnedStrategy : IShareTransactionStrategy<ISell>
     {
+        private readonly IHeldSharesCalculator _heldSharesCalculator;
+
+        public CannotSellMoreSharesThanOwnedStrategy(IHeldSharesCalculator heldSharesCalculator)
+        {
+            _heldSharesCalculator = heldSharesCalculator;
+        }
+
         public void ProcessTransaction(IShareAccount shareAccount, ISell sell)
         {
-            if (shareAccount.CountHeldShares(sell.Ticker) + sell.Shares < 0)
+            if (_heldSharesCalculator.CountHeldShares(sell.Ticker, shareAccount.ShareTransactions) + sell.Shares < 0)
             {
                 throw new InvalidOperationException("Insufficient shares");
             }

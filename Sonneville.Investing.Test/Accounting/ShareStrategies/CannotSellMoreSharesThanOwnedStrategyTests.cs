@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
 using Sonneville.Investing.Accounting;
@@ -13,20 +14,27 @@ namespace Sonneville.Investing.Test.Accounting.ShareStrategies
         private CannotSellMoreSharesThanOwnedStrategy _strategy;
 
         private Mock<IShareAccount> _shareAccountMock;
+        private Mock<IHeldSharesCalculator> _shareAccountHeldSharesCalculatorMock;
+        private IReadOnlyCollection<IShareTransaction> _shareTransactions;
 
         [SetUp]
         public void Setup()
         {
             _shareAccountMock = new Mock<IShareAccount>();
+            _shareTransactions = _shareAccountMock.Object.ShareTransactions;
 
-            _strategy = new CannotSellMoreSharesThanOwnedStrategy();
+            _shareAccountHeldSharesCalculatorMock = new Mock<IHeldSharesCalculator>();
+
+            _strategy = new CannotSellMoreSharesThanOwnedStrategy(_shareAccountHeldSharesCalculatorMock.Object);
         }
 
         [Test]
         public void ShouldNotThrowIfSufficientSharesAvailable()
         {
             const string ticker = "DE";
-            _shareAccountMock.Setup(account => account.CountHeldShares(ticker)).Returns(10);
+            _shareAccountHeldSharesCalculatorMock.Setup(
+                calculator => calculator.CountHeldShares(ticker, _shareTransactions))
+                .Returns(10);
             var sell = new Sell(DateTime.Today, ticker, 2.5m, 1, 1);
 
             _strategy.ProcessTransaction(_shareAccountMock.Object, sell);
@@ -45,7 +53,8 @@ namespace Sonneville.Investing.Test.Accounting.ShareStrategies
         public void ShouldThrowIfInsufficientSharesAvailable()
         {
             const string ticker = "DE";
-            _shareAccountMock.Setup(account => account.CountHeldShares(ticker)).Returns(0);
+            _shareAccountHeldSharesCalculatorMock.Setup(
+                calculator => calculator.CountHeldShares(ticker, _shareTransactions)).Returns(0);
             var sell = new Sell(DateTime.Today, ticker, 2.5m, 1, 1);
 
             Assert.Throws<InvalidOperationException>(() => _strategy.ProcessTransaction(_shareAccountMock.Object, sell));

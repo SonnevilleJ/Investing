@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Sonneville.Investing.Accounting.ShareStrategies;
 using Sonneville.Investing.Accounting.Transactions;
 
@@ -15,7 +14,9 @@ namespace Sonneville.Investing.Accounting
 
         private readonly IShareTransactionStrategy<ISell> _sellStrategy;
 
-        public ShareAccount(ICashAccount cashAccount, IShareTransactionStrategy<Buy> buyStrategy, IShareTransactionStrategy<ISell> sellStrategy)
+        public ShareAccount(ICashAccount cashAccount,
+            IShareTransactionStrategy<Buy> buyStrategy,
+            IShareTransactionStrategy<ISell> sellStrategy)
         {
             _shareTransactions = new List<IShareTransaction>();
             _cashAccount = cashAccount;
@@ -51,13 +52,6 @@ namespace Sonneville.Investing.Accounting
             _sellStrategy.ProcessTransaction(this, sell);
             _shareTransactions.Add(sell);
             return this;
-        }
-
-        public decimal CountHeldShares(string ticker)
-        {
-            return ShareTransactions
-                .Where(transaction => transaction.Ticker == ticker)
-                .Sum(transaction => transaction.Shares);
         }
     }
 }

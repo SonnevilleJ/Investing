@@ -79,10 +79,9 @@ namespace Sonneville.Investing.Test.Accounting
 
             var shareAccount = _shareAccount.Buy(buy);
 
+            _buyStrategyMock.Verify(processor => processor.ProcessTransaction(_shareAccount, buy));
             Assert.IsTrue(_shareAccount.ShareTransactions.Contains(buy));
             Assert.AreSame(_shareAccount, shareAccount);
-            Assert.AreEqual(buy.Shares, _shareAccount.CountHeldShares(buy.Ticker));
-            _buyStrategyMock.Verify(processor => processor.ProcessTransaction(_shareAccount, buy));
         }
 
         [Test]
@@ -101,10 +100,9 @@ namespace Sonneville.Investing.Test.Accounting
             var shareAccount = _shareAccount.Buy(buy)
                 .Sell(sell);
 
+            _sellStrategyMock.Verify(processor => processor.ProcessTransaction(_shareAccount, sell));
             Assert.IsTrue(_shareAccount.ShareTransactions.Contains(sell));
             Assert.AreSame(_shareAccount, shareAccount);
-            Assert.AreEqual(0, _shareAccount.CountHeldShares(ticker));
-            _sellStrategyMock.Verify(processor => processor.ProcessTransaction(_shareAccount, sell));
         }
     }
 }
