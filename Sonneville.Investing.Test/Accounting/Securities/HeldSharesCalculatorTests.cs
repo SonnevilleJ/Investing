@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Sonneville.Investing.Accounting;
-using Sonneville.Investing.Accounting.Transactions;
+using Sonneville.Investing.Accounting.Securities;
+using Sonneville.Investing.Accounting.Securities.Transactions;
 
-namespace Sonneville.Investing.Test.Accounting
+namespace Sonneville.Investing.Test.Accounting.Securities
 {
     [TestFixture]
     public class HeldSharesCalculatorTests

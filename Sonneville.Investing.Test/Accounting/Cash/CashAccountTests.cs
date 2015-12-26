@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
-using Sonneville.Investing.Accounting;
+using Sonneville.Investing.Accounting.Cash;
+using Sonneville.Investing.Accounting.Cash.Transactions;
 using Sonneville.Investing.Accounting.CashStrategies;
-using Sonneville.Investing.Accounting.Transactions;
 
-namespace Sonneville.Investing.Test.Accounting
+namespace Sonneville.Investing.Test.Accounting.Cash
 {
     [TestFixture]
     public class CashAccountTests

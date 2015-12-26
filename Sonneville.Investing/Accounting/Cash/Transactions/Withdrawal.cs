@@ -1,13 +1,13 @@
 ﻿using System;
 
-namespace Sonneville.Investing.Accounting.Transactions
+namespace Sonneville.Investing.Accounting.Cash.Transactions
 {
-    public class Deposit : IDeposit
+    public class Withdrawal : IWithdrawal
     {
-        public Deposit(DateTime settlementDate, decimal amount, string memo = null)
+        public Withdrawal(DateTime settlementDate, decimal amount, string memo = null)
         {
             SettlementDate = settlementDate;
-            Amount = amount;
+            Amount = -amount;
             Memo = memo ?? string.Empty;
         }
 

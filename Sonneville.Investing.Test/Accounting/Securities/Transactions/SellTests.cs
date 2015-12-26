@@ -1,8 +1,8 @@
 ﻿using System;
 using NUnit.Framework;
-using Sonneville.Investing.Accounting.Transactions;
+using Sonneville.Investing.Accounting.Securities.Transactions;
 
-namespace Sonneville.Investing.Test.Accounting.Transactions
+namespace Sonneville.Investing.Test.Accounting.Securities.Transactions
 {
     [TestFixture]
     public class SellTests

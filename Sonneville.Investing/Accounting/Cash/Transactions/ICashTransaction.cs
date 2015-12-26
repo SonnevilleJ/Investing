@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Sonneville.Investing.Accounting.Transactions
+namespace Sonneville.Investing.Accounting.Cash.Transactions
 {
     public interface ICashTransaction
     {

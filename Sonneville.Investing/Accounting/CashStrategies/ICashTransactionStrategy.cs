@@ -1,4 +1,5 @@
-using Sonneville.Investing.Accounting.Transactions;
+using Sonneville.Investing.Accounting.Cash;
+using Sonneville.Investing.Accounting.Cash.Transactions;
 
 namespace Sonneville.Investing.Accounting.CashStrategies
 {

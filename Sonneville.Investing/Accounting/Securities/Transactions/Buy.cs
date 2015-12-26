@@ -1,6 +1,6 @@
 using System;
 
-namespace Sonneville.Investing.Accounting.Transactions
+namespace Sonneville.Investing.Accounting.Securities.Transactions
 {
     public class Buy : IBuy
     {

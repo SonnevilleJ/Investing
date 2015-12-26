@@ -1,4 +1,6 @@
-﻿namespace Sonneville.Investing.Accounting.Transactions
+﻿using Sonneville.Investing.Accounting.Cash.Transactions;
+
+namespace Sonneville.Investing.Accounting.Securities.Transactions
 {
     public interface IShareTransaction : ICashTransaction
     {

@@ -41,36 +41,37 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Accounting\CashAccount.cs" />
-    <Compile Include="Accounting\CashAccountBalanceCalculator.cs" />
     <Compile Include="Accounting\CashStrategies\CanOnlyWithdrawAvailableFundsStrategy.cs" />
     <Compile Include="Accounting\CashStrategies\ICashTransactionStrategy.cs" />
     <Compile Include="Accounting\CashStrategies\OnlyAcceptNegativeAmountWithdrawalsStrategy.cs" />
     <Compile Include="Accounting\CashStrategies\OnlyAcceptPositiveOrZeroAmountDepositsStrategy.cs" />
-    <Compile Include="Accounting\ICashAccount.cs" />
-    <Compile Include="Accounting\ICashAccountBalanceCalculator.cs" />
-    <Compile Include="Accounting\IShareAccount.cs" />
-    <Compile Include="Accounting\IHeldSharesCalculator.cs" />
-    <Compile Include="Accounting\HeldSharesCalculator.cs" />
+    <Compile Include="Accounting\Cash\CashAccount.cs" />
+    <Compile Include="Accounting\Cash\CashAccountBalanceCalculator.cs" />
+    <Compile Include="Accounting\Cash\ICashAccount.cs" />
+    <Compile Include="Accounting\Cash\ICashAccountBalanceCalculator.cs" />
+    <Compile Include="Accounting\Cash\Transactions\Deposit.cs" />
+    <Compile Include="Accounting\Cash\Transactions\ICashTransaction.cs" />
+    <Compile Include="Accounting\Cash\Transactions\IDeposit.cs" />
+    <Compile Include="Accounting\Cash\Transactions\IWithdrawal.cs" />
+    <Compile Include="Accounting\Cash\Transactions\Withdrawal.cs" />
+    <Compile Include="Accounting\Securities\HeldSharesCalculator.cs" />
+    <Compile Include="Accounting\Securities\IHeldSharesCalculator.cs" />
+    <Compile Include="Accounting\Securities\IShareAccount.cs" />
+    <Compile Include="Accounting\Securities\ShareAccount.cs" />
+    <Compile Include="Accounting\Securities\Transactions\Buy.cs" />
+    <Compile Include="Accounting\Securities\Transactions\IBuy.cs" />
+    <Compile Include="Accounting\Securities\Transactions\ISell.cs" />
+    <Compile Include="Accounting\Securities\Transactions\IShareTransaction.cs" />
+    <Compile Include="Accounting\Securities\Transactions\Sell.cs" />
     <Compile Include="Accounting\ShareStrategies\CannotSellMoreSharesThanOwnedStrategy.cs" />
     <Compile Include="Accounting\ShareStrategies\IShareTransactionStrategy.cs" />
     <Compile Include="Accounting\ShareStrategies\WithdrawFundsBeforeBuyingStrategy.cs" />
-    <Compile Include="Accounting\ShareAccount.cs" />
-    <Compile Include="Accounting\Transactions\Buy.cs" />
-    <Compile Include="Accounting\Transactions\Deposit.cs" />
-    <Compile Include="Accounting\Transactions\IBuy.cs" />
-    <Compile Include="Accounting\Transactions\ICashTransaction.cs" />
-    <Compile Include="Accounting\Transactions\IDeposit.cs" />
-    <Compile Include="Accounting\Transactions\ISell.cs" />
-    <Compile Include="Accounting\Transactions\IShareTransaction.cs" />
-    <Compile Include="Accounting\Transactions\IWithdrawal.cs" />
-    <Compile Include="Accounting\Transactions\Sell.cs" />
-    <Compile Include="Accounting\Transactions\Withdrawal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sonneville.Investing.nuspec" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

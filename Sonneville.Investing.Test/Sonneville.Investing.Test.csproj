@@ -55,17 +55,17 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="Accounting\CashAccountBalanceCalculatorTests.cs" />
-    <Compile Include="Accounting\CashAccountTests.cs" />
     <Compile Include="Accounting\CashStrategies\CanOnlyWithdrawAvailableFundsStrategyTests.cs" />
-    <Compile Include="Accounting\HeldSharesCalculatorTests.cs" />
+    <Compile Include="Accounting\Cash\CashAccountBalanceCalculatorTests.cs" />
+    <Compile Include="Accounting\Cash\CashAccountTests.cs" />
+    <Compile Include="Accounting\Cash\Transactions\DepositTests.cs" />
+    <Compile Include="Accounting\Cash\Transactions\WithdrawalTests.cs" />
+    <Compile Include="Accounting\Securities\HeldSharesCalculatorTests.cs" />
+    <Compile Include="Accounting\Securities\ShareAccountTests.cs" />
+    <Compile Include="Accounting\Securities\Transactions\BuyTests.cs" />
+    <Compile Include="Accounting\Securities\Transactions\SellTests.cs" />
     <Compile Include="Accounting\ShareStrategies\CannotSellMoreSharesThanOwnedStrategyTests.cs" />
     <Compile Include="Accounting\ShareStrategies\WithdrawFundsBeforeBuyingStrategyTests.cs" />
-    <Compile Include="Accounting\ShareAccountTests.cs" />
-    <Compile Include="Accounting\Transactions\BuyTests.cs" />
-    <Compile Include="Accounting\Transactions\DepositTests.cs" />
-    <Compile Include="Accounting\Transactions\SellTests.cs" />
-    <Compile Include="Accounting\Transactions\WithdrawalTests.cs" />
     <Compile Include="Accounting\CashStrategies\OnlyAcceptNegativeAmountWithdrawalsValidatorTests.cs" />
     <Compile Include="Accounting\CashStrategies\OnlyAcceptPositiveOrZeroAmountDepositsValidatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

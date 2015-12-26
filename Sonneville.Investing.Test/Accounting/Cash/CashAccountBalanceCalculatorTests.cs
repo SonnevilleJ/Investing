@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Sonneville.Investing.Accounting;
-using Sonneville.Investing.Accounting.Transactions;
+using Sonneville.Investing.Accounting.Cash;
+using Sonneville.Investing.Accounting.Cash.Transactions;
 
-namespace Sonneville.Investing.Test.Accounting
+namespace Sonneville.Investing.Test.Accounting.Cash
 {
     public class CashAccountBalanceCalculatorTests
     {

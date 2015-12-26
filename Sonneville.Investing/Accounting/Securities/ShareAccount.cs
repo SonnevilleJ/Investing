@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using Sonneville.Investing.Accounting.Cash;
+using Sonneville.Investing.Accounting.Cash.Transactions;
+using Sonneville.Investing.Accounting.Securities.Transactions;
 using Sonneville.Investing.Accounting.ShareStrategies;
-using Sonneville.Investing.Accounting.Transactions;
 
-namespace Sonneville.Investing.Accounting
+namespace Sonneville.Investing.Accounting.Securities
 {
     public class ShareAccount : IShareAccount
     {

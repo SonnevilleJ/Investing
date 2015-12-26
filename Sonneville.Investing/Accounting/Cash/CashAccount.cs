@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
+using Sonneville.Investing.Accounting.Cash.Transactions;
 using Sonneville.Investing.Accounting.CashStrategies;
-using Sonneville.Investing.Accounting.Transactions;
 
-namespace Sonneville.Investing.Accounting
+namespace Sonneville.Investing.Accounting.Cash
 {
     public class CashAccount : ICashAccount
     {

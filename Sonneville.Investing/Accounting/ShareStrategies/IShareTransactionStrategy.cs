@@ -1,4 +1,5 @@
-using Sonneville.Investing.Accounting.Transactions;
+using Sonneville.Investing.Accounting.Securities;
+using Sonneville.Investing.Accounting.Securities.Transactions;
 
 namespace Sonneville.Investing.Accounting.ShareStrategies
 {
