@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://github.com/SonnevilleJ/Utilities/blob/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/SonnevilleJ/Utilities/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A library to store utility code.</description>
+    <copyright>Copyright 2015 John Sonneville</copyright>
+    <tags></tags>
+  </metadata>
+</package>
