@@ -10,14 +10,12 @@ namespace Sonneville.Investing.PortfolioManager
 
     public class App : IApp
     {
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-
         public void Run(IEnumerable<string> args)
         {
-            throw new NotImplementedException();
+        }
+
+        public void Dispose()
+        {
         }
     }
 }
