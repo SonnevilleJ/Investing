@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.Investing", "Son
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.Investing.Test", "Sonneville.Investing.Test\Sonneville.Investing.Test.csproj", "{51C7BD72-328B-4BB0-BAEA-B131E58414BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.Investing.PortfolioManager", "Sonneville.Investing.PortfolioManager\Sonneville.Investing.PortfolioManager.csproj", "{E3F2B1D9-2BDD-4AE3-A04D-5444E2DE871C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.Investing.PortfolioManager.Test", "Sonneville.Investing.PortfolioManager.Test\Sonneville.Investing.PortfolioManager.Test.csproj", "{C006EEA0-8961-4D4F-87A3-1787991997E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{51C7BD72-328B-4BB0-BAEA-B131E58414BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51C7BD72-328B-4BB0-BAEA-B131E58414BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51C7BD72-328B-4BB0-BAEA-B131E58414BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3F2B1D9-2BDD-4AE3-A04D-5444E2DE871C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3F2B1D9-2BDD-4AE3-A04D-5444E2DE871C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3F2B1D9-2BDD-4AE3-A04D-5444E2DE871C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3F2B1D9-2BDD-4AE3-A04D-5444E2DE871C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C006EEA0-8961-4D4F-87A3-1787991997E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C006EEA0-8961-4D4F-87A3-1787991997E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C006EEA0-8961-4D4F-87A3-1787991997E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C006EEA0-8961-4D4F-87A3-1787991997E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
