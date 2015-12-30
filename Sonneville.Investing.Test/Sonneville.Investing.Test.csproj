@@ -55,7 +55,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="Accounting\AccountAllocationCalculatorTests.cs" />
+    <Compile Include="Accounting\PositionsFactoryTests.cs" />
     <Compile Include="Accounting\CashStrategies\CanOnlyWithdrawAvailableFundsStrategyTests.cs" />
     <Compile Include="Accounting\Cash\CashAccountBalanceCalculatorTests.cs" />
     <Compile Include="Accounting\Cash\CashAccountTests.cs" />
@@ -72,7 +72,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Trading\PositionTests.cs" />
     <Compile Include="Trading\PriceQuoteTests.cs" />
-    <Compile Include="Trading\SecuritiesAllocationTests.cs" />
+    <Compile Include="Trading\SecuritiesAllocationCalculatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
