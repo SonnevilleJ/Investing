@@ -67,6 +67,7 @@
     <Compile Include="Accounting\ShareStrategies\IShareTransactionStrategy.cs" />
     <Compile Include="Accounting\ShareStrategies\WithdrawFundsBeforeBuyingStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SecuritiesAllocation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sonneville.Investing.nuspec" />

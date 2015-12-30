@@ -69,6 +69,7 @@
     <Compile Include="Accounting\CashStrategies\OnlyAcceptNegativeAmountWithdrawalsValidatorTests.cs" />
     <Compile Include="Accounting\CashStrategies\OnlyAcceptPositiveOrZeroAmountDepositsValidatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SecuritiesAllocationTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
