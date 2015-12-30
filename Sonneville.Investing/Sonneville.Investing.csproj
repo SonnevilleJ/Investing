@@ -67,6 +67,7 @@
     <Compile Include="Accounting\ShareStrategies\CannotSellMoreSharesThanOwnedStrategy.cs" />
     <Compile Include="Accounting\ShareStrategies\IShareTransactionStrategy.cs" />
     <Compile Include="Accounting\ShareStrategies\WithdrawFundsBeforeBuyingStrategy.cs" />
+    <Compile Include="Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SecuritiesAllocation.cs" />
   </ItemGroup>
