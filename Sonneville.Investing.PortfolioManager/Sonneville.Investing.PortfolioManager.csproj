@@ -70,6 +70,7 @@
     <Compile Include="AppModule.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="App.cs" />
+    <Compile Include="FidelityWebDriver\PositionMapper.cs" />
     <Compile Include="KernelBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -82,6 +83,12 @@
       <Link>chromedriver.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sonneville.Investing\Sonneville.Investing.csproj">
+      <Project>{89A1A8E9-DD0F-40BC-B4F1-FCDED6910E35}</Project>
+      <Name>Sonneville.Investing</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
