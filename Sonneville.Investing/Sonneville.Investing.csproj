@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Accounting\AccountAllocationCalculator.cs" />
     <Compile Include="Accounting\CashStrategies\CanOnlyWithdrawAvailableFundsStrategy.cs" />
     <Compile Include="Accounting\CashStrategies\ICashTransactionStrategy.cs" />
     <Compile Include="Accounting\CashStrategies\OnlyAcceptNegativeAmountWithdrawalsStrategy.cs" />

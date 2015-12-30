@@ -50,7 +50,6 @@ namespace Sonneville.Investing.Test.Accounting.Securities
         [Test]
         public void ShouldListUniqueTickers()
         {
-
             var shareTransactions = new List<IShareTransaction>
             {
                 new Buy(DateTime.Today, "ticker1", 1, 2, 3),

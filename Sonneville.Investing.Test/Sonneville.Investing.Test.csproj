@@ -55,6 +55,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Accounting\AccountAllocationCalculatorTests.cs" />
     <Compile Include="Accounting\CashStrategies\CanOnlyWithdrawAvailableFundsStrategyTests.cs" />
     <Compile Include="Accounting\Cash\CashAccountBalanceCalculatorTests.cs" />
     <Compile Include="Accounting\Cash\CashAccountTests.cs" />

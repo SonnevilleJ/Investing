@@ -7,16 +7,16 @@ namespace Sonneville.Investing.Test
     [TestFixture]
     public class SecuritiesAllocationTests
     {
-        private Dictionary<string, double> _ratesByTicker;
+        private Dictionary<string, decimal> _ratesByTicker;
         private SecuritiesAllocation _securitiesAllocation;
 
         [SetUp]
         public void Setup()
         {
-            _ratesByTicker = new Dictionary<string, double>
+            _ratesByTicker = new Dictionary<string, decimal>
             {
-                {"ticker1", 0.8},
-                {"ticker2", 0.2},
+                {"ticker1", 0.8m},
+                {"ticker2", 0.2m},
             };
             _securitiesAllocation = SecuritiesAllocation.FromDictionary(_ratesByTicker);
         }
@@ -39,17 +39,17 @@ namespace Sonneville.Investing.Test
         [Test]
         public void ShouldEnsureOneHundredPercentAllocation()
         {
-            var underAllocated = new Dictionary<string, double>
+            var underAllocated = new Dictionary<string, decimal>
             {
-                {"ticker1", 0.2},
-                {"ticker2", 0.2},
+                {"ticker1", 0.2m},
+                {"ticker2", 0.2m},
             };
             Assert.Throws<InvalidOperationException>(() => SecuritiesAllocation.FromDictionary(underAllocated));
 
-            var overAllocated = new Dictionary<string, double>
+            var overAllocated = new Dictionary<string, decimal>
             {
-                {"ticker1", 0.9},
-                {"ticker2", 0.2},
+                {"ticker1", 0.9m},
+                {"ticker2", 0.2m},
             };
             Assert.Throws<InvalidOperationException>(() => SecuritiesAllocation.FromDictionary(overAllocated));
         }
@@ -57,10 +57,10 @@ namespace Sonneville.Investing.Test
         [Test]
         public void ShouldEnsureOnlyPositiveAllocations()
         {
-            var allocated = new Dictionary<string, double>
+            var allocated = new Dictionary<string, decimal>
             {
-                {"ticker1", -0.2},
-                {"ticker2", 1.2},
+                {"ticker1", -0.2m},
+                {"ticker2", 1.2m},
             };
             Assert.Throws<InvalidOperationException>(() => SecuritiesAllocation.FromDictionary(allocated));
         }
