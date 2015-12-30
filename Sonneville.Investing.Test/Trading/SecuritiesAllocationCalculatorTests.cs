@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Sonneville.Investing.Trading;
 
@@ -25,14 +26,28 @@ namespace Sonneville.Investing.Test.Trading
         [Test]
         public void ShouldReturnAmountSpecified()
         {
-            Assert.AreEqual(0.8, _calculator.GetAllocation("ticker1", _positions));
-            Assert.AreEqual(0.2, _calculator.GetAllocation("ticker2", _positions));
+            Assert.AreEqual(0.8, _calculator.CalculateAllocation("ticker1", _positions));
+            Assert.AreEqual(0.2, _calculator.CalculateAllocation("ticker2", _positions));
         }
 
         [Test]
         public void ShouldReturnZeroForUnknownTicker()
         {
-            Assert.AreEqual(0, _calculator.GetAllocation("ticker3", _positions));
+            Assert.AreEqual(0, _calculator.CalculateAllocation("ticker3", _positions));
+        }
+
+        [Test]
+        public void ShouldThrowWhenPassedMultiplePositionsWithSameTicker()
+        {
+            var positions = new List<Position>
+            {
+                new Position {Ticker = "ticker1", PerSharePrice = 4, Shares = 200},
+                new Position {Ticker = "ticker2", PerSharePrice = 5, Shares = 40},
+                new Position {Ticker = "ticker2", PerSharePrice = 10, Shares = 25},
+            };
+
+            Assert.Throws<ArgumentException>(() => _calculator.CalculateAllocation("ticker1", positions));
+            Assert.Throws<ArgumentException>(() => _calculator.CalculateAllocation("ticker2", positions));
         }
     }
 }

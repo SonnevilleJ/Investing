@@ -18,20 +18,20 @@ namespace Sonneville.Investing.Accounting
         public IEnumerable<Position> CreateOpenPositions(IReadOnlyList<IShareTransaction> shareTransactions,
             IEnumerable<PriceQuote> priceQuotes)
         {
+            var quoteDictionary = priceQuotes.ToDictionary(quote => quote.Ticker, quote => quote);
             return _heldSharesCalculator.CountHeldShares(shareTransactions)
-                .Select(sharesByTicker => CreatePosition(priceQuotes, sharesByTicker.Key, sharesByTicker.Value));
-        }
-
-        private static Position CreatePosition(IEnumerable<PriceQuote> priceQuotes, string ticker, decimal shares)
-        {
-            var matchingPriceQuote = priceQuotes.Single(quote => quote.Ticker == ticker);
-            return new Position
-            {
-                Ticker = ticker,
-                PerSharePrice = matchingPriceQuote.PerSharePrice,
-                DateTime = matchingPriceQuote.DateTime,
-                Shares = shares
-            };
+                .Select(sharesByTicker =>
+                {
+                    var ticker = sharesByTicker.Key;
+                    var matchingPriceQuote = quoteDictionary[ticker];
+                    return new Position
+                    {
+                        Ticker = ticker,
+                        PerSharePrice = matchingPriceQuote.PerSharePrice,
+                        DateTime = matchingPriceQuote.DateTime,
+                        Shares = sharesByTicker.Value
+                    };
+                });
         }
     }
 }
