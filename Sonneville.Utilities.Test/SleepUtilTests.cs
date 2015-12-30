@@ -6,7 +6,7 @@ namespace Sonneville.Utilities.Test
     [TestFixture]
     public class SleepUtilTests
     {
-        private SleepUtil _sleepUtil;
+        private ISleepUtil _sleepUtil;
 
         [SetUp]
         public void Setup()

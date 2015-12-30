@@ -2,7 +2,12 @@
 
 namespace Sonneville.Utilities
 {
-    public class SleepUtil
+    public interface ISleepUtil
+    {
+        void Sleep(int milliseconds);
+    }
+
+    public class SleepUtil : ISleepUtil
     {
         public void Sleep(int milliseconds)
         {
