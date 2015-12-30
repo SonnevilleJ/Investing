@@ -5,7 +5,7 @@ namespace Sonneville.Investing.PortfolioManager.FidelityWebDriver
 {
     public class PositionMapper
     {
-        public Position Map(Sonneville.FidelityWebDriver.Data.Position extractedPosition)
+        public Position Map(Sonneville.FidelityWebDriver.Data.IPosition extractedPosition)
         {
             return new Position
             {

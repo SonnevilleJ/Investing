@@ -2,6 +2,7 @@
 using Ninject.Modules;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using Sonneville.FidelityWebDriver.Configuration;
 
 namespace Sonneville.Investing.PortfolioManager
 {
@@ -15,6 +16,16 @@ namespace Sonneville.Investing.PortfolioManager
                 .Configure(configurationAction => configurationAction.InSingletonScope()));
 
             Bind<IWebDriver>().To<ChromeDriver>().InSingletonScope();
+
+            BindFidelityConfiguration();
+        }
+
+        private void BindFidelityConfiguration()
+        {
+            var fidelityConfiguration = new FidelityConfiguration();
+            fidelityConfiguration.Initialize();
+            Kernel.Rebind<FidelityConfiguration>()
+                .ToConstant(fidelityConfiguration);
         }
     }
 }

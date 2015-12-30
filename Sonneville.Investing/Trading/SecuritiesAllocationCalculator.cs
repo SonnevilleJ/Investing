@@ -4,14 +4,14 @@ using System.Linq;
 
 namespace Sonneville.Investing.Trading
 {
-    public interface ISecuritiesAllocation
+    public interface ISecuritiesAllocationCalculator
     {
         decimal CalculateAllocation(string ticker, IEnumerable<Position> positions);
 
         IDictionary<string, decimal> CalculateAllocations(IReadOnlyList<Position> positions);
     }
 
-    public class SecuritiesAllocationCalculator : ISecuritiesAllocation
+    public class SecuritiesAllocationCalculator : ISecuritiesAllocationCalculator
     {
         public decimal CalculateAllocation(string ticker, IEnumerable<Position> positions)
         {

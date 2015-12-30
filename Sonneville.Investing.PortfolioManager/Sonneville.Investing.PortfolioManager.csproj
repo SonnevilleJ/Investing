@@ -37,6 +37,10 @@
     <StartupObject>Sonneville.Investing.PortfolioManager.Bootstrapper</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NDesk.Options, Version=0.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NDesk.Options.0.2.1\lib\NDesk.Options.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
       <Private>True</Private>
@@ -67,11 +71,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountRebalancer.cs" />
     <Compile Include="AppModule.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="App.cs" />
     <Compile Include="FidelityWebDriver\PositionMapper.cs" />
     <Compile Include="KernelBuilder.cs" />
+    <Compile Include="CommandLineOptionsParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

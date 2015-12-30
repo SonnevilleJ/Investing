@@ -1,6 +1,7 @@
 ﻿using Ninject;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using Sonneville.FidelityWebDriver.Configuration;
 
 namespace Sonneville.Investing.PortfolioManager.Test
 {
@@ -39,5 +40,14 @@ namespace Sonneville.Investing.PortfolioManager.Test
             Assert.AreSame(app, _kernel.Get<IWebDriver>());
         }
 
+        [Test]
+        public void ShouldBindFidelityConfigurationAsSingleton()
+        {
+            var fidelityConfiguration = _kernel.Get<FidelityConfiguration>();
+
+            Assert.IsNotNull(fidelityConfiguration);
+            Assert.AreSame(fidelityConfiguration, _kernel.Get<FidelityConfiguration>());
+            Assert.IsNotNull(fidelityConfiguration.Provider);
+        }
     }
 }
