@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
-using Sonneville.Investing.Accounting;
 using Sonneville.Investing.Accounting.Securities;
 using Sonneville.Investing.Accounting.Securities.Transactions;
 
@@ -45,6 +45,26 @@ namespace Sonneville.Investing.Test.Accounting.Securities
             var heldShares = _calculator.CountHeldShares("ticker", shareTransactions);
 
             Assert.AreEqual(3, heldShares);
+        }
+
+        [Test]
+        public void ShouldListUniqueTickers()
+        {
+
+            var shareTransactions = new List<IShareTransaction>
+            {
+                new Buy(DateTime.Today, "ticker1", 1, 2, 3),
+                new Buy(DateTime.Today, "ticker2", 4, 5, 6),
+                new Buy(DateTime.Today, "ticker3", 4, 1, 1),
+                new Sell(DateTime.Today, "ticker1", 1, 3, 3),
+                new Sell(DateTime.Today, "ticker3", 2, 3, 6),
+            };
+
+            var tickers = _calculator.ExtractTickersWithCurrentShares(shareTransactions).ToList();
+
+            CollectionAssert.DoesNotContain(tickers, "ticker1");
+            CollectionAssert.Contains(tickers, "ticker2");
+            CollectionAssert.Contains(tickers, "ticker3");
         }
     }
 }

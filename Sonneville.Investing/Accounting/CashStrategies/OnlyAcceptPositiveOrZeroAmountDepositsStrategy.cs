@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Sonneville.Investing.Accounting.Cash;
 using Sonneville.Investing.Accounting.Cash.Transactions;
 
