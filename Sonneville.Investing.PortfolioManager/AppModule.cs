@@ -1,5 +1,7 @@
 ﻿using Ninject.Extensions.Conventions;
 using Ninject.Modules;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 
 namespace Sonneville.Investing.PortfolioManager
 {
@@ -11,6 +13,8 @@ namespace Sonneville.Investing.PortfolioManager
                 .SelectAllClasses()
                 .BindDefaultInterface()
                 .Configure(configurationAction => configurationAction.InSingletonScope()));
+
+            Bind<IWebDriver>().To<ChromeDriver>().InSingletonScope();
         }
     }
 }

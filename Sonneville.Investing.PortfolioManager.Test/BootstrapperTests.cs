@@ -19,15 +19,6 @@ namespace Sonneville.Investing.PortfolioManager.Test
         public void Teardown()
         {
             _kernel.Dispose();
-            _kernel = Bootstrapper.Kernel = new KernelBuilder().Build();
-        }
-
-        [Test]
-        public void ShouldBindApp()
-        {
-            var app = _kernel.Get<IApp>();
-
-            Assert.IsNotNull(app);
         }
 
         [Test]
