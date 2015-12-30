@@ -4,7 +4,7 @@ namespace Sonneville.Investing.PortfolioManager
 {
     public class Bootstrapper
     {
-        public static IKernel Kernel { get; }
+        public static IKernel Kernel { get; set; }
 
         static Bootstrapper()
         {
@@ -13,6 +13,7 @@ namespace Sonneville.Investing.PortfolioManager
 
         public static void Main(string[] args)
         {
+            using (Kernel)
             using (var app = Kernel.Get<IApp>())
             {
                 app.Run(args);
