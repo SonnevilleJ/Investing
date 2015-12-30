@@ -6,40 +6,33 @@ namespace Sonneville.Investing.Trading
 {
     public interface ISecuritiesAllocationCalculator
     {
-        decimal CalculateAllocation(string ticker, IEnumerable<Position> positions);
+        decimal CalculateAllocation(Position toAllocate, IEnumerable<Position> portfolio);
 
-        IDictionary<string, decimal> CalculateAllocations(IReadOnlyList<Position> positions);
+        IDictionary<Position, decimal> CalculateAllocations(IReadOnlyList<Position> positions);
     }
 
     public class SecuritiesAllocationCalculator : ISecuritiesAllocationCalculator
     {
-        public decimal CalculateAllocation(string ticker, IEnumerable<Position> positions)
+        public decimal CalculateAllocation(Position toAllocate, IEnumerable<Position> portfolio)
         {
-            var foundTickers = new HashSet<string>();
-            Position matchingPosition = null;
-            decimal totalValue = 0;
-            foreach (var position in positions)
+            var foundInList = false;
+            decimal sum = 0;
+            foreach (var position in portfolio)
             {
-                if (!foundTickers.Add(position.Ticker))
-                {
-                    const string errorMessage =
-                        "Cannot calculate allocation when multiple positions exist with same ticker!";
-                    throw new ArgumentException(errorMessage, nameof(positions));
-                }
-                if (position.Ticker == ticker)
-                {
-                    matchingPosition = position;
-                }
-                totalValue += position.Value;
+                if (!foundInList && position == toAllocate) foundInList = true;
+                sum += position.Value;
             }
-            return matchingPosition == null ? 0 : matchingPosition.Value/totalValue;
+            if (!foundInList)
+                throw new ArgumentException("Cannot calculate allocation for position not listed in the portfolio!",
+                    nameof(toAllocate));
+            return toAllocate.Value/sum;
         }
 
-        public IDictionary<string, decimal> CalculateAllocations(IReadOnlyList<Position> positions)
+        public IDictionary<Position, decimal> CalculateAllocations(IReadOnlyList<Position> positions)
         {
             var totalValue = positions.Sum(position => position.Value);
 
-            return positions.ToDictionary(position => position.Ticker, position => position.Value/totalValue);
+            return positions.ToDictionary(position => position, position => position.Value/totalValue);
         }
     }
 }

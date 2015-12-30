@@ -27,8 +27,8 @@ namespace Sonneville.Investing.Test.Trading
         [Test]
         public void ShouldReturnAllocatedPercentage()
         {
-            Assert.AreEqual(0.8, _calculator.CalculateAllocation("ticker1", _positions));
-            Assert.AreEqual(0.2, _calculator.CalculateAllocation("ticker2", _positions));
+            Assert.AreEqual(0.8, _calculator.CalculateAllocation(_positions[0], _positions));
+            Assert.AreEqual(0.2, _calculator.CalculateAllocation(_positions[1], _positions));
         }
 
         [Test]
@@ -37,18 +37,12 @@ namespace Sonneville.Investing.Test.Trading
             var allocationsByTicker = _calculator.CalculateAllocations(_positions);
 
             Assert.AreEqual(2, allocationsByTicker.Count());
-            Assert.AreEqual(0.8, allocationsByTicker["ticker1"]);
-            Assert.AreEqual(0.2, allocationsByTicker["ticker2"]);
+            Assert.AreEqual(0.8, allocationsByTicker[_positions[0]]);
+            Assert.AreEqual(0.2, allocationsByTicker[_positions[1]]);
         }
 
         [Test]
-        public void ShouldReturnZeroForUnknownTicker()
-        {
-            Assert.AreEqual(0, _calculator.CalculateAllocation("ticker3", _positions));
-        }
-
-        [Test]
-        public void ShouldThrowWhenPassedMultiplePositionsWithSameTicker()
+        public void ShouldThrowIfPositionNotInList()
         {
             var positions = new List<Position>
             {
@@ -57,8 +51,8 @@ namespace Sonneville.Investing.Test.Trading
                 new Position {Ticker = "ticker2", PerSharePrice = 10, Shares = 25},
             };
 
-            Assert.Throws<ArgumentException>(() => _calculator.CalculateAllocation("ticker1", positions));
-            Assert.Throws<ArgumentException>(() => _calculator.CalculateAllocation("ticker2", positions));
+            var position = new Position {Ticker = "ticker1", PerSharePrice = 4, Shares = 200};
+            Assert.Throws<ArgumentException>(() => _calculator.CalculateAllocation(position, positions));
         }
     }
 }
