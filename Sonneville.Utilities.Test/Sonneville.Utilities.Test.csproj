@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="IsolatedStorageConfigurationProviderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SleepUtilTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Sonneville.Utilities\Sonneville.Utilities.csproj">
