@@ -65,5 +65,24 @@ namespace Sonneville.Investing.Test.Accounting.Securities
             CollectionAssert.Contains(tickers, "ticker2");
             CollectionAssert.Contains(tickers, "ticker3");
         }
+
+        [Test]
+        public void ShouldReturnSharesByTicker()
+        {
+            var shareTransactions = new List<IShareTransaction>
+            {
+                new Buy(DateTime.Today, "ticker1", 1, 2, 3),
+                new Buy(DateTime.Today, "ticker2", 4, 5, 6),
+                new Buy(DateTime.Today, "ticker3", 4, 1, 1),
+                new Sell(DateTime.Today, "ticker1", 1, 3, 3),
+                new Sell(DateTime.Today, "ticker3", 2, 3, 6),
+            };
+
+            var sharesByTicker = _calculator.CountHeldShares(shareTransactions);
+
+            Assert.AreEqual(4, sharesByTicker["ticker2"]);
+            Assert.AreEqual(2, sharesByTicker["ticker3"]);
+            Assert.AreEqual(2, sharesByTicker.Count());
+        }
     }
 }
