@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Sonneville.Investing
+namespace Sonneville.Investing.Trading
 {
     public interface ISecuritiesAllocation : IEnumerable<KeyValuePair<string, decimal>>
     {

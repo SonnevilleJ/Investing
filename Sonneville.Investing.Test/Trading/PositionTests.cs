@@ -1,7 +1,8 @@
 ﻿using System;
 using NUnit.Framework;
+using Sonneville.Investing.Trading;
 
-namespace Sonneville.Investing.Test
+namespace Sonneville.Investing.Test.Trading
 {
     [TestFixture]
     public class PositionTests

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Sonneville.Investing
+namespace Sonneville.Investing.Trading
 {
     public class Position
     {

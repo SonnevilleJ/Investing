@@ -2,6 +2,7 @@
 using System.Linq;
 using Sonneville.Investing.Accounting.Securities;
 using Sonneville.Investing.Accounting.Securities.Transactions;
+using Sonneville.Investing.Trading;
 
 namespace Sonneville.Investing.Accounting
 {
