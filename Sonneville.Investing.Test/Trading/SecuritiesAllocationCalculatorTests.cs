@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using Sonneville.Investing.Trading;
 
@@ -24,10 +25,20 @@ namespace Sonneville.Investing.Test.Trading
         }
 
         [Test]
-        public void ShouldReturnAmountSpecified()
+        public void ShouldReturnAllocatedPercentage()
         {
             Assert.AreEqual(0.8, _calculator.CalculateAllocation("ticker1", _positions));
             Assert.AreEqual(0.2, _calculator.CalculateAllocation("ticker2", _positions));
+        }
+
+        [Test]
+        public void ShouldReturnAllocationByTicker()
+        {
+            var allocationsByTicker = _calculator.CalculateAllocations(_positions);
+
+            Assert.AreEqual(2, allocationsByTicker.Count());
+            Assert.AreEqual(0.8, allocationsByTicker["ticker1"]);
+            Assert.AreEqual(0.2, allocationsByTicker["ticker2"]);
         }
 
         [Test]
