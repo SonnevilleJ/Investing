@@ -5,9 +5,9 @@ using Sonneville.Investing.Accounting.Securities.Transactions;
 
 namespace Sonneville.Investing.Accounting.ShareStrategies
 {
-    public class WithdrawFundsBeforeBuyingStrategy : IShareTransactionStrategy<Buy>
+    public class WithdrawFundsBeforeBuyingStrategy : IShareTransactionStrategy<IBuy>
     {
-        public void ProcessTransaction(IShareAccount shareAccount, Buy buy)
+        public void ProcessTransaction(IShareAccount shareAccount, IBuy buy)
         {
             shareAccount.Withdraw(new Withdrawal(DateTime.Now, buy.Amount,
                 $"Automatic withdrawal of {buy.Amount:C} for buying {buy.Ticker}"));

@@ -14,11 +14,11 @@ namespace Sonneville.Investing.Test.Accounting.Securities
     [TestFixture]
     public class ShareAccountTests
     {
-        private ShareAccount _shareAccount;
+        private IShareAccount _shareAccount;
 
         private Mock<ICashAccount> _cashAccountMock;
 
-        private Mock<IShareTransactionStrategy<Buy>> _buyStrategyMock;
+        private Mock<IShareTransactionStrategy<IBuy>> _buyStrategyMock;
 
         private Mock<IShareTransactionStrategy<ISell>> _sellStrategyMock;
 
@@ -27,7 +27,7 @@ namespace Sonneville.Investing.Test.Accounting.Securities
         {
             _cashAccountMock = new Mock<ICashAccount>();
 
-            _buyStrategyMock = new Mock<IShareTransactionStrategy<Buy>>();
+            _buyStrategyMock = new Mock<IShareTransactionStrategy<IBuy>>();
 
             _sellStrategyMock = new Mock<IShareTransactionStrategy<ISell>>();
 

@@ -12,7 +12,7 @@ namespace Sonneville.Investing.Test.Accounting.Cash
     [TestFixture]
     public class CashAccountTests
     {
-        private CashAccount _cashAccount;
+        private ICashAccount _cashAccount;
 
         private Mock<ICashTransactionStrategy<IDeposit>> _depositValidatorMock;
 

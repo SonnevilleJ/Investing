@@ -12,12 +12,12 @@ namespace Sonneville.Investing.Accounting.Securities
 
         private readonly List<IShareTransaction> _shareTransactions;
 
-        private readonly IShareTransactionStrategy<Buy> _buyStrategy;
+        private readonly IShareTransactionStrategy<IBuy> _buyStrategy;
 
         private readonly IShareTransactionStrategy<ISell> _sellStrategy;
 
         public ShareAccount(ICashAccount cashAccount,
-            IShareTransactionStrategy<Buy> buyStrategy,
+            IShareTransactionStrategy<IBuy> buyStrategy,
             IShareTransactionStrategy<ISell> sellStrategy)
         {
             _shareTransactions = new List<IShareTransaction>();
@@ -42,7 +42,7 @@ namespace Sonneville.Investing.Accounting.Securities
             return this;
         }
 
-        public IShareAccount Buy(Buy buy)
+        public IShareAccount Buy(IBuy buy)
         {
             _buyStrategy.ProcessTransaction(this, buy);
             _shareTransactions.Add(buy);

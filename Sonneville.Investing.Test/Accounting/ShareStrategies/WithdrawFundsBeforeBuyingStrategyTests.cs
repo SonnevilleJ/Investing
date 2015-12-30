@@ -32,7 +32,7 @@ namespace Sonneville.Investing.Test.Accounting.ShareStrategies
             shareAccountMock.Verify(cashAccount => cashAccount.Withdraw(It.IsAny<IWithdrawal>()));
         }
 
-        private static void VerifyBuyCreatedForWithdrawal(Buy buy, IWithdrawal withdrawal)
+        private static void VerifyBuyCreatedForWithdrawal(IBuy buy, IWithdrawal withdrawal)
         {
             Assert.AreEqual(DateTime.Today, withdrawal.SettlementDate.Date);
             Assert.AreEqual(-buy.Amount, withdrawal.Amount);

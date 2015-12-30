@@ -8,7 +8,7 @@ namespace Sonneville.Investing.Accounting.Securities
     {
         IReadOnlyCollection<IShareTransaction> ShareTransactions { get; }
 
-        IShareAccount Buy(Buy buy);
+        IShareAccount Buy(IBuy buy);
 
         IShareAccount Sell(ISell sell);
     }
