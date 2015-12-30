@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 
 namespace Sonneville.Investing.Test
@@ -14,10 +15,10 @@ namespace Sonneville.Investing.Test
         {
             _ratesByTicker = new Dictionary<string, double>
             {
-                {"ticker1", 0.8 },
-                {"ticker2", 0.2 },
+                {"ticker1", 0.8},
+                {"ticker2", 0.2},
             };
-            _securitiesAllocation = new SecuritiesAllocation(_ratesByTicker);
+            _securitiesAllocation = SecuritiesAllocation.FromDictionary(_ratesByTicker);
         }
 
         [Test]
@@ -33,6 +34,35 @@ namespace Sonneville.Investing.Test
         public void ShouldReturnZeroForUnknownTicker()
         {
             Assert.AreEqual(0, _securitiesAllocation.GetAmount("ticker3"));
+        }
+
+        [Test]
+        public void ShouldEnsureOneHundredPercentAllocation()
+        {
+            var underAllocated = new Dictionary<string, double>
+            {
+                {"ticker1", 0.2},
+                {"ticker2", 0.2},
+            };
+            Assert.Throws<InvalidOperationException>(() => SecuritiesAllocation.FromDictionary(underAllocated));
+
+            var overAllocated = new Dictionary<string, double>
+            {
+                {"ticker1", 0.9},
+                {"ticker2", 0.2},
+            };
+            Assert.Throws<InvalidOperationException>(() => SecuritiesAllocation.FromDictionary(overAllocated));
+        }
+
+        [Test]
+        public void ShouldEnsureOnlyPositiveAllocations()
+        {
+            var allocated = new Dictionary<string, double>
+            {
+                {"ticker1", -0.2},
+                {"ticker2", 1.2},
+            };
+            Assert.Throws<InvalidOperationException>(() => SecuritiesAllocation.FromDictionary(allocated));
         }
 
         [Test]
