@@ -2,8 +2,9 @@
 using NUnit.Framework;
 using OpenQA.Selenium;
 using Sonneville.FidelityWebDriver.Configuration;
+using Sonneville.Investing.PortfolioManager.AppStartup;
 
-namespace Sonneville.Investing.PortfolioManager.Test
+namespace Sonneville.Investing.PortfolioManager.Test.AppStartup
 {
     [TestFixture]
     public class KernelBuilderTests

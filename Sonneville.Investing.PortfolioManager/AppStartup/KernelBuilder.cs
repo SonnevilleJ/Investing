@@ -1,6 +1,6 @@
 ﻿using Ninject;
 
-namespace Sonneville.Investing.PortfolioManager
+namespace Sonneville.Investing.PortfolioManager.AppStartup
 {
     public class KernelBuilder
     {

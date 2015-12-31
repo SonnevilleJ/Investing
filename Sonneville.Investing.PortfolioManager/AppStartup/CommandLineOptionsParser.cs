@@ -3,7 +3,7 @@ using System.IO;
 using NDesk.Options;
 using Sonneville.FidelityWebDriver.Configuration;
 
-namespace Sonneville.Investing.PortfolioManager
+namespace Sonneville.Investing.PortfolioManager.AppStartup
 {
     public interface ICommandLineOptionsParser
     {

@@ -22,7 +22,7 @@ namespace Sonneville.Investing.Accounting.Securities
                 .Distinct();
         }
 
-        public IDictionary<string, decimal> CountHeldShares(IReadOnlyList<IShareTransaction> shareTransactions)
+        public IDictionary<string, decimal> CountHeldShares(IEnumerable<IShareTransaction> shareTransactions)
         {
             return shareTransactions.GroupBy(transaction => transaction.Ticker)
                 .ToDictionary(grouping => grouping.Key, grouping => grouping.Sum(transaction => transaction.Shares))

@@ -34,7 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Sonneville.Investing.PortfolioManager.Bootstrapper</StartupObject>
+    <StartupObject>Sonneville.Investing.PortfolioManager.AppStartup.Bootstrapper</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NDesk.Options, Version=0.2.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -72,13 +72,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountRebalancer.cs" />
-    <Compile Include="AppModule.cs" />
-    <Compile Include="Bootstrapper.cs" />
-    <Compile Include="App.cs" />
+    <Compile Include="AppStartup\App.cs" />
+    <Compile Include="AppStartup\AppModule.cs" />
+    <Compile Include="AppStartup\Bootstrapper.cs" />
+    <Compile Include="AppStartup\CommandLineOptionsParser.cs" />
+    <Compile Include="AppStartup\KernelBuilder.cs" />
     <Compile Include="FidelityWebDriver\AccountMapper.cs" />
     <Compile Include="FidelityWebDriver\PositionMapper.cs" />
-    <Compile Include="KernelBuilder.cs" />
-    <Compile Include="CommandLineOptionsParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

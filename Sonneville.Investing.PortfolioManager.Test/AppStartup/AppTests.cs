@@ -1,10 +1,10 @@
 ﻿using System;
-using System.IO;
 using Moq;
 using NUnit.Framework;
 using Sonneville.FidelityWebDriver.Configuration;
+using Sonneville.Investing.PortfolioManager.AppStartup;
 
-namespace Sonneville.Investing.PortfolioManager.Test
+namespace Sonneville.Investing.PortfolioManager.Test.AppStartup
 {
     [TestFixture]
     public class AppTests

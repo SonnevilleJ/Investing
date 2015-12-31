@@ -78,12 +78,12 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AccountRebalancerTests.cs" />
-    <Compile Include="AppTests.cs" />
-    <Compile Include="BootstrapperTests.cs" />
+    <Compile Include="AppStartup\AppTests.cs" />
+    <Compile Include="AppStartup\BootstrapperTests.cs" />
+    <Compile Include="AppStartup\CommandLineOptionsParserTests.cs" />
+    <Compile Include="AppStartup\KernelBuilderTests.cs" />
     <Compile Include="FidelityWebDriver\AccountMapperTests.cs" />
     <Compile Include="FidelityWebDriver\PositionMapperTests.cs" />
-    <Compile Include="KernelBuilderTests.cs" />
-    <Compile Include="CommandLineOptionsParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
