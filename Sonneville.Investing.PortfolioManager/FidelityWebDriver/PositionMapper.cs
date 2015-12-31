@@ -21,6 +21,8 @@ namespace Sonneville.Investing.PortfolioManager.FidelityWebDriver
             {
                 DateTime = DateTime.Today,
                 Ticker = extractedPosition.Ticker,
+                IsCore = extractedPosition.IsCore,
+                IsMargin = extractedPosition.IsMargin,
                 Shares = extractedPosition.Quantity,
                 PerSharePrice = extractedPosition.LastPrice,
             };

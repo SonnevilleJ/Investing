@@ -35,18 +35,21 @@ namespace Sonneville.Investing.PortfolioManager.Test.FidelityWebDriver
                 new WebDriverPosition
                 {
                     Ticker = "a",
+                    IsCore = true,
                     Quantity = 10,
                     LastPrice = 15,
                 },
                 new WebDriverPosition
                 {
                     Ticker = "b",
+                    IsMargin = true,
                     Quantity = 20,
                     LastPrice = 17,
                 },
                 new WebDriverPosition
                 {
                     Ticker = "c",
+                    IsMargin = false,
                     Quantity = 15,
                     LastPrice = 12,
                 },
@@ -63,6 +66,8 @@ namespace Sonneville.Investing.PortfolioManager.Test.FidelityWebDriver
         private static void AssertMapping(IPosition unmappedPosition, TradingPosition mappedPosition)
         {
             Assert.AreEqual(unmappedPosition.Ticker, mappedPosition.Ticker);
+            Assert.AreEqual(unmappedPosition.IsCore, mappedPosition.IsCore);
+            Assert.AreEqual(unmappedPosition.IsMargin, mappedPosition.IsMargin);
             Assert.AreEqual(DateTime.Today, mappedPosition.DateTime);
             Assert.AreEqual(unmappedPosition.Quantity, mappedPosition.Shares);
             Assert.AreEqual(unmappedPosition.LastPrice, mappedPosition.PerSharePrice);
