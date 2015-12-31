@@ -25,14 +25,14 @@ namespace Sonneville.Investing.Test.Accounting.ShareStrategies
             var buy = new Buy(DateTime.Today, "DE", 1, 50m, 7.95m, "my first share!");
             var shareAccountMock = new Mock<IShareAccount>();
             shareAccountMock.Setup(cashAccount => cashAccount.Withdraw(It.IsAny<IWithdrawal>()))
-                .Callback<IWithdrawal>(withdrawal => VerifyBuyCreatedForWithdrawal(buy, withdrawal));
+                .Callback<IWithdrawal>(withdrawal => VerifyWithdrawlCreatedForBuy(buy, withdrawal));
 
             _strategy.ProcessTransaction(shareAccountMock.Object, buy);
 
             shareAccountMock.Verify(cashAccount => cashAccount.Withdraw(It.IsAny<IWithdrawal>()));
         }
 
-        private static void VerifyBuyCreatedForWithdrawal(IBuy buy, IWithdrawal withdrawal)
+        private static void VerifyWithdrawlCreatedForBuy(IBuy buy, IWithdrawal withdrawal)
         {
             Assert.AreEqual(DateTime.Today, withdrawal.SettlementDate.Date);
             Assert.AreEqual(-buy.Amount, withdrawal.Amount);
