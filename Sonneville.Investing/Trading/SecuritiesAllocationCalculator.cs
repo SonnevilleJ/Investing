@@ -9,6 +9,11 @@ namespace Sonneville.Investing.Trading
         decimal CalculateAllocation(Position toAllocate, IEnumerable<Position> portfolio);
 
         IDictionary<Position, decimal> CalculateAllocations(IReadOnlyList<Position> positions);
+
+        decimal CalculateAllocation(Position toAllocate, IEnumerable<TradingAccount> tradingAccounts);
+
+        IDictionary<TradingAccount, IDictionary<Position, decimal>> CalculateAllocation(
+            IReadOnlyList<TradingAccount> tradingAccounts);
     }
 
     public class SecuritiesAllocationCalculator : ISecuritiesAllocationCalculator
@@ -23,8 +28,10 @@ namespace Sonneville.Investing.Trading
                 sum += position.Value;
             }
             if (!foundInList)
-                throw new ArgumentException("Cannot calculate allocation for position not listed in the portfolio!",
-                    nameof(toAllocate));
+            {
+                const string message = "Cannot calculate allocation for position not listed in the portfolio!";
+                throw new KeyNotFoundException(message);
+            }
             return toAllocate.Value/sum;
         }
 
@@ -33,6 +40,20 @@ namespace Sonneville.Investing.Trading
             var totalValue = positions.Sum(position => position.Value);
 
             return positions.ToDictionary(position => position, position => position.Value/totalValue);
+        }
+
+        public decimal CalculateAllocation(Position toAllocate, IEnumerable<TradingAccount> tradingAccounts)
+        {
+            return CalculateAllocation(toAllocate, tradingAccounts.SelectMany(account => account.Positions));
+        }
+
+        public IDictionary<TradingAccount, IDictionary<Position, decimal>> CalculateAllocation(
+            IReadOnlyList<TradingAccount> tradingAccounts)
+        {
+            var totalValue = tradingAccounts.Sum(account => account.Positions.Sum(position => position.Value));
+            return tradingAccounts.ToDictionary<TradingAccount, TradingAccount, IDictionary<Position, decimal>>(
+                account => account,
+                account => account.Positions.ToDictionary(position => position, position => position.Value/totalValue));
         }
     }
 }

@@ -8,6 +8,6 @@ namespace Sonneville.Investing.Trading
 
         public decimal PendingFunds { get; set; }
 
-        public IEnumerable<Position> Positions { get; set; }
+        public IList<Position> Positions { get; set; }
     }
 }

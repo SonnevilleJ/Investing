@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using Sonneville.Investing.Trading;
@@ -9,36 +8,84 @@ namespace Sonneville.Investing.Test.Trading
     [TestFixture]
     public class SecuritiesAllocationCalculatorTests
     {
-        private List<Position> _positions;
-        private SecuritiesAllocationCalculator _calculator;
-
-        [SetUp]
-        public void Setup()
+        [Test]
+        public void ShouldReturnAllocationOfAllPositionsForOnePosition()
         {
-            _positions = new List<Position>
+            var positions = new List<Position>
             {
                 new Position {Ticker = "ticker1", PerSharePrice = 4, Shares = 200},
                 new Position {Ticker = "ticker2", PerSharePrice = 5, Shares = 40},
             };
 
-            _calculator = new SecuritiesAllocationCalculator();
+            Assert.AreEqual(0.8, new SecuritiesAllocationCalculator().CalculateAllocation(positions[0], positions));
+            Assert.AreEqual(0.2, new SecuritiesAllocationCalculator().CalculateAllocation(positions[1], positions));
         }
 
         [Test]
-        public void ShouldReturnAllocatedPercentage()
+        public void ShouldReturnAllocationOfAllPositionsForEachPosition()
         {
-            Assert.AreEqual(0.8, _calculator.CalculateAllocation(_positions[0], _positions));
-            Assert.AreEqual(0.2, _calculator.CalculateAllocation(_positions[1], _positions));
+            var positions = new List<Position>
+            {
+                new Position {Ticker = "ticker1", PerSharePrice = 4, Shares = 200},
+                new Position {Ticker = "ticker2", PerSharePrice = 5, Shares = 40},
+            };
+
+            var allocationsByPosition = new SecuritiesAllocationCalculator().CalculateAllocations(positions);
+
+            Assert.AreEqual(2, allocationsByPosition.Count());
+            Assert.AreEqual(0.8, allocationsByPosition[positions[0]]);
+            Assert.AreEqual(0.2, allocationsByPosition[positions[1]]);
         }
 
         [Test]
-        public void ShouldReturnAllocationByTicker()
+        public void ShouldReturnAllocationOfAllAccountsForOnePosition()
         {
-            var allocationsByTicker = _calculator.CalculateAllocations(_positions);
+            var accounts = new List<TradingAccount>
+            {
+                CreateTradingAccount("account1", new List<Position>
+                {
+                    new Position {Ticker = "ticker1", PerSharePrice = 4, Shares = 200},
+                    new Position {Ticker = "ticker2", PerSharePrice = 5, Shares = 40},
+                }),
+                CreateTradingAccount("account2", new List<Position>
+                {
+                    new Position {Ticker = "ticker1", PerSharePrice = 4, Shares = 200},
+                    new Position {Ticker = "ticker2", PerSharePrice = 5, Shares = 40},
+                }),
+            };
 
-            Assert.AreEqual(2, allocationsByTicker.Count());
-            Assert.AreEqual(0.8, allocationsByTicker[_positions[0]]);
-            Assert.AreEqual(0.2, allocationsByTicker[_positions[1]]);
+            var allocation = new SecuritiesAllocationCalculator().CalculateAllocation(accounts[0].Positions[0], accounts);
+
+            Assert.AreEqual(0.4, allocation);
+        }
+
+        [Test]
+        public void ShouldReturnAllocationOfAllAccountsForEachPosition()
+        {
+            var accounts = new List<TradingAccount>
+            {
+                CreateTradingAccount("account1", new List<Position>
+                {
+                    new Position {Ticker = "ticker1", PerSharePrice = 4, Shares = 200},
+                    new Position {Ticker = "ticker2", PerSharePrice = 5, Shares = 40},
+                }),
+                CreateTradingAccount("account2", new List<Position>
+                {
+                    new Position {Ticker = "ticker1", PerSharePrice = 7, Shares = 150},
+                    new Position {Ticker = "ticker2", PerSharePrice = 10, Shares = 30},
+                }),
+            };
+
+            var allocation = new SecuritiesAllocationCalculator().CalculateAllocation(accounts);
+
+            var totalValue = accounts.Sum(account => account.Positions.Sum(position => position.Value));
+            foreach (var account in accounts)
+            {
+                foreach (var position in account.Positions)
+                {
+                    Assert.AreEqual(position.Value/totalValue, allocation[account][position]);
+                }
+            }
         }
 
         [Test]
@@ -52,7 +99,17 @@ namespace Sonneville.Investing.Test.Trading
             };
 
             var position = new Position {Ticker = "ticker1", PerSharePrice = 4, Shares = 200};
-            Assert.Throws<ArgumentException>(() => _calculator.CalculateAllocation(position, positions));
+            var calculator = new SecuritiesAllocationCalculator();
+            Assert.Throws<KeyNotFoundException>(() => calculator.CalculateAllocation(position, positions));
+        }
+
+        private static TradingAccount CreateTradingAccount(string accountId, IList<Position> positions)
+        {
+            return new TradingAccount
+            {
+                AccountId = accountId,
+                Positions = positions
+            };
         }
     }
 }

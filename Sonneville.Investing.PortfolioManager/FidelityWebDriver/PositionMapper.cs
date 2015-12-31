@@ -10,7 +10,7 @@ namespace Sonneville.Investing.PortfolioManager.FidelityWebDriver
     {
         Position Map(IPosition extractedPosition);
 
-        IEnumerable<Position> Map(IEnumerable<IPosition> extractedPosition);
+        IList<Position> Map(IEnumerable<IPosition> extractedPosition);
     }
 
     public class PositionMapper : IPositionMapper
@@ -28,9 +28,9 @@ namespace Sonneville.Investing.PortfolioManager.FidelityWebDriver
             };
         }
 
-        public IEnumerable<Position> Map(IEnumerable<IPosition> extractedPosition)
+        public IList<Position> Map(IEnumerable<IPosition> extractedPosition)
         {
-            return extractedPosition.Select(Map);
+            return extractedPosition.Select(Map).ToList();
         }
     }
 }
