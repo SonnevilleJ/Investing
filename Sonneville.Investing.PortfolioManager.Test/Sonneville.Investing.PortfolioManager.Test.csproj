@@ -80,6 +80,7 @@
     <Compile Include="AccountRebalancerTests.cs" />
     <Compile Include="AppTests.cs" />
     <Compile Include="BootstrapperTests.cs" />
+    <Compile Include="FidelityWebDriver\AccountMapperTests.cs" />
     <Compile Include="FidelityWebDriver\PositionMapperTests.cs" />
     <Compile Include="KernelBuilderTests.cs" />
     <Compile Include="CommandLineOptionsParserTests.cs" />

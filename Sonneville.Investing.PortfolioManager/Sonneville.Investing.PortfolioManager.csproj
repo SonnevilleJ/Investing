@@ -75,6 +75,7 @@
     <Compile Include="AppModule.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="App.cs" />
+    <Compile Include="FidelityWebDriver\AccountMapper.cs" />
     <Compile Include="FidelityWebDriver\PositionMapper.cs" />
     <Compile Include="KernelBuilder.cs" />
     <Compile Include="CommandLineOptionsParser.cs" />

@@ -1,11 +1,21 @@
 ﻿using System;
-using Sonneville.Investing.Trading;
+using System.Collections.Generic;
+using System.Linq;
+using Sonneville.FidelityWebDriver.Data;
+using Position = Sonneville.Investing.Trading.Position;
 
 namespace Sonneville.Investing.PortfolioManager.FidelityWebDriver
 {
-    public class PositionMapper
+    public interface IPositionMapper
     {
-        public Position Map(Sonneville.FidelityWebDriver.Data.IPosition extractedPosition)
+        Position Map(IPosition extractedPosition);
+
+        IEnumerable<Position> Map(IEnumerable<IPosition> extractedPosition);
+    }
+
+    public class PositionMapper : IPositionMapper
+    {
+        public Position Map(IPosition extractedPosition)
         {
             return new Position
             {
@@ -14,6 +24,11 @@ namespace Sonneville.Investing.PortfolioManager.FidelityWebDriver
                 Shares = extractedPosition.Quantity,
                 PerSharePrice = extractedPosition.LastPrice,
             };
+        }
+
+        public IEnumerable<Position> Map(IEnumerable<IPosition> extractedPosition)
+        {
+            return extractedPosition.Select(Map);
         }
     }
 }
