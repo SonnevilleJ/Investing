@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Sonneville.FidelityWebDriver.Positions;
 using Sonneville.Investing.PortfolioManager.FidelityWebDriver;
 using Sonneville.Investing.Trading;
@@ -14,24 +13,22 @@ namespace Sonneville.Investing.PortfolioManager
     public class AccountRebalancer : IAccountRebalancer
     {
         private readonly IPositionsManager _positionsManager;
+        private readonly IAccountMapper _accountMapper;
         private readonly ISecuritiesAllocationCalculator _securitiesAllocationCalculator;
-        private readonly PositionMapper _positionMapper;
 
-        public AccountRebalancer(IPositionsManager positionsManager, ISecuritiesAllocationCalculator securitiesAllocationCalculator)
+        public AccountRebalancer(IPositionsManager positionsManager, IAccountMapper accountMapper,
+            ISecuritiesAllocationCalculator securitiesAllocationCalculator)
         {
             _positionsManager = positionsManager;
+            _accountMapper = accountMapper;
             _securitiesAllocationCalculator = securitiesAllocationCalculator;
-            _positionMapper = new PositionMapper();
         }
 
         public void RebalanceAccounts()
         {
-            var positions = _positionsManager.GetAccountDetails()
-                .SelectMany(account => account.Positions)
-                .Select(position => _positionMapper.Map(position))
-                .ToList();
+            var accounts = _accountMapper.Map(_positionsManager.GetAccountDetails());
 
-            var allocations = _securitiesAllocationCalculator.CalculateAllocations(positions);
+            var allocations = _securitiesAllocationCalculator.CalculateAllocations(accounts);
         }
 
         public void Dispose()

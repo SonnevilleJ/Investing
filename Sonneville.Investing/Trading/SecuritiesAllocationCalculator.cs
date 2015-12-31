@@ -12,7 +12,7 @@ namespace Sonneville.Investing.Trading
 
         decimal CalculateAllocation(Position toAllocate, IEnumerable<TradingAccount> tradingAccounts);
 
-        IDictionary<TradingAccount, IDictionary<Position, decimal>> CalculateAllocation(
+        IDictionary<TradingAccount, IDictionary<Position, decimal>> CalculateAllocations(
             IReadOnlyList<TradingAccount> tradingAccounts);
     }
 
@@ -47,7 +47,7 @@ namespace Sonneville.Investing.Trading
             return CalculateAllocation(toAllocate, tradingAccounts.SelectMany(account => account.Positions));
         }
 
-        public IDictionary<TradingAccount, IDictionary<Position, decimal>> CalculateAllocation(
+        public IDictionary<TradingAccount, IDictionary<Position, decimal>> CalculateAllocations(
             IReadOnlyList<TradingAccount> tradingAccounts)
         {
             var totalValue = tradingAccounts.Sum(account => account.Positions.Sum(position => position.Value));

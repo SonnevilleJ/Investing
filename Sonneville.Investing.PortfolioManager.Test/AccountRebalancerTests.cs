@@ -3,8 +3,8 @@ using Moq;
 using NUnit.Framework;
 using Sonneville.FidelityWebDriver.Data;
 using Sonneville.FidelityWebDriver.Positions;
+using Sonneville.Investing.PortfolioManager.FidelityWebDriver;
 using Sonneville.Investing.Trading;
-using Position = Sonneville.Investing.Trading.Position;
 
 namespace Sonneville.Investing.PortfolioManager.Test
 {
@@ -14,6 +14,8 @@ namespace Sonneville.Investing.PortfolioManager.Test
         private AccountRebalancer _accountRebalancer;
         private Mock<IPositionsManager> _positionsManagerMock;
         private Mock<ISecuritiesAllocationCalculator> _allocationCalculatorMock;
+        private Mock<IAccountMapper> _accountMapperMock;
+        private List<TradingAccount> _tradingAccounts;
 
         [SetUp]
         public void Setup()
@@ -29,9 +31,14 @@ namespace Sonneville.Investing.PortfolioManager.Test
             _positionsManagerMock = new Mock<IPositionsManager>();
             _positionsManagerMock.Setup(manager => manager.GetAccountDetails()).Returns(accountDetails);
 
+            _tradingAccounts = new List<TradingAccount>();
+
+            _accountMapperMock = new Mock<IAccountMapper>();
+            _accountMapperMock.Setup(mapper => mapper.Map(accountDetails)).Returns(_tradingAccounts);
+
             _allocationCalculatorMock = new Mock<ISecuritiesAllocationCalculator>();
 
-            _accountRebalancer = new AccountRebalancer(_positionsManagerMock.Object, _allocationCalculatorMock.Object);
+            _accountRebalancer = new AccountRebalancer(_positionsManagerMock.Object, _accountMapperMock.Object, _allocationCalculatorMock.Object);
         }
 
         [Test]
@@ -48,7 +55,7 @@ namespace Sonneville.Investing.PortfolioManager.Test
         {
             _accountRebalancer.RebalanceAccounts();
 
-            _allocationCalculatorMock.Verify(calculator => calculator.CalculateAllocations(It.IsAny<IReadOnlyList<Position>>()));
+            _allocationCalculatorMock.Verify(calculator => calculator.CalculateAllocations(_tradingAccounts));
         }
     }
 }
