@@ -89,7 +89,7 @@ namespace Sonneville.Investing.Test.Trading
         }
 
         [Test]
-        public void ShouldThrowIfPositionNotInList()
+        public void ShouldThrowIfPositionNotInListOfPositions()
         {
             var positions = new List<Position>
             {
@@ -101,6 +101,27 @@ namespace Sonneville.Investing.Test.Trading
             var position = new Position {Ticker = "ticker1", PerSharePrice = 4, Shares = 200};
             var calculator = new SecuritiesAllocationCalculator();
             Assert.Throws<KeyNotFoundException>(() => calculator.CalculateAllocation(position, positions));
+        }
+
+        [Test]
+        public void ShouldThrowIfPositionNotInListOfAccounts()
+        {
+            var accounts = new List<TradingAccount>
+            {
+                CreateTradingAccount("account1", new List<Position>
+                {
+                    new Position {Ticker = "ticker1", PerSharePrice = 4, Shares = 200},
+                    new Position {Ticker = "ticker2", PerSharePrice = 5, Shares = 40},
+                }),
+                CreateTradingAccount("account2", new List<Position>
+                {
+                    new Position {Ticker = "ticker1", PerSharePrice = 4, Shares = 200},
+                    new Position {Ticker = "ticker2", PerSharePrice = 5, Shares = 40},
+                }),
+            };
+
+            var calculator = new SecuritiesAllocationCalculator();
+            Assert.Throws<KeyNotFoundException>(() => calculator.CalculateAllocation(new Position(), accounts));
         }
 
         private static TradingAccount CreateTradingAccount(string accountId, IList<Position> positions)
