@@ -53,8 +53,8 @@
       <HintPath>..\packages\Sonneville.FidelityWebDriver.1.0.125.0\lib\net461\Sonneville.FidelityWebDriver.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Sonneville.Utilities, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Sonneville.Utilities.1.0.3.0\lib\net452\Sonneville.Utilities.dll</HintPath>
+    <Reference Include="Sonneville.Utilities, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sonneville.Utilities.1.0.6.0\lib\net452\Sonneville.Utilities.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -72,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountRebalancer.cs" />
+    <Compile Include="AllocationDifferencer.cs" />
     <Compile Include="AppStartup\App.cs" />
     <Compile Include="AppStartup\AppModule.cs" />
     <Compile Include="AppStartup\Bootstrapper.cs" />
