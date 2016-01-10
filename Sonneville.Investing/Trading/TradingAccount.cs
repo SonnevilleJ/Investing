@@ -9,5 +9,7 @@ namespace Sonneville.Investing.Trading
         public decimal PendingFunds { get; set; }
 
         public IList<Position> Positions { get; set; }
+
+        public AccountType AccountType { get; set; }
     }
 }

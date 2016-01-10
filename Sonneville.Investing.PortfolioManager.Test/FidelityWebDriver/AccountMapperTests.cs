@@ -4,6 +4,7 @@ using Moq;
 using NUnit.Framework;
 using Sonneville.FidelityWebDriver.Data;
 using Sonneville.Investing.PortfolioManager.FidelityWebDriver;
+using FidelityAccountType = Sonneville.FidelityWebDriver.Data.AccountType;
 using Position = Sonneville.Investing.Trading.Position;
 
 namespace Sonneville.Investing.PortfolioManager.Test.FidelityWebDriver
@@ -25,7 +26,7 @@ namespace Sonneville.Investing.PortfolioManager.Test.FidelityWebDriver
         [Test]
         public void ShouldMapAccount()
         {
-            var accountDetails = CreateAccountDetails("57", 100);
+            var accountDetails = CreateAccountDetails("57", 100, FidelityAccountType.RetirementAccount);
             var mappedPositions = new List<Position>();
             _positionMapperMock.Setup(mapper => mapper.Map(accountDetails.Positions)).Returns(mappedPositions);
 
@@ -33,6 +34,7 @@ namespace Sonneville.Investing.PortfolioManager.Test.FidelityWebDriver
 
             Assert.AreEqual(accountDetails.AccountNumber, mappedAccount.AccountId);
             Assert.AreEqual(accountDetails.PendingActivity, mappedAccount.PendingFunds);
+            Assert.AreEqual(Trading.AccountType.RetirementAccount, mappedAccount.AccountType);
             Assert.AreSame(mappedPositions, mappedAccount.Positions);
         }
 
@@ -41,9 +43,9 @@ namespace Sonneville.Investing.PortfolioManager.Test.FidelityWebDriver
         {
             var accountDetails = new List<IAccountDetails>
             {
-                CreateAccountDetails("57", 100),
-                CreateAccountDetails("58", 200),
-                CreateAccountDetails("59", 300),
+                CreateAccountDetails("57", 100, FidelityAccountType.RetirementAccount),
+                CreateAccountDetails("58", 200, FidelityAccountType.HealthSavingsAccount),
+                CreateAccountDetails("59", 300, FidelityAccountType.InvestmentAccount),
             };
 
             var positionMappings = SetupPositionMappings(accountDetails);
@@ -75,7 +77,7 @@ namespace Sonneville.Investing.PortfolioManager.Test.FidelityWebDriver
             return mappedPositions;
         }
 
-        private static AccountDetails CreateAccountDetails(string accountNumber, decimal pendingActivity)
+        private static AccountDetails CreateAccountDetails(string accountNumber, decimal pendingActivity, AccountType accountType)
         {
             var positions = new List<IPosition> {new Sonneville.FidelityWebDriver.Data.Position {Ticker = accountNumber}};
             return new AccountDetails
@@ -83,6 +85,7 @@ namespace Sonneville.Investing.PortfolioManager.Test.FidelityWebDriver
                 AccountNumber = accountNumber,
                 PendingActivity = pendingActivity,
                 Positions = positions,
+                AccountType = accountType,
             };
         }
     }

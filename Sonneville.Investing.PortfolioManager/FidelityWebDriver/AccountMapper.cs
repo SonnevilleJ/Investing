@@ -15,10 +15,12 @@ namespace Sonneville.Investing.PortfolioManager.FidelityWebDriver
     public class AccountMapper : IAccountMapper
     {
         private readonly IPositionMapper _positionMapper;
+        private readonly AccountTypeMapper _accountTypeMapper;
 
         public AccountMapper(IPositionMapper positionMapper)
         {
             _positionMapper = positionMapper;
+            _accountTypeMapper = new AccountTypeMapper();
         }
 
         public TradingAccount Map(IAccountDetails accountDetails)
@@ -28,6 +30,7 @@ namespace Sonneville.Investing.PortfolioManager.FidelityWebDriver
                 AccountId = accountDetails.AccountNumber,
                 PendingFunds = accountDetails.PendingActivity,
                 Positions = _positionMapper.Map(accountDetails.Positions),
+                AccountType = _accountTypeMapper.Map(accountDetails.AccountType),
             };
         }
 
