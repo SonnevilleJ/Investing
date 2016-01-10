@@ -144,7 +144,7 @@ namespace Sonneville.Investing.PortfolioManager.Test.AppStartup
             Assert.IsNull(_fidelityConfiguration.Password);
 
             _portfolioManagerConfiguration.Read();
-            Assert.IsEmpty(_portfolioManagerConfiguration.InScopeAccountTypes);
+            CollectionAssert.IsEmpty(_portfolioManagerConfiguration.InScopeAccountTypes);
         }
 
         private static string ReadConsoleOutputFrom(Stream memoryStream)
