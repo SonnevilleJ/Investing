@@ -76,6 +76,7 @@
     <Compile Include="AppStartup\Bootstrapper.cs" />
     <Compile Include="AppStartup\CommandLineOptionsParser.cs" />
     <Compile Include="AppStartup\KernelBuilder.cs" />
+    <Compile Include="Configuration\PortfolioManagerConfiguration.cs" />
     <Compile Include="FidelityWebDriver\AccountMapper.cs" />
     <Compile Include="FidelityWebDriver\AccountTypeMapper.cs" />
     <Compile Include="FidelityWebDriver\PositionMapper.cs" />

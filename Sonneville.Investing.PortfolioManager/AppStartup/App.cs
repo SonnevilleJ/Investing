@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Sonneville.FidelityWebDriver.Configuration;
 
 namespace Sonneville.Investing.PortfolioManager.AppStartup
 {
@@ -11,21 +10,19 @@ namespace Sonneville.Investing.PortfolioManager.AppStartup
 
     public class App : IApp
     {
-        private readonly FidelityConfiguration _fidelityConfiguration;
         private readonly IAccountRebalancer _accountRebalancer;
         private readonly ICommandLineOptionsParser _commandLineOptionsParser;
 
-        public App(FidelityConfiguration fidelityConfiguration, ICommandLineOptionsParser commandLineOptionsParser,
+        public App(ICommandLineOptionsParser commandLineOptionsParser,
             IAccountRebalancer accountRebalancer)
         {
-            _fidelityConfiguration = fidelityConfiguration;
             _accountRebalancer = accountRebalancer;
             _commandLineOptionsParser = commandLineOptionsParser;
         }
 
         public void Run(IEnumerable<string> args)
         {
-            if (!_commandLineOptionsParser.ShouldExecute(args, _fidelityConfiguration, Console.Out)) return;
+            if (!_commandLineOptionsParser.ShouldExecute(args, Console.Out)) return;
 
             _accountRebalancer.RebalanceAccounts();
         }

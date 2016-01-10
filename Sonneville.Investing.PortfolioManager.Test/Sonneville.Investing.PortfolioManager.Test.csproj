@@ -81,6 +81,7 @@
     <Compile Include="AppStartup\BootstrapperTests.cs" />
     <Compile Include="AppStartup\CommandLineOptionsParserTests.cs" />
     <Compile Include="AppStartup\KernelBuilderTests.cs" />
+    <Compile Include="Configuration\PortfolioManagerConfigurationTests.cs" />
     <Compile Include="FidelityWebDriver\AccountMapperTests.cs" />
     <Compile Include="FidelityWebDriver\AccountTypeMapperTests.cs" />
     <Compile Include="FidelityWebDriver\PositionMapperTests.cs" />

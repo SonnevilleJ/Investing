@@ -1,10 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Moq;
 using NUnit.Framework;
 using Sonneville.FidelityWebDriver.Data;
 using Sonneville.FidelityWebDriver.Positions;
+using Sonneville.Investing.PortfolioManager.Configuration;
 using Sonneville.Investing.PortfolioManager.FidelityWebDriver;
 using Sonneville.Investing.Trading;
+using AccountType = Sonneville.Investing.Trading.AccountType;
+using FidelityAccountType = Sonneville.FidelityWebDriver.Data.AccountType;
 
 namespace Sonneville.Investing.PortfolioManager.Test
 {
@@ -16,6 +21,7 @@ namespace Sonneville.Investing.PortfolioManager.Test
         private Mock<ISecuritiesAllocationCalculator> _allocationCalculatorMock;
         private Mock<IAccountMapper> _accountMapperMock;
         private List<TradingAccount> _tradingAccounts;
+        private PortfolioManagerConfiguration _portfolioManagerConfiguration;
 
         [SetUp]
         public void Setup()
@@ -31,14 +37,34 @@ namespace Sonneville.Investing.PortfolioManager.Test
             _positionsManagerMock = new Mock<IPositionsManager>();
             _positionsManagerMock.Setup(manager => manager.GetAccountDetails()).Returns(accountDetails);
 
-            _tradingAccounts = new List<TradingAccount>();
+            _tradingAccounts = Enum.GetValues(typeof (AccountType))
+                .Cast<AccountType>()
+                .Select(type => new TradingAccount {AccountType = type})
+                .ToList();
 
             _accountMapperMock = new Mock<IAccountMapper>();
             _accountMapperMock.Setup(mapper => mapper.Map(accountDetails)).Returns(_tradingAccounts);
 
-            _allocationCalculatorMock = new Mock<ISecuritiesAllocationCalculator>();
+            _portfolioManagerConfiguration = new PortfolioManagerConfiguration();
+            _portfolioManagerConfiguration.Initialize();
+            _portfolioManagerConfiguration.InScopeAccountTypes = new HashSet<AccountType>
+            {
+                AccountType.InvestmentAccount,
+                AccountType.HealthSavingsAccount,
+                AccountType.RetirementAccount,
+            };
 
-            _accountRebalancer = new AccountRebalancer(_positionsManagerMock.Object, _accountMapperMock.Object, _allocationCalculatorMock.Object);
+            var validAccountTypes = _portfolioManagerConfiguration.InScopeAccountTypes;
+            var tradingAccounts = _tradingAccounts.Where(account => validAccountTypes.Contains(account.AccountType))
+                .ToList();
+
+            _allocationCalculatorMock = new Mock<ISecuritiesAllocationCalculator>();
+            _allocationCalculatorMock.Setup(calculator => calculator.CalculateAllocations(
+                It.Is<IReadOnlyList<TradingAccount>>(tas => ValidateTradingAccounts(tas, tradingAccounts))))
+                .Verifiable();
+
+            _accountRebalancer = new AccountRebalancer(_positionsManagerMock.Object, _accountMapperMock.Object,
+                _allocationCalculatorMock.Object, _portfolioManagerConfiguration);
         }
 
         [Test]
@@ -55,7 +81,14 @@ namespace Sonneville.Investing.PortfolioManager.Test
         {
             _accountRebalancer.RebalanceAccounts();
 
-            _allocationCalculatorMock.Verify(calculator => calculator.CalculateAllocations(_tradingAccounts));
+            _allocationCalculatorMock.Verify();
+        }
+
+        private bool ValidateTradingAccounts(IEnumerable<TradingAccount> actualTradingAccounts,
+            IEnumerable<TradingAccount> expectedTradingAccounts)
+        {
+            CollectionAssert.AreEquivalent(expectedTradingAccounts, actualTradingAccounts);
+            return true;
         }
     }
 }

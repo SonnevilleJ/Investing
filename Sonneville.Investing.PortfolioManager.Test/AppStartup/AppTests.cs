@@ -24,11 +24,11 @@ namespace Sonneville.Investing.PortfolioManager.Test.AppStartup
             _fidelityConfiguration.Initialize();
 
             _optionsParserMock = new Mock<ICommandLineOptionsParser>();
-            _optionsParserMock.Setup(parser => parser.ShouldExecute(_cliArgs, _fidelityConfiguration, Console.Out)).Returns(true);
+            _optionsParserMock.Setup(parser => parser.ShouldExecute(_cliArgs, Console.Out)).Returns(true);
 
             _accountRebalancerMock = new Mock<IAccountRebalancer>();
 
-            _app = new App(_fidelityConfiguration, _optionsParserMock.Object, _accountRebalancerMock.Object);
+            _app = new App(_optionsParserMock.Object, _accountRebalancerMock.Object);
         }
 
         [Test]
@@ -44,8 +44,8 @@ namespace Sonneville.Investing.PortfolioManager.Test.AppStartup
         public void ShouldExitWhenOptionsParserReturnsFalse()
         {
             _optionsParserMock = new Mock<ICommandLineOptionsParser>();
-            _optionsParserMock.Setup(parser => parser.ShouldExecute(_cliArgs, _fidelityConfiguration, Console.Out)).Returns(false);
-            _app = new App(_fidelityConfiguration, _optionsParserMock.Object, new Mock<IAccountRebalancer>(MockBehavior.Strict).Object);
+            _optionsParserMock.Setup(parser => parser.ShouldExecute(_cliArgs, Console.Out)).Returns(false);
+            _app = new App(_optionsParserMock.Object, new Mock<IAccountRebalancer>(MockBehavior.Strict).Object);
 
             _app.Run(_cliArgs);
         }
