@@ -2,47 +2,48 @@
 using System.IO;
 using System.Reflection;
 using NUnit.Framework;
+using Sonneville.Investing.Trading;
 
 namespace Sonneville.Investing.Persistence.Test
 {
     [TestFixture]
     public class AllocationRepositoryTests
     {
-        private Dictionary<string, Dictionary<string, decimal>> _allocation;
-        private AllocationRepository _repository;
+        private Dictionary<string, Allocation> _accountAllocations;
+        private IAllocationRepository _repository;
 
         [SetUp]
         public void Setup()
         {
-            _allocation = new Dictionary<string, Dictionary<string, decimal>>
+            _accountAllocations = new Dictionary<string, Allocation>
             {
                 {
                     "account 1",
-                    new Dictionary<string, decimal>
+                    Allocation.FromDictionary(new Dictionary<string, decimal>
                     {
                         {
                             "ticker 1",
-                            .5m
+                            .8m
                         },
                         {
                             "ticker 2",
-                            .5m
+                            .2m
                         },
-                    }
+                    })
                 },
                 {
                     "account 2",
-                    new Dictionary<string, decimal>
+                    Allocation.FromDictionary(new Dictionary<string, decimal>
                     {
                         {
                             "ticker 3",
-                            .4m
+                            .6m
                         },
                         {
                             "ticker 4",
                             .4m
                         },
-                    }
+                    })
                 },
             };
 
@@ -60,28 +61,33 @@ namespace Sonneville.Investing.Persistence.Test
         [Test]
         public void ShouldReturnPersistedAllocations()
         {
-            _repository.Save("username", _allocation);
+            _repository.Save("username", _accountAllocations);
 
             Assert.IsTrue(_repository.Exists("username"));
             var allocation = _repository.Get("username");
-            CollectionAssert.AreEquivalent(_allocation, allocation);
+            foreach (var setupAccountAllocation in _accountAllocations)
+            {
+                CollectionAssert.AreEquivalent(
+                    setupAccountAllocation.Value.ToDictionary(),
+                    allocation[setupAccountAllocation.Key].ToDictionary());
+            }
         }
 
         [Test]
         public void ShouldSeparateUserAllocations()
         {
-            _repository.Save("user1", _allocation);
-            _repository.Save("user2", new Dictionary<string, Dictionary<string, decimal>>());
+            _repository.Save("user1", _accountAllocations);
+            _repository.Save("user2", new Dictionary<string, Allocation>());
 
             var allocation = _repository.Get("user2");
 
-            CollectionAssert.AreNotEquivalent(_allocation, allocation);
+            CollectionAssert.AreNotEquivalent(_accountAllocations, allocation);
         }
 
         [Test]
         public void ShouldDeletePersistedValue()
         {
-            _repository.Save("user1", _allocation);
+            _repository.Save("user1", _accountAllocations);
 
             _repository.Delete("user1");
 

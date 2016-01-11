@@ -1,33 +1,33 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Sonneville.Investing.Trading
 {
+    [Serializable]
     public class Allocation
     {
-        public static Allocation FromDictionary(IReadOnlyDictionary<string, decimal> accountDictionary)
+        public static Allocation FromDictionary(IReadOnlyDictionary<string, decimal> positionsDictionary)
         {
-            if (Math.Abs(accountDictionary.Sum(kvp => kvp.Value) - 1m) > 0.0001m)
+            if (Math.Abs(positionsDictionary.Sum(kvp => kvp.Value) - 1m) > 0.0001m)
                 throw new ArgumentException("Allocated percentages must total 100%!");
-            if (accountDictionary.Values.Any(value => value <= 0))
+            if (positionsDictionary.Values.Any(value => value <= 0))
                 throw new ArgumentException("Invalid allocated percentage found!");
 
-            return new Allocation(accountDictionary.ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
+            return new Allocation(positionsDictionary.ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
         }
 
-        private readonly IReadOnlyDictionary<string, decimal> _accountDictionary;
+        private readonly IReadOnlyDictionary<string, decimal> _positionsDictionary;
 
-        private Allocation(IReadOnlyDictionary<string, decimal> accountDictionary)
+        private Allocation(IReadOnlyDictionary<string, decimal> positionsDictionary)
         {
-            _accountDictionary = accountDictionary;
+            _positionsDictionary = positionsDictionary;
         }
 
         public decimal GetPercent(string ticker)
         {
-            return _accountDictionary.ContainsKey(ticker)
-                ? _accountDictionary[ticker]
+            return _positionsDictionary.ContainsKey(ticker)
+                ? _positionsDictionary[ticker]
                 : 0;
         }
 
@@ -36,9 +36,9 @@ namespace Sonneville.Investing.Trading
             return GetPercent(ticker)*dollars;
         }
 
-        public IReadOnlyDictionary<string, decimal> ToDictionary()
+        public Dictionary<string, decimal> ToDictionary()
         {
-            return _accountDictionary;
+            return _positionsDictionary.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
     }
 }

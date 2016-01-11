@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Sonneville.Investing.Persistence.Test</RootNamespace>
     <AssemblyName>Sonneville.Investing.Persistence.Test</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -16,6 +16,7 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -64,6 +65,10 @@
     <ProjectReference Include="..\Sonneville.Investing.Persistence\Sonneville.Investing.Persistence.csproj">
       <Project>{D5EADD51-DE65-4839-A5F5-CDF878F58AA5}</Project>
       <Name>Sonneville.Investing.Persistence</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sonneville.Investing\Sonneville.Investing.csproj">
+      <Project>{89A1A8E9-DD0F-40BC-B4F1-FCDED6910E35}</Project>
+      <Name>Sonneville.Investing</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
