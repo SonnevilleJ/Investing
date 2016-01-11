@@ -52,7 +52,9 @@ namespace Sonneville.Investing.Trading
             var totalValue = tradingAccounts.Sum(account => account.Positions.Sum(position => position.Value));
             return tradingAccounts.ToDictionary<TradingAccount, TradingAccount, IDictionary<Position, decimal>>(
                 account => account,
-                account => account.Positions.ToDictionary(position => position, position => position.Value/totalValue));
+                account => account.Positions.ToDictionary(
+                    position => position,
+                    position => position.Value/totalValue));
         }
     }
 }
