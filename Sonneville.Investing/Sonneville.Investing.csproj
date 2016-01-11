@@ -63,6 +63,7 @@
     <Compile Include="Accounting\ShareStrategies\WithdrawFundsBeforeBuyingStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Trading\AccountType.cs" />
+    <Compile Include="Trading\Allocation.cs" />
     <Compile Include="Trading\Position.cs" />
     <Compile Include="Trading\PriceQuote.cs" />
     <Compile Include="Trading\SecuritiesAllocationCalculator.cs" />
