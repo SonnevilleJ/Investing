@@ -9,19 +9,6 @@ namespace Sonneville.Investing.Trading
     {
         public static PositionAllocation FromDictionary(IReadOnlyDictionary<string, decimal> positionsDictionary)
         {
-            if (Math.Abs(positionsDictionary.Sum(kvp => kvp.Value) - 1m) > 0.0001m)
-                throw new ArgumentException("Total allocation must total 100%");
-            if (positionsDictionary.Values.Any(value => value <= 0))
-                throw new ArgumentException("Invalid allocated percentage found!");
-
-            return new PositionAllocation(positionsDictionary.ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
-        }
-
-        public static PositionAllocation ForMultiAccount(IReadOnlyDictionary<string, decimal> positionsDictionary)
-        {
-            if (positionsDictionary.Values.Any(value => value <= 0) || positionsDictionary.Values.Sum() > 1)
-                throw new ArgumentException("Invalid allocated percentage found!");
-
             return new PositionAllocation(positionsDictionary.ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
         }
 

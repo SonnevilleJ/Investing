@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NUnit.Framework;
 using Sonneville.Investing.Trading;
 
@@ -28,70 +27,6 @@ namespace Sonneville.Investing.Test.Trading
             var allocation = AccountAllocation.FromDictionary(accountDictionary);
 
             Assert.AreEqual(accountDictionary["account 1"], allocation.GetPositionAllocation("account 1"));
-        }
-
-        [Test]
-        [TestCase(0.5, 0.5)]
-        [TestCase(0.1, 0.9)]
-        public void ShouldNotThrowWhenAccountsTotal100Percent(decimal percent1, decimal percent2)
-        {
-            var accountDictionary = new Dictionary<string, PositionAllocation>
-            {
-                {
-                    "account 1",
-                    PositionAllocation.ForMultiAccount(new Dictionary<string, decimal>
-                    {
-                        {
-                            "position a",
-                            percent1
-                        }
-                    })
-                },
-                {
-                    "account 2",
-                    PositionAllocation.ForMultiAccount(new Dictionary<string, decimal>
-                    {
-                        {
-                            "position a",
-                            percent2
-                        }
-                    })
-                },
-            };
-
-            Assert.DoesNotThrow(() => AccountAllocation.FromDictionary(accountDictionary));
-        }
-
-        [Test]
-        [TestCase(0.5, 0.501)]
-        [TestCase(0.5, 0.499)]
-        public void ShouldThrowWhenAccountsDoNotTotal100Percent(decimal percent1, decimal percent2)
-        {
-            var accountDictionary = new Dictionary<string, PositionAllocation>
-            {
-                {
-                    "account 1",
-                    PositionAllocation.ForMultiAccount(new Dictionary<string, decimal>
-                    {
-                        {
-                            "position a",
-                            percent1
-                        }
-                    })
-                },
-                {
-                    "account 2",
-                    PositionAllocation.ForMultiAccount(new Dictionary<string, decimal>
-                    {
-                        {
-                            "position a",
-                            percent2
-                        }
-                    })
-                },
-            };
-
-            Assert.Throws<ArgumentException>(() => AccountAllocation.FromDictionary(accountDictionary));
         }
 
         [Test]

@@ -9,13 +9,13 @@ namespace Sonneville.Investing.Persistence.Test
     [TestFixture]
     public class AllocationRepositoryTests
     {
-        private Dictionary<string, PositionAllocation> _accountAllocations;
+        private AccountAllocation _accountAllocations;
         private IAllocationRepository _repository;
 
         [SetUp]
         public void Setup()
         {
-            _accountAllocations = new Dictionary<string, PositionAllocation>
+            _accountAllocations = AccountAllocation.FromDictionary(new Dictionary<string, PositionAllocation>
             {
                 {
                     "account 1",
@@ -23,11 +23,11 @@ namespace Sonneville.Investing.Persistence.Test
                     {
                         {
                             "ticker 1",
-                            .8m
+                            .4m
                         },
                         {
                             "ticker 2",
-                            .2m
+                            .1m
                         },
                     })
                 },
@@ -37,15 +37,15 @@ namespace Sonneville.Investing.Persistence.Test
                     {
                         {
                             "ticker 3",
-                            .6m
+                            .3m
                         },
                         {
                             "ticker 4",
-                            .4m
+                            .2m
                         },
                     })
                 },
-            };
+            });
 
             _repository = new AllocationRepository();
 
@@ -65,11 +65,11 @@ namespace Sonneville.Investing.Persistence.Test
 
             Assert.IsTrue(_repository.Exists("username"));
             var allocation = _repository.Get("username");
-            foreach (var setupAccountAllocation in _accountAllocations)
+            foreach (var setupAccountAllocation in _accountAllocations.ToDictionary())
             {
                 CollectionAssert.AreEquivalent(
                     setupAccountAllocation.Value.ToDictionary(),
-                    allocation[setupAccountAllocation.Key].ToDictionary());
+                    allocation.GetPositionAllocation(setupAccountAllocation.Key).ToDictionary());
             }
         }
 
@@ -77,11 +77,11 @@ namespace Sonneville.Investing.Persistence.Test
         public void ShouldSeparateUserAllocations()
         {
             _repository.Save("user1", _accountAllocations);
-            _repository.Save("user2", new Dictionary<string, PositionAllocation>());
+            _repository.Save("user2", AccountAllocation.FromDictionary(new Dictionary<string, PositionAllocation>()));
 
             var allocation = _repository.Get("user2");
 
-            CollectionAssert.AreNotEquivalent(_accountAllocations, allocation);
+            CollectionAssert.AreNotEquivalent(_accountAllocations.ToDictionary(), allocation.ToDictionary());
         }
 
         [Test]

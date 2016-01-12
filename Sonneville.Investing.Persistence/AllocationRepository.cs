@@ -9,9 +9,9 @@ namespace Sonneville.Investing.Persistence
 {
     public interface IAllocationRepository
     {
-        void Save(string username, Dictionary<string, PositionAllocation> allocations);
+        void Save(string username, AccountAllocation allocation);
 
-        Dictionary<string, PositionAllocation> Get(string username);
+        AccountAllocation Get(string username);
 
         bool Exists(string username);
 
@@ -22,18 +22,16 @@ namespace Sonneville.Investing.Persistence
     {
         private readonly string _repositoryRoot = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-        public void Save(string username, Dictionary<string, PositionAllocation> allocations)
+        public void Save(string username, AccountAllocation allocations)
         {
-            Dictionary<string, Dictionary<string, decimal>> dictionary = allocations.ToDictionary(allocation => allocation.Key, allocation => allocation.Value.ToDictionary());
-            var json = JsonConvert.SerializeObject(
-                    dictionary,
-                    Formatting.Indented);
+            var dictionary = allocations.ToDictionary().ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToDictionary());
+            var json = JsonConvert.SerializeObject(dictionary, Formatting.Indented);
 
             var persistenceStorePath = GetPersistenceStorePath(username);
             File.WriteAllText(persistenceStorePath, json);
         }
 
-        public Dictionary<string, PositionAllocation> Get(string username)
+        public AccountAllocation Get(string username)
         {
             if (!Exists(username))
             {
@@ -43,7 +41,10 @@ namespace Sonneville.Investing.Persistence
             var json = File.ReadAllText(GetPersistenceStorePath(username));
 
             var deserializedObject = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, decimal>>>(json);
-            return deserializedObject.ToDictionary(o => o.Key, o => PositionAllocation.FromDictionary(o.Value));
+            var accountDictionary = deserializedObject.ToDictionary(
+                kvp => kvp.Key,
+                kvp => PositionAllocation.FromDictionary(kvp.Value));
+            return AccountAllocation.FromDictionary(accountDictionary);
         }
 
         public bool Exists(string username)

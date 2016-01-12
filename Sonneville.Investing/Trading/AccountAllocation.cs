@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,10 +7,6 @@ namespace Sonneville.Investing.Trading
     {
         public static AccountAllocation FromDictionary(IReadOnlyDictionary<string, PositionAllocation> accountDictionary)
         {
-            var totalAllocation = accountDictionary.Values.Sum(positions=>positions.ToDictionary().Values.Sum());
-            if(Math.Abs(totalAllocation - 1) > 0.0001m)
-                throw new ArgumentException("Total allocation must total 100% across all accounts!");
-
             return new AccountAllocation(accountDictionary.ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
         }
 
