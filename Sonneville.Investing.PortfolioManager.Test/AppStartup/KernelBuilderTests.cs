@@ -3,6 +3,7 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using Sonneville.FidelityWebDriver.Configuration;
 using Sonneville.Investing.PortfolioManager.AppStartup;
+using Sonneville.Investing.PortfolioManager.Configuration;
 
 namespace Sonneville.Investing.PortfolioManager.Test.AppStartup
 {
@@ -44,11 +45,21 @@ namespace Sonneville.Investing.PortfolioManager.Test.AppStartup
         [Test]
         public void ShouldBindFidelityConfigurationAsSingleton()
         {
-            var fidelityConfiguration = _kernel.Get<FidelityConfiguration>();
+            var configuration = _kernel.Get<FidelityConfiguration>();
 
-            Assert.IsNotNull(fidelityConfiguration);
-            Assert.AreSame(fidelityConfiguration, _kernel.Get<FidelityConfiguration>());
-            Assert.IsNotNull(fidelityConfiguration.Provider);
+            Assert.IsNotNull(configuration);
+            Assert.AreSame(configuration, _kernel.Get<FidelityConfiguration>());
+            Assert.IsNotNull(configuration.Provider);
+        }
+
+        [Test]
+        public void ShouldBindPortfolioManagerConfigurationAsSingleton()
+        {
+            var configuration = _kernel.Get<PortfolioManagerConfiguration>();
+
+            Assert.IsNotNull(configuration);
+            Assert.AreSame(configuration, _kernel.Get<PortfolioManagerConfiguration>());
+            Assert.IsNotNull(configuration.Provider);
         }
     }
 }
