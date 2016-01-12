@@ -72,6 +72,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Trading\AccountAllocationTests.cs" />
     <Compile Include="Trading\PositionAllocationTests.cs" />
+    <Compile Include="Trading\OrderFactoryTests.cs" />
     <Compile Include="Trading\PositionTests.cs" />
     <Compile Include="Trading\PriceQuoteTests.cs" />
     <Compile Include="Trading\SecuritiesAllocationCalculatorTests.cs" />

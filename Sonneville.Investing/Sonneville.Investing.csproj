@@ -64,7 +64,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Trading\AccountAllocation.cs" />
     <Compile Include="Trading\AccountType.cs" />
+    <Compile Include="Trading\TransactionType.cs" />
     <Compile Include="Trading\PositionAllocation.cs" />
+    <Compile Include="Trading\Order.cs" />
+    <Compile Include="Trading\OrderFactory.cs" />
     <Compile Include="Trading\Position.cs" />
     <Compile Include="Trading\PriceQuote.cs" />
     <Compile Include="Trading\SecuritiesAllocationCalculator.cs" />
