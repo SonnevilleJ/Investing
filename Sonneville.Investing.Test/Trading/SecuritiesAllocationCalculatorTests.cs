@@ -30,11 +30,12 @@ namespace Sonneville.Investing.Test.Trading
                 new Position {Ticker = "ticker2", PerSharePrice = 5, Shares = 40},
             };
 
-            var allocationsByPosition = new SecuritiesAllocationCalculator().CalculateAllocations(positions);
+            var allocationsByPosition = new SecuritiesAllocationCalculator().CalculatePositionAllocation(positions);
+            var allocationDictionary = allocationsByPosition.ToDictionary();
 
-            Assert.AreEqual(2, allocationsByPosition.Count());
-            Assert.AreEqual(0.8, allocationsByPosition[positions[0]]);
-            Assert.AreEqual(0.2, allocationsByPosition[positions[1]]);
+            Assert.AreEqual(2, allocationDictionary.Values.Count());
+            Assert.AreEqual(0.8, allocationDictionary[positions[0].Ticker]);
+            Assert.AreEqual(0.2, allocationDictionary[positions[1].Ticker]);
         }
 
         [Test]
@@ -83,7 +84,9 @@ namespace Sonneville.Investing.Test.Trading
             {
                 foreach (var position in account.Positions)
                 {
-                    Assert.AreEqual(position.Value/totalValue, allocation[account][position]);
+                    var expected = position.Value/totalValue;
+                    var actual = allocation.GetPositionAllocation(account.AccountId).GetPercent(position.Ticker);
+                    Assert.AreEqual(expected, actual);
                 }
             }
         }

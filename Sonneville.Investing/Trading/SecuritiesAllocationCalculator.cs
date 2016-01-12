@@ -7,11 +7,11 @@ namespace Sonneville.Investing.Trading
     {
         decimal CalculateAllocation(Position toAllocate, IEnumerable<Position> portfolio);
 
-        IDictionary<Position, decimal> CalculateAllocations(IReadOnlyList<Position> positions);
+        PositionAllocation CalculatePositionAllocation(IReadOnlyList<Position> positions);
 
         decimal CalculateAllocation(Position toAllocate, IEnumerable<TradingAccount> tradingAccounts);
 
-        IDictionary<TradingAccount, IDictionary<Position, decimal>> CalculateAllocations(
+        AccountAllocation CalculateAllocations(
             IReadOnlyList<TradingAccount> tradingAccounts);
     }
 
@@ -34,11 +34,10 @@ namespace Sonneville.Investing.Trading
             return toAllocate.Value/sum;
         }
 
-        public IDictionary<Position, decimal> CalculateAllocations(IReadOnlyList<Position> positions)
+        public PositionAllocation CalculatePositionAllocation(IReadOnlyList<Position> positions)
         {
             var totalValue = positions.Sum(position => position.Value);
-
-            return positions.ToDictionary(position => position, position => position.Value/totalValue);
+            return PositionAllocation.FromDictionary(CreatePositionsDictionary(positions, totalValue));
         }
 
         public decimal CalculateAllocation(Position toAllocate, IEnumerable<TradingAccount> tradingAccounts)
@@ -46,15 +45,19 @@ namespace Sonneville.Investing.Trading
             return CalculateAllocation(toAllocate, tradingAccounts.SelectMany(account => account.Positions));
         }
 
-        public IDictionary<TradingAccount, IDictionary<Position, decimal>> CalculateAllocations(
-            IReadOnlyList<TradingAccount> tradingAccounts)
+        public AccountAllocation CalculateAllocations(IReadOnlyList<TradingAccount> tradingAccounts)
         {
             var totalValue = tradingAccounts.Sum(account => account.Positions.Sum(position => position.Value));
-            return tradingAccounts.ToDictionary<TradingAccount, TradingAccount, IDictionary<Position, decimal>>(
-                account => account,
-                account => account.Positions.ToDictionary(
-                    position => position,
-                    position => position.Value/totalValue));
+            return AccountAllocation.FromDictionary(tradingAccounts.ToDictionary(
+                account => account.AccountId,
+                account => PositionAllocation.FromDictionary(CreatePositionsDictionary(account.Positions, totalValue))));
+        }
+
+        private static Dictionary<string, decimal> CreatePositionsDictionary(IEnumerable<Position> positions, decimal totalValue)
+        {
+            return positions.ToDictionary(
+                position => position.Ticker,
+                position => position.Value/totalValue);
         }
     }
 }
