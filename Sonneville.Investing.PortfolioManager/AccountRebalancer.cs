@@ -36,7 +36,7 @@ namespace Sonneville.Investing.PortfolioManager
                 .Where(account => _portfolioManagerConfiguration.InScopeAccountTypes.Contains(account.AccountType))
                 .ToList();
 
-            var allocations = _securitiesAllocationCalculator.CalculateAllocations(accounts);
+            var allocations = _securitiesAllocationCalculator.CalculateAccountAllocation(accounts);
         }
 
         public void Dispose()

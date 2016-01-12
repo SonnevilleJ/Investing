@@ -77,7 +77,7 @@ namespace Sonneville.Investing.Test.Trading
                 }),
             };
 
-            var allocation = new SecuritiesAllocationCalculator().CalculateAllocations(accounts);
+            var allocation = new SecuritiesAllocationCalculator().CalculateAccountAllocation(accounts);
 
             var totalValue = accounts.Sum(account => account.Positions.Sum(position => position.Value));
             foreach (var account in accounts)

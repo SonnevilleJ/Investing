@@ -59,7 +59,7 @@ namespace Sonneville.Investing.PortfolioManager.Test
                 .ToList();
 
             _allocationCalculatorMock = new Mock<ISecuritiesAllocationCalculator>();
-            _allocationCalculatorMock.Setup(calculator => calculator.CalculateAllocations(
+            _allocationCalculatorMock.Setup(calculator => calculator.CalculateAccountAllocation(
                 It.Is<IReadOnlyList<TradingAccount>>(tas => ValidateTradingAccounts(tas, tradingAccounts))))
                 .Verifiable();
 
