@@ -9,17 +9,17 @@ namespace Sonneville.Investing.Persistence.Test
     [TestFixture]
     public class AllocationRepositoryTests
     {
-        private Dictionary<string, Allocation> _accountAllocations;
+        private Dictionary<string, PositionAllocation> _accountAllocations;
         private IAllocationRepository _repository;
 
         [SetUp]
         public void Setup()
         {
-            _accountAllocations = new Dictionary<string, Allocation>
+            _accountAllocations = new Dictionary<string, PositionAllocation>
             {
                 {
                     "account 1",
-                    Allocation.FromDictionary(new Dictionary<string, decimal>
+                    PositionAllocation.FromDictionary(new Dictionary<string, decimal>
                     {
                         {
                             "ticker 1",
@@ -33,7 +33,7 @@ namespace Sonneville.Investing.Persistence.Test
                 },
                 {
                     "account 2",
-                    Allocation.FromDictionary(new Dictionary<string, decimal>
+                    PositionAllocation.FromDictionary(new Dictionary<string, decimal>
                     {
                         {
                             "ticker 3",
@@ -77,7 +77,7 @@ namespace Sonneville.Investing.Persistence.Test
         public void ShouldSeparateUserAllocations()
         {
             _repository.Save("user1", _accountAllocations);
-            _repository.Save("user2", new Dictionary<string, Allocation>());
+            _repository.Save("user2", new Dictionary<string, PositionAllocation>());
 
             var allocation = _repository.Get("user2");
 

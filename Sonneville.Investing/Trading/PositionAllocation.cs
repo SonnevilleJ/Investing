@@ -5,21 +5,29 @@ using System.Linq;
 namespace Sonneville.Investing.Trading
 {
     [Serializable]
-    public class Allocation
+    public class PositionAllocation
     {
-        public static Allocation FromDictionary(IReadOnlyDictionary<string, decimal> positionsDictionary)
+        public static PositionAllocation FromDictionary(IReadOnlyDictionary<string, decimal> positionsDictionary)
         {
             if (Math.Abs(positionsDictionary.Sum(kvp => kvp.Value) - 1m) > 0.0001m)
-                throw new ArgumentException("Allocated percentages must total 100%!");
+                throw new ArgumentException("Total allocation must total 100%");
             if (positionsDictionary.Values.Any(value => value <= 0))
                 throw new ArgumentException("Invalid allocated percentage found!");
 
-            return new Allocation(positionsDictionary.ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
+            return new PositionAllocation(positionsDictionary.ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
+        }
+
+        public static PositionAllocation ForMultiAccount(IReadOnlyDictionary<string, decimal> positionsDictionary)
+        {
+            if (positionsDictionary.Values.Any(value => value <= 0) || positionsDictionary.Values.Sum() > 1)
+                throw new ArgumentException("Invalid allocated percentage found!");
+
+            return new PositionAllocation(positionsDictionary.ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
         }
 
         private readonly IReadOnlyDictionary<string, decimal> _positionsDictionary;
 
-        private Allocation(IReadOnlyDictionary<string, decimal> positionsDictionary)
+        private PositionAllocation(IReadOnlyDictionary<string, decimal> positionsDictionary)
         {
             _positionsDictionary = positionsDictionary;
         }

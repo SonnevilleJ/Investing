@@ -9,9 +9,9 @@ namespace Sonneville.Investing.Persistence
 {
     public interface IAllocationRepository
     {
-        void Save(string username, Dictionary<string, Allocation> allocations);
+        void Save(string username, Dictionary<string, PositionAllocation> allocations);
 
-        Dictionary<string, Allocation> Get(string username);
+        Dictionary<string, PositionAllocation> Get(string username);
 
         bool Exists(string username);
 
@@ -22,7 +22,7 @@ namespace Sonneville.Investing.Persistence
     {
         private readonly string _repositoryRoot = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-        public void Save(string username, Dictionary<string, Allocation> allocations)
+        public void Save(string username, Dictionary<string, PositionAllocation> allocations)
         {
             Dictionary<string, Dictionary<string, decimal>> dictionary = allocations.ToDictionary(allocation => allocation.Key, allocation => allocation.Value.ToDictionary());
             var json = JsonConvert.SerializeObject(
@@ -33,7 +33,7 @@ namespace Sonneville.Investing.Persistence
             File.WriteAllText(persistenceStorePath, json);
         }
 
-        public Dictionary<string, Allocation> Get(string username)
+        public Dictionary<string, PositionAllocation> Get(string username)
         {
             if (!Exists(username))
             {
@@ -43,7 +43,7 @@ namespace Sonneville.Investing.Persistence
             var json = File.ReadAllText(GetPersistenceStorePath(username));
 
             var deserializedObject = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, decimal>>>(json);
-            return deserializedObject.ToDictionary(o => o.Key, o => Allocation.FromDictionary(o.Value));
+            return deserializedObject.ToDictionary(o => o.Key, o => PositionAllocation.FromDictionary(o.Value));
         }
 
         public bool Exists(string username)
