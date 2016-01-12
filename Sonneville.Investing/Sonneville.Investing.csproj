@@ -69,6 +69,7 @@
     <Compile Include="Trading\PriceQuote.cs" />
     <Compile Include="Trading\SecuritiesAllocationCalculator.cs" />
     <Compile Include="Trading\TradingAccount.cs" />
+    <Compile Include="Trading\TradingAccountBalanceCalculator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sonneville.Investing.nuspec" />

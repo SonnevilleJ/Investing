@@ -75,6 +75,7 @@
     <Compile Include="Trading\PositionTests.cs" />
     <Compile Include="Trading\PriceQuoteTests.cs" />
     <Compile Include="Trading\SecuritiesAllocationCalculatorTests.cs" />
+    <Compile Include="Trading\TradingAccountBalanceCalculatorTests.cs" />
     <Compile Include="Trading\TradingAccountTests.cs" />
   </ItemGroup>
   <ItemGroup>
