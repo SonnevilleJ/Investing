@@ -50,8 +50,8 @@ namespace Sonneville.Investing.Test.Trading
                 }),
                 CreateTradingAccount("account2", new List<Position>
                 {
-                    new Position {Ticker = "ticker1", PerSharePrice = 4, Shares = 200},
-                    new Position {Ticker = "ticker2", PerSharePrice = 5, Shares = 40},
+                    new Position {Ticker = "ticker3", PerSharePrice = 4, Shares = 200},
+                    new Position {Ticker = "ticker4", PerSharePrice = 5, Shares = 40},
                 }),
             };
 
@@ -89,6 +89,28 @@ namespace Sonneville.Investing.Test.Trading
                     Assert.AreEqual(expected, actual);
                 }
             }
+        }
+
+        [Test]
+        public void ShouldCombineAllocationsForSameTickerInSameAccount()
+        {
+            var accounts = new List<TradingAccount>
+            {
+                CreateTradingAccount("account1", new List<Position>
+                {
+                    new Position {Ticker = "ticker1", PerSharePrice = 4, Shares = 200},
+                    new Position {Ticker = "ticker1", PerSharePrice = 5, Shares = 40},
+                }),
+                CreateTradingAccount("account2", new List<Position>
+                {
+                    new Position {Ticker = "ticker1", PerSharePrice = 7, Shares = 100},
+                    new Position {Ticker = "ticker2", PerSharePrice = 10, Shares = 30},
+                }),
+            };
+
+            var allocation = new SecuritiesAllocationCalculator().CalculateAccountAllocation(accounts);
+
+            Assert.AreEqual(0.5m, allocation.GetPositionAllocation("account1").GetPercent("ticker1"));
         }
 
         [Test]

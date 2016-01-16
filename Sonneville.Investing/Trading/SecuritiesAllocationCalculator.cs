@@ -52,11 +52,15 @@ namespace Sonneville.Investing.Trading
                 account => PositionAllocation.FromDictionary(CreatePositionsDictionary(account.Positions, totalValue))));
         }
 
-        private static Dictionary<string, decimal> CreatePositionsDictionary(IEnumerable<Position> positions, decimal totalValue)
+        private static Dictionary<string, decimal> CreatePositionsDictionary(IReadOnlyList<Position> positions, decimal totalValue)
         {
-            return positions.ToDictionary(
-                position => position.Ticker,
-                position => position.Value/totalValue);
+            var dictionary = new Dictionary<string, decimal>();
+            foreach (var ticker in positions.Select(position => position.Ticker).Distinct())
+            {
+                var value = positions.Where(position => position.Ticker == ticker).Sum(position => position.Value);
+                dictionary.Add(ticker, value / totalValue);
+            }
+            return dictionary;
         }
     }
 }
