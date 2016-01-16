@@ -127,7 +127,7 @@ namespace Sonneville.Investing.Test.Trading
             Assert.Throws<KeyNotFoundException>(() => calculator.CalculateAllocation(new Position(), accounts));
         }
 
-        private static TradingAccount CreateTradingAccount(string accountId, IList<Position> positions)
+        private static TradingAccount CreateTradingAccount(string accountId, List<Position> positions)
         {
             return new TradingAccount
             {

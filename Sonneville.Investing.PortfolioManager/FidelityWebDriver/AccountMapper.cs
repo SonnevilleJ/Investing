@@ -9,7 +9,7 @@ namespace Sonneville.Investing.PortfolioManager.FidelityWebDriver
     {
         TradingAccount Map(IAccountDetails accountDetails);
 
-        List<TradingAccount> Map(IEnumerable<IAccountDetails> accountDetails);
+        IEnumerable<TradingAccount> Map(IEnumerable<IAccountDetails> accountDetails);
     }
 
     public class AccountMapper : IAccountMapper
@@ -29,14 +29,14 @@ namespace Sonneville.Investing.PortfolioManager.FidelityWebDriver
             {
                 AccountId = accountDetails.AccountNumber,
                 PendingFunds = accountDetails.PendingActivity,
-                Positions = _positionMapper.Map(accountDetails.Positions),
+                Positions = _positionMapper.Map(accountDetails.Positions).ToList(),
                 AccountType = _accountTypeMapper.Map(accountDetails.AccountType),
             };
         }
 
-        public List<TradingAccount> Map(IEnumerable<IAccountDetails> accountDetails)
+        public IEnumerable<TradingAccount> Map(IEnumerable<IAccountDetails> accountDetails)
         {
-            return accountDetails.Select(Map).ToList();
+            return accountDetails.Select(Map);
         }
     }
 }
