@@ -1,8 +1,9 @@
 ﻿using System.IO.IsolatedStorage;
 using NUnit.Framework;
+using Sonneville.Utilities.Configuration;
 using Westwind.Utilities.Configuration;
 
-namespace Sonneville.Utilities.Test
+namespace Sonneville.Utilities.Test.Configuration
 {
     [TestFixture]
     public class IsolatedStorageConfigurationProviderTests

@@ -3,7 +3,7 @@ using System.IO.IsolatedStorage;
 using System.Text;
 using Westwind.Utilities.Configuration;
 
-namespace Sonneville.Utilities
+namespace Sonneville.Utilities.Configuration
 {
     public class IsolatedStorageConfigurationProvider<T> : StringConfigurationProvider<T>
         where T : AppConfiguration, new()
