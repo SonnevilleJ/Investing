@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.IO.IsolatedStorage;
 using NUnit.Framework;
 using Sonneville.FidelityWebDriver.Configuration;
 using Sonneville.Investing.PortfolioManager.AppStartup;
@@ -18,6 +19,7 @@ namespace Sonneville.Investing.PortfolioManager.Test.AppStartup
         private MemoryStream _memoryStream;
         private StreamWriter _streamWriter;
         private PortfolioManagerConfiguration _portfolioManagerConfiguration;
+        private IsolatedStorageFile _isolatedStore;
 
         [SetUp]
         public void Setup()
@@ -25,11 +27,10 @@ namespace Sonneville.Investing.PortfolioManager.Test.AppStartup
             _cliUserName = "Batman";
             _cliPassword = "I am vengeance. I am the night. I am Batman.";
 
-            _fidelityConfiguration = new FidelityConfiguration();
-            _fidelityConfiguration.Initialize();
+            _isolatedStore = IsolatedStorageFile.GetUserStoreForAssembly();
+            _fidelityConfiguration = FidelityConfiguration.Initialize(_isolatedStore);
 
-            _portfolioManagerConfiguration = new PortfolioManagerConfiguration();
-            _portfolioManagerConfiguration.Initialize();
+            _portfolioManagerConfiguration = PortfolioManagerConfiguration.Initialize(_isolatedStore);
 
             _memoryStream = new MemoryStream();
             _streamWriter = new StreamWriter(_memoryStream) {AutoFlush = true};
@@ -43,12 +44,7 @@ namespace Sonneville.Investing.PortfolioManager.Test.AppStartup
             _memoryStream.Dispose();
             _streamWriter.Dispose();
 
-            _fidelityConfiguration.Username = null;
-            _fidelityConfiguration.Password = null;
-            _fidelityConfiguration.Write();
-
-            _portfolioManagerConfiguration.InScopeAccountTypes = null;
-            _portfolioManagerConfiguration.Write();
+            ClearPersistedConfiguration();
         }
 
         [Test]
@@ -72,8 +68,7 @@ namespace Sonneville.Investing.PortfolioManager.Test.AppStartup
             var shouldExecute = _optionsParser.ShouldExecute(args, _streamWriter);
 
             Assert.IsTrue(shouldExecute);
-            var fidelityConfiguration = new FidelityConfiguration();
-            fidelityConfiguration.Initialize();
+            var fidelityConfiguration = FidelityConfiguration.Initialize(_isolatedStore);
             Assert.AreEqual(_cliUserName, fidelityConfiguration.Username);
             Assert.AreEqual(_cliPassword, fidelityConfiguration.Password);
         }
@@ -108,8 +103,7 @@ namespace Sonneville.Investing.PortfolioManager.Test.AppStartup
             var shouldExecute = _optionsParser.ShouldExecute(args, _streamWriter);
 
             Assert.IsTrue(shouldExecute);
-            var configuration = new PortfolioManagerConfiguration();
-            configuration.Initialize();
+            var configuration = PortfolioManagerConfiguration.Initialize(_isolatedStore);
             CollectionAssert.Contains(configuration.InScopeAccountTypes, accountType);
         }
 
@@ -139,18 +133,26 @@ namespace Sonneville.Investing.PortfolioManager.Test.AppStartup
 
         private void AssertUnchangedConfig()
         {
-            _fidelityConfiguration.Read();
-            Assert.IsNull(_fidelityConfiguration.Username);
-            Assert.IsNull(_fidelityConfiguration.Password);
+            var fidelityConfiguration = FidelityConfiguration.Initialize(_isolatedStore);
+            Assert.AreEqual(default(string), fidelityConfiguration.Username);
+            Assert.AreEqual(default(string), fidelityConfiguration.Password);
 
-            _portfolioManagerConfiguration.Read();
-            CollectionAssert.IsEmpty(_portfolioManagerConfiguration.InScopeAccountTypes);
+            var portfolioManagerConfiguration = PortfolioManagerConfiguration.Initialize(_isolatedStore);
+            CollectionAssert.IsEmpty(portfolioManagerConfiguration.InScopeAccountTypes);
         }
 
         private static string ReadConsoleOutputFrom(Stream memoryStream)
         {
             memoryStream.Position = 0;
             return new StreamReader(memoryStream).ReadToEnd();
+        }
+
+        private void ClearPersistedConfiguration()
+        {
+            foreach (var fileName in _isolatedStore.GetFileNames())
+            {
+                _isolatedStore.DeleteFile(fileName);
+            }
         }
     }
 }

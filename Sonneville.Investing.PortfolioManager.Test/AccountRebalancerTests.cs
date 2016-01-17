@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.IsolatedStorage;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
@@ -9,7 +10,6 @@ using Sonneville.Investing.PortfolioManager.Configuration;
 using Sonneville.Investing.PortfolioManager.FidelityWebDriver;
 using Sonneville.Investing.Trading;
 using AccountType = Sonneville.Investing.Trading.AccountType;
-using FidelityAccountType = Sonneville.FidelityWebDriver.Data.AccountType;
 
 namespace Sonneville.Investing.PortfolioManager.Test
 {
@@ -45,8 +45,7 @@ namespace Sonneville.Investing.PortfolioManager.Test
             _accountMapperMock = new Mock<IAccountMapper>();
             _accountMapperMock.Setup(mapper => mapper.Map(accountDetails)).Returns(_tradingAccounts);
 
-            _portfolioManagerConfiguration = new PortfolioManagerConfiguration();
-            _portfolioManagerConfiguration.Initialize();
+            _portfolioManagerConfiguration = PortfolioManagerConfiguration.Initialize(IsolatedStorageFile.GetUserStoreForAssembly());
             _portfolioManagerConfiguration.InScopeAccountTypes = new HashSet<AccountType>
             {
                 AccountType.InvestmentAccount,

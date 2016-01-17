@@ -1,7 +1,6 @@
 ﻿using System;
 using Moq;
 using NUnit.Framework;
-using Sonneville.FidelityWebDriver.Configuration;
 using Sonneville.Investing.PortfolioManager.AppStartup;
 
 namespace Sonneville.Investing.PortfolioManager.Test.AppStartup
@@ -11,7 +10,6 @@ namespace Sonneville.Investing.PortfolioManager.Test.AppStartup
     {
         private App _app;
         private Mock<IAccountRebalancer> _accountRebalancerMock;
-        private FidelityConfiguration _fidelityConfiguration;
         private Mock<ICommandLineOptionsParser> _optionsParserMock;
         private string[] _cliArgs;
 
@@ -19,9 +17,6 @@ namespace Sonneville.Investing.PortfolioManager.Test.AppStartup
         public void Setup()
         {
             _cliArgs = new string[0];
-
-            _fidelityConfiguration = new FidelityConfiguration();
-            _fidelityConfiguration.Initialize();
 
             _optionsParserMock = new Mock<ICommandLineOptionsParser>();
             _optionsParserMock.Setup(parser => parser.ShouldExecute(_cliArgs, Console.Out)).Returns(true);
