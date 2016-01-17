@@ -44,9 +44,11 @@ namespace Sonneville.Utilities.Test.Configuration
         [Test]
         public void RoundtripTest()
         {
+            Assert.IsFalse(_provider.Exists());
             var write = _provider.Write(_config);
             Assert.IsTrue(write);
 
+            Assert.IsTrue(_provider.Exists());
             var config2 = new SampleConfigClass();
             config2.Initialize(_provider);
             Assert.AreEqual(_config.Value1, config2.Value1);
@@ -72,21 +74,21 @@ namespace Sonneville.Utilities.Test.Configuration
         [Test]
         public void DeleteRemovesConfigFile()
         {
-            var provider = new IsolatedStorageConfigurationProvider<SampleConfigClass>(_store);
-            provider.Write(_config);
+            _provider.Write(_config);
+            Assert.IsTrue(_provider.Exists());
 
-            provider.Delete();
+            _provider.Delete();
+            Assert.IsFalse(_provider.Exists());
             CollectionAssert.IsEmpty(_store.GetFileNames());
         }
 
         [Test]
         public void DeleteIsSafeToCallMultipleTimes()
         {
-            var provider = new IsolatedStorageConfigurationProvider<SampleConfigClass>(_store);
-            provider.Write(_config);
+            _provider.Write(_config);
 
-            provider.Delete();
-            provider.Delete();
+            _provider.Delete();
+            _provider.Delete();
         }
     }
 }

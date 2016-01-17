@@ -51,6 +51,19 @@ namespace Sonneville.Utilities.Test.Configuration
         }
 
         [Test]
+        public void ExistsTest()
+        {
+            var config = _configStore.Get<SampleConfigClass>();
+            Assert.AreEqual(0, _isolatedStorageFile.GetFileNames().Count());
+            Assert.IsFalse(_configStore.Exists(config));
+
+            config.Write();
+
+            Assert.IsTrue(_configStore.Exists(config));
+            Assert.AreEqual(1, _isolatedStorageFile.GetFileNames().Count());
+        }
+
+        [Test]
         public void ConfigWritesUsingProvider()
         {
             var config = _configStore.Get<SampleConfigClass>();

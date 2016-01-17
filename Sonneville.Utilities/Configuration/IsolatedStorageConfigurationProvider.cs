@@ -58,9 +58,14 @@ namespace Sonneville.Utilities.Configuration
             }
         }
 
+        public bool Exists()
+        {
+            return _store.FileExists(_path);
+        }
+
         public void Delete()
         {
-            if (_store.FileExists(_path)) _store.DeleteFile(_path);
+            if (Exists()) _store.DeleteFile(_path);
         }
 
         private static Encoding GetDefaultEncoding()

@@ -7,6 +7,8 @@ namespace Sonneville.Utilities.Configuration
     {
         T Get<T>() where T : AppConfiguration, new();
 
+        bool Exists<T>(T config) where T : AppConfiguration, new();
+
         void Erase<T>(T config) where T : AppConfiguration, new();
 
         void Clear();
@@ -26,6 +28,11 @@ namespace Sonneville.Utilities.Configuration
             var config = new T();
             config.Initialize(new IsolatedStorageConfigurationProvider<T>(_isolatedStorageFile));
             return config;
+        }
+
+        public bool Exists<T>(T config) where T : AppConfiguration, new()
+        {
+            return new IsolatedStorageConfigurationProvider<T>(_isolatedStorageFile).Exists();
         }
 
         public void Erase<T>(T config) where T : AppConfiguration, new()
