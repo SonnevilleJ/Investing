@@ -49,12 +49,12 @@
       <HintPath>..\packages\Ninject.Extensions.Conventions.3.2.0.0\lib\net45-full\Ninject.Extensions.Conventions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Sonneville.FidelityWebDriver, Version=1.0.126.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Sonneville.FidelityWebDriver.1.0.126.0\lib\net461\Sonneville.FidelityWebDriver.dll</HintPath>
+    <Reference Include="Sonneville.FidelityWebDriver, Version=1.0.127.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sonneville.FidelityWebDriver.1.0.127.0\lib\net461\Sonneville.FidelityWebDriver.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Sonneville.Utilities, Version=1.0.7.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Sonneville.Utilities.1.0.7.0\lib\net452\Sonneville.Utilities.dll</HintPath>
+    <Reference Include="Sonneville.Utilities, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sonneville.Utilities.1.0.9.0\lib\net452\Sonneville.Utilities.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />

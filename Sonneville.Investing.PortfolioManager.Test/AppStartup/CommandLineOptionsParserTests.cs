@@ -6,6 +6,7 @@ using Sonneville.FidelityWebDriver.Configuration;
 using Sonneville.Investing.PortfolioManager.AppStartup;
 using Sonneville.Investing.PortfolioManager.Configuration;
 using Sonneville.Investing.Trading;
+using Sonneville.Utilities.Configuration;
 
 namespace Sonneville.Investing.PortfolioManager.Test.AppStartup
 {
@@ -19,7 +20,7 @@ namespace Sonneville.Investing.PortfolioManager.Test.AppStartup
         private MemoryStream _memoryStream;
         private StreamWriter _streamWriter;
         private PortfolioManagerConfiguration _portfolioManagerConfiguration;
-        private IsolatedStorageFile _isolatedStore;
+        private ConfigStore _configStore;
 
         [SetUp]
         public void Setup()
@@ -27,10 +28,10 @@ namespace Sonneville.Investing.PortfolioManager.Test.AppStartup
             _cliUserName = "Batman";
             _cliPassword = "I am vengeance. I am the night. I am Batman.";
 
-            _isolatedStore = IsolatedStorageFile.GetUserStoreForAssembly();
-            _fidelityConfiguration = FidelityConfiguration.Initialize(_isolatedStore);
+            _configStore = new ConfigStore(IsolatedStorageFile.GetUserStoreForAssembly());
+            _fidelityConfiguration = _configStore.Get<FidelityConfiguration>();
 
-            _portfolioManagerConfiguration = PortfolioManagerConfiguration.Initialize(_isolatedStore);
+            _portfolioManagerConfiguration = _configStore.Get<PortfolioManagerConfiguration>();
 
             _memoryStream = new MemoryStream();
             _streamWriter = new StreamWriter(_memoryStream) {AutoFlush = true};
@@ -44,7 +45,7 @@ namespace Sonneville.Investing.PortfolioManager.Test.AppStartup
             _memoryStream.Dispose();
             _streamWriter.Dispose();
 
-            ClearPersistedConfiguration();
+            _configStore.Clear();
         }
 
         [Test]
@@ -68,7 +69,7 @@ namespace Sonneville.Investing.PortfolioManager.Test.AppStartup
             var shouldExecute = _optionsParser.ShouldExecute(args, _streamWriter);
 
             Assert.IsTrue(shouldExecute);
-            var fidelityConfiguration = FidelityConfiguration.Initialize(_isolatedStore);
+            var fidelityConfiguration = _configStore.Get<FidelityConfiguration>();
             Assert.AreEqual(_cliUserName, fidelityConfiguration.Username);
             Assert.AreEqual(_cliPassword, fidelityConfiguration.Password);
         }
@@ -103,7 +104,7 @@ namespace Sonneville.Investing.PortfolioManager.Test.AppStartup
             var shouldExecute = _optionsParser.ShouldExecute(args, _streamWriter);
 
             Assert.IsTrue(shouldExecute);
-            var configuration = PortfolioManagerConfiguration.Initialize(_isolatedStore);
+            var configuration = _configStore.Get<PortfolioManagerConfiguration>();
             CollectionAssert.Contains(configuration.InScopeAccountTypes, accountType);
         }
 
@@ -133,11 +134,11 @@ namespace Sonneville.Investing.PortfolioManager.Test.AppStartup
 
         private void AssertUnchangedConfig()
         {
-            var fidelityConfiguration = FidelityConfiguration.Initialize(_isolatedStore);
+            var fidelityConfiguration = _configStore.Get<FidelityConfiguration>();
             Assert.AreEqual(default(string), fidelityConfiguration.Username);
             Assert.AreEqual(default(string), fidelityConfiguration.Password);
 
-            var portfolioManagerConfiguration = PortfolioManagerConfiguration.Initialize(_isolatedStore);
+            var portfolioManagerConfiguration = _configStore.Get<PortfolioManagerConfiguration>();
             CollectionAssert.IsEmpty(portfolioManagerConfiguration.InScopeAccountTypes);
         }
 
@@ -145,14 +146,6 @@ namespace Sonneville.Investing.PortfolioManager.Test.AppStartup
         {
             memoryStream.Position = 0;
             return new StreamReader(memoryStream).ReadToEnd();
-        }
-
-        private void ClearPersistedConfiguration()
-        {
-            foreach (var fileName in _isolatedStore.GetFileNames())
-            {
-                _isolatedStore.DeleteFile(fileName);
-            }
         }
     }
 }

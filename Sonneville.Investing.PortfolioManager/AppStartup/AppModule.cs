@@ -5,6 +5,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using Sonneville.FidelityWebDriver.Configuration;
 using Sonneville.Investing.PortfolioManager.Configuration;
+using Sonneville.Utilities.Configuration;
 
 namespace Sonneville.Investing.PortfolioManager.AppStartup
 {
@@ -22,12 +23,11 @@ namespace Sonneville.Investing.PortfolioManager.AppStartup
             BindConfig(IsolatedStorageFile.GetUserStoreForAssembly());
         }
 
-        private void BindConfig(IsolatedStorageFile isolatedStore)
+        private void BindConfig(IsolatedStorageFile isolatedStorageFile)
         {
-            var fidelityConfiguration = FidelityConfiguration.Initialize(isolatedStore);
-            Kernel.Rebind<FidelityConfiguration>().ToConstant(fidelityConfiguration);
-            var portfolioManagerConfiguration = PortfolioManagerConfiguration.Initialize(isolatedStore);
-            Kernel.Rebind<PortfolioManagerConfiguration>().ToConstant(portfolioManagerConfiguration);
+            var configStore = new ConfigStore(isolatedStorageFile);
+            Kernel.Rebind<FidelityConfiguration>().ToConstant(configStore.Get<FidelityConfiguration>());
+            Kernel.Rebind<PortfolioManagerConfiguration>().ToConstant(configStore.Get<PortfolioManagerConfiguration>());
         }
     }
 }

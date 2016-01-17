@@ -3,31 +3,32 @@ using System.IO.IsolatedStorage;
 using NUnit.Framework;
 using Sonneville.Investing.PortfolioManager.Configuration;
 using Sonneville.Investing.Trading;
+using Sonneville.Utilities.Configuration;
 
 namespace Sonneville.Investing.PortfolioManager.Test.Configuration
 {
     [TestFixture]
     public class PortfolioManagerConfigurationTests
     {
-        private IsolatedStorageFile _isolatedStore;
+        private ConfigStore _configStore;
 
         [SetUp]
         public void Setup()
         {
-            _isolatedStore = IsolatedStorageFile.GetUserStoreForAssembly();
-            ClearPersistedConfiguration();
+            _configStore = new ConfigStore(IsolatedStorageFile.GetUserStoreForAssembly());
+            _configStore.Clear();
         }
 
         [TearDown]
         public void Teardown()
         {
-            ClearPersistedConfiguration();
+            _configStore.Clear();
         }
 
         [Test]
         public void ShouldInitializeToEmptyListOfAccountTypes()
         {
-            var configuration = PortfolioManagerConfiguration.Initialize(_isolatedStore);
+            var configuration = _configStore.Get<PortfolioManagerConfiguration>();
 
             CollectionAssert.IsEmpty(configuration.InScopeAccountTypes);
         }
@@ -40,20 +41,12 @@ namespace Sonneville.Investing.PortfolioManager.Test.Configuration
                 AccountType.InvestmentAccount,
                 AccountType.RetirementAccount,
             };
-            var configuration = PortfolioManagerConfiguration.Initialize(_isolatedStore);
+            var configuration = _configStore.Get<PortfolioManagerConfiguration>();
             configuration.InScopeAccountTypes = accountTypes;
             configuration.Write();
 
-            var portfolioManagerConfiguration = PortfolioManagerConfiguration.Initialize(_isolatedStore);
+            var portfolioManagerConfiguration = _configStore.Get<PortfolioManagerConfiguration>();
             CollectionAssert.AreEquivalent(accountTypes, portfolioManagerConfiguration.InScopeAccountTypes);
-        }
-
-        private void ClearPersistedConfiguration()
-        {
-            foreach (var fileName in _isolatedStore.GetFileNames())
-            {
-                _isolatedStore.DeleteFile(fileName);
-            }
         }
     }
 }
