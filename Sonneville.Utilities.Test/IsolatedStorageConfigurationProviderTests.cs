@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.IO.IsolatedStorage;
+using NUnit.Framework;
 using Westwind.Utilities.Configuration;
 
 namespace Sonneville.Utilities.Test
@@ -9,6 +10,7 @@ namespace Sonneville.Utilities.Test
         private IsolatedStorageConfigurationProvider<SampleConfigClass> _provider;
         private SampleConfigClass _config;
         private string _value1;
+        private IsolatedStorageFile _store;
 
         // ReSharper disable once MemberCanBePrivate.Global
         // Class must be public for XML serialization to work
@@ -25,16 +27,17 @@ namespace Sonneville.Utilities.Test
             _config.Initialize();
             _config.Value1 = _value1;
 
-            _provider = new IsolatedStorageConfigurationProvider<SampleConfigClass>();
+            _store = IsolatedStorageFile.GetUserStoreForAssembly();
+            _provider = new IsolatedStorageConfigurationProvider<SampleConfigClass>(_store);
         }
 
         [TearDown]
         public void Teardown()
         {
-            _config = new SampleConfigClass();
-            _config.Initialize();
-            _config.Value1 = null;
-            _config.Write();
+            foreach (var fileName in _store.GetFileNames())
+            {
+                _store.DeleteFile(fileName);
+            }
         }
 
         [Test]
@@ -51,7 +54,7 @@ namespace Sonneville.Utilities.Test
         [Test]
         public void EncryptionTest()
         {
-            var encryptingProvider = new IsolatedStorageConfigurationProvider<SampleConfigClass>
+            var encryptingProvider = new IsolatedStorageConfigurationProvider<SampleConfigClass>(_store)
             {
                 PropertiesToEncrypt = "Value1",
                 EncryptionKey = "asdf"
@@ -63,6 +66,26 @@ namespace Sonneville.Utilities.Test
             var config2 = new SampleConfigClass();
             config2.Initialize(_provider);
             Assert.AreNotEqual(_value1, config2.Value1);
+        }
+
+        [Test]
+        public void DeleteRemovesConfigFile()
+        {
+            var provider = new IsolatedStorageConfigurationProvider<SampleConfigClass>(_store);
+            provider.Write(_config);
+
+            provider.Delete();
+            CollectionAssert.IsEmpty(_store.GetFileNames());
+        }
+
+        [Test]
+        public void DeleteIsSafeToCallMultipleTimes()
+        {
+            var provider = new IsolatedStorageConfigurationProvider<SampleConfigClass>(_store);
+            provider.Write(_config);
+
+            provider.Delete();
+            provider.Delete();
         }
     }
 }

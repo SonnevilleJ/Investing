@@ -5,19 +5,26 @@ using Westwind.Utilities.Configuration;
 
 namespace Sonneville.Utilities
 {
-    public class IsolatedStorageConfigurationProvider<T> : StringConfigurationProvider<T> where T : AppConfiguration, new()
+    public class IsolatedStorageConfigurationProvider<T> : StringConfigurationProvider<T>
+        where T : AppConfiguration, new()
     {
+        private readonly IsolatedStorageFile _store;
+        private readonly string _path;
+
+        public IsolatedStorageConfigurationProvider(IsolatedStorageFile store)
+        {
+            _store = store;
+            _path = $"{typeof (T).FullName}.config";
+        }
+
         public override bool Read(AppConfiguration config)
         {
             try
             {
-                var userStore = GetUserStore();
-                var path = $"{typeof(T).FullName}.config";
-
-                if (userStore.FileExists(path))
+                if (_store.FileExists(_path))
                 {
                     byte[] bytes;
-                    using (var fileStream = userStore.OpenFile(path, FileMode.Open))
+                    using (var fileStream = _store.OpenFile(_path, FileMode.Open))
                     {
                         bytes = new byte[fileStream.Length];
                         fileStream.Read(bytes, 0, bytes.Length);
@@ -38,9 +45,7 @@ namespace Sonneville.Utilities
             try
             {
                 EncryptFields(config);
-                var userStore = GetUserStore();
-                var path = $"{typeof(T).FullName}.config";
-                using (var fileStream = userStore.OpenFile(path, FileMode.Create))
+                using (var fileStream = _store.OpenFile(_path, FileMode.Create))
                 {
                     var bytes = GetDefaultEncoding().GetBytes(config.WriteAsString());
                     fileStream.Write(bytes, 0, bytes.Length);
@@ -53,9 +58,9 @@ namespace Sonneville.Utilities
             }
         }
 
-        private static IsolatedStorageFile GetUserStore()
+        public void Delete()
         {
-            return IsolatedStorageFile.GetUserStoreForAssembly();
+            if (_store.FileExists(_path)) _store.DeleteFile(_path);
         }
 
         private static Encoding GetDefaultEncoding()
