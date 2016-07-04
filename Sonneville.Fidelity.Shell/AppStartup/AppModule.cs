@@ -1,4 +1,6 @@
-﻿using System.IO.IsolatedStorage;
+﻿using System;
+using System.IO;
+using System.IO.IsolatedStorage;
 using Ninject.Extensions.Conventions;
 using Ninject.Modules;
 using OpenQA.Selenium;
@@ -19,6 +21,9 @@ namespace Sonneville.Fidelity.Shell.AppStartup
                 .Configure(configurationAction => configurationAction.InSingletonScope()));
 
             Bind<IWebDriver>().To<ChromeDriver>().InSingletonScope();
+
+            Bind<TextReader>().ToConstant(Console.In).WhenInjectedInto<IApp>();
+            Bind<TextWriter>().ToConstant(Console.Out).WhenInjectedInto<IApp>();
 
             BindConfig(IsolatedStorageFile.GetUserStoreForAssembly());
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Sonneville.Fidelity.Shell.AppStartup
 {
@@ -11,20 +12,49 @@ namespace Sonneville.Fidelity.Shell.AppStartup
     public class App : IApp
     {
         private readonly IAccountRebalancer _accountRebalancer;
-        private readonly ICommandLineOptionsParser _commandLineOptionsParser;
+        private readonly TextReader _input;
+        private readonly TextWriter _output;
+        private bool _disposed;
 
-        public App(ICommandLineOptionsParser commandLineOptionsParser,
-            IAccountRebalancer accountRebalancer)
+        public App(IAccountRebalancer accountRebalancer, TextReader input, TextWriter output)
         {
             _accountRebalancer = accountRebalancer;
-            _commandLineOptionsParser = commandLineOptionsParser;
+            _input = input;
+            _output = output;
         }
 
         public void Run(IEnumerable<string> args)
         {
-            if (!_commandLineOptionsParser.ShouldExecute(args, Console.Out)) return;
+            var exit = false;
+            while (!_disposed && !exit)
+            {
+                var readLine = _input.ReadLine();
 
-            _accountRebalancer.RebalanceAccounts();
+                if (readLine != null)
+                {
+                    var lines = readLine.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+
+                    switch (lines[0].ToLowerInvariant())
+                    {
+                        case "help":
+                            PrintHelp(_output);
+                            break;
+                        case "exit":
+                            exit = true;
+                            break;
+                        default:
+                            _output.WriteLine($"Unknown command: {lines[0]}");
+                            PrintHelp(_output);
+                            break;
+                    }
+                }
+            }
+            _output.WriteLine("Exiting...");
+        }
+
+        private static void PrintHelp(TextWriter textWriter)
+        {
+            textWriter.WriteLine("usage");
         }
 
         public void Dispose()
@@ -36,6 +66,7 @@ namespace Sonneville.Fidelity.Shell.AppStartup
         {
             if (disposing)
             {
+                _disposed = true;
                 _accountRebalancer?.Dispose();
             }
         }
