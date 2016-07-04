@@ -27,19 +27,19 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
         [Test]
         public void ShouldBindApp()
         {
-            var app = _kernel.Get<IApp>();
+            var commandRouter = _kernel.Get<ICommandRouter>();
 
-            Assert.IsNotNull(app);
+            Assert.IsNotNull(commandRouter);
         }
 
         [Test]
         public void ShouldBindWebDriverAsSingleton()
         {
-            var app = _kernel.Get<IWebDriver>();
+            var webDriver = _kernel.Get<IWebDriver>();
 
-            Assert.IsNotNull(app);
+            Assert.IsNotNull(webDriver);
 
-            Assert.AreSame(app, _kernel.Get<IWebDriver>());
+            Assert.AreSame(webDriver, _kernel.Get<IWebDriver>());
         }
 
         [Test]

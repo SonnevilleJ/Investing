@@ -5,19 +5,19 @@ using System.Linq;
 
 namespace Sonneville.Fidelity.Shell.AppStartup
 {
-    public interface IApp : IDisposable
+    public interface ICommandRouter : IDisposable
     {
         void Run(IEnumerable<string> args);
     }
 
-    public class App : IApp
+    public class CommandRouter : ICommandRouter
     {
         private readonly TextReader _input;
         private readonly TextWriter _output;
         private readonly ICollection<ICommand> _commands;
         private bool _disposed;
 
-        public App(TextReader input, TextWriter output, ICollection<ICommand> commands)
+        public CommandRouter(TextReader input, TextWriter output, ICollection<ICommand> commands)
         {
             _input = input;
             _output = output;

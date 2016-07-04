@@ -9,9 +9,9 @@ using Sonneville.Fidelity.Shell.AppStartup;
 namespace Sonneville.Fidelity.Shell.Test.AppStartup
 {
     [TestFixture]
-    public class AppTests
+    public class CommandRouterTests
     {
-        private App _app;
+        private CommandRouter _commandRouter;
         private string[] _cliArgs;
         private StreamWriter _inputWriter;
         private StreamReader _outputReader;
@@ -40,7 +40,7 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
             };
 
 
-            _app = new App(_inputReader, _outputWriter, _commands);
+            _commandRouter = new CommandRouter(_inputReader, _outputWriter, _commands);
         }
 
         [TearDown]
@@ -48,19 +48,19 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
         {
             _inputWriter.Dispose();
             _outputReader.Dispose();
-            _app.Dispose();
+            _commandRouter.Dispose();
         }
 
         [Test]
         public void DisposeShouldNotThrow()
         {
-            Assert.DoesNotThrow(() => _app.Dispose());
+            Assert.DoesNotThrow(() => _commandRouter.Dispose());
         }
 
         [Test]
         public void RunShouldWaitForExitCommand()
         {
-            _task = Task.Run(() => _app.Run(_cliArgs));
+            _task = Task.Run(() => _commandRouter.Run(_cliArgs));
             _task.Wait(1000);
             Assert.IsFalse(_task.IsCompleted);
 
@@ -73,7 +73,7 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
         [Test]
         public void HelpCommandShouldPrintHelp()
         {
-            _task = Task.Run(() => _app.Run(_cliArgs));
+            _task = Task.Run(() => _commandRouter.Run(_cliArgs));
 
             SendInput("help");
 
@@ -83,7 +83,7 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
         [Test]
         public void UnknownCommandShouldPrintHelp()
         {
-            _task = Task.Run(() => _app.Run(_cliArgs));
+            _task = Task.Run(() => _commandRouter.Run(_cliArgs));
 
             SendInput("asdf");
 

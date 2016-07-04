@@ -74,7 +74,7 @@
   <ItemGroup>
     <Compile Include="AccountRebalancer.cs" />
     <Compile Include="AllocationDifferencer.cs" />
-    <Compile Include="AppStartup\App.cs" />
+    <Compile Include="AppStartup\CommandRouter.cs" />
     <Compile Include="AppStartup\AppModule.cs" />
     <Compile Include="AppStartup\Bootstrapper.cs" />
     <Compile Include="AppStartup\CommandLineOptionsParser.cs" />

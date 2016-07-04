@@ -22,8 +22,8 @@ namespace Sonneville.Fidelity.Shell.AppStartup
 
             Bind<IWebDriver>().To<ChromeDriver>().InSingletonScope();
 
-            Bind<TextReader>().ToConstant(Console.In).WhenInjectedInto<IApp>();
-            Bind<TextWriter>().ToConstant(Console.Out).WhenInjectedInto<IApp>();
+            Bind<TextReader>().ToConstant(Console.In).WhenInjectedInto<ICommandRouter>();
+            Bind<TextWriter>().ToConstant(Console.Out).WhenInjectedInto<ICommandRouter>();
 
             BindConfig(IsolatedStorageFile.GetUserStoreForAssembly());
         }

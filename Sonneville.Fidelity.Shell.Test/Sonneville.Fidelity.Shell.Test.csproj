@@ -84,7 +84,7 @@
   <ItemGroup>
     <Compile Include="AccountRebalancerTests.cs" />
     <Compile Include="AllocationDifferencerTests.cs" />
-    <Compile Include="AppStartup\AppTests.cs" />
+    <Compile Include="AppStartup\CommandRouterTests.cs" />
     <Compile Include="AppStartup\BootstrapperTests.cs" />
     <Compile Include="AppStartup\CommandLineOptionsParserTests.cs" />
     <Compile Include="AppStartup\KernelBuilderTests.cs" />

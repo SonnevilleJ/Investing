@@ -14,9 +14,9 @@ namespace Sonneville.Fidelity.Shell.AppStartup
         public static void Main(string[] args)
         {
             using (Kernel)
-            using (var app = Kernel.Get<IApp>())
+            using (var commandRouter = Kernel.Get<ICommandRouter>())
             {
-                app.Run(args);
+                commandRouter.Run(args);
             }
         }
     }

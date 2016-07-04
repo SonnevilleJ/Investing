@@ -25,14 +25,14 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
         [Test]
         public void ShouldPassArgumentsToAppAndDispose()
         {
-            var appMock = new Mock<IApp>();
-            _kernel.Rebind<IApp>().ToConstant(appMock.Object);
+            var commandRouterMock = new Mock<ICommandRouter>();
+            _kernel.Rebind<ICommandRouter>().ToConstant(commandRouterMock.Object);
 
             var cliArgs = new[] {"1", "2", "3"};
             Bootstrapper.Main(cliArgs);
 
-            appMock.Verify(app => app.Run(cliArgs), Times.Once());
-            appMock.Verify(app => app.Dispose());
+            commandRouterMock.Verify(app => app.Run(cliArgs), Times.Once());
+            commandRouterMock.Verify(app => app.Dispose());
             Assert.IsTrue(_kernel.IsDisposed);
         }
     }
