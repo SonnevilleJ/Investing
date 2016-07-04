@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace Sonneville.Fidelity.Shell
 {
@@ -8,6 +9,6 @@ namespace Sonneville.Fidelity.Shell
 
         bool ExitAfter { get; }
 
-        void Invoke(TextReader inputReader, TextWriter outputWriter, string fullInput);
+        void Invoke(TextReader inputReader, TextWriter outputWriter, IEnumerable<string> fullInput);
     }
 }

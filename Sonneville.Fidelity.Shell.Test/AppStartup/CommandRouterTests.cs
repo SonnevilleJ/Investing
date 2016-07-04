@@ -67,8 +67,23 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
 
             SendInput(fullInput);
 
-            AssertCommandWasInvoked(expectedCommand, fullInput);
+            AssertCommandWasInvoked(expectedCommand, fullInput.Split(' '));
             Assert.AreEqual(shouldExit, _task.IsCompleted);
+        }
+
+        [Test]
+        [TestCase("help", "help 1 2 3 4")]
+        [TestCase("help", "asdf")]
+        [TestCase("exit", "exit")]
+        public void ShouldInvokeCommandFromCliArgsThenExit(string expectedCommand, string fullInput)
+        {
+            _cliArgs = fullInput.Split(' ');
+
+            _task = Task.Run(() => _commandRouter.Run(_cliArgs));
+            _task.Wait(100);
+
+            AssertCommandWasInvoked(expectedCommand, fullInput.Split(' '));
+            Assert.IsTrue(_task.IsCompleted);
         }
 
         private ICommand CreateCommand(string commandName, bool exitAfter)
@@ -87,7 +102,7 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
             _task.Wait(100);
         }
 
-        private void AssertCommandWasInvoked(string commandName, string fullInput)
+        private void AssertCommandWasInvoked(string commandName, IReadOnlyList<string> fullInput)
         {
             Mock.Get(_commands.Single(command => command.CommandName == commandName))
                 .Verify(command => command.Invoke(_inputReader, _outputWriter, fullInput));

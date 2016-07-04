@@ -7,7 +7,7 @@ namespace Sonneville.Fidelity.Shell.AppStartup
 {
     public interface ICommandRouter : IDisposable
     {
-        void Run(IEnumerable<string> args);
+        void Run(IReadOnlyList<string> args);
     }
 
     public class CommandRouter : ICommandRouter
@@ -24,22 +24,33 @@ namespace Sonneville.Fidelity.Shell.AppStartup
             _commands = commands;
         }
 
-        public void Run(IEnumerable<string> args)
+        public void Run(IReadOnlyList<string> args)
         {
-            var exit = false;
-            while (!_disposed && !exit)
+            if (args.Any())
             {
-                var readLine = _input.ReadLine();
-
-                if (readLine != null)
-                {
-                    var maybeCommand = GetCommand(readLine.Split(' ')[0]);
-                    maybeCommand.Invoke(_input, _output, readLine);
-                    if (maybeCommand.ExitAfter)
-                        exit = true;
-                }
+                RunCommand(args);
             }
-            _output.WriteLine("Exiting...");
+            else
+            {
+                var exit = false;
+                while (!_disposed && !exit)
+                {
+                    var readLine = _input.ReadLine();
+
+                    if (readLine != null)
+                    {
+                        exit = RunCommand(readLine.Split(' '));
+                    }
+                }
+                _output.WriteLine("Exiting...");
+            }
+        }
+
+        private bool RunCommand(IReadOnlyList<string> tokens)
+        {
+            var maybeCommand = GetCommand(tokens[0]);
+            maybeCommand.Invoke(_input, _output, tokens);
+            return maybeCommand.ExitAfter;
         }
 
         private ICommand GetCommand(string commandName)
