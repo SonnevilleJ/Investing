@@ -58,36 +58,17 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
         }
 
         [Test]
-        public void RunShouldWaitForExitCommand()
-        {
-            _task = Task.Run(() => _commandRouter.Run(_cliArgs));
-            _task.Wait(1000);
-            Assert.IsFalse(_task.IsCompleted);
-
-            SendInput("exit");
-
-            AssertCommandWasInvoked("exit");
-            Assert.IsTrue(_task.IsCompleted);
-        }
-
-        [Test]
-        public void HelpCommandShouldPrintHelp()
+        [TestCase("help", "help 1 2 3 4", false)]
+        [TestCase("help", "asdf", false)]
+        [TestCase("exit", "exit", true)]
+        public void ShouldInvokeCommand(string expectedCommand, string fullInput, bool shouldExit)
         {
             _task = Task.Run(() => _commandRouter.Run(_cliArgs));
 
-            SendInput("help");
+            SendInput(fullInput);
 
-            AssertCommandWasInvoked("help");
-        }
-
-        [Test]
-        public void UnknownCommandShouldPrintHelp()
-        {
-            _task = Task.Run(() => _commandRouter.Run(_cliArgs));
-
-            SendInput("asdf");
-
-            AssertCommandWasInvoked("help");
+            AssertCommandWasInvoked(expectedCommand, fullInput);
+            Assert.AreEqual(shouldExit, _task.IsCompleted);
         }
 
         private ICommand CreateCommand(string commandName, bool exitAfter)
@@ -106,10 +87,10 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
             _task.Wait(100);
         }
 
-        private void AssertCommandWasInvoked(string commandName)
+        private void AssertCommandWasInvoked(string commandName, string fullInput)
         {
             Mock.Get(_commands.Single(command => command.CommandName == commandName))
-                .Verify(command => command.Invoke(_inputReader, _outputWriter));
+                .Verify(command => command.Invoke(_inputReader, _outputWriter, fullInput));
         }
     }
 }

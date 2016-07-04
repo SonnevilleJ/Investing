@@ -33,10 +33,8 @@ namespace Sonneville.Fidelity.Shell.AppStartup
 
                 if (readLine != null)
                 {
-                    var lines = readLine.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
-
-                    var maybeCommand = GetCommand(lines[0].ToLowerInvariant());
-                    maybeCommand.Invoke(_input, _output);
+                    var maybeCommand = GetCommand(readLine.Split(' ')[0]);
+                    maybeCommand.Invoke(_input, _output, readLine);
                     if (maybeCommand.ExitAfter)
                         exit = true;
                 }

@@ -8,6 +8,6 @@ namespace Sonneville.Fidelity.Shell
 
         bool ExitAfter { get; }
 
-        void Invoke(TextReader inputReader, TextWriter outputWriter);
+        void Invoke(TextReader inputReader, TextWriter outputWriter, string fullInput);
     }
 }
