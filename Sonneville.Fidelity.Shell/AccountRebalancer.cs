@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
 using Sonneville.FidelityWebDriver.Positions;
-using Sonneville.Investing.PortfolioManager.Configuration;
-using Sonneville.Investing.PortfolioManager.FidelityWebDriver;
+using Sonneville.Fidelity.Shell.Configuration;
+using Sonneville.Fidelity.Shell.FidelityWebDriver;
 using Sonneville.Investing.Trading;
 
-namespace Sonneville.Investing.PortfolioManager
+namespace Sonneville.Fidelity.Shell
 {
     public interface IAccountRebalancer : IDisposable
     {

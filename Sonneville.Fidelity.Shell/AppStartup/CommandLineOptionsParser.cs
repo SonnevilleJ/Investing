@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using NDesk.Options;
 using Sonneville.FidelityWebDriver.Configuration;
-using Sonneville.Investing.PortfolioManager.Configuration;
+using Sonneville.Fidelity.Shell.Configuration;
 using Sonneville.Investing.Trading;
 
-namespace Sonneville.Investing.PortfolioManager.AppStartup
+namespace Sonneville.Fidelity.Shell.AppStartup
 {
     public interface ICommandLineOptionsParser
     {

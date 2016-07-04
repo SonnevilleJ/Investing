@@ -1,7 +1,7 @@
 using Sonneville.Investing.Trading;
 using FidelityAccountType = Sonneville.FidelityWebDriver.Data.AccountType;
 
-namespace Sonneville.Investing.PortfolioManager.FidelityWebDriver
+namespace Sonneville.Fidelity.Shell.FidelityWebDriver
 {
     public class AccountTypeMapper
     {

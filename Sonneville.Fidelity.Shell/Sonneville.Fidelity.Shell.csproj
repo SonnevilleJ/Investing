@@ -7,8 +7,8 @@
     <ProjectGuid>{E3F2B1D9-2BDD-4AE3-A04D-5444E2DE871C}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Sonneville.Investing.PortfolioManager</RootNamespace>
-    <AssemblyName>Sonneville.Investing.PortfolioManager</AssemblyName>
+    <RootNamespace>Sonneville.Fidelity.Shell</RootNamespace>
+    <AssemblyName>Sonneville.Fidelity.Shell</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -36,7 +36,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Sonneville.Investing.PortfolioManager.AppStartup.Bootstrapper</StartupObject>
+    <StartupObject>Sonneville.Fidelity.Shell.AppStartup.Bootstrapper</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NDesk.Options, Version=0.2.1.0, Culture=neutral, processorArchitecture=MSIL">

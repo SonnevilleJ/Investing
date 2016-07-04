@@ -2,7 +2,7 @@
 using Sonneville.Investing.Trading;
 using Westwind.Utilities.Configuration;
 
-namespace Sonneville.Investing.PortfolioManager.Configuration
+namespace Sonneville.Fidelity.Shell.Configuration
 {
     public class PortfolioManagerConfiguration : AppConfiguration
     {

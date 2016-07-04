@@ -3,12 +3,12 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using NUnit.Framework;
 using Sonneville.FidelityWebDriver.Configuration;
-using Sonneville.Investing.PortfolioManager.AppStartup;
-using Sonneville.Investing.PortfolioManager.Configuration;
+using Sonneville.Fidelity.Shell.AppStartup;
+using Sonneville.Fidelity.Shell.Configuration;
 using Sonneville.Investing.Trading;
 using Sonneville.Utilities.Configuration;
 
-namespace Sonneville.Investing.PortfolioManager.Test.AppStartup
+namespace Sonneville.Fidelity.Shell.Test.AppStartup
 {
     [TestFixture]
     public class CommandLineOptionsParserTests

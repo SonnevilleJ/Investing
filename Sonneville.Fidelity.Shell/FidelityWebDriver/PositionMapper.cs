@@ -4,7 +4,7 @@ using System.Linq;
 using Sonneville.FidelityWebDriver.Data;
 using Position = Sonneville.Investing.Trading.Position;
 
-namespace Sonneville.Investing.PortfolioManager.FidelityWebDriver
+namespace Sonneville.Fidelity.Shell.FidelityWebDriver
 {
     public interface IPositionMapper
     {

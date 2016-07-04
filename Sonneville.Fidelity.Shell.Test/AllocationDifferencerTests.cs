@@ -3,7 +3,7 @@ using System.Linq;
 using NUnit.Framework;
 using Sonneville.Investing.Trading;
 
-namespace Sonneville.Investing.PortfolioManager.Test
+namespace Sonneville.Fidelity.Shell.Test
 {
     [TestFixture]
     public class AllocationDifferencerTests

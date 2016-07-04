@@ -3,7 +3,7 @@ using System.Linq;
 using Sonneville.FidelityWebDriver.Data;
 using Sonneville.Investing.Trading;
 
-namespace Sonneville.Investing.PortfolioManager.FidelityWebDriver
+namespace Sonneville.Fidelity.Shell.FidelityWebDriver
 {
     public interface IAccountMapper
     {

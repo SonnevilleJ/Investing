@@ -6,13 +6,13 @@ using Moq;
 using NUnit.Framework;
 using Sonneville.FidelityWebDriver.Data;
 using Sonneville.FidelityWebDriver.Positions;
-using Sonneville.Investing.PortfolioManager.Configuration;
-using Sonneville.Investing.PortfolioManager.FidelityWebDriver;
+using Sonneville.Fidelity.Shell.Configuration;
+using Sonneville.Fidelity.Shell.FidelityWebDriver;
 using Sonneville.Investing.Trading;
 using Sonneville.Utilities.Configuration;
 using AccountType = Sonneville.Investing.Trading.AccountType;
 
-namespace Sonneville.Investing.PortfolioManager.Test
+namespace Sonneville.Fidelity.Shell.Test
 {
     [TestFixture]
     public class AccountRebalancerTests

@@ -4,10 +4,10 @@ using Ninject.Modules;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using Sonneville.FidelityWebDriver.Configuration;
-using Sonneville.Investing.PortfolioManager.Configuration;
+using Sonneville.Fidelity.Shell.Configuration;
 using Sonneville.Utilities.Configuration;
 
-namespace Sonneville.Investing.PortfolioManager.AppStartup
+namespace Sonneville.Fidelity.Shell.AppStartup
 {
     public class AppModule : NinjectModule
     {

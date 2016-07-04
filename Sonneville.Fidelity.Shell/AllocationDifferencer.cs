@@ -2,7 +2,7 @@
 using System.Linq;
 using Sonneville.Investing.Trading;
 
-namespace Sonneville.Investing.PortfolioManager
+namespace Sonneville.Fidelity.Shell
 {
     public interface IAllocationDifferencer
     {

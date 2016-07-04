@@ -6,8 +6,8 @@
     <ProjectGuid>{C006EEA0-8961-4D4F-87A3-1787991997E8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Sonneville.Investing.PortfolioManager.Test</RootNamespace>
-    <AssemblyName>Sonneville.Investing.PortfolioManager.Test</AssemblyName>
+    <RootNamespace>Sonneville.Fidelity.Shell.Test</RootNamespace>
+    <AssemblyName>Sonneville.Fidelity.Shell.Test</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -99,9 +99,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Sonneville.Investing.PortfolioManager\Sonneville.Investing.PortfolioManager.csproj">
+    <ProjectReference Include="..\Sonneville.Fidelity.Shell\Sonneville.Fidelity.Shell.csproj">
       <Project>{E3F2B1D9-2BDD-4AE3-A04D-5444E2DE871C}</Project>
-      <Name>Sonneville.Investing.PortfolioManager</Name>
+      <Name>Sonneville.Fidelity.Shell</Name>
     </ProjectReference>
     <ProjectReference Include="..\Sonneville.Investing\Sonneville.Investing.csproj">
       <Project>{89A1A8E9-DD0F-40BC-B4F1-FCDED6910E35}</Project>

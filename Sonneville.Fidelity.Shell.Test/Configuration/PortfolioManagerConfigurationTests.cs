@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.IO.IsolatedStorage;
 using NUnit.Framework;
-using Sonneville.Investing.PortfolioManager.Configuration;
+using Sonneville.Fidelity.Shell.Configuration;
 using Sonneville.Investing.Trading;
 using Sonneville.Utilities.Configuration;
 
-namespace Sonneville.Investing.PortfolioManager.Test.Configuration
+namespace Sonneville.Fidelity.Shell.Test.Configuration
 {
     [TestFixture]
     public class PortfolioManagerConfigurationTests

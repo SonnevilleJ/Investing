@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Sonneville.Investing.PortfolioManager.AppStartup
+namespace Sonneville.Fidelity.Shell.AppStartup
 {
     public interface IApp : IDisposable
     {

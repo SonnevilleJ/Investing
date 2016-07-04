@@ -1,9 +1,9 @@
 ﻿using System;
 using Moq;
 using NUnit.Framework;
-using Sonneville.Investing.PortfolioManager.AppStartup;
+using Sonneville.Fidelity.Shell.AppStartup;
 
-namespace Sonneville.Investing.PortfolioManager.Test.AppStartup
+namespace Sonneville.Fidelity.Shell.Test.AppStartup
 {
     [TestFixture]
     public class AppTests

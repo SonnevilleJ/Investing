@@ -3,11 +3,11 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 using Sonneville.FidelityWebDriver.Data;
-using Sonneville.Investing.PortfolioManager.FidelityWebDriver;
+using Sonneville.Fidelity.Shell.FidelityWebDriver;
 using FidelityPosition = Sonneville.FidelityWebDriver.Data.Position;
 using Position = Sonneville.Investing.Trading.Position;
 
-namespace Sonneville.Investing.PortfolioManager.Test.FidelityWebDriver
+namespace Sonneville.Fidelity.Shell.Test.FidelityWebDriver
 {
     [TestFixture]
     public class AccountMapperTests
@@ -34,7 +34,7 @@ namespace Sonneville.Investing.PortfolioManager.Test.FidelityWebDriver
 
             Assert.AreEqual(accountDetails.AccountNumber, mappedAccount.AccountId);
             Assert.AreEqual(accountDetails.PendingActivity, mappedAccount.PendingFunds);
-            Assert.AreEqual(Trading.AccountType.RetirementAccount, mappedAccount.AccountType);
+            Assert.AreEqual(Investing.Trading.AccountType.RetirementAccount, mappedAccount.AccountType);
             CollectionAssert.AreEquivalent(mappedPositions, mappedAccount.Positions);
         }
 

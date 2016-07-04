@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using Sonneville.FidelityWebDriver.Data;
-using Sonneville.Investing.PortfolioManager.FidelityWebDriver;
+using Sonneville.Fidelity.Shell.FidelityWebDriver;
 using TradingPosition = Sonneville.Investing.Trading.Position;
 using WebDriverPosition = Sonneville.FidelityWebDriver.Data.Position;
 
-namespace Sonneville.Investing.PortfolioManager.Test.FidelityWebDriver
+namespace Sonneville.Fidelity.Shell.Test.FidelityWebDriver
 {
     [TestFixture]
     public class PositionMapperTests
