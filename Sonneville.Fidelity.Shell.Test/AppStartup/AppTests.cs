@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
@@ -10,27 +12,35 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
     public class AppTests
     {
         private App _app;
-        private Mock<IAccountRebalancer> _accountRebalancerMock;
         private string[] _cliArgs;
         private StreamWriter _inputWriter;
         private StreamReader _outputReader;
         private Task _task;
+        private List<ICommand> _commands;
+        private StreamReader _inputReader;
+        private StreamWriter _outputWriter;
 
         [SetUp]
         public void Setup()
         {
             _cliArgs = new string[0];
 
-            _accountRebalancerMock = new Mock<IAccountRebalancer>();
-
             var inputStream = new MemoryStream();
+            _inputReader = new StreamReader(inputStream);
             _inputWriter = new StreamWriter(inputStream) {AutoFlush = true};
 
             var outputStream = new MemoryStream();
             _outputReader = new StreamReader(outputStream);
+            _outputWriter = new StreamWriter(outputStream) {AutoFlush = true};
 
-            _app = new App(_accountRebalancerMock.Object, new StreamReader(inputStream),
-                new StreamWriter(outputStream) {AutoFlush = true});
+            _commands = new List<ICommand>
+            {
+                CreateCommand("help", false),
+                CreateCommand("exit", true)
+            };
+
+
+            _app = new App(_inputReader, _outputWriter, _commands);
         }
 
         [TearDown]
@@ -44,10 +54,7 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
         [Test]
         public void DisposeShouldNotThrow()
         {
-            _app.Dispose();
-            _app.Dispose();
-
-            _accountRebalancerMock.Verify(rebalancer => rebalancer.Dispose());
+            Assert.DoesNotThrow(() => _app.Dispose());
         }
 
         [Test]
@@ -57,8 +64,9 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
             _task.Wait(1000);
             Assert.IsFalse(_task.IsCompleted);
 
-            SendCommand("exit");
+            SendInput("exit");
 
+            AssertCommandWasInvoked("exit");
             Assert.IsTrue(_task.IsCompleted);
         }
 
@@ -67,10 +75,9 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
         {
             _task = Task.Run(() => _app.Run(_cliArgs));
 
-            SendCommand("help");
+            SendInput("help");
 
-            var lines = ReadOutput();
-            AssertHelpWasPrinted(lines);
+            AssertCommandWasInvoked("help");
         }
 
         [Test]
@@ -78,30 +85,31 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
         {
             _task = Task.Run(() => _app.Run(_cliArgs));
 
-            SendCommand("asdf");
+            SendInput("asdf");
 
-            var lines = ReadOutput();
-            Assert.IsTrue(lines.Contains("Unknown"));
-            AssertHelpWasPrinted(lines);
+            AssertCommandWasInvoked("help");
         }
 
-        private void SendCommand(string format)
+        private ICommand CreateCommand(string commandName, bool exitAfter)
+        {
+            var mockCommand = new Mock<ICommand>();
+            mockCommand.SetupGet(command => command.CommandName).Returns(commandName);
+            mockCommand.SetupGet(command => command.ExitAfter).Returns(exitAfter);
+            return mockCommand.Object;
+        }
+
+        private void SendInput(string text)
         {
             _inputWriter.BaseStream.Position = 0;
-            _inputWriter.WriteLine(format);
+            _inputWriter.WriteLine(text);
             _inputWriter.BaseStream.Position = 0;
-            _task.Wait(1000);
+            _task.Wait(100);
         }
 
-        private string ReadOutput()
+        private void AssertCommandWasInvoked(string commandName)
         {
-            _outputReader.BaseStream.Position = 0;
-            return _outputReader.ReadToEnd();
-        }
-
-        private void AssertHelpWasPrinted(string lines)
-        {
-            Assert.IsTrue(lines.Contains("usage"), $"Output wasn't as expected. Actual output: {lines}");
+            Mock.Get(_commands.Single(command => command.CommandName == commandName))
+                .Verify(command => command.Invoke(_inputReader, _outputWriter));
         }
     }
 }

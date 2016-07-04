@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Sonneville.Fidelity.Shell.AppStartup
 {
@@ -11,16 +12,16 @@ namespace Sonneville.Fidelity.Shell.AppStartup
 
     public class App : IApp
     {
-        private readonly IAccountRebalancer _accountRebalancer;
         private readonly TextReader _input;
         private readonly TextWriter _output;
+        private readonly ICollection<ICommand> _commands;
         private bool _disposed;
 
-        public App(IAccountRebalancer accountRebalancer, TextReader input, TextWriter output)
+        public App(TextReader input, TextWriter output, ICollection<ICommand> commands)
         {
-            _accountRebalancer = accountRebalancer;
             _input = input;
             _output = output;
+            _commands = commands;
         }
 
         public void Run(IEnumerable<string> args)
@@ -34,27 +35,19 @@ namespace Sonneville.Fidelity.Shell.AppStartup
                 {
                     var lines = readLine.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
 
-                    switch (lines[0].ToLowerInvariant())
-                    {
-                        case "help":
-                            PrintHelp(_output);
-                            break;
-                        case "exit":
-                            exit = true;
-                            break;
-                        default:
-                            _output.WriteLine($"Unknown command: {lines[0]}");
-                            PrintHelp(_output);
-                            break;
-                    }
+                    var maybeCommand = GetCommand(lines[0].ToLowerInvariant());
+                    maybeCommand.Invoke(_input, _output);
+                    if (maybeCommand.ExitAfter)
+                        exit = true;
                 }
             }
             _output.WriteLine("Exiting...");
         }
 
-        private static void PrintHelp(TextWriter textWriter)
+        private ICommand GetCommand(string commandName)
         {
-            textWriter.WriteLine("usage");
+            return _commands.SingleOrDefault(c => c.CommandName == commandName) ??
+                   _commands.Single(c => c.CommandName == "help");
         }
 
         public void Dispose()
@@ -67,7 +60,6 @@ namespace Sonneville.Fidelity.Shell.AppStartup
             if (disposing)
             {
                 _disposed = true;
-                _accountRebalancer?.Dispose();
             }
         }
     }
