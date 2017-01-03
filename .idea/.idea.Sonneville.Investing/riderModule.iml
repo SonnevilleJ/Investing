@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="RIDER_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$/../..">
+      <sourceFolder url="file://$MODULE_DIR$/../../LICENSE.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../README.md" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../Sonneville.Fidelity.Shell" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../Sonneville.Fidelity.Shell.Test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../Sonneville.Investing" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../Sonneville.Investing.Persistence" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../Sonneville.Investing.Persistence.Test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../Sonneville.Investing.Test" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Sonneville.Fidelity.Shell.Test/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Sonneville.Fidelity.Shell.Test/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Sonneville.Fidelity.Shell/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Sonneville.Fidelity.Shell/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Sonneville.Investing.Persistence.Test/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Sonneville.Investing.Persistence.Test/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Sonneville.Investing.Persistence/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Sonneville.Investing.Persistence/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Sonneville.Investing.Test/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Sonneville.Investing.Test/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Sonneville.Investing/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Sonneville.Investing/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../_ReSharper.Caches/ReSharperHost8.Sonneville.Investing.00" />
+      <excludeFolder url="file://$MODULE_DIR$/../../packages" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
