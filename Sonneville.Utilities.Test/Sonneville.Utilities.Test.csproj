@@ -61,7 +61,7 @@
     <Compile Include="Extensions\EnumerableExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflection\ExecutingAssemblyInfoTests.cs" />
-    <Compile Include="SleepUtilTests.cs" />
+    <Compile Include="Sleepers\SleepUtilTests.cs"/>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Sonneville.Utilities\Sonneville.Utilities.csproj">
