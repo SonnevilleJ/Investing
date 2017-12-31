@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Sonneville.Fidelity.Shell.AppStartup
+namespace Sonneville.Fidelity.Shell.Interface
 {
     public interface ICommandRouter : IDisposable
     {
@@ -12,15 +12,15 @@ namespace Sonneville.Fidelity.Shell.AppStartup
 
     public class CommandRouter : ICommandRouter
     {
-        private readonly TextReader _input;
-        private readonly TextWriter _output;
-        private readonly ICollection<ICommand> _commands;
+        private readonly TextReader _inputReader;
+        private readonly TextWriter _outputWriter;
+        private readonly IReadOnlyCollection<ICommand> _commands;
         private bool _disposed;
 
-        public CommandRouter(TextReader input, TextWriter output, ICollection<ICommand> commands)
+        public CommandRouter(TextReader inputReader, TextWriter outputWriter, ICommand[] commands)
         {
-            _input = input;
-            _output = output;
+            _inputReader = inputReader;
+            _outputWriter = outputWriter;
             _commands = commands;
         }
 
@@ -32,25 +32,24 @@ namespace Sonneville.Fidelity.Shell.AppStartup
             }
             else
             {
-                var exit = false;
+                var exit = RunCommand(new[] {"info"});
                 while (!_disposed && !exit)
                 {
-                    var readLine = _input.ReadLine();
+                    var commandString = _inputReader.ReadLine();
 
-                    if (readLine != null)
+                    if (commandString != null)
                     {
-                        exit = RunCommand(readLine.Split(' '));
+                        exit = RunCommand(commandString.Split(' '));
                     }
                 }
-                _output.WriteLine("Exiting...");
             }
         }
 
         private bool RunCommand(IReadOnlyList<string> tokens)
         {
-            var maybeCommand = GetCommand(tokens[0]);
-            maybeCommand.Invoke(_input, _output, tokens);
-            return maybeCommand.ExitAfter;
+            var command = GetCommand(tokens[0].ToLowerInvariant());
+            command.Invoke(_inputReader, _outputWriter, tokens);
+            return command.ExitAfter;
         }
 
         private ICommand GetCommand(string commandName)

@@ -7,7 +7,7 @@ using Sonneville.FidelityWebDriver.Configuration;
 using Sonneville.Investing.Trading;
 using Sonneville.Utilities.Configuration;
 
-namespace Sonneville.Fidelity.Shell.AppStartup
+namespace Sonneville.Fidelity.Shell.Interface
 {
     public interface ICommandLineOptionsParser
     {

@@ -4,6 +4,7 @@ using Moq;
 using NUnit.Framework;
 using Sonneville.Fidelity.Shell.AppStartup;
 using Sonneville.Fidelity.Shell.Configuration;
+using Sonneville.Fidelity.Shell.Interface;
 using Sonneville.FidelityWebDriver.Configuration;
 using Sonneville.Investing.Trading;
 using Sonneville.Utilities.Configuration;

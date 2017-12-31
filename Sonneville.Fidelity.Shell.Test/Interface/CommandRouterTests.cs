@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
-using Sonneville.Fidelity.Shell.AppStartup;
+using Sonneville.Fidelity.Shell.Interface;
 
-namespace Sonneville.Fidelity.Shell.Test.AppStartup
+namespace Sonneville.Fidelity.Shell.Test.Interface
 {
     [TestFixture]
     public class CommandRouterTests
@@ -36,11 +36,11 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
             _commands = new List<ICommand>
             {
                 CreateCommand("help", false),
+                CreateCommand("info", false),
                 CreateCommand("exit", true)
             };
 
-
-            _commandRouter = new CommandRouter(_inputReader, _outputWriter, _commands);
+            _commandRouter = new CommandRouter(_inputReader, _outputWriter, _commands.ToArray());
         }
 
         [TearDown]
@@ -58,17 +58,43 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
         }
 
         [Test]
+        [TestCase("help", "help", false)]
         [TestCase("help", "help 1 2 3 4", false)]
         [TestCase("help", "asdf", false)]
         [TestCase("exit", "exit", true)]
-        public void ShouldInvokeCommand(string expectedCommand, string fullInput, bool shouldExit)
+        public void ShouldInvokeCommandFromInputAndWait(string expectedCommand, string fullInput, bool shouldExit)
         {
             _task = Task.Run(() => _commandRouter.Run(_cliArgs));
 
             SendInput(fullInput);
+            _task.Wait(100);
 
             AssertCommandWasInvoked(expectedCommand, fullInput.Split(' '));
             Assert.AreEqual(shouldExit, _task.IsCompleted);
+        }
+
+        [Test]
+        [TestCase("exit", "EXIT", true)]
+        [TestCase("exit", "eXiT", true)]
+        public void ShouldBeCaseInsensitive(string expectedCommand, string fullInput, bool shouldExit)
+        {
+            _task = Task.Run(() => _commandRouter.Run(_cliArgs));
+
+            SendInput(fullInput);
+            _task.Wait(100);
+
+            AssertCommandWasInvoked(expectedCommand, fullInput.Split(' '));
+            Assert.AreEqual(shouldExit, _task.IsCompleted);
+        }
+
+        [Test]
+        public void ShouldInvokeInfoCommandAndWait()
+        {
+            _task = Task.Run(() => _commandRouter.Run(_cliArgs));
+            _task.Wait(100);
+
+            AssertCommandWasInvoked("info", new[]{"info"});
+            Assert.IsFalse(_task.IsCompleted);
         }
 
         [Test]
@@ -77,12 +103,12 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
         [TestCase("exit", "exit")]
         public void ShouldInvokeCommandFromCliArgsThenExit(string expectedCommand, string fullInput)
         {
-            _cliArgs = fullInput.Split(' ');
+            var cliArgs = fullInput.Split(' ');
 
-            _task = Task.Run(() => _commandRouter.Run(_cliArgs));
+            _task = Task.Run(() => _commandRouter.Run(cliArgs));
             _task.Wait(100);
 
-            AssertCommandWasInvoked(expectedCommand, fullInput.Split(' '));
+            AssertCommandWasInvoked(expectedCommand, cliArgs);
             Assert.IsTrue(_task.IsCompleted);
         }
 
@@ -102,10 +128,10 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
             _task.Wait(100);
         }
 
-        private void AssertCommandWasInvoked(string commandName, IReadOnlyList<string> fullInput)
+        private void AssertCommandWasInvoked(string commandName, IReadOnlyList<string> fullInput, int times = 1)
         {
             Mock.Get(_commands.Single(command => command.CommandName == commandName))
-                .Verify(command => command.Invoke(_inputReader, _outputWriter, fullInput));
+                .Verify(command => command.Invoke(_inputReader, _outputWriter, fullInput), Times.Exactly(times));
         }
     }
 }

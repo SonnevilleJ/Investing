@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-namespace Sonneville.Fidelity.Shell
+namespace Sonneville.Fidelity.Shell.Interface
 {
     public interface ICommand
     {
