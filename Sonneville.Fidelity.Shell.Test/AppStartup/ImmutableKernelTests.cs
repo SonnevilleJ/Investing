@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using Moq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Ninject;
 using NUnit.Framework;
 using OpenQA.Selenium;
@@ -14,18 +14,12 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
     [TestFixture]
     public class ImmutableKernelTests
     {
-        private static Mock<IWebDriver> _webDriverMock;
-
         private static IKernel _kernel;
 
         [OneTimeSetUp]
         public void Setup()
         {
-            // mock out web driver because these tests focus on Ninject bindings, not Selenium
-            _webDriverMock = new Mock<IWebDriver>();
-
             _kernel = new KernelBuilder().Build();
-            _kernel.Rebind<IWebDriver>().ToConstant(_webDriverMock.Object);
         }
 
         [OneTimeTearDown]
@@ -46,27 +40,37 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
         [Test]
         public void ShouldBindApp()
         {
-            var commandRouter = _kernel.Get<ICommandRouter>();
-
-            Assert.IsNotNull(commandRouter);
+            using (var commandRouter = _kernel.Get<ICommandRouter>())
+            {
+                Assert.IsNotNull(commandRouter);
+            }
         }
 
         [Test]
         public void ShouldBindCommands()
         {
-            var commands = _kernel.GetAll<ICommand>().ToList();
+            List<ICommand> commands = null;
+            try
+            {
+                commands = _kernel.GetAll<ICommand>().ToList();
 
-            Assert.IsNotEmpty(commands);
-            CollectionAssert.AllItemsAreNotNull(commands);
+                Assert.IsNotEmpty(commands);
+                CollectionAssert.AllItemsAreNotNull(commands);
+            }
+            finally
+            {
+                commands?.ForEach(command => command.Dispose());
+            }
         }
 
         [Test]
         public void ShouldBindWebDriverAsSingleton()
         {
-            var webDriver = _kernel.Get<IWebDriver>();
-
-            Assert.IsNotNull(webDriver);
-            Assert.AreSame(webDriver, _kernel.Get<IWebDriver>());
+            using (var webDriver = _kernel.Get<IWebDriver>())
+            {
+                Assert.IsNotNull(webDriver);
+                Assert.AreSame(webDriver, _kernel.Get<IWebDriver>());
+            }
         }
 
         [Test]

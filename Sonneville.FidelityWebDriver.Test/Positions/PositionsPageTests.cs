@@ -4,7 +4,6 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using Sonneville.FidelityWebDriver.Data;
 using Sonneville.FidelityWebDriver.Positions;
-using Sonneville.Utilities.Sleepers;
 
 namespace Sonneville.FidelityWebDriver.Test.Positions
 {

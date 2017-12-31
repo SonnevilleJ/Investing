@@ -87,18 +87,12 @@
         <None Include="packages.config"/>
         <None Include="Sonneville.FidelityWebDriver.nuspec"/>
     </ItemGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\Sonneville.Utilities\Sonneville.Utilities.csproj">
-            <Project>{5366E2E8-3513-4779-9C73-004F6958CF72}</Project>
-            <Name>Sonneville.Utilities</Name>
-        </ProjectReference>
-    </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-             Other similar extension points exist, see Microsoft.Common.targets.
-        <Target Name="BeforeBuild">
-        </Target>
-        <Target Name="AfterBuild">
-        </Target>
-        -->
+               Other similar extension points exist, see Microsoft.Common.targets.
+          <Target Name="BeforeBuild">
+          </Target>
+          <Target Name="AfterBuild">
+          </Target>
+          -->
 </Project>

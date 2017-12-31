@@ -49,33 +49,33 @@
     <Compile Include="AccountRebalancerTests.cs" />
     <Compile Include="AllocationDifferencerTests.cs" />
     <Compile Include="AppStartup\BootstrapperTests.cs" />
-      <Compile Include="AppStartup\MutableKernelTests.cs"/>
-      <Compile Include="AppStartup\ImmutableKernelTests.cs"/>
+    <Compile Include="AppStartup\MutableKernelTests.cs"/>
+    <Compile Include="AppStartup\ImmutableKernelTests.cs"/>
     <Compile Include="Configuration\PortfolioManagerConfigurationTests.cs" />
     <Compile Include="FidelityWebDriver\AccountMapperTests.cs" />
     <Compile Include="FidelityWebDriver\AccountTypeMapperTests.cs" />
     <Compile Include="FidelityWebDriver\PositionMapperTests.cs" />
-      <Compile Include="Interface\CommandRouterTests.cs"/>
-      <Compile Include="Interface\DemoCommandTests.cs"/>
-      <Compile Include="Interface\ExitCommandTests.cs"/>
-      <Compile Include="Interface\HelpCommandTests.cs"/>
-      <Compile Include="Interface\InfoCommandTests.cs"/>
+    <Compile Include="Interface\CommandRouterTests.cs"/>
+    <Compile Include="Interface\DemoCommandTests.cs"/>
+    <Compile Include="Interface\ExitCommandTests.cs"/>
+    <Compile Include="Interface\HelpCommandTests.cs"/>
+    <Compile Include="Interface\InfoCommandTests.cs"/>
     <Compile Include="Properties\AssemblyInfo.cs" />
-      <Compile Include="TransactionTranslatorTests.cs"/>
+    <Compile Include="TransactionTranslatorTests.cs"/>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-      <None Include="packages.config"/>
+    <None Include="packages.config"/>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Sonneville.Fidelity.Shell\Sonneville.Fidelity.Shell.csproj">
       <Project>{E3F2B1D9-2BDD-4AE3-A04D-5444E2DE871C}</Project>
       <Name>Sonneville.Fidelity.Shell</Name>
     </ProjectReference>
-      <ProjectReference Include="..\Sonneville.FidelityWebDriver\Sonneville.FidelityWebDriver.csproj">
-          <Project>{79449998-2821-4929-8a3a-98637c477f85}</Project>
-          <Name>Sonneville.FidelityWebDriver</Name>
-      </ProjectReference>
+    <ProjectReference Include="..\Sonneville.FidelityWebDriver\Sonneville.FidelityWebDriver.csproj">
+      <Project>{79449998-2821-4929-8a3a-98637c477f85}</Project>
+      <Name>Sonneville.FidelityWebDriver</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sonneville.Investing\Sonneville.Investing.csproj">
       <Project>{89A1A8E9-DD0F-40BC-B4F1-FCDED6910E35}</Project>
       <Name>Sonneville.Investing</Name>
@@ -89,14 +89,11 @@
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc">
       <HintPath>..\packages\Castle.Core.4.2.1\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
-      <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a">
-          <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
-      </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Moq, Version=4.8.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920">
       <HintPath>..\packages\Moq.4.8.0\lib\net45\Moq.dll</HintPath>
-    </Reference>
-    <Reference Include="Nini, Version=1.1.0.0, Culture=neutral, PublicKeyToken=691faec150a7fa7b">
-      <HintPath>..\packages\Trove.Nini.1.1.0.0\lib\net20\Nini.dll</HintPath>
     </Reference>
     <Reference Include="Ninject, Version=2.3.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7">
       <HintPath>..\packages\Ninject.Mono.3.0.1.13\lib\net40\Ninject.dll</HintPath>
@@ -114,7 +111,7 @@
       <HintPath>..\packages\NUnit.3.9.0\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-      <Reference Include="System"/>
+    <Reference Include="System"/>
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.4.0\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
@@ -142,7 +139,6 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-    <Import Project="..\packages\Selenium.WebDriver.ChromeDriver.2.34.0\build\Selenium.WebDriver.ChromeDriver.targets" Condition="Exists('..\packages\Selenium.WebDriver.ChromeDriver.2.34.0\build\Selenium.WebDriver.ChromeDriver.targets')"/>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

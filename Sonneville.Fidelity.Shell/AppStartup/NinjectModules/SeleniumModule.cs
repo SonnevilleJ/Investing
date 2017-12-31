@@ -2,7 +2,6 @@
 using Ninject.Modules;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Remote;
 using Sonneville.Fidelity.Shell.log4net;
 
 namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
@@ -13,13 +12,10 @@ namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
         {
             try
             {
-                var remoteAddress = new Uri("http://localhost:4444/wd/hub");
-                var actualWebDriver = new RemoteWebDriver(remoteAddress, new ChromeOptions());
-
                 Kernel.Unbind<IWebDriver>();
 
                 Kernel.Bind<IWebDriver>()
-                    .ToConstant(actualWebDriver)
+                    .To<ChromeDriver>()
                     .WhenInjectedInto<LoggingWebDriver>()
                     .InSingletonScope();
 
