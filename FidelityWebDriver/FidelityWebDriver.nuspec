@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://github.com/SonnevilleJ/FidelityWebDriver/blob/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/SonnevilleJ/FidelityWebDriver/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A wrapper around Selenium WebDriver used to perform semantic driving of the Fidelity website.</description>
+    <copyright>Copyright 2015 John Sonneville</copyright>
+    <tags>Fidelity</tags>
+  </metadata>
+</package>

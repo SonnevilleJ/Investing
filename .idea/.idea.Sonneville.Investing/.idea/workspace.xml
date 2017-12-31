@@ -22,7 +22,108 @@
     <option name="FILTER_BY_CURRENT_PROJECT" value="true" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="90acb1dd-e86a-496e-a093-36e4fcd1d69a" name="Default" comment="" />
+    <list default="true" id="90acb1dd-e86a-496e-a093-36e4fcd1d69a" name="Default" comment="">
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/.idea.FidelityWebDriver/.idea/contentModel.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/.idea.FidelityWebDriver/.idea/modules.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/.idea.FidelityWebDriver/.idea/vcs.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/.idea.FidelityWebDriver/riderModule.iml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Demo.Tests/AppTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Demo.Tests/FidelityWebDriver.Demo.Tests.csproj" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Demo.Tests/Ninject/FidelityConfigurationProviderTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Demo.Tests/Ninject/KernelBuilderTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Demo.Tests/ProgramTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Demo.Tests/Properties/AssemblyInfo.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Demo.Tests/TransactionTranslatorTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Demo.Tests/packages.config" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Demo/App.config" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Demo/App.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Demo/FidelityWebDriver.Demo.csproj" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Demo/Ninject/AppModule.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Demo/Ninject/FidelityConfigurationProvider.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Demo/Ninject/KernelBuilder.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Demo/Ninject/LogProvider.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Demo/Ninject/LoggingModule.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Demo/Ninject/SeleniumModule.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Demo/Program.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Demo/Properties/AssemblyInfo.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Demo/TransactionTranslator.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Demo/log4net/LogExtentions.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Demo/log4net/LoggingWebDriver.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Demo/log4net/LoggingWebElement.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Demo/packages.config" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/Data/FidelityTransactionTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/FidelityWebDriver.Tests.csproj" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/Login/LoginManagerTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/Login/LoginPageTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/ManagerTestsBase.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/Navigation/SiteNavigatorTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/Positions/AccountDetailsExtractorTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/Positions/AccountSummariesExtractorTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/Positions/DetailExtractors/PositionCoreExtractorTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/Positions/DetailExtractors/PositionCostBasisExtractorTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/Positions/DetailExtractors/PositionCurrentValueExtractorTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/Positions/DetailExtractors/PositionLastPriceExtractorTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/Positions/DetailExtractors/PositionQuantityExtractorTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/Positions/DetailExtractors/PositionTickerExtractorTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/Positions/DetailExtractors/PositionTotalGainExtractorTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/Positions/PositionDetailsExtractorTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/Positions/PositionsManagerTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/Positions/PositionsPageTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/Properties/AssemblyInfo.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/Summary/HomePageTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/Summary/SummaryPageTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/Transactions/ActivityPageTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/Transactions/CSV/FidelityCsvColumnMapperTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/Transactions/CSV/TransactionMapperTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/Transactions/CSV/TransactionsMapperTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/Transactions/HistoryHtmlGenerator.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/Transactions/HistoryTransactionParserTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/Transactions/TransactionManagerTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/Transactions/TransactionTypeMapperTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/Utilities/NumberParserTests.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.Tests/packages.config" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver.sln" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Configuration/FidelityConfiguration.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Data/AccountDetails.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Data/AccountSummary.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Data/AccountType.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Data/FidelityTransaction.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Data/Position.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Data/TransactionType.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/FidelityWebDriver.csproj" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/FidelityWebDriver.nuspec" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/IManager.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/IPage.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Login/LoginManager.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Login/LoginPage.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Navigation/SiteNavigator.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Positions/AccountDetailsExtractor.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Positions/AccountSummariesExtractor.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Positions/DetailExtractors/PositionCoreExtractor.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Positions/DetailExtractors/PositionCostBasisExtractor.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Positions/DetailExtractors/PositionCurrentValueExtractor.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Positions/DetailExtractors/PositionLastPriceExtractor.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Positions/DetailExtractors/PositionQuantityExtractor.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Positions/DetailExtractors/PositionTickerExtractor.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Positions/DetailExtractors/PositionTotalGainExtractor.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Positions/PositionDetailsExtractor.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Positions/PositionsManager.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Positions/PositionsPage.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Properties/AssemblyInfo.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Summary/HomePage.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Summary/SummaryPage.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Transactions/ActivityPage.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Transactions/AttributeStrings.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Transactions/CSV/FidelityCsvColumn.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Transactions/CSV/FidelityCsvColumnMapper.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Transactions/CSV/TransactionMapper.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Transactions/CSV/TransactionsMapper.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Transactions/HistoryTransactionParser.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Transactions/TransactionManager.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Transactions/TransactionTypeMapper.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/Utilities/NumberParser.cs" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FidelityWebDriver/packages.config" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -30,7 +131,6 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf />
   </component>
@@ -88,23 +188,25 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="SolutionExplorer">
         <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Sonneville.Investing (6 projects)" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-          </PATH>
+          <expand>
+            <path>
+              <item name="" type="13324e5d:SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+              <item name="Sonneville.Investing (6 projects)" type="977d5f41:SolutionExplorerNodeRider" />
+            </path>
+            <path>
+              <item name="" type="13324e5d:SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+              <item name="Sonneville.Investing (6 projects)" type="977d5f41:SolutionExplorerNodeRider" />
+              <item name="Solution Items" type="977d5f41:SolutionExplorerNodeRider" />
+            </path>
+          </expand>
+          <select />
         </subPane>
         <option name="show-file-system" value="false" />
         <option name="show-all-items" value="false" />
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -122,7 +224,22 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected=".NET Project.Default">
+  <component name="RunManager">
+    <configuration name="Default" type="DotNetProject" factoryName=".NET Project">
+      <option name="EXE_PATH" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <envs />
+      <option name="USE_MONO" value="0" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="PROJECT_PATH" value="" />
+      <option name="PROJECT_EXE_PATH_TRACKING" value="1" />
+      <option name="PROJECT_ARGUMENTS_TRACKING" value="1" />
+      <option name="PROJECT_WORKING_DIRECTORY_TRACKING" value="1" />
+      <option name="PROJECT_KIND" value="None" />
+      <option name="PROJECT_TFM" value="" />
+    </configuration>
     <configuration default="true" type="DotNetProject" factoryName=".NET Project">
       <option name="PROJECT_PATH" value="" />
       <option name="PROJECT_KIND" value="None" />
@@ -154,15 +271,6 @@
     <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" working-dir="">
       <method />
     </configuration>
-    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
-      <node-interpreter>project</node-interpreter>
-      <node-options />
-      <gulpfile />
-      <tasks />
-      <arguments />
-      <envs />
-      <method />
-    </configuration>
     <configuration default="true" type="js.build_tools.npm" factoryName="npm">
       <command value="run" />
       <scripts />
@@ -183,22 +291,14 @@
       <recursive>false</recursive>
       <method />
     </configuration>
-    <configuration default="false" name="Default" type="DotNetProject" factoryName=".NET Project">
-      <option name="PROJECT_PATH" value="" />
-      <option name="PROJECT_KIND" value="None" />
-      <option name="PROJECT_TFM" value="" />
-      <option name="EXE_PATH" value="" />
-      <option name="PROGRAM_PARAMETERS" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="USE_MONO" value="0" />
-      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
       <envs />
-      <method />
     </configuration>
-    <list size="1">
-      <item index="0" class="java.lang.String" itemvalue=".NET Project.Default" />
-    </list>
-    <configuration />
   </component>
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
@@ -213,21 +313,20 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1176" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1176" extended-state="0" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32950193" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Errors In Solution" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32950193" sideWeight="0.5021322" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32949087" sideWeight="0.50852877" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Unit Tests" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32950193" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32950193" sideWeight="0.4936034" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32949087" sideWeight="0.4914712" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32950193" sideWeight="0.4978678" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="NuGet" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32950193" sideWeight="0.5063966" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Change Signature" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26332623" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="NuGet" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32949087" sideWeight="0.50852877" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26599148" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TeamCity" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32950193" sideWeight="0.49573562" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection Results" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -238,13 +337,16 @@
       <window_info id="Errors in solution" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="UnitTesting" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32950193" sideWeight="0.4978678" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32950193" sideWeight="0.49573562" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection Results" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Change Signature" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32950193" sideWeight="0.49573562" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="processedProjectFiles" value="true" />
+    <option name="version" value="1" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -484,6 +586,22 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
           <caret line="16" column="1" lean-forward="false" selection-start-line="16" selection-start-column="1" selection-end-line="16" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="0" lean-forward="true" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="0" lean-forward="true" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
