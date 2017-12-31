@@ -21,7 +21,6 @@ namespace Sonneville.Utilities.Configuration
         public NiniConfigStore(string path)
         {
             _path = path;
-            Console.WriteLine($"{nameof(NiniConfigStore)} configured with path: {path}");
         }
 
         public void Save<T>(T config)

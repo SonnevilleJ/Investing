@@ -22,7 +22,7 @@ namespace Sonneville.FidelityWebDriver.Demo.Ninject
         {
             var configPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "FidelityWebDriver.Demo.ini");
 
-            Kernel.Rebind<INiniConfigStore>().ToConstant(new NiniConfigStore(configPath));
+            Rebind<INiniConfigStore>().ToConstant(new NiniConfigStore(configPath));
         }
     }
 }

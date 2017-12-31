@@ -62,7 +62,7 @@ namespace Sonneville.FidelityWebDriver.Demo.Tests.Ninject
         {
             var pages = _kernel.GetAll<IPage>().ToList();
 
-            Assert.IsTrue(pages.Any());
+            Assert.IsNotEmpty(pages);
             CollectionAssert.AllItemsAreNotNull(pages);
         }
 

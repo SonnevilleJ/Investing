@@ -2,7 +2,7 @@
 
 namespace Sonneville.Fidelity.Shell.AppStartup
 {
-    public class Bootstrapper
+    public static class Bootstrapper
     {
         public static IKernel Kernel { get; } = new KernelBuilder().Build();
 
