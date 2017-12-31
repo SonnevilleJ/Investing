@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using Sonneville.FidelityWebDriver.Data;
 using Sonneville.Fidelity.Shell.FidelityWebDriver;
+using Sonneville.FidelityWebDriver.Data;
 using TradingPosition = Sonneville.Investing.Trading.Position;
 using WebDriverPosition = Sonneville.FidelityWebDriver.Data.Position;
 

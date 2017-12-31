@@ -5,6 +5,6 @@ namespace Sonneville.Fidelity.Shell.Configuration
 {
     public class PortfolioManagerConfiguration
     {
-        public HashSet<AccountType> InScopeAccountTypes { get; set; }
+        public HashSet<AccountType> InScopeAccountTypes { get; set; } = new HashSet<AccountType>();
     }
 }

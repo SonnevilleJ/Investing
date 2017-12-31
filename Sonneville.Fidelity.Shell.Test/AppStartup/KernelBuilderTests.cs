@@ -1,9 +1,8 @@
 ﻿using Ninject;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using Sonneville.FidelityWebDriver.Configuration;
 using Sonneville.Fidelity.Shell.AppStartup;
-using Sonneville.Fidelity.Shell.Configuration;
+using Sonneville.Utilities.Configuration;
 
 namespace Sonneville.Fidelity.Shell.Test.AppStartup
 {
@@ -43,21 +42,12 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
         }
 
         [Test]
-        public void ShouldBindFidelityConfigurationAsSingleton()
+        public void ShouldBindConfigStoreAsSingleton()
         {
-            var configuration = _kernel.Get<FidelityConfiguration>();
+            var configStore = _kernel.Get<INiniConfigStore>();
 
-            Assert.IsNotNull(configuration);
-            Assert.AreSame(configuration, _kernel.Get<FidelityConfiguration>());
-        }
-
-        [Test]
-        public void ShouldBindPortfolioManagerConfigurationAsSingleton()
-        {
-            var configuration = _kernel.Get<PortfolioManagerConfiguration>();
-
-            Assert.IsNotNull(configuration);
-            Assert.AreSame(configuration, _kernel.Get<PortfolioManagerConfiguration>());
+            Assert.IsNotNull(configStore);
+            Assert.AreSame(configStore, _kernel.Get<INiniConfigStore>());
         }
     }
 }

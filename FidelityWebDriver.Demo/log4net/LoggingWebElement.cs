@@ -62,6 +62,13 @@ namespace Sonneville.FidelityWebDriver.Demo.log4net
             return attribute;
         }
 
+        public string GetProperty(string propertyName)
+        {
+            var property = _webElement.GetProperty(propertyName);
+            _log.Trace($"Got property `{propertyName}` for tag `{_webElement.TagName}: `{property}`");
+            return property;
+        }
+
         public string GetCssValue(string propertyName)
         {
             var cssValue = _webElement.GetCssValue(propertyName);

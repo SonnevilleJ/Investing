@@ -1,6 +1,8 @@
-﻿using Ninject.Extensions.Conventions;
+﻿using System;
+using System.IO;
+using Ninject.Extensions.Conventions;
 using Ninject.Modules;
-using Sonneville.FidelityWebDriver.Configuration;
+using Sonneville.Utilities.Configuration;
 
 namespace Sonneville.FidelityWebDriver.Demo.Ninject
 {
@@ -13,7 +15,14 @@ namespace Sonneville.FidelityWebDriver.Demo.Ninject
                 .BindAllInterfaces()
                 .Configure(configurationAction => configurationAction.InSingletonScope()));
 
-            Bind<FidelityConfiguration>().ToProvider<FidelityConfigurationProvider>();
+            BindConfig();
+        }
+
+        private void BindConfig()
+        {
+            var configPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "FidelityWebDriver.Demo.ini");
+
+            Kernel.Rebind<INiniConfigStore>().ToConstant(new NiniConfigStore(configPath));
         }
     }
 }

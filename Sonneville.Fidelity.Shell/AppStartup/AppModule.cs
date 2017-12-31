@@ -4,8 +4,7 @@ using Ninject.Extensions.Conventions;
 using Ninject.Modules;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using Sonneville.FidelityWebDriver.Configuration;
-using Sonneville.Fidelity.Shell.Configuration;
+using Sonneville.Utilities.Configuration;
 
 namespace Sonneville.Fidelity.Shell.AppStartup
 {
@@ -28,8 +27,9 @@ namespace Sonneville.Fidelity.Shell.AppStartup
 
         private void BindConfig()
         {
-            Kernel.Rebind<FidelityConfiguration>().ToConstant(new FidelityConfiguration());
-            Kernel.Rebind<PortfolioManagerConfiguration>().ToConstant(new PortfolioManagerConfiguration());
+            var configPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "FidelityWebDriver.Demo.ini");
+            
+            Kernel.Rebind<INiniConfigStore>().ToConstant(new NiniConfigStore(configPath));
         }
     }
 }

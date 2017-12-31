@@ -1,10 +1,12 @@
 ﻿using System;
 using System.IO;
+using Moq;
 using NUnit.Framework;
 using Sonneville.Fidelity.Shell.AppStartup;
 using Sonneville.Fidelity.Shell.Configuration;
 using Sonneville.FidelityWebDriver.Configuration;
 using Sonneville.Investing.Trading;
+using Sonneville.Utilities.Configuration;
 
 namespace Sonneville.Fidelity.Shell.Test.AppStartup
 {
@@ -18,6 +20,7 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
         private MemoryStream _memoryStream;
         private StreamWriter _streamWriter;
         private PortfolioManagerConfiguration _portfolioManagerConfiguration;
+        private Mock<INiniConfigStore> _configStoreMock;
 
         [SetUp]
         public void Setup()
@@ -29,10 +32,16 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
 
             _portfolioManagerConfiguration = new PortfolioManagerConfiguration();
 
+            _configStoreMock = new Mock<INiniConfigStore>();
+            _configStoreMock.Setup(configStore => configStore.Read<FidelityConfiguration>()).Returns(_fidelityConfiguration);
+            _configStoreMock.Setup(configStore => configStore.Save(It.IsAny<FidelityConfiguration>())).Callback<FidelityConfiguration>(config => _fidelityConfiguration = config);
+            _configStoreMock.Setup(configStore => configStore.Read<PortfolioManagerConfiguration>()).Returns(_portfolioManagerConfiguration);
+            _configStoreMock.Setup(configStore => configStore.Save(It.IsAny<PortfolioManagerConfiguration>())).Callback<PortfolioManagerConfiguration>(config => _portfolioManagerConfiguration = config);
+            
             _memoryStream = new MemoryStream();
             _streamWriter = new StreamWriter(_memoryStream) {AutoFlush = true};
 
-            _optionsParser = new CommandLineOptionsParser(_fidelityConfiguration, _portfolioManagerConfiguration);
+            _optionsParser = new CommandLineOptionsParser(_configStoreMock.Object);
         }
 
         [TearDown]
@@ -128,12 +137,7 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
 
         private void AssertUnchangedConfig()
         {
-            var fidelityConfiguration = _fidelityConfiguration;
-            Assert.AreEqual(default(string), fidelityConfiguration.Username);
-            Assert.AreEqual(default(string), fidelityConfiguration.Password);
-
-            var portfolioManagerConfiguration = _portfolioManagerConfiguration;
-            CollectionAssert.IsEmpty(portfolioManagerConfiguration.InScopeAccountTypes);
+            _configStoreMock.Verify(configStore => configStore.Save(It.IsAny<object>()), Times.Never);
         }
 
         private static string ReadConsoleOutputFrom(Stream memoryStream)

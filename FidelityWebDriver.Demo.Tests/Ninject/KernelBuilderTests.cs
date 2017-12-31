@@ -3,9 +3,9 @@ using Moq;
 using Ninject;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using Sonneville.FidelityWebDriver.Configuration;
 using Sonneville.FidelityWebDriver.Demo.Ninject;
 using Sonneville.FidelityWebDriver.Navigation;
+using Sonneville.Utilities.Configuration;
 
 namespace Sonneville.FidelityWebDriver.Demo.Tests.Ninject
 {
@@ -43,8 +43,8 @@ namespace Sonneville.FidelityWebDriver.Demo.Tests.Ninject
         [Test]
         public void ShouldGetSameConfigEachTime()
         {
-            var config1 = _kernel.Get<FidelityConfiguration>();
-            var config2 = _kernel.Get<FidelityConfiguration>();
+            var config1 = _kernel.Get<INiniConfigStore>();
+            var config2 = _kernel.Get<INiniConfigStore>();
 
             Assert.AreSame(config1, config2);
         }

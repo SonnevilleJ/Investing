@@ -7,9 +7,9 @@ using Moq;
 using NUnit.Framework;
 using Sonneville.FidelityWebDriver.Configuration;
 using Sonneville.FidelityWebDriver.Data;
-using Sonneville.FidelityWebDriver.Demo.Tests.Ninject;
 using Sonneville.FidelityWebDriver.Positions;
 using Sonneville.FidelityWebDriver.Transactions;
+using Sonneville.Utilities.Configuration;
 
 namespace Sonneville.FidelityWebDriver.Demo.Tests
 {
@@ -30,6 +30,7 @@ namespace Sonneville.FidelityWebDriver.Demo.Tests
         private DateTime _endDate;
 
         private App _app;
+        private Mock<INiniConfigStore> _configStoreMock;
 
         [SetUp]
         public void Setup()
@@ -72,7 +73,7 @@ namespace Sonneville.FidelityWebDriver.Demo.Tests
                 },
             };
 
-            _accountDetails = new List<AccountDetails>()
+            _accountDetails = new List<AccountDetails>
             {
                 new AccountDetails
                 {
@@ -153,19 +154,21 @@ namespace Sonneville.FidelityWebDriver.Demo.Tests
 
             _logMock = new Mock<ILog>();
 
+            _configStoreMock = new Mock<INiniConfigStore>();
+            _configStoreMock.Setup(configStore => configStore.Read<FidelityConfiguration>()).Returns(_fidelityConfiguration);
+            _configStoreMock.Setup(configStore => configStore.Save(It.IsAny<FidelityConfiguration>())).Callback<FidelityConfiguration>(config => _fidelityConfiguration = config);
+
             _app = new App(
                 _logMock.Object,
+                _configStoreMock.Object,
                 _positionsManagerMock.Object,
                 _transactionManagerMock.Object,
-                _fidelityConfiguration,
                 new TransactionTranslator());
         }
 
         [TearDown]
         public void Teardown()
         {
-            FidelityConfigurationProviderTests.DeletePersistedConfig();
-
             Console.SetOut(new StreamWriter(Console.OpenStandardOutput()) {AutoFlush = true});
             Console.SetIn(new StreamReader(Console.OpenStandardInput()));
 
@@ -258,13 +261,16 @@ namespace Sonneville.FidelityWebDriver.Demo.Tests
         [Test]
         public void ShouldSetConfigFromCliArgsAndPersist()
         {
+            _configStoreMock.Setup(configStore => configStore.Save(It.IsAny<FidelityConfiguration>())).Callback<FidelityConfiguration>((config) =>
+            {
+                Assert.AreEqual(_username, config.Username);
+                Assert.AreEqual(_password, config.Password);
+            });
             var args = new[] {"-u", _username, "-p", _password, "-s"};
 
             _app.Run(args);
 
-            var fidelityConfiguration = FidelityConfigurationProviderTests.ReadConfiguration();
-            Assert.AreEqual(_username, fidelityConfiguration.Username);
-            Assert.AreEqual(_password, fidelityConfiguration.Password);
+            _configStoreMock.Verify(configStore => configStore.Save(_fidelityConfiguration));
         }
 
         [Test]
@@ -324,11 +330,9 @@ namespace Sonneville.FidelityWebDriver.Demo.Tests
             _fidelityConfiguration.Password = _password;
         }
 
-        private static void AssertUnchangedConfig()
+        private void AssertUnchangedConfig()
         {
-            var fidelityConfiguration = FidelityConfigurationProviderTests.ReadConfiguration();
-            Assert.IsEmpty(fidelityConfiguration.Username);
-            Assert.IsEmpty(fidelityConfiguration.Password);
+            _configStoreMock.Verify(configStore => configStore.Save(It.IsAny<FidelityConfiguration>()), Times.Never);
         }
 
         private static void RedirectConsoleInput(Stream memoryStream)

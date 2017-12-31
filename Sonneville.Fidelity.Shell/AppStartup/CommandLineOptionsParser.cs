@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using NDesk.Options;
-using Sonneville.FidelityWebDriver.Configuration;
 using Sonneville.Fidelity.Shell.Configuration;
+using Sonneville.FidelityWebDriver.Configuration;
 using Sonneville.Investing.Trading;
+using Sonneville.Utilities.Configuration;
 
 namespace Sonneville.Fidelity.Shell.AppStartup
 {
@@ -15,6 +16,7 @@ namespace Sonneville.Fidelity.Shell.AppStartup
 
     public class CommandLineOptionsParser : ICommandLineOptionsParser
     {
+        private readonly INiniConfigStore _configStore;
         private readonly FidelityConfiguration _fidelityConfiguration;
         private readonly PortfolioManagerConfiguration _portfolioManagerConfiguration;
 
@@ -27,11 +29,11 @@ namespace Sonneville.Fidelity.Shell.AppStartup
             {"OA", AccountType.Other},
         };
 
-        public CommandLineOptionsParser(FidelityConfiguration fidelityConfiguration,
-            PortfolioManagerConfiguration portfolioManagerConfiguration)
+        public CommandLineOptionsParser(INiniConfigStore configStore)
         {
-            _fidelityConfiguration = fidelityConfiguration;
-            _portfolioManagerConfiguration = portfolioManagerConfiguration;
+            _configStore = configStore;
+            _fidelityConfiguration = _configStore.Read<FidelityConfiguration>();
+            _portfolioManagerConfiguration = _configStore.Read<PortfolioManagerConfiguration>();
         }
 
         public bool ShouldExecute(IEnumerable<string> args, TextWriter textWriter)
@@ -77,7 +79,8 @@ namespace Sonneville.Fidelity.Shell.AppStartup
             }
             if (shouldPersistOptions)
             {
-                throw new NotImplementedException();
+                _configStore.Save(_fidelityConfiguration);
+                _configStore.Save(_portfolioManagerConfiguration);
             }
             return true;
         }

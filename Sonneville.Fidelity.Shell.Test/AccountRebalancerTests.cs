@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO.IsolatedStorage;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
-using Sonneville.FidelityWebDriver.Data;
-using Sonneville.FidelityWebDriver.Positions;
 using Sonneville.Fidelity.Shell.Configuration;
 using Sonneville.Fidelity.Shell.FidelityWebDriver;
+using Sonneville.FidelityWebDriver.Data;
+using Sonneville.FidelityWebDriver.Positions;
 using Sonneville.Investing.Trading;
 using AccountType = Sonneville.Investing.Trading.AccountType;
 

@@ -1,15 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using log4net;
 using NDesk.Options;
-using Nini.Config;
 using Sonneville.FidelityWebDriver.Configuration;
 using Sonneville.FidelityWebDriver.Data;
-using Sonneville.FidelityWebDriver.Demo.Ninject;
 using Sonneville.FidelityWebDriver.Positions;
 using Sonneville.FidelityWebDriver.Transactions;
+using Sonneville.Utilities.Configuration;
 
 namespace Sonneville.FidelityWebDriver.Demo
 {
@@ -27,15 +25,23 @@ namespace Sonneville.FidelityWebDriver.Demo
         private readonly TransactionTranslator _transactionTranslator;
 
         private readonly ILog _log;
+        private readonly INiniConfigStore _configStore;
         private readonly FidelityConfiguration _fidelityConfiguration;
         private readonly OptionSet _optionSet;
         private bool _shouldPersistOptions;
         private bool _shouldShowHelp;
 
-        public App(ILog log, IPositionsManager positionsManager, ITransactionManager transactionManager, FidelityConfiguration fidelityConfiguration, TransactionTranslator transactionTranslator)
+        public App(
+            ILog log,
+            INiniConfigStore configStore,
+            IPositionsManager positionsManager,
+            ITransactionManager transactionManager,
+            TransactionTranslator transactionTranslator
+        )
         {
             _log = log;
-            _fidelityConfiguration = fidelityConfiguration;
+            _configStore = configStore;
+            _fidelityConfiguration = _configStore.Read<FidelityConfiguration>();
             _positionsManager = positionsManager;
             _transactionManager = transactionManager;
             _transactionTranslator = transactionTranslator;
@@ -70,16 +76,12 @@ namespace Sonneville.FidelityWebDriver.Demo
                 _optionSet.WriteOptionDescriptions(Console.Out);
                 return;
             }
+
             if (_shouldPersistOptions)
             {
-                File.Create(FidelityConfigurationProvider.ConfigLocation).Dispose();
-                var iniConfigSource = new IniConfigSource(FidelityConfigurationProvider.ConfigLocation);
-                iniConfigSource.AddConfig("Fidelity");
-                var config = iniConfigSource.Configs["Fidelity"];
-                config.Set("Username", _fidelityConfiguration.Username);
-                config.Set("Password", _fidelityConfiguration.Password);
-                iniConfigSource.Save();
+                _configStore.Save(_fidelityConfiguration);
             }
+
             if (string.IsNullOrEmpty(_fidelityConfiguration.Username))
             {
                 _log.Info("No username configured; requesting credentials from user.");
@@ -147,6 +149,7 @@ namespace Sonneville.FidelityWebDriver.Demo
             {
                 LogToScreen($"On {transaction.RunDate:d} {transaction.Quantity:F} shares of {transaction.Symbol} were {_transactionTranslator.Translate(transaction.Type)} at {transaction.Price:C} per share");
             }
+
             LogToScreen();
         }
 
