@@ -51,22 +51,12 @@
       <HintPath>..\packages\Ninject.Extensions.Conventions.3.2.0.0\lib\net45-full\Ninject.Extensions.Conventions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Sonneville.FidelityWebDriver, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Sonneville.FidelityWebDriver.1.2.0\lib\net461\Sonneville.FidelityWebDriver.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Sonneville.Utilities">
-      <HintPath>..\Sonneville.Fidelity.Shell.Test\bin\Debug\Sonneville.Utilities.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="WebDriver, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Selenium.WebDriver.3.0.1\lib\net40\WebDriver.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="Westwind.Utilities.Configuration">
-      <HintPath>..\Sonneville.Fidelity.Shell.Test\bin\Debug\Westwind.Utilities.Configuration.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -91,9 +81,17 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FidelityWebDriver\FidelityWebDriver.csproj">
+      <Project>{59134DBF-4B42-4A79-BD62-C56408B41D63}</Project>
+      <Name>FidelityWebDriver</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sonneville.Investing\Sonneville.Investing.csproj">
       <Project>{89A1A8E9-DD0F-40BC-B4F1-FCDED6910E35}</Project>
       <Name>Sonneville.Investing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sonneville.Utilities\Sonneville.Utilities.csproj">
+      <Project>{5366e2e8-3513-4779-9c73-004f6958cf72}</Project>
+      <Name>Sonneville.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

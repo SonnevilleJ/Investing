@@ -1,12 +1,10 @@
 ﻿using System;
 using System.IO;
-using System.IO.IsolatedStorage;
 using NUnit.Framework;
-using Sonneville.FidelityWebDriver.Configuration;
 using Sonneville.Fidelity.Shell.AppStartup;
 using Sonneville.Fidelity.Shell.Configuration;
+using Sonneville.FidelityWebDriver.Configuration;
 using Sonneville.Investing.Trading;
-using Sonneville.Utilities.Configuration;
 
 namespace Sonneville.Fidelity.Shell.Test.AppStartup
 {
@@ -20,7 +18,6 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
         private MemoryStream _memoryStream;
         private StreamWriter _streamWriter;
         private PortfolioManagerConfiguration _portfolioManagerConfiguration;
-        private ConfigStore _configStore;
 
         [SetUp]
         public void Setup()
@@ -28,10 +25,9 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
             _cliUserName = "Batman";
             _cliPassword = "I am vengeance. I am the night. I am Batman.";
 
-            _configStore = new ConfigStore(IsolatedStorageFile.GetUserStoreForAssembly());
-            _fidelityConfiguration = _configStore.Get<FidelityConfiguration>();
+            _fidelityConfiguration = new FidelityConfiguration();
 
-            _portfolioManagerConfiguration = _configStore.Get<PortfolioManagerConfiguration>();
+            _portfolioManagerConfiguration = new PortfolioManagerConfiguration();
 
             _memoryStream = new MemoryStream();
             _streamWriter = new StreamWriter(_memoryStream) {AutoFlush = true};
@@ -44,8 +40,6 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
         {
             _memoryStream.Dispose();
             _streamWriter.Dispose();
-
-            _configStore.Clear();
         }
 
         [Test]
@@ -69,7 +63,7 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
             var shouldExecute = _optionsParser.ShouldExecute(args, _streamWriter);
 
             Assert.IsTrue(shouldExecute);
-            var fidelityConfiguration = _configStore.Get<FidelityConfiguration>();
+            var fidelityConfiguration = _fidelityConfiguration;
             Assert.AreEqual(_cliUserName, fidelityConfiguration.Username);
             Assert.AreEqual(_cliPassword, fidelityConfiguration.Password);
         }
@@ -104,7 +98,7 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
             var shouldExecute = _optionsParser.ShouldExecute(args, _streamWriter);
 
             Assert.IsTrue(shouldExecute);
-            var configuration = _configStore.Get<PortfolioManagerConfiguration>();
+            var configuration = _portfolioManagerConfiguration;
             CollectionAssert.Contains(configuration.InScopeAccountTypes, accountType);
         }
 
@@ -134,11 +128,11 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
 
         private void AssertUnchangedConfig()
         {
-            var fidelityConfiguration = _configStore.Get<FidelityConfiguration>();
+            var fidelityConfiguration = _fidelityConfiguration;
             Assert.AreEqual(default(string), fidelityConfiguration.Username);
             Assert.AreEqual(default(string), fidelityConfiguration.Password);
 
-            var portfolioManagerConfiguration = _configStore.Get<PortfolioManagerConfiguration>();
+            var portfolioManagerConfiguration = _portfolioManagerConfiguration;
             CollectionAssert.IsEmpty(portfolioManagerConfiguration.InScopeAccountTypes);
         }
 

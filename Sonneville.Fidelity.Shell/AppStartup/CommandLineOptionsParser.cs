@@ -77,8 +77,7 @@ namespace Sonneville.Fidelity.Shell.AppStartup
             }
             if (shouldPersistOptions)
             {
-                _fidelityConfiguration.Write();
-                _portfolioManagerConfiguration.Write();
+                throw new NotImplementedException();
             }
             return true;
         }

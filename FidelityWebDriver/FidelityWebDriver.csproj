@@ -36,9 +36,6 @@
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Sonneville.Utilities, Version=1.24.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\Sonneville.Utilities.1.24.0\lib\net452\Sonneville.Utilities.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.AppContext, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.AppContext.4.3.0\lib\net46\System.AppContext.dll</HintPath>
@@ -156,6 +153,12 @@
     <None Include="FidelityWebDriver.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Sonneville.Utilities\Sonneville.Utilities.csproj">
+            <Project>{5366E2E8-3513-4779-9C73-004F6958CF72}</Project>
+            <Name>Sonneville.Utilities</Name>
+        </ProjectReference>
+    </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

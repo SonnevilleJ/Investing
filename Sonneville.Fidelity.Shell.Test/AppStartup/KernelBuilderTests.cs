@@ -49,7 +49,6 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
 
             Assert.IsNotNull(configuration);
             Assert.AreSame(configuration, _kernel.Get<FidelityConfiguration>());
-            Assert.IsNotNull(configuration.Provider);
         }
 
         [Test]
@@ -59,7 +58,6 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
 
             Assert.IsNotNull(configuration);
             Assert.AreSame(configuration, _kernel.Get<PortfolioManagerConfiguration>());
-            Assert.IsNotNull(configuration.Provider);
         }
     }
 }
