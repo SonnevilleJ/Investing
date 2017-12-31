@@ -15,7 +15,7 @@ namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
                 Unbind<IWebDriver>();
 
                 Bind<IWebDriver>()
-                    .ToConstant(CreateWebDriver())
+                    .ToMethod(context => CreateWebDriver())
                     .WhenInjectedInto<LoggingWebDriver>()
                     .InSingletonScope();
 
