@@ -36,9 +36,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-      <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc">
-          <HintPath>..\packages\Castle.Core.4.2.1\lib\net45\Castle.Core.dll</HintPath>
-          <Private>True</Private>
+    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc">
+      <HintPath>..\packages\Castle.Core.4.2.1\lib\net45\Castle.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
@@ -128,9 +128,9 @@
     <Reference Include="System.Xml.XmlDocument, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Xml.XmlDocument.4.3.0\lib\net46\System.Xml.XmlDocument.dll</HintPath>
     </Reference>
-      <Reference Include="WebDriver, Version=3.8.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\Selenium.WebDriver.3.8.0\lib\net45\WebDriver.dll</HintPath>
-          <Private>True</Private>
+    <Reference Include="WebDriver, Version=3.8.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Selenium.WebDriver.3.8.0\lib\net45\WebDriver.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -152,18 +152,18 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FidelityWebDriver\FidelityWebDriver.csproj">
-      <Project>{59134DBF-4B42-4A79-BD62-C56408B41D63}</Project>
-      <Name>FidelityWebDriver</Name>
+    <ProjectReference Include="..\Sonneville.Fidelity.Shell\Sonneville.Fidelity.Shell.csproj">
+      <Project>{E3F2B1D9-2BDD-4AE3-A04D-5444E2DE871C}</Project>
+      <Name>Sonneville.Fidelity.Shell</Name>
     </ProjectReference>
-      <ProjectReference Include="..\Sonneville.Fidelity.Shell\Sonneville.Fidelity.Shell.csproj">
-          <Project>{E3F2B1D9-2BDD-4AE3-A04D-5444E2DE871C}</Project>
-          <Name>Sonneville.Fidelity.Shell</Name>
-      </ProjectReference>
-      <ProjectReference Include="..\Sonneville.Utilities\Sonneville.Utilities.csproj">
-          <Project>{5366E2E8-3513-4779-9C73-004F6958CF72}</Project>
-          <Name>Sonneville.Utilities</Name>
-      </ProjectReference>
+    <ProjectReference Include="..\Sonneville.FidelityWebDriver\Sonneville.FidelityWebDriver.csproj">
+      <Project>{79449998-2821-4929-8A3A-98637C477F85}</Project>
+      <Name>Sonneville.FidelityWebDriver</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sonneville.Utilities\Sonneville.Utilities.csproj">
+      <Project>{5366E2E8-3513-4779-9C73-004F6958CF72}</Project>
+      <Name>Sonneville.Utilities</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

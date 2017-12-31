@@ -27,6 +27,21 @@ namespace Sonneville.Utilities.Test.Configuration
         }
 
         [Test]
+        public void ShouldReadWhenNoFilePresent()
+        {
+            var configStore = new NiniConfigStore(_location);
+            Assert.False(File.Exists(_location));
+
+            var sampleConfig = configStore.Read<SampleConfig>();
+
+            Assert.NotNull(sampleConfig);
+            Assert.AreEqual(default(string), sampleConfig.A);
+            Assert.AreEqual(default(int), sampleConfig.B);
+            Assert.AreEqual(default(long), sampleConfig.C);
+            Assert.AreEqual(default(double), sampleConfig.D);
+        }
+
+        [Test]
         [TestCase("test")]
         [TestCase("")]
         [TestCase(null)]

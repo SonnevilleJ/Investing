@@ -38,16 +38,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-      <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc">
-          <HintPath>..\packages\Castle.Core.4.2.1\lib\net45\Castle.Core.dll</HintPath>
-          <Private>True</Private>
+    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc">
+      <HintPath>..\packages\Castle.Core.4.2.1\lib\net45\Castle.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
-      <Reference Include="Moq, Version=4.8.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920">
-          <HintPath>..\packages\Moq.4.8.0\lib\net45\Moq.dll</HintPath>
-          <Private>True</Private>
+    <Reference Include="Moq, Version=4.8.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920">
+      <HintPath>..\packages\Moq.4.8.0\lib\net45\Moq.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Nini, Version=1.1.0.0, Culture=neutral, PublicKeyToken=691faec150a7fa7b, processorArchitecture=MSIL">
       <HintPath>..\packages\Trove.Nini.1.1.0.0\lib\net20\Nini.dll</HintPath>
@@ -57,9 +57,9 @@
       <HintPath>..\packages\Ninject.Mono.3.0.1.13\lib\net40\Ninject.dll</HintPath>
       <Private>True</Private>
     </Reference>
-      <Reference Include="nunit.framework, Version=3.9.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb">
-          <HintPath>..\packages\NUnit.3.9.0\lib\net45\nunit.framework.dll</HintPath>
-          <Private>True</Private>
+    <Reference Include="nunit.framework, Version=3.9.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb">
+      <HintPath>..\packages\NUnit.3.9.0\lib\net45\nunit.framework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.AppContext, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -109,12 +109,12 @@
     </Reference>
     <Reference Include="System.Runtime.Serialization.Primitives, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.Serialization.Primitives.4.3.0\lib\net46\System.Runtime.Serialization.Primitives.dll</HintPath>
-        <Private>True</Private>
+      <Private>True</Private>
     </Reference>
-      <Reference Include="System.Threading.Tasks.Extensions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
-          <HintPath>..\packages\System.Threading.Tasks.Extensions.4.4.0\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
-          <Private>True</Private>
-      </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.4.0\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Threading.Thread, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Thread.4.3.0\lib\net46\System.Threading.Thread.dll</HintPath>
     </Reference>
@@ -125,9 +125,9 @@
     <Reference Include="System.Xml.XmlDocument, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Xml.XmlDocument.4.3.0\lib\net46\System.Xml.XmlDocument.dll</HintPath>
     </Reference>
-      <Reference Include="WebDriver, Version=3.8.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\Selenium.WebDriver.3.8.0\lib\net45\WebDriver.dll</HintPath>
-          <Private>True</Private>
+    <Reference Include="WebDriver, Version=3.8.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Selenium.WebDriver.3.8.0\lib\net45\WebDriver.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <Choose>
@@ -146,22 +146,22 @@
     <Compile Include="TransactionTranslatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FidelityWebDriver\FidelityWebDriver.csproj">
-      <Project>{59134DBF-4B42-4A79-BD62-C56408B41D63}</Project>
-      <Name>FidelityWebDriver</Name>
-    </ProjectReference>
     <ProjectReference Include="..\FidelityWebDriver.Demo\FidelityWebDriver.Demo.csproj">
       <Project>{AF97F43C-4042-4399-AB37-B2C192860B79}</Project>
       <Name>FidelityWebDriver.Demo</Name>
     </ProjectReference>
-      <ProjectReference Include="..\Sonneville.Fidelity.Shell.Test\Sonneville.Fidelity.Shell.Test.csproj">
-          <Project>{C006EEA0-8961-4D4F-87A3-1787991997E8}</Project>
-          <Name>Sonneville.Fidelity.Shell.Test</Name>
-      </ProjectReference>
-      <ProjectReference Include="..\Sonneville.Utilities\Sonneville.Utilities.csproj">
-          <Project>{5366E2E8-3513-4779-9C73-004F6958CF72}</Project>
-          <Name>Sonneville.Utilities</Name>
-      </ProjectReference>
+    <ProjectReference Include="..\Sonneville.Fidelity.Shell.Test\Sonneville.Fidelity.Shell.Test.csproj">
+      <Project>{C006EEA0-8961-4D4F-87A3-1787991997E8}</Project>
+      <Name>Sonneville.Fidelity.Shell.Test</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sonneville.FidelityWebDriver\Sonneville.FidelityWebDriver.csproj">
+      <Project>{79449998-2821-4929-8A3A-98637C477F85}</Project>
+      <Name>Sonneville.FidelityWebDriver</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sonneville.Utilities\Sonneville.Utilities.csproj">
+      <Project>{5366E2E8-3513-4779-9C73-004F6958CF72}</Project>
+      <Name>Sonneville.Utilities</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

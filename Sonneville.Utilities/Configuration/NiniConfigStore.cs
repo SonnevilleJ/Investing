@@ -26,9 +26,9 @@ namespace Sonneville.Utilities.Configuration
 
         public void Save<T>(T config)
         {
-            if(!File.Exists(_path)) File.Create(_path).Close();
+            if (!File.Exists(_path)) File.Create(_path).Close();
             var configSource = new IniConfigSource(_path);
-            
+
             var section = configSource.Configs[GetSectionForType<T>()] ?? configSource.AddConfig(GetSectionForType<T>());
 
             typeof(T).GetProperties()
@@ -41,13 +41,17 @@ namespace Sonneville.Utilities.Configuration
         public T Read<T>() where T : new()
         {
             var config = new T();
-            var configSource = new IniConfigSource(_path);
-            foreach (var propertyInfo in typeof(T).GetProperties())
+            if (File.Exists(_path))
             {
-                var stringValue = configSource.Configs[GetSectionForType<T>()].Get(propertyInfo.Name);
-                dynamic value = Convert.ChangeType(stringValue, propertyInfo.PropertyType);
-                propertyInfo.SetValue(config, value);
+                var configSource = new IniConfigSource(_path);
+                foreach (var propertyInfo in typeof(T).GetProperties())
+                {
+                    var stringValue = configSource.Configs[GetSectionForType<T>()].Get(propertyInfo.Name);
+                    dynamic value = Convert.ChangeType(stringValue, propertyInfo.PropertyType);
+                    propertyInfo.SetValue(config, value);
+                }
             }
+
             return config;
         }
 
