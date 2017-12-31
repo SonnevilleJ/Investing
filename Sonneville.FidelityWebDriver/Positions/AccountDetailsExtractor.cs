@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using log4net;
 using OpenQA.Selenium;
 using Sonneville.FidelityWebDriver.Data;
@@ -15,115 +18,148 @@ namespace Sonneville.FidelityWebDriver.Positions
     {
         private readonly IPositionDetailsExtractor _positionDetailsExtractor;
         private readonly ILog _log;
-        private readonly Dictionary<AccountType, string> _accountTypeToGroupIds;
 
         public AccountDetailsExtractor(IPositionDetailsExtractor positionDetailsExtractor, ILog log)
         {
             _positionDetailsExtractor = positionDetailsExtractor;
             _log = log;
+        }
 
-            _accountTypeToGroupIds = new Dictionary<AccountType, string>
+        public IEnumerable<IAccountDetails> ExtractAccountDetails(IWebDriver webDriver)
+        {
+            var accountTypesByAccountNumber = MapAccountNumberToAccountType(webDriver);
+
+            var table = webDriver.FindElements(By.ClassName("p-positions-tbody"))[1];
+            var tableRows = table.FindElements(By.TagName("tr")).AsEnumerable();
+
+            using (var e = tableRows.GetEnumerator())
+            {
+                while (e.MoveNext())
+                {
+                    if (IsNewAccountRow(e.Current))
+                    {
+                        yield return ParseAccountDetails(accountTypesByAccountNumber, e);
+                    }
+                }
+            }
+        }
+
+        private IAccountDetails ParseAccountDetails(IReadOnlyDictionary<string, AccountType> accountTypesByAccountNumber, IEnumerator<IWebElement> e)
+        {
+            var tableRow = e.Current;
+            var partialAccountDetails = CreatePartialAccountDetails(tableRow, accountTypesByAccountNumber);
+            var positionRows = new List<IWebElement>();
+
+            while (e.MoveNext() && (tableRow = e.Current) != null)
+            {
+                if (IsPositionRow(tableRow))
+                {
+                    positionRows.Add(tableRow);
+                    continue;
+                }
+
+                if (IsTotalRow(tableRow))
+                {
+                    return CompleteAccountDetails(partialAccountDetails, tableRow, positionRows);
+                }
+            }
+            throw new Exception("oawienvpoqhedonqdp");
+        }
+
+        private AccountDetails CreatePartialAccountDetails(IWebElement tableRow, IReadOnlyDictionary<string, AccountType> accountTypesByAccountNumber)
+        {
+            var accountNumber = ExctractAccountNumber(tableRow);
+            _log.Debug($"Starting extraction of details for account {accountNumber}...");
+            return new AccountDetails
+            {
+                Name = ExtractAccountName(tableRow),
+                AccountNumber = accountNumber,
+                AccountType = accountTypesByAccountNumber[accountNumber],
+            };
+        }
+
+        private IAccountDetails CompleteAccountDetails(AccountDetails accountDetails, IWebElement tableRow, IEnumerable<IWebElement> positionRows)
+        {
+            _log.Debug($"Completing extraction of details for account {accountDetails.AccountNumber}...");
+            accountDetails.PendingActivity = ReadPendingActivity(tableRow);
+
+            var totalGainSpans = tableRow.FindElements(By.ClassName("magicgrid--stacked-data-value"));
+            var trimmedGainText = totalGainSpans[0].Text.Trim();
+            accountDetails.TotalGainDollar = ReadTotalDollarGain(trimmedGainText);
+            accountDetails.TotalGainPercent = ReadTotalPercentGain(totalGainSpans, trimmedGainText);
+            accountDetails.Positions = _positionDetailsExtractor.ExtractPositionDetails(positionRows);
+            return accountDetails;
+        }
+
+        private static decimal ReadPendingActivity(IWebElement tableRow)
+        {
+            var pendingActivityDiv = tableRow.FindElement(By.ClassName("magicgrid--total-pending-activity-link-cell"));
+            if (!string.IsNullOrWhiteSpace(pendingActivityDiv.Text))
+            {
+                var rawPendingActivityText = pendingActivityDiv
+                    .FindElement(By.ClassName("magicgrid--total-pending-activity-link"))
+                    .FindElement(By.ClassName("value"))
+                    .Text;
+                return NumberParser.ParseDecimal(rawPendingActivityText);
+            }
+
+            return default(decimal);
+        }
+
+        private static decimal ReadTotalDollarGain(string trimmedGainText)
+        {
+            if (!string.IsNullOrWhiteSpace(trimmedGainText))
+            {
+                return NumberParser.ParseDecimal(trimmedGainText);
+            }
+
+            return default(decimal);
+        }
+
+        private static decimal ReadTotalPercentGain(IReadOnlyList<IWebElement> totalGainSpans, string trimmedGainText)
+        {
+            var trimmedPercentText = totalGainSpans[1].Text.Trim('%');
+            if (!string.IsNullOrWhiteSpace(trimmedGainText))
+            {
+                return NumberParser.ParseDecimal(trimmedPercentText) / 100m;
+            }
+
+            return default(decimal);
+        }
+
+        private static Dictionary<string, AccountType> MapAccountNumberToAccountType(IWebDriver webDriver)
+        {
+            var accountTypes = new Dictionary<AccountType, string>
             {
                 {AccountType.InvestmentAccount, "IA"},
                 {AccountType.RetirementAccount, "RA"},
                 {AccountType.HealthSavingsAccount, "HS"},
                 {AccountType.Other, "OA"},
                 {AccountType.CreditCard, "CC"},
-            };
+            }.ToDictionary(
+                map => map.Key,
+                map => FindWebElementsOfAccountType(webDriver, map.Value)
+            ).SelectMany(kvp => kvp.Value.ToDictionary(
+                webElement => webElement.Text,
+                webElement => kvp.Key)
+            ).ToDictionary(
+                kvp => kvp.Key,
+                kvp => kvp.Value
+            );
+            return accountTypes;
         }
 
-        public IEnumerable<IAccountDetails> ExtractAccountDetails(IWebDriver webDriver)
+        private static ReadOnlyCollection<IWebElement> FindWebElementsOfAccountType(IWebDriver webDriver, string classNameToFind)
         {
-            var accountTypes = new Dictionary<string, AccountType>();
-            foreach (var accountTypeToGroupId in _accountTypeToGroupIds)
-            {
-                var groupDiv = webDriver.FindElement(By.ClassName(accountTypeToGroupId.Value));
-                var accountSpans = groupDiv.FindElements(By.ClassName("account-selector--account-number"));
-                foreach (var accountSpan in accountSpans)
-                {
-                    accountTypes.Add(accountSpan.Text, accountTypeToGroupId.Key);
-                }
-            }
-
-            var table = webDriver.FindElements(By.ClassName("p-positions-tbody"))[1];
-            var tableRows = table.FindElements(By.TagName("tr"));
-
-            var collectingPositionRows = false;
-
-            List<IWebElement> positionRows = null;
-            AccountDetails accountDetails = null;
-
-            var results = new List<IAccountDetails>();
-            foreach (var tableRow in tableRows)
-            {
-                if (collectingPositionRows)
-                {
-                    if (IsPositionRow(tableRow))
-                    {
-                        positionRows.Add(tableRow);
-                        continue;
-                    }
-                    if (IsTotalRow(tableRow))
-                    {
-                        var pendingActivityDiv =
-                            tableRow.FindElement(By.ClassName("magicgrid--total-pending-activity-link-cell"));
-                        if (!string.IsNullOrWhiteSpace(pendingActivityDiv.Text))
-                        {
-                            var rawPendingActivityText = pendingActivityDiv
-                                .FindElement(By.ClassName("magicgrid--total-pending-activity-link"))
-                                .FindElement(By.ClassName("value"))
-                                .Text;
-                            accountDetails.PendingActivity = NumberParser.ParseDecimal(rawPendingActivityText);
-                        }
-
-                        var totalGainSpans = tableRow.FindElements(By.ClassName("magicgrid--stacked-data-value"));
-                        var trimmedGainText = totalGainSpans[0].Text.Trim();
-                        if (!string.IsNullOrWhiteSpace(trimmedGainText))
-                        {
-                            accountDetails.TotalGainDollar = NumberParser.ParseDecimal(trimmedGainText);
-                        }
-                        var trimmedPercentText = totalGainSpans[1].Text.Trim('%');
-                        if (!string.IsNullOrWhiteSpace(trimmedGainText))
-                        {
-                            accountDetails.TotalGainPercent = NumberParser.ParseDecimal(trimmedPercentText)/100m;
-                        }
-
-                        collectingPositionRows = false;
-                    }
-                }
-                if (IsNewAccountRow(tableRow))
-                {
-                    if (accountDetails != null)
-                    {
-                        results.Add(PrepareAccountDetails(accountDetails, positionRows));
-                    }
-                    positionRows = new List<IWebElement>();
-                    var accountNumber = ExctractAccountNumber(tableRow).Replace("†", "");
-                    _log.Debug($"Starting to extract details for account {accountNumber}...");
-                    accountDetails = new AccountDetails
-                    {
-                        Name = ExtractAccountName(tableRow),
-                        AccountNumber = accountNumber,
-                        AccountType = accountTypes[accountNumber],
-                    };
-                    collectingPositionRows = true;
-                }
-            }
-            results.Add(PrepareAccountDetails(accountDetails, positionRows));
-            return results;
-        }
-
-        private AccountDetails PrepareAccountDetails(AccountDetails accountDetails,
-            IEnumerable<IWebElement> positionRows)
-        {
-            _log.Debug($"Completed parsing details for {accountDetails.AccountNumber}.");
-            accountDetails.Positions = _positionDetailsExtractor.ExtractPositionDetails(positionRows);
-            return accountDetails;
+            return webDriver
+                .FindElement(By.ClassName(classNameToFind))
+                .FindElements(By.ClassName("account-selector--account-number"));
         }
 
         private static string ExctractAccountNumber(IWebElement tableRow)
         {
-            return tableRow.FindElement(By.ClassName("magicgrid--account-title-description")).Text;
+            return tableRow.FindElement(By.ClassName("magicgrid--account-title-description")).Text
+                .Replace("†", "");
         }
 
         private static string ExtractAccountName(IWebElement tableRow)
@@ -132,21 +168,21 @@ namespace Sonneville.FidelityWebDriver.Positions
                 .Replace("-", "").Trim();
         }
 
-        private bool IsTotalRow(IWebElement tableRow)
+        private static bool IsTotalRow(IWebElement tableRow)
         {
             var classes = tableRow.GetAttribute("class");
             return !string.IsNullOrWhiteSpace(classes)
                    && classes.Contains("magicgrid--total-row");
         }
 
-        private bool IsPositionRow(IWebElement tableRow)
+        private static bool IsPositionRow(IWebElement tableRow)
         {
             var classes = tableRow.GetAttribute("class");
             return !string.IsNullOrWhiteSpace(classes)
                    && (classes.Contains("normal-row") || classes.Contains("content-row"));
         }
 
-        private bool IsNewAccountRow(IWebElement tableRow)
+        private static bool IsNewAccountRow(IWebElement tableRow)
         {
             var classes = tableRow.GetAttribute("class");
             return !string.IsNullOrWhiteSpace(classes)

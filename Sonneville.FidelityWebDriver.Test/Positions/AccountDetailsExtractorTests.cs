@@ -177,7 +177,7 @@ namespace Sonneville.FidelityWebDriver.Test.Positions
             return positionRows;
         }
 
-        private IWebElement SetupAccountTotalRow(IAccountDetails account)
+        private static IWebElement SetupAccountTotalRow(IAccountDetails account)
         {
             var totalRowMock = new Mock<IWebElement>();
             totalRowMock.Setup(row => row.GetAttribute("class"))
@@ -190,7 +190,7 @@ namespace Sonneville.FidelityWebDriver.Test.Positions
             return totalRowMock.Object;
         }
 
-        private void SetupTotalGain(IAccountDetails account, Mock<IWebElement> totalRowMock)
+        private static void SetupTotalGain(IAccountDetails account, Mock<IWebElement> totalRowMock)
         {
             var totalGainDollarSpanMock = new Mock<IWebElement>();
             totalGainDollarSpanMock.Setup(span => span.GetAttribute("class")).Returns("magicgrid--stacked-data-value");
@@ -199,11 +199,13 @@ namespace Sonneville.FidelityWebDriver.Test.Positions
                 totalGainDollarSpanMock.Setup(span => span.Text)
                     .Returns($@"
                                             {account.TotalGainDollar:C}");
+                totalGainDollarSpanMock.Setup(row => row.ToString()).Returns("Total Gain - Dollar != 0");
             }
             else
             {
                 totalGainDollarSpanMock.Setup(span => span.Text)
                     .Returns("");
+                totalGainDollarSpanMock.Setup(row => row.ToString()).Returns("Total Gain - Dollar == 0");
             }
 
             var totalGainPercentSpanMock = new Mock<IWebElement>();
@@ -213,11 +215,13 @@ namespace Sonneville.FidelityWebDriver.Test.Positions
                 totalGainPercentSpanMock.Setup(span => span.Text)
                     .Returns($@"
                                             {account.TotalGainPercent:P}");
+                totalGainPercentSpanMock.Setup(row => row.ToString()).Returns("Total Gain - Percent == 0");
             }
             else
             {
                 totalGainPercentSpanMock.Setup(span => span.Text)
                     .Returns("");
+                totalGainPercentSpanMock.Setup(row => row.ToString()).Returns("Total Gain - Percent != 0");
             }
 
             var totalGainSpans = new List<IWebElement> {totalGainDollarSpanMock.Object, totalGainPercentSpanMock.Object};
@@ -225,7 +229,7 @@ namespace Sonneville.FidelityWebDriver.Test.Positions
                 .Returns(totalGainSpans.AsReadOnly());
         }
 
-        private void SetupPendingActivity(IAccountDetails account, Mock<IWebElement> totalRowMock)
+        private static void SetupPendingActivity(IAccountDetails account, Mock<IWebElement> totalRowMock)
         {
             if (account.PendingActivity != 0)
             {
@@ -244,6 +248,7 @@ namespace Sonneville.FidelityWebDriver.Test.Positions
 
                 totalRowMock.Setup(row => row.FindElement(By.ClassName("magicgrid--total-pending-activity-link-cell")))
                     .Returns(pendingActivityTdMock.Object);
+                totalRowMock.Setup(row => row.ToString()).Returns("Total Row - Pending Activity != 0");
             }
             else
             {
@@ -254,45 +259,49 @@ namespace Sonneville.FidelityWebDriver.Test.Positions
                     .Throws(new NoSuchElementException("should not attempt reading pending activity"));
                 totalRowMock.Setup(row => row.FindElement(By.ClassName("magicgrid--total-pending-activity-link-cell")))
                     .Returns(pendingActivityTdMock.Object);
+                totalRowMock.Setup(row => row.ToString()).Returns("Total Row - Pending Activity == 0");
             }
         }
 
-        private IWebElement SetupFakeTotalRow()
+        private static IWebElement SetupFakeTotalRow()
         {
             var totalRowMock = new Mock<IWebElement>();
             totalRowMock.Setup(row => row.GetAttribute("class"))
                 .Returns("magicgrid--total-row");
             totalRowMock.Setup(row => row.FindElement(It.IsAny<By>()))
                 .Throws(new NoSuchElementException("should ignore this table row"));
-
+            totalRowMock.Setup(row => row.ToString()).Returns("FAKE Total Row");
             return totalRowMock.Object;
         }
 
-        private IWebElement SetupPositionRowContent()
+        private static IWebElement SetupPositionRowContent()
         {
             const string contentRowClasses = "content-row ";
             var rowMock = new Mock<IWebElement>();
             rowMock.Setup(row => row.GetAttribute("class")).Returns(contentRowClasses);
+            rowMock.Setup(row => row.ToString()).Returns("Position Row - Content");
             return rowMock.Object;
         }
 
-        private IWebElement SetupPositionRowNormal()
+        private static IWebElement SetupPositionRowNormal()
         {
             const string normalRowClasses =
                 "normal-row  NG--NotUsedClass  NG--NotUsedSeparateClass  NG--NotUsedSeparateClass magicgrid--defer-display position-preload-row";
             var rowMock = new Mock<IWebElement>();
             rowMock.Setup(row => row.GetAttribute("class")).Returns(normalRowClasses);
+            rowMock.Setup(row => row.ToString()).Returns("Position Row - Normal");
             return rowMock.Object;
         }
 
-        private IWebElement SetupIgnoredRow()
+        private static IWebElement SetupIgnoredRow()
         {
             var tableRowMock = new Mock<IWebElement>();
             tableRowMock.Setup(row => row.GetAttribute("class")).Returns("this row should be ignored");
+            tableRowMock.Setup(span => span.ToString()).Returns("Ignored Row");
             return tableRowMock.Object;
         }
 
-        private IWebElement SetupAccountTitleRow(string accountName, string accountId)
+        private static IWebElement SetupAccountTitleRow(string accountName, string accountId)
         {
             var accountTitleRowMock = new Mock<IWebElement>();
             accountTitleRowMock.Setup(row => row.GetAttribute("class")).Returns("magicgrid--account-title-row ");
@@ -302,20 +311,25 @@ namespace Sonneville.FidelityWebDriver.Test.Positions
             var accountDescriptionSpanMock = SetupAccountDescriptionSpan(accountId);
             accountTitleRowMock.Setup(row => row.FindElement(By.ClassName("magicgrid--account-title-description")))
                 .Returns(accountDescriptionSpanMock);
+            
+            accountTitleRowMock.Setup(row => row.ToString()).Returns("Account Title Row");
+            
             return accountTitleRowMock.Object;
         }
 
-        private IWebElement SetupAccountTitleSpan(string accountName)
+        private static IWebElement SetupAccountTitleSpan(string accountName)
         {
             var accountTitleTextSpanMock = new Mock<IWebElement>();
             accountTitleTextSpanMock.Setup(span => span.Text).Returns($"{accountName}  - ");
+            accountTitleTextSpanMock.Setup(span => span.ToString()).Returns("Account Title Span");
             return accountTitleTextSpanMock.Object;
         }
 
-        private IWebElement SetupAccountDescriptionSpan(string accountId)
+        private static IWebElement SetupAccountDescriptionSpan(string accountId)
         {
             var accountIdSpanMock = new Mock<IWebElement>();
             accountIdSpanMock.Setup(span => span.Text).Returns(accountId);
+            accountIdSpanMock.Setup(span => span.ToString()).Returns("Account Description Span");
             return accountIdSpanMock.Object;
         }
     }
