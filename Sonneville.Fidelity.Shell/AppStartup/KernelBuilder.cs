@@ -1,4 +1,5 @@
 ﻿using Ninject;
+using Sonneville.Fidelity.Shell.AppStartup.NinjectModules;
 
 namespace Sonneville.Fidelity.Shell.AppStartup
 {
@@ -6,7 +7,11 @@ namespace Sonneville.Fidelity.Shell.AppStartup
     {
         public IKernel Build()
         {
-            return new StandardKernel(new AppModule());
+            return new StandardKernel(
+                new AppModule(),
+                new SeleniumModule(),
+                new LoggingModule()
+            );
         }
     }
 }

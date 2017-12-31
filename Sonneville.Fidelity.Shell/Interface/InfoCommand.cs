@@ -13,5 +13,9 @@ namespace Sonneville.Fidelity.Shell.Interface
         {
             outputWriter.WriteLine("Fidelity Shell Processor, awaiting instructions. Type `help` for instructions.");
         }
+
+        public void Dispose()
+        {
+        }
     }
 }

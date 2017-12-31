@@ -7,7 +7,7 @@ using OpenQA.Selenium.Chrome;
 using Sonneville.Fidelity.Shell.Interface;
 using Sonneville.Utilities.Configuration;
 
-namespace Sonneville.Fidelity.Shell.AppStartup
+namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
 {
     public class AppModule : NinjectModule
     {
@@ -15,7 +15,7 @@ namespace Sonneville.Fidelity.Shell.AppStartup
         {
             Kernel.Bind(syntax => syntax.FromAssembliesMatching("Sonneville.*")
                 .SelectAllClasses()
-                .BindDefaultInterface()
+                .BindAllInterfaces()
                 .Configure(configurationAction => configurationAction.InSingletonScope()));
             // BindAllInterfaces()      - binds to all implemented interfaces
             // BindDefaultInterface()   - class name must match interface name (i.e. Class to IClass)
@@ -42,7 +42,7 @@ namespace Sonneville.Fidelity.Shell.AppStartup
         {
             Kernel.Bind(syntax => syntax.FromAssembliesMatching("Sonneville.*")
                 .Select(type => !type.IsInterface && typeof(ICommand).IsAssignableFrom(type))
-                .BindAllInterfaces()
+                .BindBase()
                 .Configure(configurationAction => configurationAction.InSingletonScope()));
         }
     }

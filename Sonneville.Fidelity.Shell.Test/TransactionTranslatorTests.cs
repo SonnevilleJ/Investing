@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using Sonneville.FidelityWebDriver.Data;
 
-namespace Sonneville.FidelityWebDriver.Demo.Tests
+namespace Sonneville.Fidelity.Shell.Test
 {
     [TestFixture]
     public class TransactionTranslatorTests

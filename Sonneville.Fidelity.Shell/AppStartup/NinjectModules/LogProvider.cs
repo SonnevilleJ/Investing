@@ -1,7 +1,7 @@
 ﻿using log4net;
 using Ninject.Activation;
 
-namespace Sonneville.FidelityWebDriver.Demo.Ninject
+namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
 {
     public class LogProvider : Provider<ILog>
     {

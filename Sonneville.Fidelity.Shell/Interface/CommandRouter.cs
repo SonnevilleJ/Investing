@@ -67,6 +67,11 @@ namespace Sonneville.Fidelity.Shell.Interface
         {
             if (disposing)
             {
+                foreach (var command in _commands)
+                {
+                    command.Dispose();
+                }
+
                 _disposed = true;
             }
         }

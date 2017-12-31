@@ -2,19 +2,20 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using log4net;
 using Moq;
 using NUnit.Framework;
+using Sonneville.Fidelity.Shell.Interface;
 using Sonneville.FidelityWebDriver.Configuration;
 using Sonneville.FidelityWebDriver.Data;
 using Sonneville.FidelityWebDriver.Positions;
 using Sonneville.FidelityWebDriver.Transactions;
 using Sonneville.Utilities.Configuration;
 
-namespace Sonneville.FidelityWebDriver.Demo.Tests
+namespace Sonneville.Fidelity.Shell.Test.Interface
 {
-    [TestFixture]
-    public class AppTests
+    public class DemoCommandTests
     {
         private FidelityConfiguration _fidelityConfiguration;
         private string _username;
@@ -29,8 +30,16 @@ namespace Sonneville.FidelityWebDriver.Demo.Tests
         private DateTime _startDate;
         private DateTime _endDate;
 
-        private App _app;
         private Mock<INiniConfigStore> _configStoreMock;
+
+        private MemoryStream _inputStream;
+        private StreamReader _inputReader;
+        private StreamWriter _inputWriter;
+        private MemoryStream _outputStream;
+        private StreamReader _outputReader;
+        private StreamWriter _outputWriter;
+
+        private DemoCommand _command;
 
         [SetUp]
         public void Setup()
@@ -158,7 +167,15 @@ namespace Sonneville.FidelityWebDriver.Demo.Tests
             _configStoreMock.Setup(configStore => configStore.Read<FidelityConfiguration>()).Returns(_fidelityConfiguration);
             _configStoreMock.Setup(configStore => configStore.Save(It.IsAny<FidelityConfiguration>())).Callback<FidelityConfiguration>(config => _fidelityConfiguration = config);
 
-            _app = new App(
+            _inputStream = new MemoryStream();
+            _inputReader = new StreamReader(_inputStream);
+            _inputWriter = new StreamWriter(_inputStream) {AutoFlush = true};
+
+            _outputStream = new MemoryStream();
+            _outputReader = new StreamReader(_outputStream);
+            _outputWriter = new StreamWriter(_outputStream) {AutoFlush = true};
+
+            _command = new DemoCommand(
                 _logMock.Object,
                 _configStoreMock.Object,
                 _positionsManagerMock.Object,
@@ -169,79 +186,81 @@ namespace Sonneville.FidelityWebDriver.Demo.Tests
         [TearDown]
         public void Teardown()
         {
-            Console.SetOut(new StreamWriter(Console.OpenStandardOutput()) {AutoFlush = true});
-            Console.SetIn(new StreamReader(Console.OpenStandardInput()));
+            _inputStream.Dispose();
+            _inputReader.Dispose();
+            _inputWriter.Dispose();
+            
+            _outputStream.Dispose();
+            _outputReader.Dispose();
+            _outputWriter.Dispose();
+            
+            _command?.Dispose();
+        }
 
-            _app?.Dispose();
+        [Test]
+        public void HasCorrectTitle()
+        {
+            Assert.AreEqual("demo", _command.CommandName);
+        }
+
+        [Test]
+        public void ShouldExitAfter()
+        {
+            Assert.IsFalse(_command.ExitAfter);
         }
 
         [Test]
         public void ShouldFetchAccountSummariesFromPositionsManager()
         {
             SetCredentials();
-            using (var memoryStream = new MemoryStream())
+            _command.Invoke(_inputReader, _outputWriter, new string[0]);
+
+            var outputText = ReadOutputText();
+            _accountSummaries.ForEach(account =>
             {
-                RedirectConsoleOutput(memoryStream);
-
-                _app.Run(new string[0]);
-
-                var consoleOutput = ReadConsoleOutput(memoryStream);
-                _accountSummaries.ForEach(account =>
-                {
-                    Assert.IsTrue(consoleOutput.Contains(account.AccountNumber));
-                    Assert.IsTrue(consoleOutput.Contains(account.Name));
-                    Assert.IsTrue(consoleOutput.Contains(account.MostRecentValue.ToString("C")));
-                });
-            }
+                Assert.IsTrue(outputText.Contains(account.AccountNumber));
+                Assert.IsTrue(outputText.Contains(account.Name));
+                Assert.IsTrue(outputText.Contains(account.MostRecentValue.ToString("C")));
+            });
         }
 
         [Test]
         public void ShouldFetchAccountDetailsFromPositionsManager()
         {
             SetCredentials();
-            using (var memoryStream = new MemoryStream())
+            _command.Invoke(_inputReader, _outputWriter, new string[0]);
+
+            var outputText = ReadOutputText();
+            _accountDetails.ForEach(account =>
             {
-                RedirectConsoleOutput(memoryStream);
-
-                _app.Run(new string[0]);
-
-                var consoleOutput = ReadConsoleOutput(memoryStream);
-                _accountDetails.ForEach(account =>
-                {
-                    Assert.IsTrue(consoleOutput.Contains(account.Name));
-                    Assert.IsTrue(consoleOutput.Contains(account.AccountNumber));
-                    Assert.IsTrue(consoleOutput.Contains(account.AccountType.ToString()));
-                    account.Positions.ToList()
-                        .ForEach(position =>
-                        {
-                            Assert.IsTrue(consoleOutput.Contains(position.Ticker));
-                            Assert.IsTrue(consoleOutput.Contains(position.Quantity.ToString("N")));
-                            Assert.IsTrue(consoleOutput.Contains(position.CurrentValue.ToString("C")));
-                            Assert.IsTrue(consoleOutput.Contains(position.CostBasisPerShare.ToString("C")));
-                        });
-                });
-            }
+                Assert.IsTrue(outputText.Contains(account.Name));
+                Assert.IsTrue(outputText.Contains(account.AccountNumber));
+                Assert.IsTrue(outputText.Contains(account.AccountType.ToString()));
+                account.Positions.ToList()
+                    .ForEach(position =>
+                    {
+                        Assert.IsTrue(outputText.Contains(position.Ticker));
+                        Assert.IsTrue(outputText.Contains(position.Quantity.ToString("N")));
+                        Assert.IsTrue(outputText.Contains(position.CurrentValue.ToString("C")));
+                        Assert.IsTrue(outputText.Contains(position.CostBasisPerShare.ToString("C")));
+                    });
+            });
         }
 
         [Test]
         public void ShouldGetTransactionHistoryFromTransactionsManager()
         {
             SetCredentials();
-            using (var memoryStream = new MemoryStream())
+            _command.Invoke(_inputReader, _outputWriter, new string[0]);
+
+            var outputText = ReadOutputText();
+            _transactions.ForEach(transaction =>
             {
-                RedirectConsoleOutput(memoryStream);
-
-                _app.Run(new string[0]);
-
-                var consoleOutput = ReadConsoleOutput(memoryStream);
-                _transactions.ForEach(transaction =>
-                {
-                    Assert.IsTrue(consoleOutput.Contains(transaction.RunDate.Value.ToString("d")));
-                    Assert.IsTrue(consoleOutput.Contains(transaction.Quantity.Value.ToString("F")));
-                    Assert.IsTrue(consoleOutput.Contains(transaction.Symbol));
-                    Assert.IsTrue(consoleOutput.Contains(transaction.Price.Value.ToString("C")));
-                });
-            }
+                Assert.IsTrue(outputText.Contains(transaction.RunDate.Value.ToString("d")));
+                Assert.IsTrue(outputText.Contains(transaction.Quantity.Value.ToString("F")));
+                Assert.IsTrue(outputText.Contains(transaction.Symbol));
+                Assert.IsTrue(outputText.Contains(transaction.Price.Value.ToString("C")));
+            });
 
             _transactionManagerMock.Verify(manager => manager.GetTransactionHistory(_startDate, _endDate));
         }
@@ -251,7 +270,7 @@ namespace Sonneville.FidelityWebDriver.Demo.Tests
         {
             var args = new[] {"-u", _username, "-p", _password};
 
-            _app.Run(args);
+            _command.Invoke(_inputReader, _outputWriter,args);
 
             Assert.AreEqual(_username, _fidelityConfiguration.Username);
             Assert.AreEqual(_password, _fidelityConfiguration.Password);
@@ -268,7 +287,7 @@ namespace Sonneville.FidelityWebDriver.Demo.Tests
             });
             var args = new[] {"-u", _username, "-p", _password, "-s"};
 
-            _app.Run(args);
+            _command.Invoke(_inputReader, _outputWriter,args);
 
             _configStoreMock.Verify(configStore => configStore.Save(_fidelityConfiguration));
         }
@@ -276,42 +295,32 @@ namespace Sonneville.FidelityWebDriver.Demo.Tests
         [Test]
         public void ShouldDisplayHelpFromCliArgsAndNotPersist()
         {
-            using (var memoryStream = new MemoryStream())
-            {
-                RedirectConsoleOutput(memoryStream);
+            _command.Invoke(_inputReader, _outputWriter, new[] {"-u", _username, "-p", _password, "-s", "-h"});
 
-                _app.Run(new[] {"-u", _username, "-p", _password, "-s", "-h"});
-
-                var consoleOutput = ReadConsoleOutput(memoryStream);
-                Assert.IsTrue(consoleOutput.Contains("-h"),
-                    $"Actual console output follows:{Environment.NewLine}{consoleOutput}");
-                AssertUnchangedConfig();
-            }
+            var outputText = ReadOutputText();
+            Assert.IsTrue(outputText.Contains("-h"),
+                $"Actual console output follows:{Environment.NewLine}{outputText}");
+            AssertUnchangedConfig();
         }
 
         [Test]
         public void ShouldPromptForCredentials()
         {
-            using (var inStream = new MemoryStream())
-            {
-                var inWriter = new StreamWriter(inStream) {AutoFlush = true};
-                RedirectConsoleInput(inStream);
-                inWriter.WriteLine(_username);
-                inWriter.WriteLine(_password);
-                var endlineLength = Environment.NewLine.Length;
-                inStream.Position -= _username.Length + endlineLength + _password.Length + endlineLength;
+            _inputWriter.WriteLine(_username);
+            _inputWriter.WriteLine(_password);
+            var endlineLength = Environment.NewLine.Length;
+            _inputStream.Position -= _username.Length + endlineLength + _password.Length + endlineLength;
 
-                _app.Run(new string[] { });
+            _command.Invoke(_inputReader, _outputWriter, new string[] { });
 
-                Assert.AreEqual(_username, _fidelityConfiguration.Username);
-                Assert.AreEqual(_password, _fidelityConfiguration.Password);
-            }
+            Assert.AreEqual(_username, _fidelityConfiguration.Username);
+            Assert.AreEqual(_password, _fidelityConfiguration.Password);
         }
 
         [Test]
         public void ShouldCascadeDisposeToManagers()
         {
-            _app.Dispose();
+            _command.Dispose();
 
             _positionsManagerMock.Verify(manager => manager.Dispose());
             _transactionManagerMock.Verify(manager => manager.Dispose());
@@ -320,8 +329,8 @@ namespace Sonneville.FidelityWebDriver.Demo.Tests
         [Test]
         public void ShouldHandleMultipleDisposals()
         {
-            _app.Dispose();
-            _app.Dispose();
+            _command.Dispose();
+            _command.Dispose();
         }
 
         private void SetCredentials()
@@ -332,25 +341,13 @@ namespace Sonneville.FidelityWebDriver.Demo.Tests
 
         private void AssertUnchangedConfig()
         {
-            _configStoreMock.Verify(configStore => configStore.Save(It.IsAny<FidelityConfiguration>()), Times.Never);
+            _configStoreMock.Verify(configStore => configStore.Save(It.IsAny<object>()), Times.Never);
         }
 
-        private static void RedirectConsoleInput(Stream memoryStream)
+        private string ReadOutputText()
         {
-            var streamReader = new StreamReader(memoryStream);
-            Console.SetIn(streamReader);
-        }
-
-        private static void RedirectConsoleOutput(Stream memoryStream)
-        {
-            var streamWriter = new StreamWriter(memoryStream) {AutoFlush = true};
-            Console.SetOut(streamWriter);
-        }
-
-        private static string ReadConsoleOutput(Stream memoryStream)
-        {
-            memoryStream.Position = 0;
-            return new StreamReader(memoryStream).ReadToEnd();
+            _outputStream.Position = 0;
+            return _outputReader.ReadToEnd();
         }
     }
 }

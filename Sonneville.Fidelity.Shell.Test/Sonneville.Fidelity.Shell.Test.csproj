@@ -49,17 +49,19 @@
     <Compile Include="AccountRebalancerTests.cs" />
     <Compile Include="AllocationDifferencerTests.cs" />
     <Compile Include="AppStartup\BootstrapperTests.cs" />
-    <Compile Include="AppStartup\KernelBuilderTests.cs" />
+      <Compile Include="AppStartup\MutableKernelTests.cs"/>
+      <Compile Include="AppStartup\ImmutableKernelTests.cs"/>
     <Compile Include="Configuration\PortfolioManagerConfigurationTests.cs" />
     <Compile Include="FidelityWebDriver\AccountMapperTests.cs" />
     <Compile Include="FidelityWebDriver\AccountTypeMapperTests.cs" />
     <Compile Include="FidelityWebDriver\PositionMapperTests.cs" />
-      <Compile Include="Interface\CommandLineOptionsParserTests.cs"/>
       <Compile Include="Interface\CommandRouterTests.cs"/>
+      <Compile Include="Interface\DemoCommandTests.cs"/>
       <Compile Include="Interface\ExitCommandTests.cs"/>
       <Compile Include="Interface\HelpCommandTests.cs"/>
       <Compile Include="Interface\InfoCommandTests.cs"/>
     <Compile Include="Properties\AssemblyInfo.cs" />
+      <Compile Include="TransactionTranslatorTests.cs"/>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -87,6 +89,9 @@
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc">
       <HintPath>..\packages\Castle.Core.4.2.1\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
+      <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a">
+          <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+      </Reference>
     <Reference Include="Moq, Version=4.8.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920">
       <HintPath>..\packages\Moq.4.8.0\lib\net45\Moq.dll</HintPath>
     </Reference>

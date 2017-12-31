@@ -4,7 +4,7 @@ using System.Linq;
 using log4net;
 using OpenQA.Selenium;
 
-namespace Sonneville.FidelityWebDriver.Demo.log4net
+namespace Sonneville.Fidelity.Shell.log4net
 {
     public class LoggingWebElement : IWebElement
     {

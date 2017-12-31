@@ -15,7 +15,6 @@ namespace Sonneville.FidelityWebDriver.Test.Positions
         private Mock<IWebDriver> _webDriverMock;
         private Mock<IAccountSummariesExtractor> _accountSummariesExtractorMock;
         private Mock<IAccountDetailsExtractor> _accountDetailsExtractorMock;
-        private Mock<ISleepUtil> _sleepUtilMock;
 
         [SetUp]
         public void Setup()
@@ -26,10 +25,8 @@ namespace Sonneville.FidelityWebDriver.Test.Positions
 
             _accountDetailsExtractorMock = new Mock<IAccountDetailsExtractor>();
 
-            _sleepUtilMock = new Mock<ISleepUtil>();
-
             _positionsPage = new PositionsPage(_webDriverMock.Object,
-                _accountSummariesExtractorMock.Object, _accountDetailsExtractorMock.Object, _sleepUtilMock.Object);
+                _accountSummariesExtractorMock.Object, _accountDetailsExtractorMock.Object);
         }
 
         [Test]
@@ -56,7 +53,6 @@ namespace Sonneville.FidelityWebDriver.Test.Positions
             var actualDetails = _positionsPage.GetAccountDetails();
 
             Assert.AreSame(expectedDetails, actualDetails);
-            _sleepUtilMock.Verify(util => util.Sleep(1000));
         }
     }
 }

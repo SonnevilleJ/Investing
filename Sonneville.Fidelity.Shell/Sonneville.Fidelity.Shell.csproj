@@ -43,6 +43,9 @@
           <HintPath>..\packages\Castle.Core.4.2.1\lib\net45\Castle.Core.dll</HintPath>
           <Private>True</Private>
       </Reference>
+      <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a">
+          <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+      </Reference>
     <Reference Include="NDesk.Options, Version=0.2.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NDesk.Options.0.2.1\lib\NDesk.Options.dll</HintPath>
       <Private>True</Private>
@@ -61,6 +64,7 @@
       </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+      <Reference Include="System.Drawing"/>
       <Reference Include="WebDriver, Version=3.8.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\packages\Selenium.WebDriver.3.8.0\lib\net45\WebDriver.dll</HintPath>
       <Private>True</Private>
@@ -69,20 +73,27 @@
   <ItemGroup>
     <Compile Include="AccountRebalancer.cs" />
     <Compile Include="AllocationDifferencer.cs" />
-    <Compile Include="AppStartup\AppModule.cs" />
     <Compile Include="AppStartup\Bootstrapper.cs" />
     <Compile Include="AppStartup\KernelBuilder.cs" />
+      <Compile Include="AppStartup\NinjectModules\AppModule.cs"/>
+      <Compile Include="AppStartup\NinjectModules\LoggingModule.cs"/>
+      <Compile Include="AppStartup\NinjectModules\LogProvider.cs"/>
+      <Compile Include="AppStartup\NinjectModules\SeleniumModule.cs"/>
     <Compile Include="Configuration\PortfolioManagerConfiguration.cs" />
     <Compile Include="FidelityWebDriver\AccountMapper.cs" />
     <Compile Include="FidelityWebDriver\AccountTypeMapper.cs" />
     <Compile Include="FidelityWebDriver\PositionMapper.cs" />
-      <Compile Include="Interface\CommandLineOptionsParser.cs"/>
       <Compile Include="Interface\CommandRouter.cs"/>
+      <Compile Include="Interface\DemoCommand.cs"/>
       <Compile Include="Interface\ExitCommand.cs"/>
       <Compile Include="Interface\HelpCommand.cs"/>
       <Compile Include="Interface\ICommand.cs"/>
       <Compile Include="Interface\InfoCommand.cs"/>
+      <Compile Include="Logging\LogExtentions.cs"/>
+      <Compile Include="Logging\LoggingWebDriver.cs"/>
+      <Compile Include="Logging\LoggingWebElement.cs"/>
     <Compile Include="Properties\AssemblyInfo.cs" />
+      <Compile Include="TransactionTranslator.cs"/>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

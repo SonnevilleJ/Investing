@@ -13,5 +13,9 @@ namespace Sonneville.Fidelity.Shell.Interface
         {
             outputWriter.WriteLine("Exiting...");
         }
+
+        public void Dispose()
+        {
+        }
     }
 }

@@ -1,6 +1,6 @@
 using Sonneville.FidelityWebDriver.Data;
 
-namespace Sonneville.FidelityWebDriver.Demo
+namespace Sonneville.Fidelity.Shell
 {
     public class TransactionTranslator
     {

@@ -52,6 +52,14 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
         }
 
         [Test]
+        public void ShouldDisposeCommands()
+        {
+            _commandRouter.Dispose();
+
+            _commands.ForEach(command => Mock.Get(command).Verify(mock => mock.Dispose(), Times.Once()));
+        }
+
+        [Test]
         public void DisposeShouldNotThrow()
         {
             Assert.DoesNotThrow(() => _commandRouter.Dispose());
@@ -93,7 +101,7 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
             _task = Task.Run(() => _commandRouter.Run(_cliArgs));
             _task.Wait(100);
 
-            AssertCommandWasInvoked("info", new[]{"info"});
+            AssertCommandWasInvoked("info", new[] {"info"});
             Assert.IsFalse(_task.IsCompleted);
         }
 

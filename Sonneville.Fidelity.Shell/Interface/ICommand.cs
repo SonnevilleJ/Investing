@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Sonneville.Fidelity.Shell.Interface
 {
-    public interface ICommand
+    public interface ICommand : IDisposable
     {
         string CommandName { get; }
 

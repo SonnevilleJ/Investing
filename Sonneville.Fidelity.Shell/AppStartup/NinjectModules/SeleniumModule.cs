@@ -3,9 +3,9 @@ using Ninject.Modules;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Remote;
-using Sonneville.FidelityWebDriver.Demo.log4net;
+using Sonneville.Fidelity.Shell.log4net;
 
-namespace Sonneville.FidelityWebDriver.Demo.Ninject
+namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
 {
     public class SeleniumModule : NinjectModule
     {
