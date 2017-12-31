@@ -23,11 +23,13 @@ namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
         private static void ConfigureLog4Net()
         {
             var localDataPath = GetLocalDataPath();
-            var patternLayout = ConfigurePatternLayout();
-            var rollingFileAppender = ConfigureRollingFileAppender(patternLayout, localDataPath);
+            var layout = ConfigurePatternLayout();
+            var rollingFileAppender = ConfigureRollingFileAppender(layout, localDataPath);
+            var consoleAppender = ConfigureConsoleAppender(layout);
 
             var hierarchy = (Hierarchy) LogManager.GetRepository();
             hierarchy.Root.AddAppender(rollingFileAppender);
+            hierarchy.Root.AddAppender(consoleAppender);
             hierarchy.Root.Level = Level.All;
             hierarchy.Configured = true;
         }
@@ -59,20 +61,33 @@ namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
             return patternLayout;
         }
 
-        private static RollingFileAppender ConfigureRollingFileAppender(PatternLayout patternLayout, string loggingDirectory)
+        private static RollingFileAppender ConfigureRollingFileAppender(ILayout layout, string loggingDirectory)
         {
             var appender = new RollingFileAppender
             {
                 Name = "Default logger",
                 AppendToFile = true,
                 File = Path.Combine(loggingDirectory, $"Demo-{DateTime.Today:yyyyMMdd}.log"),
-                Layout = patternLayout,
+                Layout = layout,
                 MaxSizeRollBackups = 5,
                 MaximumFileSize = "10MB",
                 RollingStyle = RollingFileAppender.RollingMode.Size,
                 StaticLogFileName = true,
                 ImmediateFlush = true,
                 Threshold = Level.All,
+            };
+            appender.ActivateOptions();
+            return appender;
+        }
+
+        private static IAppender ConfigureConsoleAppender(ILayout layout)
+        {
+            var appender = new ConsoleAppender
+            {
+                Name = "Console appender",
+                Layout = layout,
+                Target = Console.Error.ToString(),
+                Threshold = Level.Warn,
             };
             appender.ActivateOptions();
             return appender;

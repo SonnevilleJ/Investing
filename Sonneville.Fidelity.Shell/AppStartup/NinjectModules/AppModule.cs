@@ -5,6 +5,7 @@ using Ninject.Modules;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using Sonneville.Fidelity.Shell.Interface;
+using Sonneville.FidelityWebDriver.Configuration;
 using Sonneville.Utilities.Configuration;
 
 namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
@@ -26,24 +27,6 @@ namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
 
             Bind<TextReader>().ToConstant(Console.In).WhenInjectedInto<ICommandRouter>();
             Bind<TextWriter>().ToConstant(Console.Out).WhenInjectedInto<ICommandRouter>();
-
-            BindConfig();
-            BindCommands();
-        }
-
-        private void BindConfig()
-        {
-            var configPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "FidelityWebDriver.Demo.ini");
-            
-            Rebind<INiniConfigStore>().ToConstant(new NiniConfigStore(configPath));
-        }
-
-        private void BindCommands()
-        {
-            Kernel.Bind(syntax => syntax.FromAssembliesMatching("Sonneville.*")
-                .Select(type => !type.IsInterface && typeof(ICommand).IsAssignableFrom(type))
-                .BindBase()
-                .Configure(configurationAction => configurationAction.InSingletonScope()));
         }
     }
 }
