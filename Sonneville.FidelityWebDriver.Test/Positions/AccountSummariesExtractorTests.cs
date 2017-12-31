@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using log4net;
 using Moq;
 using NUnit.Framework;
 using OpenQA.Selenium;
@@ -16,6 +17,8 @@ namespace Sonneville.FidelityWebDriver.Test.Positions
         private Mock<IWebDriver> _webDriverMock;
         private List<Dictionary<string, string>> _expectedAccountDetails;
         private Dictionary<string, AccountType> _accountTypeStrings;
+        private Mock<ILog> _logMock;
+        private AccountSummariesExtractor _extractor;
 
         [SetUp]
         public void Setup()
@@ -39,19 +42,34 @@ namespace Sonneville.FidelityWebDriver.Test.Positions
                 CreateAccountValues("credit2", "CC", "my second credit card", "12.34"),
             };
 
-            var accountDivs = SetupAccountDivs(_expectedAccountDetails);
-
             _webDriverMock = new Mock<IWebDriver>();
-            _webDriverMock.Setup(driver => driver.FindElements(By.ClassName("account-selector--group-container")))
-                .Returns(accountDivs);
+
+            _logMock = new Mock<ILog>();
+
+            _extractor = new AccountSummariesExtractor(_logMock.Object);
+        }
+
+        [Test]
+        public void ShouldLogWhenNewAccountTypeFound()
+        {
+            const string accountType = "NE";
+            _expectedAccountDetails.Add(CreateAccountValues("new9999", accountType, "some new account", "0"));
+            SetupAccountDivs(_expectedAccountDetails, _webDriverMock);
+
+            var summaries = _extractor.ExtractAccountSummaries(_webDriverMock.Object).ToList();
+
+            _logMock.Verify(log => log.Warn(It.Is<object>(message => message.ToString().Contains(accountType))));
+            Assert.AreEqual(_expectedAccountDetails.Count - 1, summaries.Count);
         }
 
         [Test]
         public void ShouldReturnOneAccountPerAccountOnPage()
         {
-            var accounts = new AccountSummariesExtractor().ExtractAccountSummaries(_webDriverMock.Object).ToList();
+            SetupAccountDivs(_expectedAccountDetails, _webDriverMock);
 
-            Assert.AreEqual(_expectedAccountDetails.Count(), accounts.Count());
+            var accounts = _extractor.ExtractAccountSummaries(_webDriverMock.Object).ToList();
+
+            Assert.AreEqual(_expectedAccountDetails.Count, accounts.Count);
             foreach (var account in accounts)
             {
                 var matchingExpected =
@@ -63,14 +81,16 @@ namespace Sonneville.FidelityWebDriver.Test.Positions
             }
         }
 
-        private ReadOnlyCollection<IWebElement> SetupAccountDivs(
-            IEnumerable<Dictionary<string, string>> expectedAccountDetails)
+        private void SetupAccountDivs(IEnumerable<Dictionary<string, string>> expectedAccountDetails, Mock<IWebDriver> webDriverMock)
         {
-            return expectedAccountDetails
+            var accountDivs = expectedAccountDetails
                 .GroupBy(d => d["accountType"])
                 .Select(CreateAccountGroupDivs)
                 .ToList()
                 .AsReadOnly();
+
+            webDriverMock.Setup(driver => driver.FindElements(By.ClassName("account-selector--group-container")))
+                .Returns(accountDivs);
         }
 
         private Dictionary<string, string> CreateAccountValues(string accountNumber, string accountType,
@@ -104,25 +124,31 @@ namespace Sonneville.FidelityWebDriver.Test.Positions
                 .AsReadOnly();
         }
 
-        private static IWebElement CreateWebElementForAccountValues(string accountType,
+        private IWebElement CreateWebElementForAccountValues(string accountType,
             IReadOnlyDictionary<string, string> values)
         {
-            var valueAttributeNames = new Dictionary<string, string>
+            var accountDivMock = new Mock<IWebElement>();
+            accountDivMock.Setup(div => div.GetAttribute("data-acct-number"))
+                .Returns(values["accountNumber"]);
+            accountDivMock.Setup(div => div.GetAttribute("data-acct-name"))
+                .Returns(values["accountName"]);
+            accountDivMock.Setup(div => div.GetAttribute(GetAttributeByAccountType(accountType)))
+                .Returns(values["accountValue"]);
+            return accountDivMock.Object;
+        }
+
+        private string GetAttributeByAccountType(string accountType)
+        {
+            return new Dictionary<string, string>
             {
                 {"IA", "data-most-recent-value"},
                 {"RA", "data-most-recent-value"},
                 {"HS", "data-most-recent-value"},
                 {"OA", "data-most-recent-value"},
                 {"CC", "data-acct-balance"}
-            };
-            var accountDivMock = new Mock<IWebElement>();
-            accountDivMock.Setup(div => div.GetAttribute("data-acct-number"))
-                .Returns(values["accountNumber"]);
-            accountDivMock.Setup(div => div.GetAttribute("data-acct-name"))
-                .Returns(values["accountName"]);
-            accountDivMock.Setup(div => div.GetAttribute(valueAttributeNames[accountType]))
-                .Returns(values["accountValue"]);
-            return accountDivMock.Object;
+            }.TryGetValue(accountType, out var knownValueAttributeName1)
+                ? knownValueAttributeName1
+                : "unknown";
         }
     }
 }
