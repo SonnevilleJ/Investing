@@ -12,14 +12,14 @@ namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
         {
             try
             {
-                Kernel.Unbind<IWebDriver>();
+                Unbind<IWebDriver>();
 
-                Kernel.Bind<IWebDriver>()
-                    .To<ChromeDriver>()
+                Bind<IWebDriver>()
+                    .ToConstant(CreateWebDriver())
                     .WhenInjectedInto<LoggingWebDriver>()
                     .InSingletonScope();
 
-                Kernel.Bind<IWebDriver>()
+                Bind<IWebDriver>()
                     .To<LoggingWebDriver>()
                     .InSingletonScope();
             }
@@ -27,6 +27,16 @@ namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
             {
                 Console.WriteLine($"ERROR: Failed to initialize WebDriver: {e}");
             }
+        }
+
+        private static IWebDriver CreateWebDriver()
+        {
+            var chromeOptions = new ChromeOptions();
+#if !DEBUG
+            chromeOptions.AddArgument("--headless");
+#endif
+            var chromeDriver = new ChromeDriver(chromeOptions);
+            return chromeDriver;
         }
     }
 }
