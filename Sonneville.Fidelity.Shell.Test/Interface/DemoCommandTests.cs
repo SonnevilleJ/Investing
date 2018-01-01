@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using log4net;
 using Moq;
 using NUnit.Framework;
@@ -189,11 +188,11 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
             _inputStream.Dispose();
             _inputReader.Dispose();
             _inputWriter.Dispose();
-            
+
             _outputStream.Dispose();
             _outputReader.Dispose();
             _outputWriter.Dispose();
-            
+
             _command?.Dispose();
         }
 
@@ -212,7 +211,7 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
         [Test]
         public void ShouldFetchAccountSummariesFromPositionsManager()
         {
-            SetCredentials();
+            CacheCredentials(_username, _password);
             _command.Invoke(_inputReader, _outputWriter, new string[0]);
 
             var outputText = ReadOutputText();
@@ -227,7 +226,7 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
         [Test]
         public void ShouldFetchAccountDetailsFromPositionsManager()
         {
-            SetCredentials();
+            CacheCredentials(_username, _password);
             _command.Invoke(_inputReader, _outputWriter, new string[0]);
 
             var outputText = ReadOutputText();
@@ -250,7 +249,7 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
         [Test]
         public void ShouldGetTransactionHistoryFromTransactionsManager()
         {
-            SetCredentials();
+            CacheCredentials(_username, _password);
             _command.Invoke(_inputReader, _outputWriter, new string[0]);
 
             var outputText = ReadOutputText();
@@ -270,7 +269,7 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
         {
             var args = new[] {"-u", _username, "-p", _password};
 
-            _command.Invoke(_inputReader, _outputWriter,args);
+            _command.Invoke(_inputReader, _outputWriter, args);
 
             Assert.AreEqual(_username, _fidelityConfiguration.Username);
             Assert.AreEqual(_password, _fidelityConfiguration.Password);
@@ -280,14 +279,14 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
         [Test]
         public void ShouldSetConfigFromCliArgsAndPersist()
         {
-            _configStoreMock.Setup(configStore => configStore.Save(It.IsAny<FidelityConfiguration>())).Callback<FidelityConfiguration>((config) =>
+            _configStoreMock.Setup(configStore => configStore.Save(It.IsAny<FidelityConfiguration>())).Callback<FidelityConfiguration>(config =>
             {
                 Assert.AreEqual(_username, config.Username);
                 Assert.AreEqual(_password, config.Password);
             });
             var args = new[] {"-u", _username, "-p", _password, "-s"};
 
-            _command.Invoke(_inputReader, _outputWriter,args);
+            _command.Invoke(_inputReader, _outputWriter, args);
 
             _configStoreMock.Verify(configStore => configStore.Save(_fidelityConfiguration));
         }
@@ -304,8 +303,13 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
         }
 
         [Test]
-        public void ShouldPromptForCredentials()
+        [TestCase(null, null)]
+        [TestCase("", "")]
+        [TestCase("user1234", null)]
+        public void ShouldPromptForCredentialsWhenCredentialsAreInsufficientlyCached(string username, string password)
         {
+            CacheCredentials(username, password);
+
             _inputWriter.WriteLine(_username);
             _inputWriter.WriteLine(_password);
             var endlineLength = Environment.NewLine.Length;
@@ -313,6 +317,17 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
 
             _command.Invoke(_inputReader, _outputWriter, new string[] { });
 
+            Assert.AreEqual(_username, _fidelityConfiguration.Username);
+            Assert.AreEqual(_password, _fidelityConfiguration.Password);
+        }
+
+        [Test]
+        public void ShouldLogWhenCredentialsAreCached()
+        {
+            CacheCredentials(_username, _password);
+            _command.Invoke(_inputReader, _outputWriter, new string[] { });
+
+            _logMock.Verify(log => log.Info(It.Is<string>(message => message.Contains(_username))));
             Assert.AreEqual(_username, _fidelityConfiguration.Username);
             Assert.AreEqual(_password, _fidelityConfiguration.Password);
         }
@@ -333,10 +348,10 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
             _command.Dispose();
         }
 
-        private void SetCredentials()
+        private void CacheCredentials(string username, string password)
         {
-            _fidelityConfiguration.Username = _username;
-            _fidelityConfiguration.Password = _password;
+            _fidelityConfiguration.Username = username;
+            _fidelityConfiguration.Password = password;
         }
 
         private void AssertUnchangedConfig()

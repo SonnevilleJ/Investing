@@ -37,7 +37,7 @@ namespace Sonneville.Fidelity.Shell.Interface
             _positionsManager = positionsManager;
             _transactionManager = transactionManager;
             _transactionTranslator = transactionTranslator;
-            
+
             _fidelityConfiguration = _configStore.Read<FidelityConfiguration>();
             _optionSet = new OptionSet
             {
@@ -80,7 +80,11 @@ namespace Sonneville.Fidelity.Shell.Interface
                 _configStore.Save(_fidelityConfiguration);
             }
 
-            if (string.IsNullOrEmpty(_fidelityConfiguration.Username))
+            if (!string.IsNullOrEmpty(_fidelityConfiguration.Username) && !string.IsNullOrEmpty(_fidelityConfiguration.Password))
+            {
+                _log.Info($"Using cached credentials to access account for user `{_fidelityConfiguration.Username}`.");
+            }
+            else
             {
                 _log.Info("No username configured; requesting credentials from user.");
                 outputWriter.Write("Please enter a username for Fidelity.com: ");
