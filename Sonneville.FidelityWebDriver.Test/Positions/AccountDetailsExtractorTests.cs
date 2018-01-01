@@ -19,7 +19,6 @@ namespace Sonneville.FidelityWebDriver.Test.Positions
         private Mock<IPositionDetailsExtractor> _positionDetailsExtractorMock;
         private Mock<ILog> _logMock;
         private Mock<IWebElement> _tableBodyMock;
-        private Dictionary<AccountType, string> _accountTypeCodes;
 
         [SetUp]
         public void Setup()
@@ -65,16 +64,7 @@ namespace Sonneville.FidelityWebDriver.Test.Positions
                     Positions = new List<IPosition> {new Mock<IPosition>().Object}
                 },
             };
-            _accountTypeCodes = new Dictionary<AccountType, string>
-            {
-                {AccountType.InvestmentAccount, "IA"},
-                {AccountType.RetirementAccount, "RA"},
-                {AccountType.HealthSavingsAccount, "HS"},
-                {AccountType.Other, "OA"},
-                {AccountType.CreditCard, "CC"},
-                {AccountType.Unknown, "??"},
-            };
-            foreach (var accountType in _accountTypeCodes.Keys)
+            foreach (var accountType in AccountTypesMapper.CodesForKnownAccountTypes.Keys)
             {
                 var accountGroupDivMock = new Mock<IWebElement>();
                 var accountNumberSpans = _expectedAccountDetails
@@ -92,7 +82,7 @@ namespace Sonneville.FidelityWebDriver.Test.Positions
                 accountGroupDivMock.Setup(div => div.FindElements(By.ClassName("account-selector--account-number")))
                     .Returns(accountNumberSpans);
 
-                _webDriverMock.Setup(webDriver => webDriver.FindElement(By.ClassName(_accountTypeCodes[accountType])))
+                _webDriverMock.Setup(webDriver => webDriver.FindElement(By.ClassName(AccountTypesMapper.CodesForKnownAccountTypes[accountType])))
                     .Returns(accountGroupDivMock.Object);
             }
 

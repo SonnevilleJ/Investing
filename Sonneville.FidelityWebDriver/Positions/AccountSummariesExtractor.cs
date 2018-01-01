@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using log4net;
 using OpenQA.Selenium;
 using Sonneville.FidelityWebDriver.Data;
@@ -15,15 +16,6 @@ namespace Sonneville.FidelityWebDriver.Positions
     {
         private readonly ILog _log;
 
-        private static readonly Dictionary<string, AccountType> GroupIdsToAccountTypes = new Dictionary<string, AccountType>
-        {
-            {"IA", AccountType.InvestmentAccount},
-            {"RA", AccountType.RetirementAccount},
-            {"HS", AccountType.HealthSavingsAccount},
-            {"OA", AccountType.Other},
-            {"CC", AccountType.CreditCard},
-        };
-
         public AccountSummariesExtractor(ILog log)
         {
             _log = log;
@@ -33,15 +25,18 @@ namespace Sonneville.FidelityWebDriver.Positions
         {
             var accountGroupDivs = webDriver.FindElements(By.ClassName("account-selector--group-container"));
 
+            var groupIdsToAccountTypes = AccountTypesMapper.CodesForKnownAccountTypes
+                .ToDictionary(kvp => kvp.Value, kvp => kvp.Key);
             foreach (var accountGroupDiv in accountGroupDivs)
             {
                 var accountTypeAttribute = accountGroupDiv.GetAttribute("data-group-id");
 
-                if (!GroupIdsToAccountTypes.TryGetValue(accountTypeAttribute, out var accountType))
+                if (!groupIdsToAccountTypes.TryGetValue(accountTypeAttribute, out var accountType))
                 {
                     _log.Warn($"NOT able to parse unknown account type: {accountTypeAttribute}");
                     continue;
                 }
+
                 var accountDivs = accountGroupDiv.FindElements(By.ClassName("js-account"));
 
                 foreach (var accountDiv in accountDivs)

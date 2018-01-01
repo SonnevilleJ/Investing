@@ -13,23 +13,19 @@ namespace Sonneville.FidelityWebDriver.Positions
 
     public class AccountTypesMapper : IAccountTypesMapper
     {
-        private readonly Dictionary<AccountType, string> _knownAccountTypesAndCodes;
-
-        public AccountTypesMapper()
+        public static Dictionary<AccountType, string> CodesForKnownAccountTypes { get; } = new Dictionary<AccountType, string>
         {
-            _knownAccountTypesAndCodes = new Dictionary<AccountType, string>
-            {
-                {AccountType.InvestmentAccount, "IA"},
-                {AccountType.RetirementAccount, "RA"},
-                {AccountType.HealthSavingsAccount, "HS"},
-                {AccountType.Other, "OA"},
-                {AccountType.CreditCard, "CC"},
-            };
-        }
+            {AccountType.InvestmentAccount, "IA"},
+            {AccountType.RetirementAccount, "RA"},
+            {AccountType.HealthSavingsAccount, "HS"},
+            {AccountType.Other, "OA"},
+            {AccountType.CreditCard, "CC"},
+            {AccountType.CheckingSavings, "SC"},
+        };
 
         public Dictionary<string, AccountType> ReadAccountTypes(IWebDriver webDriver)
         {
-            return _knownAccountTypesAndCodes.ToDictionary(
+            return CodesForKnownAccountTypes.ToDictionary(
                 map => map.Key,
                 map => FindWebElementsOfAccountType(webDriver, map.Value)
             ).SelectMany(kvp => kvp.Value.ToDictionary(

@@ -7,6 +7,7 @@ namespace Sonneville.FidelityWebDriver.Data
         RetirementAccount,
         HealthSavingsAccount,
         Other,
-        CreditCard
+        CreditCard,
+        CheckingSavings,
     }
 }
