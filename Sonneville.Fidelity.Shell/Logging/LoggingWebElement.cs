@@ -3,17 +3,20 @@ using System.Drawing;
 using System.Linq;
 using log4net;
 using OpenQA.Selenium;
+using Sonneville.Utilities.Sleepers;
 
-namespace Sonneville.Fidelity.Shell.log4net
+namespace Sonneville.Fidelity.Shell.Logging
 {
     public class LoggingWebElement : IWebElement
     {
         private readonly IWebElement _webElement;
+        private readonly ISleepUtil _sleepUtil;
         private readonly ILog _log;
 
-        public LoggingWebElement(IWebElement webElement, ILog log = null)
+        public LoggingWebElement(IWebElement webElement, ISleepUtil sleepUtil = null, ILog log = null)
         {
             _webElement = webElement;
+            _sleepUtil = sleepUtil ?? new SleepUtil();
             _log = log ?? LogManager.GetLogger(typeof(LoggingWebElement));
         }
 
@@ -53,6 +56,7 @@ namespace Sonneville.Fidelity.Shell.log4net
         {
             _log.Trace($"Clicking tag `{_webElement.TagName}` with text `{_webElement.Text}`");
             _webElement.Click();
+            _sleepUtil.Sleep(1000);
         }
 
         public string GetAttribute(string attributeName)

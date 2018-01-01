@@ -3,7 +3,7 @@ using System.Linq;
 using log4net;
 using OpenQA.Selenium;
 
-namespace Sonneville.Fidelity.Shell.log4net
+namespace Sonneville.Fidelity.Shell.Logging
 {
     public class LoggingWebDriver : IWebDriver
     {
