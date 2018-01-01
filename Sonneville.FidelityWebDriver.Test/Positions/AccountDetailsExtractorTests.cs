@@ -39,7 +39,7 @@ namespace Sonneville.FidelityWebDriver.Test.Positions
 
             _logMock = new Mock<ILog>();
 
-            _extractor = new AccountDetailsExtractor(_positionDetailsExtractorMock.Object, _logMock.Object);
+            _extractor = new AccountDetailsExtractor(new AccountTypesMapper(), new AccountDetailsAggregator(_logMock.Object, _positionDetailsExtractorMock.Object, new PositionRowsAccumulator()));
         }
 
         [Test]
