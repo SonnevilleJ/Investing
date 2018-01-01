@@ -7,7 +7,7 @@ namespace Sonneville.FidelityWebDriver.Positions
 {
     public interface IAccountDetailsAggregator
     {
-        IAccountDetails ParseAccountDetails(IReadOnlyDictionary<string, AccountType> accountTypesByAccountNumber, IEnumerator<IWebElement> e);
+        IAccountDetails ParseAccountDetails(IEnumerator<IWebElement> e, IWebDriver webDriver);
     }
 
     public class AccountDetailsAggregator : IAccountDetailsAggregator
@@ -18,27 +18,26 @@ namespace Sonneville.FidelityWebDriver.Positions
         private readonly ITotalGainLossExtractor _totalGainLossExtractor;
         private readonly IAccountIdentifierExtractor _accountIdentifierExtractor;
 
-        public AccountDetailsAggregator(ILog log, IPositionDetailsExtractor positionDetailsExtractor, IPositionRowsAccumulator positionRowsAccumulator)
+        public AccountDetailsAggregator(ILog log, IPositionDetailsExtractor positionDetailsExtractor, IPositionRowsAccumulator positionRowsAccumulator, IAccountTypesMapper accountTypesMapper)
         {
             _positionDetailsExtractor = positionDetailsExtractor;
             _positionRowsAccumulator = positionRowsAccumulator;
             _pendingActivityExtractor = new PendingActivityExtractor();
             _totalGainLossExtractor = new TotalGainLossExtractor();
-            _accountIdentifierExtractor = new AccountIdentifierExtractor(log);
+            _accountIdentifierExtractor = new AccountIdentifierExtractor(log, accountTypesMapper);
         }
 
-        public IAccountDetails ParseAccountDetails(IReadOnlyDictionary<string, AccountType> accountTypesByAccountNumber, IEnumerator<IWebElement> e)
+        public IAccountDetails ParseAccountDetails(IEnumerator<IWebElement> e, IWebDriver webDriver)
         {
             var accountDefinitionRow = e.Current;
             var positionRows = _positionRowsAccumulator.AccumulateRowsForPositions(e);
             var accountSummaryRow = e.Current;
 
-            var accountNumber = _accountIdentifierExtractor.ExctractAccountNumber(accountDefinitionRow);
             return new AccountDetails
             {
                 Name = _accountIdentifierExtractor.ExtractAccountName(accountDefinitionRow),
-                AccountNumber = accountNumber,
-                AccountType = accountTypesByAccountNumber[accountNumber],
+                AccountNumber = _accountIdentifierExtractor.ExtractAccountNumber(accountDefinitionRow),
+                AccountType = _accountIdentifierExtractor.ExtractAccountType(accountDefinitionRow, webDriver),
                 PendingActivity = _pendingActivityExtractor.ReadPendingActivity(accountSummaryRow),
                 TotalGainDollar = _totalGainLossExtractor.ReadTotalDollarGain(accountSummaryRow),
                 TotalGainPercent = _totalGainLossExtractor.ReadTotalPercentGain(accountSummaryRow),

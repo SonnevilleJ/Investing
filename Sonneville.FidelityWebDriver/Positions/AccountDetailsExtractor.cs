@@ -12,18 +12,15 @@ namespace Sonneville.FidelityWebDriver.Positions
 
     public class AccountDetailsExtractor : IAccountDetailsExtractor
     {
-        private readonly IAccountTypesMapper _accountTypesMapper;
         private readonly IAccountDetailsAggregator _accountDetailsAggregator;
 
-        public AccountDetailsExtractor(IAccountTypesMapper accountTypesMapper, IAccountDetailsAggregator accountDetailsAggregator)
+        public AccountDetailsExtractor(IAccountDetailsAggregator accountDetailsAggregator)
         {
-            _accountTypesMapper = accountTypesMapper;
             _accountDetailsAggregator = accountDetailsAggregator;
         }
 
         public IEnumerable<IAccountDetails> ExtractAccountDetails(IWebDriver webDriver)
         {
-            var accountTypesByAccountNumber = _accountTypesMapper.ReadAccountTypes(webDriver);
 
             var tableRows = FindAccountDetailsTableRows(webDriver);
 
@@ -33,7 +30,7 @@ namespace Sonneville.FidelityWebDriver.Positions
                 {
                     if (IsNewAccountRow(e.Current))
                     {
-                        yield return _accountDetailsAggregator.ParseAccountDetails(accountTypesByAccountNumber, e);
+                        yield return _accountDetailsAggregator.ParseAccountDetails(e, webDriver);
                     }
                 }
             }

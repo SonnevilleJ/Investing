@@ -14,93 +14,27 @@ namespace Sonneville.FidelityWebDriver.Test.Positions
     {
         private AccountDetailsExtractor _extractor;
         private Mock<IWebDriver> _webDriverMock;
-        private List<IAccountDetails> _setupAccountDetails;
+        private List<IAccountDetails> _expectedAccountDetails;
         private Dictionary<string, List<IPosition>> _positionsByAccount;
         private Mock<IPositionDetailsExtractor> _positionDetailsExtractorMock;
         private Mock<ILog> _logMock;
+        private Mock<IWebElement> _tableBodyMock;
+        private Dictionary<AccountType, string> _accountTypeCodes;
 
         [SetUp]
         public void Setup()
         {
-            _positionDetailsExtractorMock = new Mock<IPositionDetailsExtractor>();
-
-            _positionsByAccount = new Dictionary<string, List<IPosition>>();
-
-            _setupAccountDetails = SetupAccountDetails();
-            var tableRows = SetupTableRows(_setupAccountDetails);
-
-            var tableBodyMock = new Mock<IWebElement>();
-            tableBodyMock.Setup(tableBody => tableBody.FindElements(By.TagName("tr")))
-                .Returns(tableRows.AsReadOnly);
+            _tableBodyMock = new Mock<IWebElement>();
 
             _webDriverMock = new Mock<IWebDriver>();
             _webDriverMock.Setup(webDriver => webDriver.FindElements(By.ClassName("p-positions-tbody")))
-                .Returns(new List<IWebElement> {new Mock<IWebElement>().Object, tableBodyMock.Object}.AsReadOnly());
+                .Returns(new List<IWebElement> {new Mock<IWebElement>().Object, _tableBodyMock.Object}.AsReadOnly());
 
             _logMock = new Mock<ILog>();
 
-            _extractor = new AccountDetailsExtractor(new AccountTypesMapper(), new AccountDetailsAggregator(_logMock.Object, _positionDetailsExtractorMock.Object, new PositionRowsAccumulator()));
-        }
+            _positionDetailsExtractorMock = new Mock<IPositionDetailsExtractor>();
 
-        [Test]
-        public void ShouldExtractAccountDetails()
-        {
-            var accountTypeStrings = new Dictionary<AccountType, string>
-            {
-                {AccountType.InvestmentAccount, "IA"},
-                {AccountType.RetirementAccount, "RA"},
-                {AccountType.HealthSavingsAccount, "HS"},
-                {AccountType.Other, "OA"},
-                {AccountType.CreditCard, "CC"},
-            };
-
-            foreach (var accountType in accountTypeStrings.Keys)
-            {
-                var accountGroupDivMock = new Mock<IWebElement>();
-                var accountNumberSpans = _setupAccountDetails
-                    .Where(accountDetails => accountDetails.AccountType == accountType)
-                    .Select(accountDetails => FilterIllegalCharacters(accountDetails.AccountNumber))
-                    .Select(accountNumber =>
-                    {
-                        var accountNumberSpanMock = new Mock<IWebElement>();
-                        accountNumberSpanMock.Setup(span => span.Text).Returns(accountNumber);
-                        return accountNumberSpanMock.Object;
-                    })
-                    .ToList()
-                    .AsReadOnly();
-
-                accountGroupDivMock.Setup(div => div.FindElements(By.ClassName("account-selector--account-number")))
-                    .Returns(accountNumberSpans);
-
-                _webDriverMock.Setup(webDriver => webDriver.FindElement(By.ClassName(accountTypeStrings[accountType])))
-                    .Returns(accountGroupDivMock.Object);
-            }
-
-            var actuals = _extractor.ExtractAccountDetails(_webDriverMock.Object).ToList();
-
-            Assert.AreEqual(_setupAccountDetails.Count(), actuals.Count());
-            foreach (var actual in actuals)
-            {
-                var matchingExpected = _setupAccountDetails.Single(
-                    expected => FilterIllegalCharacters(expected.AccountNumber) == actual.AccountNumber);
-
-                Assert.AreEqual(matchingExpected.Name, actual.Name);
-                Assert.AreEqual(matchingExpected.AccountType, actual.AccountType);
-                Assert.AreSame(_positionsByAccount[actual.Name], actual.Positions);
-                Assert.AreEqual(matchingExpected.PendingActivity, actual.PendingActivity);
-                Assert.AreEqual(matchingExpected.TotalGainDollar, actual.TotalGainDollar);
-                Assert.AreEqual(matchingExpected.TotalGainPercent, actual.TotalGainPercent);
-            }
-        }
-
-        private string FilterIllegalCharacters(string accountNumber)
-        {
-            return accountNumber.Replace("†", "");
-        }
-
-        private static List<IAccountDetails> SetupAccountDetails()
-        {
-            return new List<IAccountDetails>
+            _expectedAccountDetails = new List<IAccountDetails>
             {
                 new AccountDetails
                 {
@@ -131,11 +65,95 @@ namespace Sonneville.FidelityWebDriver.Test.Positions
                     Positions = new List<IPosition> {new Mock<IPosition>().Object}
                 },
             };
+            _accountTypeCodes = new Dictionary<AccountType, string>
+            {
+                {AccountType.InvestmentAccount, "IA"},
+                {AccountType.RetirementAccount, "RA"},
+                {AccountType.HealthSavingsAccount, "HS"},
+                {AccountType.Other, "OA"},
+                {AccountType.CreditCard, "CC"},
+                {AccountType.Unknown, "??"},
+            };
+            foreach (var accountType in _accountTypeCodes.Keys)
+            {
+                var accountGroupDivMock = new Mock<IWebElement>();
+                var accountNumberSpans = _expectedAccountDetails
+                    .Where(accountDetails => accountDetails.AccountType == accountType)
+                    .Select(accountDetails => FilterIllegalCharacters(accountDetails.AccountNumber))
+                    .Select(accountNumber =>
+                    {
+                        var accountNumberSpanMock = new Mock<IWebElement>();
+                        accountNumberSpanMock.Setup(span => span.Text).Returns(accountNumber);
+                        return accountNumberSpanMock.Object;
+                    })
+                    .ToList()
+                    .AsReadOnly();
+
+                accountGroupDivMock.Setup(div => div.FindElements(By.ClassName("account-selector--account-number")))
+                    .Returns(accountNumberSpans);
+
+                _webDriverMock.Setup(webDriver => webDriver.FindElement(By.ClassName(_accountTypeCodes[accountType])))
+                    .Returns(accountGroupDivMock.Object);
+            }
+
+            _extractor = new AccountDetailsExtractor(new AccountDetailsAggregator(_logMock.Object, _positionDetailsExtractorMock.Object, new PositionRowsAccumulator(), new AccountTypesMapper()));
         }
 
-        private List<IWebElement> SetupTableRows(IEnumerable<IAccountDetails> accounts)
+        [Test]
+        public void ShouldLogWhenNewAccountTypeFound()
         {
-            return accounts.SelectMany(SetupAccountRows).ToList();
+            const string newAccountNumber = "new9999";
+            _expectedAccountDetails.Add(new AccountDetails
+                {
+                    AccountType = AccountType.Unknown,
+                    Name = "NEW ACCOUNT",
+                    AccountNumber = newAccountNumber,
+                    PendingActivity = 12.34m,
+                    TotalGainDollar = .56m,
+                    TotalGainPercent = .7890m,
+                    Positions = new List<IPosition> {new Mock<IPosition>().Object}
+                });
+            SetupPageContent(_expectedAccountDetails);
+
+            var result = _extractor.ExtractAccountDetails(_webDriverMock.Object).ToList();
+
+            _logMock.Verify(log => log.Warn(It.Is<object>(message => message.ToString().Contains(newAccountNumber))));
+            Assert.AreEqual(_expectedAccountDetails.Count, result.Count);
+        }
+
+        [Test]
+        public void ShouldExtractAccountDetails()
+        {
+            SetupPageContent(_expectedAccountDetails);
+
+            var actuals = _extractor.ExtractAccountDetails(_webDriverMock.Object).ToList();
+
+            Assert.AreEqual(_expectedAccountDetails.Count, actuals.Count);
+            foreach (var actual in actuals)
+            {
+                var matchingExpected = _expectedAccountDetails.Single(
+                    expected => FilterIllegalCharacters(expected.AccountNumber) == actual.AccountNumber);
+
+                Assert.AreEqual(matchingExpected.Name, actual.Name);
+                Assert.AreEqual(matchingExpected.AccountType, actual.AccountType);
+                Assert.AreSame(_positionsByAccount[actual.Name], actual.Positions);
+                Assert.AreEqual(matchingExpected.PendingActivity, actual.PendingActivity);
+                Assert.AreEqual(matchingExpected.TotalGainDollar, actual.TotalGainDollar);
+                Assert.AreEqual(matchingExpected.TotalGainPercent, actual.TotalGainPercent);
+            }
+        }
+
+        private string FilterIllegalCharacters(string accountNumber)
+        {
+            return accountNumber.Replace("†", "");
+        }
+
+        private void SetupPageContent(IEnumerable<IAccountDetails> accountDetails)
+        {
+            _positionsByAccount = new Dictionary<string, List<IPosition>>();
+            var tableRows = accountDetails.SelectMany(SetupAccountRows).ToList();
+            _tableBodyMock.Setup(tableBody => tableBody.FindElements(By.TagName("tr")))
+                .Returns(tableRows.AsReadOnly);
         }
 
         private List<IWebElement> SetupAccountRows(IAccountDetails account)
