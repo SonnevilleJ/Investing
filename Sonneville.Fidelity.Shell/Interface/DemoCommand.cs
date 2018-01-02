@@ -77,6 +77,7 @@ namespace Sonneville.Fidelity.Shell.Interface
 
             if (_shouldPersistOptions)
             {
+                _log.Info($"Saving credentials for `{_fidelityConfiguration.Username}`.");
                 _configStore.Save(_fidelityConfiguration);
             }
 
@@ -100,8 +101,10 @@ namespace Sonneville.Fidelity.Shell.Interface
             PrintAccountDetails(_positionsManager.GetAccountDetails().ToList(), outputWriter);
             PrintSeparator(outputWriter);
             LogToScreen(outputWriter, "Reading recent transactions...");
-            PrintRecentTransactions(_transactionManager.GetTransactionHistory(DateTime.Today.AddDays(-30), DateTime.Today).ToList(), outputWriter);
+            PrintRecentTransactions(_transactionManager.GetTransactionHistory(DateTime.Today.AddDays(-30), DateTime.Today).ToList()
+                , outputWriter);
             PrintSeparator(outputWriter);
+            LogToScreen(outputWriter, "Demo completed successfully!");
         }
 
         private void PrintSeparator(TextWriter outputWriter)

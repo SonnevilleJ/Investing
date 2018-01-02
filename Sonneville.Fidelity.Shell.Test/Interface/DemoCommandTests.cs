@@ -265,6 +265,16 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
         }
 
         [Test]
+        public void ShouldPrintCompleteMessage()
+        {
+            CacheCredentials(_username, _password);
+            _command.Invoke(_inputReader, _outputWriter, new string[0]);
+
+            var outputText = ReadOutputText();
+            Assert.IsTrue(outputText.Contains("Demo completed"));
+        }
+
+        [Test]
         public void ShouldSetConfigFromCliArgsWithoutPersisting()
         {
             var args = new[] {"-u", _username, "-p", _password};
@@ -288,6 +298,7 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
 
             _command.Invoke(_inputReader, _outputWriter, args);
 
+            _logMock.Verify(log => log.Info(It.Is<string>(message => message.Contains($"Saving credentials for `{_username}`."))));
             _configStoreMock.Verify(configStore => configStore.Save(_fidelityConfiguration));
         }
 
