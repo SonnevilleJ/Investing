@@ -5,79 +5,48 @@ using OpenQA.Selenium;
 
 namespace Sonneville.Fidelity.Shell.Logging
 {
-    public class LoggingWebDriver : IWebDriver
+    public class LoggingWebDriver : WebDriverBase
     {
-        private readonly IWebDriver _webDriver;
         private readonly ILog _log;
 
-        public LoggingWebDriver(IWebDriver webDriver, ILog log)
+        public LoggingWebDriver(IWebDriver webDriver, ILog log) : base(webDriver)
         {
-            _webDriver = webDriver;
             _log = log;
         }
 
-        public IWebElement FindElement(By by)
+        public override IWebElement FindElement(By by)
         {
             _log.Trace($"Finding element {by}.");
-            var element = _webDriver.FindElement(by);
-            return new LoggingWebElement(element);
+            return base.FindElement(by);
         }
 
-        public ReadOnlyCollection<IWebElement> FindElements(By by)
+        public override ReadOnlyCollection<IWebElement> FindElements(By by)
         {
             _log.Trace($"Finding elements {by}.");
-            var elements = _webDriver.FindElements(by);
+            var elements = base.FindElements(by);
             return elements.Select(e => new LoggingWebElement(e) as IWebElement).ToList().AsReadOnly();
         }
 
-        public void Dispose()
+        public override void Close()
         {
-            _webDriver?.Dispose();
+            _log.Trace("Closing web driver...");
+            base.Close();
         }
 
-        public void Close()
+        public override void Quit()
         {
-            _log.Trace($"Closing web driver {_webDriver}");
-            _webDriver.Close();
+            _log.Trace("Quitting web driver...");
+            base.Quit();
         }
 
-        public void Quit()
+        public override string Url
         {
-            _log.Trace($"Quitting web driver {_webDriver}");
-            _webDriver.Quit();
-        }
-
-        public IOptions Manage()
-        {
-            return _webDriver.Manage();
-        }
-
-        public INavigation Navigate()
-        {
-            return _webDriver.Navigate();
-        }
-
-        public ITargetLocator SwitchTo()
-        {
-            return _webDriver.SwitchTo();
-        }
-
-        public string Url
-        {
-            get { return _webDriver.Url; }
+            get => base.Url;
             set
             {
                 _log.Trace($"Setting web driver URL: {value}");
-                _webDriver.Url = value;
+                base.Url = value;
             }
         }
-
-        public string Title => _webDriver.Title;
-
-        public string PageSource => _webDriver.PageSource;
-
-        public string CurrentWindowHandle => _webDriver.CurrentWindowHandle;
-
-        public ReadOnlyCollection<string> WindowHandles => _webDriver.WindowHandles;
     }
 }
