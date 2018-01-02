@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using NUnit.Framework;
 using Sonneville.FidelityWebDriver.Data;
 using Sonneville.FidelityWebDriver.Transactions;
@@ -8,6 +8,14 @@ namespace Sonneville.FidelityWebDriver.Test.Transactions
     [TestFixture]
     public class TransactionTypeMapperTests
     {
+        private TransactionTypeMapper _transactionTypeMapper;
+
+        [SetUp]
+        public void Setup()
+        {
+            _transactionTypeMapper = new TransactionTypeMapper();
+        }
+
         [Test]
         [TestCase("DIVIDEND RECEIVED", TransactionType.DividendReceipt)]
         [TestCase("REINVESTMENT", TransactionType.DividendReinvestment)]
@@ -25,33 +33,41 @@ namespace Sonneville.FidelityWebDriver.Test.Transactions
         [TestCase("abcdefghijklmnopqrstuvwxyz", TransactionType.Unknown)]
         public void ShouldMapValues(string value, TransactionType expectedType)
         {
-            var actualType = new TransactionTypeMapper().ClassifyDescription(value);
+            var actualType = _transactionTypeMapper.ClassifyDescription(value);
 
             Assert.AreEqual(expectedType, actualType);
         }
 
         [Test]
-        [TestCase(TransactionType.DividendReceipt, "DIVIDEND RECEIVED")]
-        [TestCase(TransactionType.DividendReinvestment, "REINVESTMENT")]
-        [TestCase(TransactionType.Sell, "YOU SOLD             EXCHANGE")]
-        [TestCase(TransactionType.Buy, "YOU BOUGHT           PROSPECTUS UNDER    SEPARATE COVER")]
-        [TestCase(TransactionType.ShortTermCapGain, "SHORT-TERM CAP GAIN")]
-        [TestCase(TransactionType.LongTermCapGain, "LONG-TERM CAP GAIN")]
-        [TestCase(TransactionType.Deposit, "Electronic Funds Transfer Received")]
-        [TestCase(TransactionType.DepositBrokeragelink, "TRANSFERRED FROM     TO BROKERAGE OPTION")]
-        [TestCase(TransactionType.DepositHSA, "PARTIC CONTR CURRENT PARTICIPANT CUR YR")]
-        public void ShouldMapKeys(TransactionType key, string expectedValue)
+        [TestCase(TransactionType.Deposit)]
+        [TestCase(TransactionType.DepositBrokeragelink)]
+        [TestCase(TransactionType.DepositHSA)]
+        [TestCase(TransactionType.Withdrawal)]
+        [TestCase(TransactionType.Buy)]
+        [TestCase(TransactionType.Sell)]
+        [TestCase(TransactionType.InterestEarned)]
+        [TestCase(TransactionType.DividendReceipt)]
+        [TestCase(TransactionType.ShortTermCapGain)]
+        [TestCase(TransactionType.LongTermCapGain)]
+        [TestCase(TransactionType.DividendReinvestment)]
+        public void ShouldRoundripExampleDescription(TransactionType transactionType)
         {
-            var actualValue = new TransactionTypeMapper().GetSampleDescription(key);
-
-            Assert.AreEqual(expectedValue, actualValue);
+            var exampleDescription = _transactionTypeMapper.GetExampleDescription(transactionType);
+            var returnedTransactionType = _transactionTypeMapper.ClassifyDescription(exampleDescription);
+            Assert.AreEqual(transactionType, returnedTransactionType);
         }
 
+        /// <summary>
+        /// This test covers the transactions I have not yet seen.
+        /// I don't know what descriptions Fidelity gives them.
+        /// </summary>
         [Test]
-        public void ShouldNotMapUnknownKey()
+        [TestCase(TransactionType.SellShort)]
+        [TestCase(TransactionType.BuyToCover)]
+        [TestCase(TransactionType.Unknown)]
+        public void ShouldThrowForNewTransactionTypes(TransactionType transactionType)
         {
-            Assert.Throws<KeyNotFoundException>(
-                () => new TransactionTypeMapper().GetSampleDescription(TransactionType.Unknown));
+            Assert.Throws<NotImplementedException>(() => _transactionTypeMapper.GetExampleDescription(transactionType));
         }
     }
 }

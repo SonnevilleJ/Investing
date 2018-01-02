@@ -119,8 +119,12 @@ namespace Sonneville.FidelityWebDriver.Test.Transactions
                     yield return CreateActivityKeyValuePair(AttributeStrings.Price, transaction.Price?.ToString("F"));
                     yield return CreateActivityKeyValuePair(AttributeStrings.Amount, transaction.Amount?.ToString("C"));
                     break;
+                case TransactionType.Unknown:
+                    yield return CreateActivityKeyValuePair(AttributeStrings.Amount, transaction.Amount?.ToString("C"));
+                    break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(nameof(transaction),
+                        $"ERROR IN TEST CODE: Not sure what HTML to generate for TransactionType.{transaction.Type}!");
             }
         }
 

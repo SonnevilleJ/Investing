@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using log4net;
 using Moq;
 using NUnit.Framework;
 using OpenQA.Selenium;
@@ -19,6 +20,7 @@ namespace Sonneville.FidelityWebDriver.Test.Transactions
         private Mock<IWebElement> _historyTableBodyMock;
 
         private HistoryTransactionParser _historyTransactionParser;
+        private Mock<ILog> _logMock;
 
         [SetUp]
         public void Setup()
@@ -33,7 +35,9 @@ namespace Sonneville.FidelityWebDriver.Test.Transactions
                     new Mock<IWebElement>().Object,
                 }.AsReadOnly);
 
-            _historyTransactionParser = new HistoryTransactionParser(_transactionTypeMapper);
+            _logMock = new Mock<ILog>();
+
+            _historyTransactionParser = new HistoryTransactionParser(_logMock.Object, _transactionTypeMapper);
         }
 
         [Test]
@@ -192,6 +196,24 @@ namespace Sonneville.FidelityWebDriver.Test.Transactions
             CollectionAssert.AreEquivalent(expectedTransactions, actualTransactions);
         }
 
+        [Test]
+        public void ShouldLogUnknownTransactionTypes()
+        {
+            var unknownTransaction = CreateUnknownTransaction();
+            var expectedTransactions = new List<FidelityTransaction>
+            {
+                unknownTransaction
+            };
+            SetupHistoryTable(expectedTransactions, new[] {"Commission", "Settlement Date"});
+
+            var actualTransactions = _historyTransactionParser.ParseFidelityTransactions(_historyRootDivMock.Object);
+
+            CollectionAssert.AreEquivalent(expectedTransactions, actualTransactions);
+            _logMock.Verify(log => log.Warn(It.Is<string>(message =>
+                message.Contains(unknownTransaction.AccountNumber) &&
+                message.Contains(unknownTransaction.SecurityDescription))));
+        }
+
         private void SetupHistoryTable(IEnumerable<FidelityTransaction> expectedTransactions, ICollection<string> excludedKeys = null)
         {
             _historyTableBodyMock.Setup(div => div.FindElements(By.TagName("tr")))
@@ -209,7 +231,7 @@ namespace Sonneville.FidelityWebDriver.Test.Transactions
                 RunDate = new DateTime(2016, 12, 26),
                 AccountName = "account name",
                 AccountNumber = "account number",
-                SecurityDescription = _transactionTypeMapper.GetSampleDescription(transactionType),
+                SecurityDescription = _transactionTypeMapper.GetExampleDescription(transactionType),
                 Amount = 1234.50m,
             };
         }
@@ -239,7 +261,7 @@ namespace Sonneville.FidelityWebDriver.Test.Transactions
                 AccountName = "account name",
                 AccountNumber = "account number",
                 Symbol = "ASDF",
-                SecurityDescription = _transactionTypeMapper.GetSampleDescription(transactionType),
+                SecurityDescription = _transactionTypeMapper.GetExampleDescription(transactionType),
                 Amount = 1234.50m,
             };
         }
@@ -254,14 +276,15 @@ namespace Sonneville.FidelityWebDriver.Test.Transactions
                 AccountName = "account name",
                 AccountNumber = "account number",
                 Symbol = "ASDF",
-                SecurityDescription = _transactionTypeMapper.GetSampleDescription(transactionType),
+                SecurityDescription = _transactionTypeMapper.GetExampleDescription(transactionType),
                 Quantity = 0.012m,
                 Price = 1.23m,
                 Amount = 1234.50m,
             };
         }
 
-        private FidelityTransaction CreateShortTermCapitalGainTransaction(TransactionType transactionType = TransactionType.ShortTermCapGain)
+        private FidelityTransaction CreateShortTermCapitalGainTransaction(
+            TransactionType transactionType = TransactionType.ShortTermCapGain)
         {
             return new FidelityTransaction
             {
@@ -270,7 +293,7 @@ namespace Sonneville.FidelityWebDriver.Test.Transactions
                 AccountName = "account name",
                 AccountNumber = "account number",
                 Symbol = "ASDF",
-                SecurityDescription = _transactionTypeMapper.GetSampleDescription(transactionType),
+                SecurityDescription = _transactionTypeMapper.GetExampleDescription(transactionType),
                 Amount = 1234.50m,
             };
         }
@@ -290,7 +313,7 @@ namespace Sonneville.FidelityWebDriver.Test.Transactions
                 AccountName = "account name",
                 AccountNumber = "account number",
                 Symbol = "ASDF",
-                SecurityDescription = _transactionTypeMapper.GetSampleDescription(transactionType),
+                SecurityDescription = _transactionTypeMapper.GetExampleDescription(transactionType),
                 Quantity = 0.012m,
                 Price = 1.23m,
                 Amount = 1234.50m,
@@ -308,12 +331,26 @@ namespace Sonneville.FidelityWebDriver.Test.Transactions
                 AccountName = "account name",
                 AccountNumber = "account number",
                 Symbol = "ASDF",
-                SecurityDescription = _transactionTypeMapper.GetSampleDescription(transactionType),
+                SecurityDescription = _transactionTypeMapper.GetExampleDescription(transactionType),
                 Quantity = -0.012m,
                 Price = 1.23m,
                 Amount = 1234.50m,
                 Commission = 7.95m,
                 SettlementDate = new DateTime(2016, 12, 31),
+            };
+        }
+
+        private FidelityTransaction CreateUnknownTransaction()
+        {
+            const TransactionType transactionType = TransactionType.Unknown;
+            return new FidelityTransaction
+            {
+                Type = transactionType,
+                RunDate = new DateTime(2016, 12, 26),
+                AccountName = "account name",
+                AccountNumber = "account number",
+                SecurityDescription = "Random gibberish",
+                Amount = 1234.50m,
             };
         }
     }

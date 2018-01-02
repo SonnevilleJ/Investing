@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using log4net;
 using OpenQA.Selenium;
 using Sonneville.FidelityWebDriver.Data;
 using Sonneville.FidelityWebDriver.Utilities;
@@ -15,10 +16,12 @@ namespace Sonneville.FidelityWebDriver.Transactions
 
     public class HistoryTransactionParser : IHistoryTransactionParser
     {
+        private readonly ILog _log;
         private readonly ITransactionTypeMapper _transactionTypeMapper;
 
-        public HistoryTransactionParser(ITransactionTypeMapper transactionTypeMapper)
+        public HistoryTransactionParser(ILog log, ITransactionTypeMapper transactionTypeMapper)
         {
+            _log = log;
             _transactionTypeMapper = transactionTypeMapper;
         }
 
@@ -47,7 +50,8 @@ namespace Sonneville.FidelityWebDriver.Transactions
             var tHeaders = contentBody.FindElements(By.TagName("th"));
             var tDatas = contentBody.FindElements(By.TagName("td"));
 
-            var contentDictionary = Enumerable.ToDictionary<KeyValuePair<string, string>, string, string>(tHeaders.Zip(tDatas, (th, td) => new KeyValuePair<string, string>(th.Text, td.Text)), kvp => kvp.Key, kvp => kvp.Value);
+            var contentDictionary = tHeaders.Zip(tDatas, (th, td) => new KeyValuePair<string, string>(th.Text, td.Text))
+                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
             result.Amount = ParseCurrency(contentDictionary[AttributeStrings.Amount]);
             switch (result.Type)
             {
@@ -79,6 +83,9 @@ namespace Sonneville.FidelityWebDriver.Transactions
                     result.Symbol = contentDictionary[AttributeStrings.Symbol];
                     result.Quantity = ParseQuantity(contentDictionary[AttributeStrings.Quantity]);
                     result.Price = ParseDecimal(contentDictionary[AttributeStrings.Price]);
+                    break;
+                case TransactionType.Unknown:
+                    _log.Warn($"Not parsing some details for unknown transaction type in account `{result.AccountNumber}` with description `{result.SecurityDescription}`");
                     break;
                 default:
                     throw new NotImplementedException();
