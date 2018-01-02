@@ -61,6 +61,7 @@ fabric.properties
 *.user
 *.userosscache
 *.sln.docstates
+*.csproj.DotSettings
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
