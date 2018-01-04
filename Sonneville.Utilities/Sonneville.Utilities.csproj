@@ -30,10 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-      <Reference Include="Microsoft.CSharp"/>
-      <Reference Include="Nini, Version=1.1.0.0, Culture=neutral, PublicKeyToken=691faec150a7fa7b, processorArchitecture=MSIL">
-          <HintPath>..\packages\Trove.Nini.1.1.0.0\lib\net20\Nini.dll</HintPath>
-      </Reference>
+    <Reference Include="Microsoft.CSharp"/>
+    <Reference Include="Nini, Version=1.1.0.0, Culture=neutral, PublicKeyToken=691faec150a7fa7b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Trove.Nini.1.1.0.0\lib\net20\Nini.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="UnixSignalWaiter, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -41,12 +41,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-      <Compile Include="Configuration\NiniConfigStore.cs"/>
+    <Compile Include="FreezableClock.cs"/>
+    <Compile Include="Configuration\NiniConfigStore.cs"/>
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflection\ExecutingAssemblyInfo.cs" />
-      <Compile Include="Sleepers\SleepUtil.cs"/>
-      <Compile Include="Sleepers\UnixSignalWaiterWrapper.cs"/>
+    <Compile Include="Sleepers\SleepUtil.cs"/>
+    <Compile Include="Sleepers\UnixSignalWaiterWrapper.cs"/>
   </ItemGroup>
   <ItemGroup>
     <None Include="Sonneville.Utilities.nuspec" />
