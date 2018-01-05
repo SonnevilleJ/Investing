@@ -93,6 +93,7 @@
     <Compile Include="Logging\LogExtentions.cs" />
     <Compile Include="Logging\LoggingWebDriver.cs" />
     <Compile Include="Logging\LoggingWebElement.cs" />
+    <Compile Include="Logging\PatientWebDriver.cs" />
     <Compile Include="Logging\PatientWebElement.cs" />
     <Compile Include="Logging\SeleniumWaiter.cs" />
     <Compile Include="Logging\WebDriverBase.cs" />

@@ -26,14 +26,12 @@ namespace Sonneville.Fidelity.Shell.Logging
 
         public virtual IWebElement FindElement(By by)
         {
-            var element = _webDriver.FindElement(by);
-            return new LoggingWebElement(element);
+            return _webDriver.FindElement(@by);
         }
 
         public virtual ReadOnlyCollection<IWebElement> FindElements(By by)
         {
-            var elements = _webDriver.FindElements(by);
-            return elements.Select(e => new LoggingWebElement(e) as IWebElement).ToList().AsReadOnly();
+            return _webDriver.FindElements(@by);
         }
 
         public virtual void Dispose()
