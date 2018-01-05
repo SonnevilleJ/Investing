@@ -61,6 +61,7 @@
     <Compile Include="Interface\HelpCommandTests.cs" />
     <Compile Include="Interface\InfoCommandTests.cs" />
     <Compile Include="Logging\LoggingWebElementTests.cs" />
+    <Compile Include="Logging\SeleniumWaiterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TransactionTranslatorTests.cs" />
   </ItemGroup>
