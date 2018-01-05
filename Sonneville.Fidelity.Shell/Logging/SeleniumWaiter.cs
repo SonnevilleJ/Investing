@@ -4,7 +4,12 @@ using OpenQA.Selenium.Support.UI;
 
 namespace Sonneville.Fidelity.Shell.Logging
 {
-    public class SeleniumWaiter
+    public interface ISeleniumWaiter
+    {
+        void WaitUntil(Func<IWebDriver, bool> condition, TimeSpan timeout);
+    }
+
+    public class SeleniumWaiter : ISeleniumWaiter
     {
         private readonly IWebDriver _webDriver;
 
