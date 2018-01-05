@@ -3,35 +3,33 @@ using System.Drawing;
 using System.Linq;
 using log4net;
 using OpenQA.Selenium;
-using Sonneville.Utilities.Sleepers;
 
 namespace Sonneville.Fidelity.Shell.Logging
 {
     public class LoggingWebElement : IWebElement
     {
         private readonly IWebElement _webElement;
-        private readonly ISleepUtil _sleepUtil;
         private readonly ILog _log;
 
-        public LoggingWebElement(IWebElement webElement, ISleepUtil sleepUtil = null, ILog log = null)
+        public LoggingWebElement(IWebElement webElement, ILog log)
         {
             _webElement = webElement;
-            _sleepUtil = sleepUtil ?? new SleepUtil();
             _log = log ?? LogManager.GetLogger(typeof(LoggingWebElement));
         }
 
         public IWebElement FindElement(By by)
         {
             _log.Trace($"Finding element {by}.");
-            var element = _webElement.FindElement(by);
-            return new LoggingWebElement(element);
+            return Wrap(_webElement.FindElement(@by));
         }
 
         public ReadOnlyCollection<IWebElement> FindElements(By by)
         {
             _log.Trace($"Finding elements {by}.");
-            var elements = _webElement.FindElements(by);
-            return elements.Select(e => new LoggingWebElement(e) as IWebElement).ToList().AsReadOnly();
+            return _webElement.FindElements(by)
+                .Select(Wrap)
+                .ToList()
+                .AsReadOnly();
         }
 
         public void Clear()
@@ -56,7 +54,6 @@ namespace Sonneville.Fidelity.Shell.Logging
         {
             _log.Trace($"Clicking tag `{_webElement.TagName}` with text `{_webElement.Text}`");
             _webElement.Click();
-            _sleepUtil.Sleep(1000);
         }
 
         public string GetAttribute(string attributeName)
@@ -93,5 +90,10 @@ namespace Sonneville.Fidelity.Shell.Logging
         public Size Size => _webElement.Size;
 
         public bool Displayed => _webElement.Displayed;
+
+        private IWebElement Wrap(IWebElement element)
+        {
+            return new LoggingWebElement(element, _log);
+        }
     }
 }

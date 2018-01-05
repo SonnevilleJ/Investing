@@ -9,7 +9,7 @@ namespace Sonneville.Fidelity.Shell.Logging
     {
         private readonly ILog _log;
 
-        public LoggingWebDriver(IWebDriver webDriver, ILog log) : base(webDriver)
+        public LoggingWebDriver(ILog log, IWebDriver webDriver) : base(webDriver)
         {
             _log = log;
         }
@@ -17,14 +17,16 @@ namespace Sonneville.Fidelity.Shell.Logging
         public override IWebElement FindElement(By by)
         {
             _log.Trace($"Finding element {by}.");
-            return base.FindElement(by);
+            return Wrap(base.FindElement(by));
         }
 
         public override ReadOnlyCollection<IWebElement> FindElements(By by)
         {
             _log.Trace($"Finding elements {by}.");
-            var elements = base.FindElements(by);
-            return elements.Select(e => new LoggingWebElement(e) as IWebElement).ToList().AsReadOnly();
+            return base.FindElements(by)
+                .Select(Wrap)
+                .ToList()
+                .AsReadOnly();
         }
 
         public override void Close()
@@ -47,6 +49,11 @@ namespace Sonneville.Fidelity.Shell.Logging
                 _log.Trace($"Setting web driver URL: {value}");
                 base.Url = value;
             }
+        }
+
+        private IWebElement Wrap(IWebElement foundElement)
+        {
+            return new LoggingWebElement(foundElement, _log);
         }
     }
 }

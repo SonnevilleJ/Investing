@@ -13,7 +13,7 @@ namespace Sonneville.Fidelity.Shell.Logging
                 .GetFrame(0)
                 .GetMethod()
                 .DeclaringType;
-            LogManager.GetLogger(declaringType).Logger.Log(declaringType, Level.Trace, message, exception);
+            log.Logger.Log(declaringType, Level.Trace, message, exception);
         }
 
         public static void Verbose(this ILog log, string message, int skipFrames = 1, Exception exception = null)
@@ -22,7 +22,7 @@ namespace Sonneville.Fidelity.Shell.Logging
                 .GetFrame(0)
                 .GetMethod()
                 .DeclaringType;
-            LogManager.GetLogger(declaringType).Logger.Log(declaringType, Level.Verbose, message, exception);
+            log.Logger.Log(declaringType, Level.Verbose, message, exception);
         }
     }
 }

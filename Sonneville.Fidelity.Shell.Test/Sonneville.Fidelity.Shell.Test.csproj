@@ -60,6 +60,7 @@
     <Compile Include="Interface\ExitCommandTests.cs" />
     <Compile Include="Interface\HelpCommandTests.cs" />
     <Compile Include="Interface\InfoCommandTests.cs" />
+    <Compile Include="Logging\LoggingWebDriverTests.cs" />
     <Compile Include="Logging\LoggingWebElementTests.cs" />
     <Compile Include="Logging\PatientWebDriverTests.cs" />
     <Compile Include="Logging\PatientWebElementTests.cs" />
