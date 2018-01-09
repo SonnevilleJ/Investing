@@ -49,24 +49,24 @@
     <Compile Include="AccountRebalancerTests.cs" />
     <Compile Include="AllocationDifferencerTests.cs" />
     <Compile Include="AppStartup\BootstrapperTests.cs" />
-      <Compile Include="AppStartup\MutableKernelTests.cs"/>
-      <Compile Include="AppStartup\ImmutableKernelTests.cs"/>
+    <Compile Include="AppStartup\MutableKernelTests.cs" />
+    <Compile Include="AppStartup\ImmutableKernelTests.cs" />
     <Compile Include="Configuration\PortfolioManagerConfigurationTests.cs" />
     <Compile Include="FidelityWebDriver\AccountMapperTests.cs" />
     <Compile Include="FidelityWebDriver\AccountTypeMapperTests.cs" />
     <Compile Include="FidelityWebDriver\PositionMapperTests.cs" />
-      <Compile Include="Interface\CommandRouterTests.cs"/>
-      <Compile Include="Interface\DemoCommandTests.cs"/>
-      <Compile Include="Interface\ExitCommandTests.cs"/>
-      <Compile Include="Interface\HelpCommandTests.cs"/>
-      <Compile Include="Interface\InfoCommandTests.cs"/>
-      <Compile Include="Logging\LoggingWebElementTests.cs"/>
+    <Compile Include="Interface\CommandRouterTests.cs" />
+    <Compile Include="Interface\DemoCommandTests.cs" />
+    <Compile Include="Interface\ExitCommandTests.cs" />
+    <Compile Include="Interface\HelpCommandTests.cs" />
+    <Compile Include="Interface\InfoCommandTests.cs" />
+    <Compile Include="Logging\LoggingWebElementTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-      <Compile Include="TransactionTranslatorTests.cs"/>
+    <Compile Include="TransactionTranslatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-      <None Include="packages.config"/>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Sonneville.Fidelity.Shell\Sonneville.Fidelity.Shell.csproj">
@@ -112,7 +112,7 @@
       <HintPath>..\packages\NUnit.3.9.0\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-      <Reference Include="System"/>
+    <Reference Include="System" />
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.4.0\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
@@ -140,6 +140,7 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Selenium.WebDriver.ChromeDriver.2.34.0\build\Selenium.WebDriver.ChromeDriver.targets" Condition="Exists('..\packages\Selenium.WebDriver.ChromeDriver.2.34.0\build\Selenium.WebDriver.ChromeDriver.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
