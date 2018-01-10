@@ -97,6 +97,7 @@
     <Compile Include="Logging\PatientWebElement.cs" />
     <Compile Include="Logging\SeleniumWaiter.cs" />
     <Compile Include="Logging\WebDriverBase.cs" />
+    <Compile Include="Logging\WebElementBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TransactionTranslator.cs" />
   </ItemGroup>

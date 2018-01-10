@@ -1,92 +1,61 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Drawing;
 using System.Linq;
 using OpenQA.Selenium;
 
 namespace Sonneville.Fidelity.Shell.Logging
 {
-    public class PatientWebElement : IWebElement
+    public class PatientWebElement : WebElementBase
     {
         private readonly ISeleniumWaiter _seleniumWaiter;
-        private readonly IWebElement _webElement;
         private readonly TimeSpan _timespan;
 
         public PatientWebElement(ISeleniumWaiter seleniumWaiter,
             IWebElement webElement,
             TimeSpan timespan
         )
+            : base(webElement)
         {
             _seleniumWaiter = seleniumWaiter;
-            _webElement = webElement;
             _timespan = timespan;
         }
 
-        public IWebElement FindElement(By by)
+        public override IWebElement FindElement(By by)
         {
-            return WrapChild(_webElement.FindElement(by));
+            return WrapChild(base.FindElement(by));
         }
 
-        public ReadOnlyCollection<IWebElement> FindElements(By by)
+        public override ReadOnlyCollection<IWebElement> FindElements(By by)
         {
-            return _webElement.FindElements(by)
+            return base.FindElements(by)
                 .Select(WrapChild)
                 .ToList()
                 .AsReadOnly();
         }
 
-        public void Clear()
+        public override void Clear()
         {
             WaitUntilDisplayed();
-            _webElement.Clear();
+            base.Clear();
         }
 
-        public void SendKeys(string text)
+        public override void SendKeys(string text)
         {
             WaitUntilDisplayed();
-            _webElement.SendKeys(text);
+            base.SendKeys(text);
         }
 
-        public void Submit()
+        public override void Submit()
         {
             WaitUntilDisplayed();
-            _webElement.Submit();
+            base.Submit();
         }
 
-        public void Click()
+        public override void Click()
         {
             WaitUntilDisplayed();
-            _webElement.Click();
+            base.Click();
         }
-
-        public string GetAttribute(string attributeName)
-        {
-            return _webElement.GetAttribute(attributeName);
-        }
-
-        public string GetProperty(string propertyName)
-        {
-            return _webElement.GetProperty(propertyName);
-        }
-
-        public string GetCssValue(string propertyName)
-        {
-            return _webElement.GetCssValue(propertyName);
-        }
-
-        public string TagName => _webElement.TagName;
-
-        public string Text => _webElement.Text;
-
-        public bool Enabled => _webElement.Enabled;
-
-        public bool Selected => _webElement.Selected;
-
-        public Point Location => _webElement.Location;
-
-        public Size Size => _webElement.Size;
-
-        public bool Displayed => _webElement.Displayed;
 
         private IWebElement WrapChild(IWebElement foundElement)
         {
@@ -95,7 +64,7 @@ namespace Sonneville.Fidelity.Shell.Logging
 
         private void WaitUntilDisplayed()
         {
-            _seleniumWaiter.WaitUntil(_ => _webElement.Displayed, _timespan);
+            _seleniumWaiter.WaitUntil(_ => Displayed, _timespan);
         }
     }
 }

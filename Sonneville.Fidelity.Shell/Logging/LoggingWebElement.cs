@@ -1,95 +1,79 @@
 using System.Collections.ObjectModel;
-using System.Drawing;
 using System.Linq;
 using log4net;
 using OpenQA.Selenium;
 
 namespace Sonneville.Fidelity.Shell.Logging
 {
-    public class LoggingWebElement : IWebElement
+    public class LoggingWebElement : WebElementBase
     {
-        private readonly IWebElement _webElement;
         private readonly ILog _log;
 
         public LoggingWebElement(IWebElement webElement, ILog log)
+            : base(webElement)
         {
-            _webElement = webElement;
             _log = log ?? LogManager.GetLogger(typeof(LoggingWebElement));
         }
 
-        public IWebElement FindElement(By by)
+        public override IWebElement FindElement(By by)
         {
             _log.Trace($"Finding element {by}.");
-            return Wrap(_webElement.FindElement(@by));
+            return Wrap(base.FindElement(@by));
         }
 
-        public ReadOnlyCollection<IWebElement> FindElements(By by)
+        public override ReadOnlyCollection<IWebElement> FindElements(By by)
         {
             _log.Trace($"Finding elements {by}.");
-            return _webElement.FindElements(by)
+            return base.FindElements(by)
                 .Select(Wrap)
                 .ToList()
                 .AsReadOnly();
         }
 
-        public void Clear()
+        public override void Clear()
         {
-            _log.Trace($"Clearing tag `{_webElement.TagName}`");
-            _webElement.Clear();
+            _log.Trace($"Clearing tag `{base.TagName}`");
+            base.Clear();
         }
 
-        public void SendKeys(string text)
+        public override void SendKeys(string text)
         {
-            _log.Verbose($"Sending keys: `{text}` to tag `{_webElement.TagName}`.");
-            _webElement.SendKeys(text);
+            _log.Verbose($"Sending keys: `{text}` to tag `{base.TagName}`.");
+            base.SendKeys(text);
         }
 
-        public void Submit()
+        public override void Submit()
         {
-            _log.Trace($"Submitting tag `{_webElement.TagName}` with text `{_webElement.Text}`");
-            _webElement.Submit();
+            _log.Trace($"Submitting tag `{base.TagName}` with text `{base.Text}`");
+            base.Submit();
         }
 
-        public void Click()
+        public override void Click()
         {
-            _log.Trace($"Clicking tag `{_webElement.TagName}` with text `{_webElement.Text}`");
-            _webElement.Click();
+            _log.Trace($"Clicking tag `{base.TagName}` with text `{base.Text}`");
+            base.Click();
         }
 
-        public string GetAttribute(string attributeName)
+        public override string GetAttribute(string attributeName)
         {
-            var attribute = _webElement.GetAttribute(attributeName);
-            _log.Trace($"Got attribute `{attributeName}` for tag `{_webElement.TagName}`: `{attribute}`");
+            var attribute = base.GetAttribute(attributeName);
+            _log.Trace($"Got attribute `{attributeName}` for tag `{base.TagName}`: `{attribute}`");
             return attribute;
         }
 
-        public string GetProperty(string propertyName)
+        public override string GetProperty(string propertyName)
         {
-            var property = _webElement.GetProperty(propertyName);
-            _log.Trace($"Got property `{propertyName}` for tag `{_webElement.TagName}: `{property}`");
+            var property = base.GetProperty(propertyName);
+            _log.Trace($"Got property `{propertyName}` for tag `{base.TagName}: `{property}`");
             return property;
         }
 
-        public string GetCssValue(string propertyName)
+        public override string GetCssValue(string propertyName)
         {
-            var cssValue = _webElement.GetCssValue(propertyName);
-            _log.Trace($"Got CSS value `{propertyName}` for tag `{_webElement.TagName}`: `{cssValue}`");
+            var cssValue = base.GetCssValue(propertyName);
+            _log.Trace($"Got CSS value `{propertyName}` for tag `{base.TagName}`: `{cssValue}`");
             return cssValue;
         }
-
-        public string TagName => _webElement.TagName;
-
-        public string Text => _webElement.Text;
-
-        public bool Enabled => _webElement.Enabled;
-
-        public bool Selected => _webElement.Selected;
-
-        public Point Location => _webElement.Location;
-
-        public Size Size => _webElement.Size;
-
-        public bool Displayed => _webElement.Displayed;
 
         private IWebElement Wrap(IWebElement element)
         {
