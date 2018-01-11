@@ -4,8 +4,10 @@ using Ninject;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using Sonneville.Fidelity.Shell.AppStartup;
+using Sonneville.Fidelity.Shell.Configuration;
 using Sonneville.Fidelity.Shell.Interface;
 using Sonneville.FidelityWebDriver;
+using Sonneville.FidelityWebDriver.Configuration;
 using Sonneville.FidelityWebDriver.Navigation;
 using Sonneville.Utilities.Configuration;
 
@@ -35,6 +37,24 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
 
             Assert.IsNotNull(configStore);
             Assert.AreSame(configStore, _kernel.Get<IConfigStore>());
+        }
+
+        [Test]
+        public void ShouldCreateFidelityConfiguration()
+        {
+            var configStore = _kernel.Get<IConfigStore>();
+
+            var config = configStore.Load<FidelityConfiguration>();
+            Assert.IsNotNull(config);
+        }
+
+        [Test]
+        public void ShouldCreateSeleniumConfiguration()
+        {
+            var configStore = _kernel.Get<IConfigStore>();
+
+            var config = configStore.Load<SeleniumConfiguration>();
+            Assert.IsNotNull(config);
         }
 
         [Test]

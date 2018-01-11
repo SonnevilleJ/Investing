@@ -6,21 +6,14 @@ namespace Sonneville.Fidelity.Shell.Logging
 {
     public interface ISeleniumWaiter
     {
-        void WaitUntil(Func<IWebDriver, bool> condition, TimeSpan timeout);
+        void WaitUntil(Func<IWebDriver, bool> condition, TimeSpan timeout, IWebDriver webDriver);
     }
 
     public class SeleniumWaiter : ISeleniumWaiter
     {
-        private readonly IWebDriver _webDriver;
-
-        public SeleniumWaiter(IWebDriver webDriver)
+        public void WaitUntil(Func<IWebDriver, bool> condition, TimeSpan timeout, IWebDriver webDriver)
         {
-            _webDriver = webDriver;
-        }
-
-        public void WaitUntil(Func<IWebDriver, bool> condition, TimeSpan timeout)
-        {
-            new WebDriverWait(_webDriver, timeout)
+            new WebDriverWait(webDriver, timeout)
                 .Until(condition);
         }
     }

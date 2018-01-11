@@ -16,9 +16,12 @@ namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
 
                 Bind<IWebDriver>()
                     .ToMethod(context => CreateWebDriver())
-                    .WhenInjectedInto<LoggingWebDriver>()
-                    .InSingletonScope();
+                    .WhenInjectedInto<PatientWebDriver>();
 
+                Bind<IWebDriver>()
+                    .To<PatientWebDriver>()
+                    .WhenInjectedInto<LoggingWebDriver>();
+                
                 Bind<IWebDriver>()
                     .To<LoggingWebDriver>()
                     .InSingletonScope();
@@ -35,8 +38,7 @@ namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
 #if !DEBUG
             chromeOptions.AddArgument("--headless");
 #endif
-            var chromeDriver = new ChromeDriver(chromeOptions);
-            return chromeDriver;
+            return new ChromeDriver(chromeOptions);
         }
     }
 }

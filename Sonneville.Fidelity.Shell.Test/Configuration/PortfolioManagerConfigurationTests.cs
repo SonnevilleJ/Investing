@@ -11,7 +11,7 @@ namespace Sonneville.Fidelity.Shell.Test.Configuration
         [Test]
         public void ShouldInitializeToEmptyListOfAccountTypes()
         {
-            var configuration = new PortfolioManagerConfiguration();
+            var configuration = new SeleniumConfiguration();
 
             CollectionAssert.IsEmpty(configuration.InScopeAccountTypes);
         }
@@ -24,7 +24,7 @@ namespace Sonneville.Fidelity.Shell.Test.Configuration
                 AccountType.InvestmentAccount,
                 AccountType.RetirementAccount,
             };
-            var configuration = new PortfolioManagerConfiguration();
+            var configuration = new SeleniumConfiguration();
             configuration.InScopeAccountTypes = accountTypes;
 
             CollectionAssert.AreEquivalent(accountTypes, configuration.InScopeAccountTypes);

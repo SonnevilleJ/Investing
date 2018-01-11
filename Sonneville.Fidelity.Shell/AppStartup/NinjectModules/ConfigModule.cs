@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Ninject.Modules;
+using Sonneville.Fidelity.Shell.Configuration;
 using Sonneville.FidelityWebDriver.Configuration;
 using Sonneville.Utilities.Configuration;
 
@@ -19,6 +20,7 @@ namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
             Rebind<IConfigStore>().ToConstant(configStore);
 
             Rebind<FidelityConfiguration>().ToConstant(configStore.Load<FidelityConfiguration>());
+            Rebind<SeleniumConfiguration>().ToConstant(configStore.Load<SeleniumConfiguration>());
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using OpenQA.Selenium;
+using Sonneville.Fidelity.Shell.Configuration;
 
 namespace Sonneville.Fidelity.Shell.Logging
 {
@@ -10,11 +11,11 @@ namespace Sonneville.Fidelity.Shell.Logging
         private readonly ISeleniumWaiter _seleniumWaiter;
         private readonly TimeSpan _timeSpan;
 
-        public PatientWebDriver(ISeleniumWaiter seleniumWaiter, TimeSpan timeSpan, IWebDriver webDriver) :
+        public PatientWebDriver(ISeleniumWaiter seleniumWaiter, SeleniumConfiguration seleniumConfig, IWebDriver webDriver) :
             base(webDriver)
         {
             _seleniumWaiter = seleniumWaiter;
-            _timeSpan = timeSpan;
+            _timeSpan = seleniumConfig.WebElementDisplayTimeout;
         }
 
         public override IWebElement FindElement(By by)
@@ -33,7 +34,7 @@ namespace Sonneville.Fidelity.Shell.Logging
         private IWebElement WrapFoundElement(IWebElement foundElement)
         {
             Console.WriteLine($"Wrapping web element: {foundElement}");
-            return new PatientWebElement(_seleniumWaiter, foundElement, _timeSpan);
+            return new PatientWebElement(_seleniumWaiter, foundElement, _timeSpan, this);
         }
     }
 }

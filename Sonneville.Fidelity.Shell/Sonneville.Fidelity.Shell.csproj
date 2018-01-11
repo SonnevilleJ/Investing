@@ -80,7 +80,7 @@
     <Compile Include="AppStartup\NinjectModules\LoggingModule.cs" />
     <Compile Include="AppStartup\NinjectModules\LogProvider.cs" />
     <Compile Include="AppStartup\NinjectModules\SeleniumModule.cs" />
-    <Compile Include="Configuration\PortfolioManagerConfiguration.cs" />
+    <Compile Include="Configuration\SeleniumConfiguration.cs" />
     <Compile Include="FidelityWebDriver\AccountMapper.cs" />
     <Compile Include="FidelityWebDriver\AccountTypeMapper.cs" />
     <Compile Include="FidelityWebDriver\PositionMapper.cs" />

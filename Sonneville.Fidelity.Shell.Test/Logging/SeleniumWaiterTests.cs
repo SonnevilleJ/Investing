@@ -20,14 +20,14 @@ namespace Sonneville.Fidelity.Shell.Test.Logging
 
             _timeout = TimeSpan.FromMilliseconds(1000);
 
-            _seleniumWaiter = new SeleniumWaiter(_webDriverMock.Object);
+            _seleniumWaiter = new SeleniumWaiter();
         }
 
         [Test]
         public void ShouldTimeoutAndThrowWhenConditionNeverMet()
         {
             var startTime = DateTime.Now;
-            Assert.Throws<WebDriverTimeoutException>(() => _seleniumWaiter.WaitUntil(_ => false, _timeout));
+            Assert.Throws<WebDriverTimeoutException>(() => _seleniumWaiter.WaitUntil(_ => false, _timeout, _webDriverMock.Object));
             var endTime = DateTime.Now;
 
             Assert.LessOrEqual(_timeout, endTime - startTime);
@@ -37,7 +37,7 @@ namespace Sonneville.Fidelity.Shell.Test.Logging
         public void ShouldCompleteWhenConditionMet()
         {
             var startTime = DateTime.Now;
-            Assert.DoesNotThrow(() => _seleniumWaiter.WaitUntil(_ => true, _timeout));
+            Assert.DoesNotThrow(() => _seleniumWaiter.WaitUntil(_ => true, _timeout, _webDriverMock.Object));
             var endTime = DateTime.Now;
 
             Assert.GreaterOrEqual(_timeout, endTime - startTime);

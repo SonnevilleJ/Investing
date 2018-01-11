@@ -20,12 +20,12 @@ namespace Sonneville.Fidelity.Shell.Test
         private Mock<ISecuritiesAllocationCalculator> _allocationCalculatorMock;
         private Mock<IAccountMapper> _accountMapperMock;
         private List<TradingAccount> _tradingAccounts;
-        private PortfolioManagerConfiguration _portfolioManagerConfiguration;
+        private SeleniumConfiguration _portfolioManagerConfiguration;
 
         [SetUp]
         public void Setup()
         {
-            _portfolioManagerConfiguration = new PortfolioManagerConfiguration();
+            _portfolioManagerConfiguration = new SeleniumConfiguration();
             var accountDetails = new List<IAccountDetails>
             {
                 new AccountDetails

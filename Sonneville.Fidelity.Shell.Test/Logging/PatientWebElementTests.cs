@@ -20,6 +20,7 @@ namespace Sonneville.Fidelity.Shell.Test.Logging
         private TimeSpan _timeSpan;
 
         private PatientWebElement _outerWebElement;
+        private Mock<IWebDriver> _webDriverMock;
 
         [SetUp]
         public void Setup()
@@ -30,8 +31,10 @@ namespace Sonneville.Fidelity.Shell.Test.Logging
 
             _timeSpan = TimeSpan.FromMinutes(1);
 
+            _webDriverMock = new Mock<IWebDriver>();
+
             _outerWebElement = new PatientWebElement(_seleniumWaiterMock.Object,
-                _innerWebElementMock.Object, _timeSpan);
+                _innerWebElementMock.Object, _timeSpan, _webDriverMock.Object);
         }
 
         [Test]
@@ -154,29 +157,31 @@ namespace Sonneville.Fidelity.Shell.Test.Logging
         {
             var validationsCompleted = false;
             _seleniumWaiterMock.Setup(waiter =>
-                    waiter.WaitUntil(It.IsAny<Func<IWebDriver, bool>>(), It.IsAny<TimeSpan>()))
-                .Callback<Func<IWebDriver, bool>, TimeSpan>(
-                    (func, timeSpan) =>
+                    waiter.WaitUntil(It.IsAny<Func<IWebDriver, bool>>(), It.IsAny<TimeSpan>(), It.IsAny<IWebDriver>()))
+                .Callback<Func<IWebDriver, bool>, TimeSpan, IWebDriver>(
+                    (func, timeSpan, webDriver) =>
                     {
                         Assert.AreEqual(_isDisplayed = true, func(null),
                             "WaitUntil condition does not check if IWebElement is Displayed!");
                         Assert.AreEqual(_isDisplayed = false, func(null),
                             "WaitUntil condition does not check if IWebElement is Displayed!");
                         Assert.AreEqual(_timeSpan, timeSpan, "WaitUntil called with wrong timespan!");
+                        Assert.AreEqual(_webDriverMock.Object, webDriver);
                         validationsCompleted = true;
                     }
                 );
             inner.SetupGet(webElement => webElement.Displayed).Returns(() => _isDisplayed);
             inner.Setup(expectedInteraction)
                 .Callback(() => _seleniumWaiterMock.Verify(waiter =>
-                        waiter.WaitUntil(It.IsAny<Func<IWebDriver, bool>>(), It.IsAny<TimeSpan>()),
+                        waiter.WaitUntil(It.IsAny<Func<IWebDriver, bool>>(), It.IsAny<TimeSpan>(),
+                            It.IsAny<IWebDriver>()),
                     Times.Exactly(callCount),
                     "Invoked wrapped IWebElement without waiting until it was displayed!"));
             using (var task = Task.Run(() => trigger(outer)))
             {
                 task.Wait(1000);
                 Assert.IsTrue(task.IsCompleted);
-                if(callCount > 1) Assert.IsTrue(validationsCompleted);
+                if (callCount > 1) Assert.IsTrue(validationsCompleted);
                 inner.Verify(expectedInteraction, Times.Once());
             }
         }

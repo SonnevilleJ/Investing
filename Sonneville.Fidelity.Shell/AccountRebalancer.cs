@@ -17,23 +17,23 @@ namespace Sonneville.Fidelity.Shell
         private readonly IPositionsManager _positionsManager;
         private readonly IAccountMapper _accountMapper;
         private readonly ISecuritiesAllocationCalculator _securitiesAllocationCalculator;
-        private readonly PortfolioManagerConfiguration _portfolioManagerConfiguration;
+        private readonly SeleniumConfiguration _seleniumConfiguration;
 
         public AccountRebalancer(IPositionsManager positionsManager,
             IAccountMapper accountMapper,
             ISecuritiesAllocationCalculator securitiesAllocationCalculator,
-            PortfolioManagerConfiguration portfolioManagerConfiguration)
+            SeleniumConfiguration seleniumConfiguration)
         {
             _positionsManager = positionsManager;
             _accountMapper = accountMapper;
             _securitiesAllocationCalculator = securitiesAllocationCalculator;
-            _portfolioManagerConfiguration = portfolioManagerConfiguration;
+            _seleniumConfiguration = seleniumConfiguration;
         }
 
         public void RebalanceAccounts()
         {
             var accounts = _accountMapper.Map(_positionsManager.GetAccountDetails())
-                .Where(account => _portfolioManagerConfiguration.InScopeAccountTypes.Contains(account.AccountType))
+                .Where(account => _seleniumConfiguration.InScopeAccountTypes.Contains(account.AccountType))
                 .ToList();
 
             var allocations = _securitiesAllocationCalculator.CalculateAccountAllocation(accounts);
