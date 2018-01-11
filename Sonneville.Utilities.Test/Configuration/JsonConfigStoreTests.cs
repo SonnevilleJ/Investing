@@ -165,6 +165,22 @@ namespace Sonneville.Utilities.Test.Configuration
         }
 
         [Test]
+        public void ShouldReadExistingConfigAndUpdateReference()
+        {
+            var cachedConfig = new SampleConfig
+            {
+                A = "original",
+            };
+
+            _configStore.Save(cachedConfig);
+            cachedConfig.A = "changed";
+
+            var readFromDisk = _configStore.Load<SampleConfig>();
+
+            Assert.AreSame(readFromDisk, cachedConfig);
+        }
+
+        [Test]
         public void ShouldDeleteConfigFile()
         {
             var sampleConfig = new SampleConfig

@@ -11,7 +11,7 @@ namespace Sonneville.Utilities.Configuration
     public class JsonConfigStore : IConfigStore
     {
         private readonly string _path;
-        private readonly Dictionary<Type, object> _configs;
+        private readonly Dictionary<Type, object> _configs = new Dictionary<Type, object>();
 
         private static readonly JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings
         {
@@ -23,7 +23,6 @@ namespace Sonneville.Utilities.Configuration
         public JsonConfigStore(string path)
         {
             _path = path;
-            _configs = new Dictionary<Type, object>();
         }
 
         public void Save<T>(T config)
@@ -34,8 +33,9 @@ namespace Sonneville.Utilities.Configuration
                 throw new ArgumentOutOfRangeException(nameof(config), config, "Must pass original config instance!");
             }
 
-            var json = JsonConvert.SerializeObject(config, JsonSerializerSettings);
+            _configs[typeof(T)] = config;
 
+            var json = JsonConvert.SerializeObject(config, JsonSerializerSettings);
             File.WriteAllText(_path, json);
         }
 
@@ -54,32 +54,46 @@ namespace Sonneville.Utilities.Configuration
         private T FetchConfig<T>() where T : class, new()
         {
             return File.Exists(_path)
-                ? ReadConfigFromDisk<T>()
-                : (_configs.TryGetValue(typeof(T), out var existing) ? existing as T : new T());
+                ? LoadFromDiskOrNew<T>()
+                : ReadFromCacheOrNew<T>();
         }
 
-        private T ReadConfigFromDisk<T>() where T : class, new()
+        private T LoadFromDiskOrNew<T>() where T : class, new()
         {
+            var configFromCache = ReadFromCacheOrNew<T>();
             var jsonFile = File.ReadAllText(_path);
-            return JsonConvert.DeserializeObject(jsonFile, typeof(T), JsonSerializerSettings) as T;
+            var configFromDisk = JsonConvert.DeserializeObject(jsonFile, typeof(T), JsonSerializerSettings) as T;
+            foreach (var propertyInfo in typeof(T).GetProperties())
+            {
+                propertyInfo.SetValue(configFromCache, propertyInfo.GetValue(configFromDisk));
+            }
+
+            return configFromCache;
+        }
+
+        private T ReadFromCacheOrNew<T>() where T : class, new()
+        {
+            return _configs.TryGetValue(typeof(T), out var existing)
+                ? existing as T
+                : new T();
         }
 
         private class SettingsReaderContractResolver : DefaultContractResolver
         {
             protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
             {
-                var props = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                    .Select(p => CreateProperty(p, memberSerialization))
-                    .Union(type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                        .Select(f => CreateProperty(f, memberSerialization)))
-                    .ToList();
-                props.ForEach(p =>
-                {
-                    p.Writable = true;
-                    p.Readable = true;
-                });
+                const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 
-                return props;
+                return type.GetProperties(bindingFlags)
+                    .Select(propertyInfo => CreateProperty(propertyInfo, memberSerialization))
+                    .Union(type.GetFields(bindingFlags).Select(field => CreateProperty(field, memberSerialization)))
+                    .Select(p =>
+                    {
+                        p.Writable = true;
+                        p.Readable = true;
+                        return p;
+                    })
+                    .ToList();
             }
         }
     }
