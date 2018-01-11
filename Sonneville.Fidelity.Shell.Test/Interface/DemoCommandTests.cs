@@ -29,7 +29,7 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
         private DateTime _startDate;
         private DateTime _endDate;
 
-        private Mock<INiniConfigStore> _configStoreMock;
+        private Mock<IConfigStore> _configStoreMock;
 
         private MemoryStream _inputStream;
         private StreamReader _inputReader;
@@ -162,8 +162,8 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
 
             _logMock = new Mock<ILog>();
 
-            _configStoreMock = new Mock<INiniConfigStore>();
-            _configStoreMock.Setup(configStore => configStore.Read<FidelityConfiguration>()).Returns(_fidelityConfiguration);
+            _configStoreMock = new Mock<IConfigStore>();
+            _configStoreMock.Setup(configStore => configStore.Load<FidelityConfiguration>()).Returns(_fidelityConfiguration);
             _configStoreMock.Setup(configStore => configStore.Save(It.IsAny<FidelityConfiguration>())).Callback<FidelityConfiguration>(config => _fidelityConfiguration = config);
 
             _inputStream = new MemoryStream();

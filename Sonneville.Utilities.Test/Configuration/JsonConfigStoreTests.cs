@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
 using Sonneville.Utilities.Configuration;
@@ -6,19 +7,19 @@ using Sonneville.Utilities.Configuration;
 namespace Sonneville.Utilities.Test.Configuration
 {
     [TestFixture]
-    public class NiniConfigStoreTests
+    public class JsonConfigStoreTests
     {
         private string _location;
-        private NiniConfigStore _configStore;
+        private JsonConfigStore _configStore;
 
         [SetUp]
         public void Setup()
         {
             _location = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                $"{nameof(NiniConfigStoreTests)}.ini"
+                $"{nameof(JsonConfigStoreTests)}.ini"
             );
-            _configStore = new NiniConfigStore(_location);
+            _configStore = new JsonConfigStore(_location);
         }
 
         [TearDown]
@@ -33,7 +34,7 @@ namespace Sonneville.Utilities.Test.Configuration
         {
             Assert.False(File.Exists(_location));
 
-            var sampleConfig = _configStore.Read<SampleConfig>();
+            var sampleConfig = _configStore.Load<SampleConfig>();
 
             Assert.NotNull(sampleConfig);
             Assert.AreEqual(default(string), sampleConfig.A);
@@ -54,7 +55,7 @@ namespace Sonneville.Utilities.Test.Configuration
             };
 
             _configStore.Save(sampleConfig);
-            var result = _configStore.Read<SampleConfig>();
+            var result = _configStore.Load<SampleConfig>();
 
             Assert.AreEqual(sampleConfig.A, result.A);
         }
@@ -71,7 +72,7 @@ namespace Sonneville.Utilities.Test.Configuration
             };
 
             _configStore.Save(sampleConfig);
-            var result = _configStore.Read<SampleConfig>();
+            var result = _configStore.Load<SampleConfig>();
 
             Assert.AreEqual(sampleConfig.B, result.B);
         }
@@ -88,7 +89,7 @@ namespace Sonneville.Utilities.Test.Configuration
             };
 
             _configStore.Save(sampleConfig);
-            var result = _configStore.Read<SampleConfig>();
+            var result = _configStore.Load<SampleConfig>();
 
             Assert.AreEqual(sampleConfig.C, result.C, 0.00001);
         }
@@ -105,9 +106,43 @@ namespace Sonneville.Utilities.Test.Configuration
             };
 
             _configStore.Save(sampleConfig);
-            var result = _configStore.Read<SampleConfig>();
+            var result = _configStore.Load<SampleConfig>();
 
             Assert.AreEqual(sampleConfig.D, result.D);
+        }
+
+        [Test]
+        [TestCase(-123)]
+        [TestCase(0)]
+        [TestCase(123)]
+        public void ShouldRoundtripTimespan(int seconds)
+        {
+            var sampleConfig = new SampleConfig
+            {
+                E = TimeSpan.FromSeconds(seconds),
+            };
+
+            _configStore.Save(sampleConfig);
+            var result = _configStore.Load<SampleConfig>();
+
+            Assert.AreEqual(sampleConfig.E, result.E);
+        }
+
+        [Test]
+        [TestCase("test")]
+        [TestCase("")]
+        [TestCase(null)]
+        public void ShouldRoundtripHashSet(string value)
+        {
+            var sampleConfig = new SampleConfig
+            {
+                F = new HashSet<string>(new[] {value}),
+            };
+
+            _configStore.Save(sampleConfig);
+            var result = _configStore.Load<SampleConfig>();
+
+            Assert.AreEqual(sampleConfig.F, result.F);
         }
 
         [Test]
@@ -120,12 +155,12 @@ namespace Sonneville.Utilities.Test.Configuration
 
             _configStore.Save(sampleConfig);
 
-            _configStore = new NiniConfigStore(_location);
+            _configStore = new JsonConfigStore(_location);
             sampleConfig.A = "changed";
 
             _configStore.Save(sampleConfig);
 
-            var result = _configStore.Read<SampleConfig>();
+            var result = _configStore.Load<SampleConfig>();
             Assert.AreEqual(sampleConfig.A, result.A);
         }
 
@@ -140,7 +175,7 @@ namespace Sonneville.Utilities.Test.Configuration
             Assert.True(File.Exists(_location));
 
             _configStore.DeleteAll();
-            
+
             Assert.False(File.Exists(_location));
         }
 
@@ -149,13 +184,13 @@ namespace Sonneville.Utilities.Test.Configuration
         {
             Assert.False(File.Exists(_location));
 
-            Assert.AreSame(_configStore.Read<SampleConfig>(), _configStore.Read<SampleConfig>());
+            Assert.AreSame(_configStore.Load<SampleConfig>(), _configStore.Load<SampleConfig>());
         }
 
         [Test]
         public void ShouldThrowIfSavingDifferentConfigOfSameType()
         {
-            _configStore.Read<SampleConfig>();
+            _configStore.Load<SampleConfig>();
 
             var imposter = new SampleConfig();
             Assert.Throws<ArgumentOutOfRangeException>(() => _configStore.Save(imposter));
@@ -170,6 +205,10 @@ namespace Sonneville.Utilities.Test.Configuration
             public long C { get; set; }
 
             public double D { get; set; }
+
+            public TimeSpan E { get; set; }
+
+            public HashSet<string> F { get; set; }
         }
     }
 }

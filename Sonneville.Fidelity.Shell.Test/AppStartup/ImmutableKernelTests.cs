@@ -31,10 +31,10 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
         [Test]
         public void ShouldBindConfigStoreAsSingleton()
         {
-            var configStore = _kernel.Get<INiniConfigStore>();
+            var configStore = _kernel.Get<IConfigStore>();
 
             Assert.IsNotNull(configStore);
-            Assert.AreSame(configStore, _kernel.Get<INiniConfigStore>());
+            Assert.AreSame(configStore, _kernel.Get<IConfigStore>());
         }
 
         [Test]

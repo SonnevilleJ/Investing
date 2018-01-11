@@ -15,7 +15,7 @@ namespace Sonneville.Fidelity.Shell.Interface
     public class DemoCommand : ICommand
     {
         private readonly ILog _log;
-        private readonly INiniConfigStore _configStore;
+        private readonly IConfigStore _configStore;
         private readonly IPositionsManager _positionsManager;
         private readonly ITransactionManager _transactionManager;
         private readonly TransactionTranslator _transactionTranslator;
@@ -26,7 +26,7 @@ namespace Sonneville.Fidelity.Shell.Interface
 
         public DemoCommand(
             ILog log,
-            INiniConfigStore configStore,
+            IConfigStore configStore,
             IPositionsManager positionsManager,
             ITransactionManager transactionManager,
             TransactionTranslator transactionTranslator
@@ -38,7 +38,7 @@ namespace Sonneville.Fidelity.Shell.Interface
             _transactionManager = transactionManager;
             _transactionTranslator = transactionTranslator;
 
-            _fidelityConfiguration = _configStore.Read<FidelityConfiguration>();
+            _fidelityConfiguration = _configStore.Load<FidelityConfiguration>();
             _optionSet = new OptionSet
             {
                 {
