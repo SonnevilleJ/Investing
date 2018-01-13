@@ -33,7 +33,6 @@ namespace Sonneville.Fidelity.Shell.Logging
 
         private IWebElement WrapFoundElement(IWebElement foundElement)
         {
-            Console.WriteLine($"Wrapping web element: {foundElement}");
             return new PatientWebElement(_seleniumWaiter, foundElement, _timeSpan, this);
         }
     }
