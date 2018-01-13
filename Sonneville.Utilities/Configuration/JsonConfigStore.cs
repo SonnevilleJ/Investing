@@ -25,6 +25,13 @@ namespace Sonneville.Utilities.Configuration
             _path = path;
         }
 
+        public T Get<T>() where T : class, new()
+        {
+            var config = ReadFromCacheOrLoad<T>();
+            _configs[typeof(T)] = config;
+            return config;
+        }
+
         public void Save<T>(T config)
         {
             var type = typeof(T);
@@ -46,26 +53,16 @@ namespace Sonneville.Utilities.Configuration
 
         public T Load<T>() where T : class, new()
         {
-            var config = FetchConfig<T>();
-            _configs[typeof(T)] = config;
-            return config;
-        }
-
-        private T FetchConfig<T>() where T : class, new()
-        {
-            return File.Exists(_path)
-                ? LoadFromDiskOrNew<T>()
-                : ReadFromCacheOrNew<T>();
-        }
-
-        private T LoadFromDiskOrNew<T>() where T : class, new()
-        {
             var configFromCache = ReadFromCacheOrNew<T>();
-            var jsonFile = File.ReadAllText(_path);
-            var configFromDisk = JsonConvert.DeserializeObject(jsonFile, typeof(T), JsonSerializerSettings) as T;
-            foreach (var propertyInfo in typeof(T).GetProperties())
+
+            if (File.Exists(_path))
             {
-                propertyInfo.SetValue(configFromCache, propertyInfo.GetValue(configFromDisk));
+                var jsonFile = File.ReadAllText(_path);
+                var configFromDisk = JsonConvert.DeserializeObject(jsonFile, typeof(T), JsonSerializerSettings) as T;
+                foreach (var propertyInfo in typeof(T).GetProperties())
+                {
+                    propertyInfo.SetValue(configFromCache, propertyInfo.GetValue(configFromDisk));
+                }
             }
 
             return configFromCache;
@@ -76,6 +73,13 @@ namespace Sonneville.Utilities.Configuration
             return _configs.TryGetValue(typeof(T), out var existing)
                 ? existing as T
                 : new T();
+        }
+
+        private T ReadFromCacheOrLoad<T>() where T : class, new()
+        {
+            return _configs.TryGetValue(typeof(T), out var existing)
+                ? existing as T
+                : Load<T>();
         }
 
         private class SettingsReaderContractResolver : DefaultContractResolver

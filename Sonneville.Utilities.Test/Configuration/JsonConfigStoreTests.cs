@@ -9,45 +9,119 @@ namespace Sonneville.Utilities.Test.Configuration
     [TestFixture]
     public class JsonConfigStoreTests
     {
-        private string _location;
+        private string _path;
         private JsonConfigStore _configStore;
 
         [SetUp]
         public void Setup()
         {
-            _location = Path.Combine(
+            _path = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 $"{nameof(JsonConfigStoreTests)}.ini"
             );
-            _configStore = new JsonConfigStore(_location);
+            _configStore = new JsonConfigStore(_path);
         }
 
         [TearDown]
         public void Teardown()
         {
-            if (File.Exists(_location)) File.Delete(_location);
-            Assert.False(File.Exists(_location));
+            if (File.Exists(_path)) File.Delete(_path);
+            Assert.False(File.Exists(_path));
         }
 
         [Test]
-        public void ShouldReadWhenNoFilePresent()
+        public void GetShouldLoadIfNotCached()
         {
-            Assert.False(File.Exists(_location));
+            _configStore.Save(new SampleConfig
+            {
+                A = "original",
+            });
+
+            var configStore = new JsonConfigStore(_path);
+            var one = configStore.Get<SampleConfig>();
+            var two = configStore.Get<SampleConfig>();
+
+            Assert.AreEqual("original", one.A);
+            Assert.AreEqual("original", two.A);
+            Assert.AreSame(one, two);
+        }
+
+        [Test]
+        public void GetShouldNotLoadAndReturnCachedIfCached()
+        {
+            var sampleConfig = new SampleConfig
+            {
+                A = "original",
+            };
+            _configStore.Save(sampleConfig);
+            sampleConfig.A = "changed";
+
+            var result = _configStore.Get<SampleConfig>();
+            Assert.AreEqual("changed", result.A);
+            Assert.AreSame(sampleConfig, result);
+        }
+
+        [Test]
+        public void LoadShouldUpdateAndReturnPersistedConfig()
+        {
+            var sampleConfig = new SampleConfig
+            {
+                A = "original",
+            };
+            _configStore.Save(sampleConfig);
+            sampleConfig.A = "changed";
+
+            var result = _configStore.Load<SampleConfig>();
+            Assert.AreEqual("original", result.A);
+            Assert.AreSame(sampleConfig, result);
+        }
+
+        [Test]
+        public void LoadShouldReturnDefaultConfigdWhenNoFilePresent()
+        {
+            Assert.False(File.Exists(_path));
 
             var sampleConfig = _configStore.Load<SampleConfig>();
 
             Assert.NotNull(sampleConfig);
-            Assert.AreEqual(default(string), sampleConfig.A);
-            Assert.AreEqual(default(int), sampleConfig.B);
-            Assert.AreEqual(default(long), sampleConfig.C);
-            Assert.AreEqual(default(double), sampleConfig.D);
+            foreach (var propertyInfo in typeof(SampleConfig).GetProperties())
+            {
+                var propertyType = propertyInfo.PropertyType;
+                var defaultValue = propertyType.IsValueType ? Activator.CreateInstance(propertyType) : null;
+                var actualValue = propertyInfo.GetValue(sampleConfig);
+                Assert.AreEqual(defaultValue, actualValue);
+            }
+        }
+
+        [Test]
+        public void DeleteAllShouldDeleteFile()
+        {
+            var sampleConfig = new SampleConfig
+            {
+                A = "original",
+            };
+            _configStore.Save(sampleConfig);
+            Assert.True(File.Exists(_path));
+
+            _configStore.DeleteAll();
+
+            Assert.False(File.Exists(_path));
+        }
+
+        [Test]
+        public void SaveShouldThrowIfSavingDifferentConfigOfSameType()
+        {
+            _configStore.Get<SampleConfig>();
+
+            var imposter = new SampleConfig();
+            Assert.Throws<ArgumentOutOfRangeException>(() => _configStore.Save(imposter));
         }
 
         [Test]
         [TestCase("test")]
         [TestCase("")]
         [TestCase(null)]
-        public void ShouldRoundtripString(string value)
+        public void ShouldRoundtripStringType(string value)
         {
             var sampleConfig = new SampleConfig
             {
@@ -55,7 +129,7 @@ namespace Sonneville.Utilities.Test.Configuration
             };
 
             _configStore.Save(sampleConfig);
-            var result = _configStore.Load<SampleConfig>();
+            var result = _configStore.Get<SampleConfig>();
 
             Assert.AreEqual(sampleConfig.A, result.A);
         }
@@ -64,7 +138,7 @@ namespace Sonneville.Utilities.Test.Configuration
         [TestCase(int.MinValue)]
         [TestCase(0)]
         [TestCase(int.MaxValue)]
-        public void ShouldRoundtripInteger(int value)
+        public void ShouldRoundtripIntegerType(int value)
         {
             var sampleConfig = new SampleConfig
             {
@@ -72,7 +146,7 @@ namespace Sonneville.Utilities.Test.Configuration
             };
 
             _configStore.Save(sampleConfig);
-            var result = _configStore.Load<SampleConfig>();
+            var result = _configStore.Get<SampleConfig>();
 
             Assert.AreEqual(sampleConfig.B, result.B);
         }
@@ -81,7 +155,7 @@ namespace Sonneville.Utilities.Test.Configuration
         [TestCase(long.MinValue)]
         [TestCase(0)]
         [TestCase(long.MaxValue)]
-        public void ShouldRoundtripLong(long value)
+        public void ShouldRoundtripLongType(long value)
         {
             var sampleConfig = new SampleConfig
             {
@@ -89,7 +163,7 @@ namespace Sonneville.Utilities.Test.Configuration
             };
 
             _configStore.Save(sampleConfig);
-            var result = _configStore.Load<SampleConfig>();
+            var result = _configStore.Get<SampleConfig>();
 
             Assert.AreEqual(sampleConfig.C, result.C, 0.00001);
         }
@@ -98,7 +172,7 @@ namespace Sonneville.Utilities.Test.Configuration
         [TestCase(-1234567890)]
         [TestCase(0)]
         [TestCase(1234567890)]
-        public void ShouldRoundtripDouble(double value)
+        public void ShouldRoundtripDoubleType(double value)
         {
             var sampleConfig = new SampleConfig
             {
@@ -106,110 +180,60 @@ namespace Sonneville.Utilities.Test.Configuration
             };
 
             _configStore.Save(sampleConfig);
-            var result = _configStore.Load<SampleConfig>();
+            var result = _configStore.Get<SampleConfig>();
 
             Assert.AreEqual(sampleConfig.D, result.D);
+        }
+
+        [Test]
+        [TestCase(-1234567890)]
+        [TestCase(0)]
+        [TestCase(1234567890)]
+        public void ShouldRoundtripDecimalType(decimal value)
+        {
+            var sampleConfig = new SampleConfig
+            {
+                E = value,
+            };
+
+            _configStore.Save(sampleConfig);
+            var result = _configStore.Get<SampleConfig>();
+
+            Assert.AreEqual(sampleConfig.E, result.E);
         }
 
         [Test]
         [TestCase(-123)]
         [TestCase(0)]
         [TestCase(123)]
-        public void ShouldRoundtripTimespan(int seconds)
+        public void ShouldRoundtripTimespanType(int seconds)
         {
             var sampleConfig = new SampleConfig
             {
-                E = TimeSpan.FromSeconds(seconds),
+                F = TimeSpan.FromSeconds(seconds),
             };
 
             _configStore.Save(sampleConfig);
-            var result = _configStore.Load<SampleConfig>();
+            var result = _configStore.Get<SampleConfig>();
 
-            Assert.AreEqual(sampleConfig.E, result.E);
+            Assert.AreEqual(sampleConfig.F, result.F);
         }
 
         [Test]
         [TestCase("test")]
         [TestCase("")]
         [TestCase(null)]
-        public void ShouldRoundtripHashSet(string value)
+        public void ShouldRoundtripHashSetType(string value)
         {
             var sampleConfig = new SampleConfig
             {
-                F = new HashSet<string>(new[] {value}),
+                G = new HashSet<string>(new[] {value}),
             };
 
             _configStore.Save(sampleConfig);
-            var result = _configStore.Load<SampleConfig>();
+            var result = _configStore.Get<SampleConfig>();
 
-            Assert.AreEqual(sampleConfig.F, result.F);
-        }
-
-        [Test]
-        public void ShouldReadExistingConfig()
-        {
-            var sampleConfig = new SampleConfig
-            {
-                A = "original",
-            };
-
-            _configStore.Save(sampleConfig);
-
-            _configStore = new JsonConfigStore(_location);
-            sampleConfig.A = "changed";
-
-            _configStore.Save(sampleConfig);
-
-            var result = _configStore.Load<SampleConfig>();
-            Assert.AreEqual(sampleConfig.A, result.A);
-        }
-
-        [Test]
-        public void ShouldReadExistingConfigAndUpdateReference()
-        {
-            var cachedConfig = new SampleConfig
-            {
-                A = "original",
-            };
-
-            _configStore.Save(cachedConfig);
-            cachedConfig.A = "changed";
-
-            var readFromDisk = _configStore.Load<SampleConfig>();
-
-            Assert.AreSame(readFromDisk, cachedConfig);
-        }
-
-        [Test]
-        public void ShouldDeleteConfigFile()
-        {
-            var sampleConfig = new SampleConfig
-            {
-                A = "original",
-            };
-            _configStore.Save(sampleConfig);
-            Assert.True(File.Exists(_location));
-
-            _configStore.DeleteAll();
-
-            Assert.False(File.Exists(_location));
-        }
-
-        [Test]
-        public void ShouldCacheConfig()
-        {
-            Assert.False(File.Exists(_location));
-
-            Assert.AreSame(_configStore.Load<SampleConfig>(), _configStore.Load<SampleConfig>());
-        }
-
-        [Test]
-        public void ShouldThrowIfSavingDifferentConfigOfSameType()
-        {
-            _configStore.Load<SampleConfig>();
-
-            var imposter = new SampleConfig();
-            Assert.Throws<ArgumentOutOfRangeException>(() => _configStore.Save(imposter));
+            Assert.AreEqual(sampleConfig.G, result.G);
         }
 
         private class SampleConfig
@@ -222,9 +246,11 @@ namespace Sonneville.Utilities.Test.Configuration
 
             public double D { get; set; }
 
-            public TimeSpan E { get; set; }
+            public decimal E { get; set; }
 
-            public HashSet<string> F { get; set; }
+            public TimeSpan F { get; set; }
+
+            public HashSet<string> G { get; set; }
         }
     }
 }
