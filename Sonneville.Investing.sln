@@ -27,9 +27,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.Utilities", "Son
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.Utilities.Test", "Sonneville.Utilities.Test\Sonneville.Utilities.Test.csproj", "{CBD97988-2B0E-48E4-AD8E-6D1709E44006}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.FidelityWebDriver", "Sonneville.FidelityWebDriver\Sonneville.FidelityWebDriver.csproj", "{79449998-2821-4929-8A3A-98637C477F85}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.Fidelity.WebDriver", "Sonneville.Fidelity.WebDriver\Sonneville.Fidelity.WebDriver.csproj", "{79449998-2821-4929-8A3A-98637C477F85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.FidelityWebDriver.Test", "Sonneville.FidelityWebDriver.Test\Sonneville.FidelityWebDriver.Test.csproj", "{28C9B637-3E4E-45BD-9CEE-B32EC6EE4C1A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.Fidelity.WebDriver.Test", "Sonneville.Fidelity.WebDriver.Test\Sonneville.Fidelity.WebDriver.Test.csproj", "{28C9B637-3E4E-45BD-9CEE-B32EC6EE4C1A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

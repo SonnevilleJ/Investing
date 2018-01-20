@@ -6,9 +6,9 @@ using OpenQA.Selenium;
 using Sonneville.Fidelity.Shell.AppStartup;
 using Sonneville.Fidelity.Shell.Configuration;
 using Sonneville.Fidelity.Shell.Interface;
-using Sonneville.FidelityWebDriver;
-using Sonneville.FidelityWebDriver.Configuration;
-using Sonneville.FidelityWebDriver.Navigation;
+using Sonneville.Fidelity.WebDriver;
+using Sonneville.Fidelity.WebDriver.Configuration;
+using Sonneville.Fidelity.WebDriver.Navigation;
 using Sonneville.Utilities.Configuration;
 
 namespace Sonneville.Fidelity.Shell.Test.AppStartup

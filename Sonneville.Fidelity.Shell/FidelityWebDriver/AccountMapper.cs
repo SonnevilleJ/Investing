@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Sonneville.FidelityWebDriver.Data;
+using Sonneville.Fidelity.WebDriver.Data;
 using Sonneville.Investing.Trading;
 
 namespace Sonneville.Fidelity.Shell.FidelityWebDriver

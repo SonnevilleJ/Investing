@@ -5,8 +5,6 @@ using Ninject.Modules;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using Sonneville.Fidelity.Shell.Interface;
-using Sonneville.FidelityWebDriver.Configuration;
-using Sonneville.Utilities.Configuration;
 
 namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
 {

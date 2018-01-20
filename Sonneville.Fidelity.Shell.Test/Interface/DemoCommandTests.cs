@@ -6,10 +6,10 @@ using log4net;
 using Moq;
 using NUnit.Framework;
 using Sonneville.Fidelity.Shell.Interface;
-using Sonneville.FidelityWebDriver.Configuration;
-using Sonneville.FidelityWebDriver.Data;
-using Sonneville.FidelityWebDriver.Positions;
-using Sonneville.FidelityWebDriver.Transactions;
+using Sonneville.Fidelity.WebDriver.Configuration;
+using Sonneville.Fidelity.WebDriver.Data;
+using Sonneville.Fidelity.WebDriver.Positions;
+using Sonneville.Fidelity.WebDriver.Transactions;
 using Sonneville.Utilities.Configuration;
 
 namespace Sonneville.Fidelity.Shell.Test.Interface

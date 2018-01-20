@@ -1,4 +1,4 @@
-using Sonneville.FidelityWebDriver.Data;
+using Sonneville.Fidelity.WebDriver.Data;
 
 namespace Sonneville.Fidelity.Shell
 {

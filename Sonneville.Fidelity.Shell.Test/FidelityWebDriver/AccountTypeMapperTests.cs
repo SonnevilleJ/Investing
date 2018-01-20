@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 using Sonneville.Fidelity.Shell.FidelityWebDriver;
-using Sonneville.FidelityWebDriver.Data;
+using Sonneville.Fidelity.WebDriver.Data;
 
 namespace Sonneville.Fidelity.Shell.Test.FidelityWebDriver
 {

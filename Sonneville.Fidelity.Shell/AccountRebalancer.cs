@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using Sonneville.Fidelity.Shell.Configuration;
 using Sonneville.Fidelity.Shell.FidelityWebDriver;
-using Sonneville.FidelityWebDriver.Positions;
+using Sonneville.Fidelity.WebDriver.Positions;
 using Sonneville.Investing.Trading;
 
 namespace Sonneville.Fidelity.Shell

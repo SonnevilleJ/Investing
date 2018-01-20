@@ -5,8 +5,8 @@ using Moq;
 using NUnit.Framework;
 using Sonneville.Fidelity.Shell.Configuration;
 using Sonneville.Fidelity.Shell.FidelityWebDriver;
-using Sonneville.FidelityWebDriver.Data;
-using Sonneville.FidelityWebDriver.Positions;
+using Sonneville.Fidelity.WebDriver.Data;
+using Sonneville.Fidelity.WebDriver.Positions;
 using Sonneville.Investing.Trading;
 using AccountType = Sonneville.Investing.Trading.AccountType;
 

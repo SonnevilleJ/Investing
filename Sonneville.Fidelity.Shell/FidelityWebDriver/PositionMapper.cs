@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Sonneville.FidelityWebDriver.Data;
+using Sonneville.Fidelity.WebDriver.Data;
 using Position = Sonneville.Investing.Trading.Position;
 
 namespace Sonneville.Fidelity.Shell.FidelityWebDriver

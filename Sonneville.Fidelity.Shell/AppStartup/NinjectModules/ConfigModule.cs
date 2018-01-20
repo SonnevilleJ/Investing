@@ -2,7 +2,7 @@
 using System.IO;
 using Ninject.Modules;
 using Sonneville.Fidelity.Shell.Configuration;
-using Sonneville.FidelityWebDriver.Configuration;
+using Sonneville.Fidelity.WebDriver.Configuration;
 using Sonneville.Utilities.Configuration;
 
 namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
