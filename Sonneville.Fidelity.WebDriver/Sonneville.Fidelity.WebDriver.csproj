@@ -1,104 +1,104 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{79449998-2821-4929-8A3A-98637C477F85}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Sonneville.Fidelity.WebDriver</RootNamespace>
-    <AssemblyName>Sonneville.Fidelity.WebDriver</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="WebDriver, Version=3.8.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Selenium.WebDriver.3.8.0\lib\net45\WebDriver.dll</HintPath>
-    </Reference>
-    <Reference Include="WebDriver.Support, Version=3.8.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Selenium.Support.3.8.0\lib\net45\WebDriver.Support.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Configuration\FidelityConfiguration.cs" />
-    <Compile Include="Data\AccountDetails.cs" />
-    <Compile Include="Data\AccountSummary.cs" />
-    <Compile Include="Data\AccountType.cs" />
-    <Compile Include="Data\FidelityTransaction.cs" />
-    <Compile Include="Data\Position.cs" />
-    <Compile Include="Data\TransactionType.cs" />
-    <Compile Include="IManager.cs" />
-    <Compile Include="IPage.cs" />
-    <Compile Include="Login\LoginManager.cs" />
-    <Compile Include="Login\LoginPage.cs" />
-    <Compile Include="Navigation\SiteNavigator.cs" />
-    <Compile Include="Positions\AccountDetailsExtractor.cs" />
-    <Compile Include="Positions\AccountIdentifierExtractor.cs" />
-    <Compile Include="Positions\AccountSummariesExtractor.cs" />
-    <Compile Include="Positions\AccountTypesMapper.cs" />
-    <Compile Include="Positions\DetailExtractors\PositionCoreExtractor.cs" />
-    <Compile Include="Positions\DetailExtractors\PositionCostBasisExtractor.cs" />
-    <Compile Include="Positions\DetailExtractors\PositionCurrentValueExtractor.cs" />
-    <Compile Include="Positions\DetailExtractors\PositionLastPriceExtractor.cs" />
-    <Compile Include="Positions\DetailExtractors\PositionQuantityExtractor.cs" />
-    <Compile Include="Positions\DetailExtractors\PositionTickerExtractor.cs" />
-    <Compile Include="Positions\DetailExtractors\PositionTotalGainExtractor.cs" />
-    <Compile Include="Positions\AccountDetailsAggregator.cs" />
-    <Compile Include="Positions\PendingActivityExtractor.cs" />
-    <Compile Include="Positions\PositionDetailsExtractor.cs" />
-    <Compile Include="Positions\PositionRowsAccumulator.cs" />
-    <Compile Include="Positions\PositionsManager.cs" />
-    <Compile Include="Positions\PositionsPage.cs" />
-    <Compile Include="Positions\TotalGainLossExtractor.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Summary\HomePage.cs" />
-    <Compile Include="Summary\SummaryPage.cs" />
-    <Compile Include="Transactions\ActivityPage.cs" />
-    <Compile Include="Transactions\AttributeStrings.cs" />
-    <Compile Include="Transactions\CSV\FidelityCsvColumn.cs" />
-    <Compile Include="Transactions\CSV\FidelityCsvColumnMapper.cs" />
-    <Compile Include="Transactions\CSV\TransactionMapper.cs" />
-    <Compile Include="Transactions\CSV\TransactionsMapper.cs" />
-    <Compile Include="Transactions\HistoryTransactionParser.cs" />
-    <Compile Include="Transactions\TransactionManager.cs" />
-    <Compile Include="Transactions\TransactionTypeMapper.cs" />
-    <Compile Include="Utilities\NumberParser.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="Sonneville.Fidelity.WebDriver.nuspec" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-                 Other similar extension points exist, see Microsoft.Common.targets.
-            <Target Name="BeforeBuild">
-            </Target>
-            <Target Name="AfterBuild">
-            </Target>
-            -->
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{79449998-2821-4929-8A3A-98637C477F85}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>Sonneville.Fidelity.WebDriver</RootNamespace>
+        <AssemblyName>Sonneville.Fidelity.WebDriver</AssemblyName>
+        <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+        <FileAlignment>512</FileAlignment>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+            <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+        </Reference>
+        <Reference Include="System"/>
+        <Reference Include="System.Core"/>
+        <Reference Include="WebDriver, Version=3.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+            <HintPath>..\packages\Selenium.WebDriver.3.8.0\lib\net45\WebDriver.dll</HintPath>
+        </Reference>
+        <Reference Include="WebDriver.Support, Version=3.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+            <HintPath>..\packages\Selenium.Support.3.8.0\lib\net45\WebDriver.Support.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="Configuration\FidelityConfiguration.cs"/>
+        <Compile Include="Data\AccountDetails.cs"/>
+        <Compile Include="Data\AccountSummary.cs"/>
+        <Compile Include="Data\AccountType.cs"/>
+        <Compile Include="Data\FidelityTransaction.cs"/>
+        <Compile Include="Data\Position.cs"/>
+        <Compile Include="Data\TransactionType.cs"/>
+        <Compile Include="IManager.cs"/>
+        <Compile Include="IPage.cs"/>
+        <Compile Include="Login\LoginManager.cs"/>
+        <Compile Include="Login\LoginPage.cs"/>
+        <Compile Include="Navigation\SiteNavigator.cs"/>
+        <Compile Include="Positions\AccountDetailsExtractor.cs"/>
+        <Compile Include="Positions\AccountIdentifierExtractor.cs"/>
+        <Compile Include="Positions\AccountSummariesExtractor.cs"/>
+        <Compile Include="Positions\AccountTypesMapper.cs"/>
+        <Compile Include="Positions\DetailExtractors\PositionCoreExtractor.cs"/>
+        <Compile Include="Positions\DetailExtractors\PositionCostBasisExtractor.cs"/>
+        <Compile Include="Positions\DetailExtractors\PositionCurrentValueExtractor.cs"/>
+        <Compile Include="Positions\DetailExtractors\PositionLastPriceExtractor.cs"/>
+        <Compile Include="Positions\DetailExtractors\PositionQuantityExtractor.cs"/>
+        <Compile Include="Positions\DetailExtractors\PositionTickerExtractor.cs"/>
+        <Compile Include="Positions\DetailExtractors\PositionTotalGainExtractor.cs"/>
+        <Compile Include="Positions\AccountDetailsAggregator.cs"/>
+        <Compile Include="Positions\PendingActivityExtractor.cs"/>
+        <Compile Include="Positions\PositionDetailsExtractor.cs"/>
+        <Compile Include="Positions\PositionRowsAccumulator.cs"/>
+        <Compile Include="Positions\PositionsManager.cs"/>
+        <Compile Include="Positions\PositionsPage.cs"/>
+        <Compile Include="Positions\TotalGainLossExtractor.cs"/>
+        <Compile Include="Properties\AssemblyInfo.cs"/>
+        <Compile Include="Summary\HomePage.cs"/>
+        <Compile Include="Summary\SummaryPage.cs"/>
+        <Compile Include="Transactions\ActivityPage.cs"/>
+        <Compile Include="Transactions\AttributeStrings.cs"/>
+        <Compile Include="Transactions\CSV\FidelityCsvColumn.cs"/>
+        <Compile Include="Transactions\CSV\FidelityCsvColumnMapper.cs"/>
+        <Compile Include="Transactions\CSV\TransactionMapper.cs"/>
+        <Compile Include="Transactions\CSV\TransactionsMapper.cs"/>
+        <Compile Include="Transactions\HistoryTransactionParser.cs"/>
+        <Compile Include="Transactions\TransactionManager.cs"/>
+        <Compile Include="Transactions\TransactionTypeMapper.cs"/>
+        <Compile Include="Utilities\NumberParser.cs"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="packages.config"/>
+        <None Include="Sonneville.Fidelity.WebDriver.nuspec"/>
+    </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
+    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+                   Other similar extension points exist, see Microsoft.Common.targets.
+              <Target Name="BeforeBuild">
+              </Target>
+              <Target Name="AfterBuild">
+              </Target>
+              -->
 </Project>
