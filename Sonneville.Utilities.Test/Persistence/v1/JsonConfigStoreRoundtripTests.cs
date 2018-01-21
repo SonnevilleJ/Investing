@@ -7,7 +7,7 @@ using Sonneville.Utilities.Persistence.v1;
 namespace Sonneville.Utilities.Test.Persistence.v1
 {
     [TestFixture]
-    public class JsonConfigStoreTests
+    public class JsonConfigStoreRoundtripTests
     {
         private string _path;
         private JsonConfigStore _configStore;
@@ -17,7 +17,7 @@ namespace Sonneville.Utilities.Test.Persistence.v1
         {
             _path = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                $"{nameof(JsonConfigStoreTests)}.json"
+                $"{nameof(JsonConfigStoreRoundtripTests)}.json"
             );
             _configStore = new JsonConfigStore(_path);
         }
@@ -31,95 +31,7 @@ namespace Sonneville.Utilities.Test.Persistence.v1
                 File.Delete(_path);
             }            Assert.False(File.Exists(_path));
         }
-
-        [Test]
-        public void GetShouldLoadIfNotCached()
-        {
-            _configStore.Save(new SampleConfig
-            {
-                A = "original",
-            });
-
-            var configStore = new JsonConfigStore(_path);
-            var one = configStore.Get<SampleConfig>();
-            var two = configStore.Get<SampleConfig>();
-
-            Assert.AreEqual("original", one.A);
-            Assert.AreEqual("original", two.A);
-            Assert.AreSame(one, two);
-        }
-
-        [Test]
-        public void GetShouldNotLoadAndReturnCachedIfCached()
-        {
-            var sampleConfig = new SampleConfig
-            {
-                A = "original",
-            };
-            _configStore.Save(sampleConfig);
-            sampleConfig.A = "changed";
-
-            var result = _configStore.Get<SampleConfig>();
-            Assert.AreEqual("changed", result.A);
-            Assert.AreSame(sampleConfig, result);
-        }
-
-        [Test]
-        public void LoadShouldUpdateAndReturnPersistedConfig()
-        {
-            var sampleConfig = new SampleConfig
-            {
-                A = "original",
-            };
-            _configStore.Save(sampleConfig);
-            sampleConfig.A = "changed";
-
-            var result = _configStore.Load<SampleConfig>();
-            Assert.AreEqual("original", result.A);
-            Assert.AreSame(sampleConfig, result);
-        }
-
-        [Test]
-        public void LoadShouldReturnDefaultConfigdWhenNoFilePresent()
-        {
-            Assert.False(File.Exists(_path));
-
-            var sampleConfig = _configStore.Load<SampleConfig>();
-
-            Assert.NotNull(sampleConfig);
-            foreach (var propertyInfo in typeof(SampleConfig).GetProperties())
-            {
-                var propertyType = propertyInfo.PropertyType;
-                var defaultValue = propertyType.IsValueType ? Activator.CreateInstance(propertyType) : null;
-                var actualValue = propertyInfo.GetValue(sampleConfig);
-                Assert.AreEqual(defaultValue, actualValue);
-            }
-        }
-
-        [Test]
-        public void DeleteAllShouldDeleteFile()
-        {
-            var sampleConfig = new SampleConfig
-            {
-                A = "original",
-            };
-            _configStore.Save(sampleConfig);
-            Assert.True(File.Exists(_path));
-
-            _configStore.DeleteAll();
-
-            Assert.False(File.Exists(_path));
-        }
-
-        [Test]
-        public void SaveShouldThrowIfSavingDifferentConfigOfSameType()
-        {
-            _configStore.Get<SampleConfig>();
-
-            var imposter = new SampleConfig();
-            Assert.Throws<ArgumentOutOfRangeException>(() => _configStore.Save(imposter));
-        }
-
+        
         [Test]
         [TestCase("test")]
         [TestCase("")]
@@ -279,27 +191,6 @@ namespace Sonneville.Utilities.Test.Persistence.v1
             var result = new JsonConfigStore(_path).Load<SampleConfig>();
 
             Assert.AreEqual(sampleConfig.I, result.I);
-        }
-
-        private class SampleConfig
-        {
-            public string A { get; set; }
-
-            public int B { get; set; }
-
-            public long C { get; set; }
-
-            public double D { get; set; }
-
-            public decimal E { get; set; }
-
-            public TimeSpan F { get; set; }
-
-            public HashSet<string> G { get; set; }
-
-            public Dictionary<Type, object> H { get; set; }
-            
-            public List<string> I { get; set; }
         }
     }
 }
