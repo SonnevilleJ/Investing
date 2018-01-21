@@ -2,24 +2,25 @@
 using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
-using Sonneville.Utilities.Persistence.v1;
+using Sonneville.Utilities.Persistence.v2;
 
-namespace Sonneville.Utilities.Test.Persistence.v1
+namespace Sonneville.Utilities.Test.Persistence.v2
 {
     [TestFixture]
-    public class JsonConfigStoreTests
+    public class JsonDataStoreTests
     {
         private string _path;
-        private JsonConfigStore _configStore;
+        private JsonDataStore _store;
 
         [SetUp]
         public void Setup()
         {
             _path = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                $"{nameof(JsonConfigStoreTests)}.json"
+                $"{nameof(JsonDataStoreTests)}.json"
             );
-            _configStore = new JsonConfigStore(_path);
+            Console.WriteLine($"Path used for tests: {_path}");
+            _store = new JsonDataStore(_path);
         }
 
         [TearDown]
@@ -29,20 +30,21 @@ namespace Sonneville.Utilities.Test.Persistence.v1
             {
                 Console.WriteLine($"Clearing persisted data... Contents follow: {Environment.NewLine}{File.ReadAllText(_path)}");
                 File.Delete(_path);
-            }            Assert.False(File.Exists(_path));
+            }
+            Assert.False(File.Exists(_path));
         }
 
         [Test]
         public void GetShouldLoadIfNotCached()
         {
-            _configStore.Save(new SampleConfig
+            _store.Save(new SampleData
             {
                 A = "original",
             });
 
-            var configStore = new JsonConfigStore(_path);
-            var one = configStore.Get<SampleConfig>();
-            var two = configStore.Get<SampleConfig>();
+            var configStore = new JsonDataStore(_path);
+            var one = configStore.Get<SampleData>();
+            var two = configStore.Get<SampleData>();
 
             Assert.AreEqual("original", one.A);
             Assert.AreEqual("original", two.A);
@@ -52,31 +54,31 @@ namespace Sonneville.Utilities.Test.Persistence.v1
         [Test]
         public void GetShouldNotLoadAndReturnCachedIfCached()
         {
-            var sampleConfig = new SampleConfig
+            var data = new SampleData
             {
                 A = "original",
             };
-            _configStore.Save(sampleConfig);
-            sampleConfig.A = "changed";
+            _store.Save(data);
+            data.A = "changed";
 
-            var result = _configStore.Get<SampleConfig>();
+            var result = _store.Get<SampleData>();
             Assert.AreEqual("changed", result.A);
-            Assert.AreSame(sampleConfig, result);
+            Assert.AreSame(data, result);
         }
 
         [Test]
         public void LoadShouldUpdateAndReturnPersistedConfig()
         {
-            var sampleConfig = new SampleConfig
+            var data = new SampleData
             {
                 A = "original",
             };
-            _configStore.Save(sampleConfig);
-            sampleConfig.A = "changed";
+            _store.Save(data);
+            data.A = "changed";
 
-            var result = _configStore.Load<SampleConfig>();
+            var result = _store.Load<SampleData>();
             Assert.AreEqual("original", result.A);
-            Assert.AreSame(sampleConfig, result);
+            Assert.AreSame(data, result);
         }
 
         [Test]
@@ -84,14 +86,14 @@ namespace Sonneville.Utilities.Test.Persistence.v1
         {
             Assert.False(File.Exists(_path));
 
-            var sampleConfig = _configStore.Load<SampleConfig>();
+            var data = _store.Load<SampleData>();
 
-            Assert.NotNull(sampleConfig);
-            foreach (var propertyInfo in typeof(SampleConfig).GetProperties())
+            Assert.NotNull(data);
+            foreach (var propertyInfo in typeof(SampleData).GetProperties())
             {
                 var propertyType = propertyInfo.PropertyType;
                 var defaultValue = propertyType.IsValueType ? Activator.CreateInstance(propertyType) : null;
-                var actualValue = propertyInfo.GetValue(sampleConfig);
+                var actualValue = propertyInfo.GetValue(data);
                 Assert.AreEqual(defaultValue, actualValue);
             }
         }
@@ -99,14 +101,14 @@ namespace Sonneville.Utilities.Test.Persistence.v1
         [Test]
         public void DeleteAllShouldDeleteFile()
         {
-            var sampleConfig = new SampleConfig
+            var data = new SampleData
             {
                 A = "original",
             };
-            _configStore.Save(sampleConfig);
+            _store.Save(data);
             Assert.True(File.Exists(_path));
 
-            _configStore.DeleteAll();
+            _store.DeleteAll();
 
             Assert.False(File.Exists(_path));
         }
@@ -114,10 +116,10 @@ namespace Sonneville.Utilities.Test.Persistence.v1
         [Test]
         public void SaveShouldThrowIfSavingDifferentConfigOfSameType()
         {
-            _configStore.Get<SampleConfig>();
+            _store.Get<SampleData>();
 
-            var imposter = new SampleConfig();
-            Assert.Throws<ArgumentOutOfRangeException>(() => _configStore.Save(imposter));
+            var imposter = new SampleData();
+            Assert.Throws<ArgumentOutOfRangeException>(() => _store.Save(imposter));
         }
 
         [Test]
@@ -126,15 +128,15 @@ namespace Sonneville.Utilities.Test.Persistence.v1
         [TestCase(null)]
         public void ShouldRoundtripStringType(string value)
         {
-            var sampleConfig = new SampleConfig
+            var data = new SampleData
             {
                 A = value,
             };
 
-            _configStore.Save(sampleConfig);
-            var result = _configStore.Get<SampleConfig>();
+            _store.Save(data);
+            var result = new JsonDataStore(_path).Load<SampleData>();
 
-            Assert.AreEqual(sampleConfig.A, result.A);
+            Assert.AreEqual(data.A, result.A);
         }
 
         [Test]
@@ -143,15 +145,15 @@ namespace Sonneville.Utilities.Test.Persistence.v1
         [TestCase(int.MaxValue)]
         public void ShouldRoundtripIntegerType(int value)
         {
-            var sampleConfig = new SampleConfig
+            var data = new SampleData
             {
                 B = value,
             };
 
-            _configStore.Save(sampleConfig);
-            var result = _configStore.Get<SampleConfig>();
+            _store.Save(data);
+            var result = new JsonDataStore(_path).Load<SampleData>();
 
-            Assert.AreEqual(sampleConfig.B, result.B);
+            Assert.AreEqual(data.B, result.B);
         }
 
         [Test]
@@ -160,15 +162,15 @@ namespace Sonneville.Utilities.Test.Persistence.v1
         [TestCase(long.MaxValue)]
         public void ShouldRoundtripLongType(long value)
         {
-            var sampleConfig = new SampleConfig
+            var data = new SampleData
             {
                 C = value,
             };
 
-            _configStore.Save(sampleConfig);
-            var result = _configStore.Get<SampleConfig>();
+            _store.Save(data);
+            var result = new JsonDataStore(_path).Load<SampleData>();
 
-            Assert.AreEqual(sampleConfig.C, result.C, 0.00001);
+            Assert.AreEqual(data.C, result.C, 0.00001);
         }
 
         [Test]
@@ -177,15 +179,15 @@ namespace Sonneville.Utilities.Test.Persistence.v1
         [TestCase(1234567890)]
         public void ShouldRoundtripDoubleType(double value)
         {
-            var sampleConfig = new SampleConfig
+            var data = new SampleData
             {
                 D = value,
             };
 
-            _configStore.Save(sampleConfig);
-            var result = _configStore.Get<SampleConfig>();
+            _store.Save(data);
+            var result = new JsonDataStore(_path).Load<SampleData>();
 
-            Assert.AreEqual(sampleConfig.D, result.D);
+            Assert.AreEqual(data.D, result.D);
         }
 
         [Test]
@@ -194,15 +196,15 @@ namespace Sonneville.Utilities.Test.Persistence.v1
         [TestCase(1234567890)]
         public void ShouldRoundtripDecimalType(decimal value)
         {
-            var sampleConfig = new SampleConfig
+            var data = new SampleData
             {
                 E = value,
             };
 
-            _configStore.Save(sampleConfig);
-            var result = _configStore.Get<SampleConfig>();
+            _store.Save(data);
+            var result = new JsonDataStore(_path).Load<SampleData>();
 
-            Assert.AreEqual(sampleConfig.E, result.E);
+            Assert.AreEqual(data.E, result.E);
         }
 
         [Test]
@@ -211,15 +213,15 @@ namespace Sonneville.Utilities.Test.Persistence.v1
         [TestCase(123)]
         public void ShouldRoundtripTimespanType(int seconds)
         {
-            var sampleConfig = new SampleConfig
+            var data = new SampleData
             {
                 F = TimeSpan.FromSeconds(seconds),
             };
 
-            _configStore.Save(sampleConfig);
-            var result = _configStore.Get<SampleConfig>();
+            _store.Save(data);
+            var result = new JsonDataStore(_path).Load<SampleData>();
 
-            Assert.AreEqual(sampleConfig.F, result.F);
+            Assert.AreEqual(data.F, result.F);
         }
 
         [Test]
@@ -228,15 +230,15 @@ namespace Sonneville.Utilities.Test.Persistence.v1
         [TestCase(null)]
         public void ShouldRoundtripHashSetType(string value)
         {
-            var sampleConfig = new SampleConfig
+            var data = new SampleData
             {
                 G = new HashSet<string>(new[] {value}),
             };
 
-            _configStore.Save(sampleConfig);
-            var result = _configStore.Get<SampleConfig>();
+            _store.Save(data);
+            var result = new JsonDataStore(_path).Load<SampleData>();
 
-            Assert.AreEqual(sampleConfig.G, result.G);
+            Assert.AreEqual(data.G, result.G);
         }
 
         [Test]
@@ -245,16 +247,16 @@ namespace Sonneville.Utilities.Test.Persistence.v1
         [TestCase(null)]
         public void ShouldRoundtripDictionaryType(string value)
         {
-            var sampleConfig = new SampleConfig
+            var data = new SampleData
             {
                 H = new Dictionary<Type, object>(),
             };
-            sampleConfig.H.Add(typeof(string), value);
+            data.H.Add(typeof(string), value);
 
-            _configStore.Save(sampleConfig);
-            var result = _configStore.Get<SampleConfig>();
+            _store.Save(data);
+            var result = new JsonDataStore(_path).Load<SampleData>();
 
-            Assert.AreEqual(sampleConfig.H, result.H);
+            Assert.AreEqual(data.H, result.H);
         }
 
         [Test]
@@ -263,7 +265,7 @@ namespace Sonneville.Utilities.Test.Persistence.v1
         [TestCase(null)]
         public void ShouldRoundtripListType(string value)
         {
-            var sampleConfig = new SampleConfig
+            var data = new SampleData
             {
                 I = new List<string>
                 {
@@ -275,13 +277,34 @@ namespace Sonneville.Utilities.Test.Persistence.v1
                 },
             };
 
-            _configStore.Save(sampleConfig);
-            var result = new JsonConfigStore(_path).Load<SampleConfig>();
+            _store.Save(data);
+            var result = new JsonDataStore(_path).Load<SampleData>();
 
-            Assert.AreEqual(sampleConfig.I, result.I);
+            Assert.AreEqual(data.I, result.I);
         }
 
-        private class SampleConfig
+        [Test]
+        public void ShouldRoundtripMultipleTypes()
+        {
+            var sampleData = new SampleData
+            {
+                A = "sample",
+            };
+            var otherData = new OtherData
+            {
+                A = "other",
+            };
+            
+            _store.Save(sampleData);
+            _store.Save(otherData);
+            var retrievedSampleData = new JsonDataStore(_path).Get<SampleData>();
+            var retrievedOtherData = new JsonDataStore(_path).Get<OtherData>();
+
+            Assert.AreEqual(sampleData.A, retrievedSampleData.A);
+            Assert.AreEqual(otherData.A, retrievedOtherData.A);
+        }
+
+        private class SampleData
         {
             public string A { get; set; }
 
@@ -296,10 +319,15 @@ namespace Sonneville.Utilities.Test.Persistence.v1
             public TimeSpan F { get; set; }
 
             public HashSet<string> G { get; set; }
-
+            
             public Dictionary<Type, object> H { get; set; }
             
             public List<string> I { get; set; }
+        }
+
+        private class OtherData
+        {
+            public string A { get; set; }
         }
     }
 }
