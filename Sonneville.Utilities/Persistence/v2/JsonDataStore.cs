@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Sonneville.Utilities.Persistence.v1;
 
 namespace Sonneville.Utilities.Persistence.v2
 {
     public class JsonDataStore : IDataStore
     {
+        private const string DataStoreVersion = "v2";
         private readonly string _path;
         private readonly JsonMule _jsonMule;
 
@@ -44,33 +47,53 @@ namespace Sonneville.Utilities.Persistence.v2
 
         public T Load<T>() where T : class, new()
         {
-            Console.WriteLine($"Trying to load {typeof(T)}");
             var configFromCache = ReadFromCacheOr(() => new T());
 
             if (File.Exists(_path))
             {
-                var jsonFile = File.ReadAllText(_path);
-                var jsonMule = JsonConvert.DeserializeObject<JsonMule>(jsonFile, JsonSerialization.Settings);
-                foreach (var propertyInfo in typeof(T).GetProperties())
+                var json = File.ReadAllText(_path);
+                var jObject = JObject.Parse(json);
+                var serializedVersion = jObject[nameof(JsonMule.Version)]?.Value<string>();
+                if (serializedVersion == null)
                 {
-                    var jsonMuleObject = jsonMule.Cache[typeof(T)];
-                    var result = JsonConvert.DeserializeObject<T>(jsonMuleObject.ToString());
-                    propertyInfo.SetValue(configFromCache, propertyInfo.GetValue(result));
+                    var oldT = new JsonConfigStore(_path).Load<T>();
+                    Merge(configFromCache, oldT);
+                }
+                else if (serializedVersion == DataStoreVersion)
+                {
+                    var jsonSerializer = JsonSerializer.Create(JsonSerialization.Settings);
+                    var jsonMule = jObject.ToObject<JsonMule>(jsonSerializer);
+                    var result = JsonConvert.DeserializeObject<T>(jsonMule.Cache[typeof(T)].ToString());
+                    Merge(configFromCache, result);
+                }
+                else
+                {
+                    throw new NotSupportedException($"Unable to deserialize version {serializedVersion}!");
                 }
             }
 
             return configFromCache;
         }
 
-        private T ReadFromCacheOr<T>(Func<T> instantiator) where T : class, new()
+        private static void Merge<T>(T configFromCache, T result) where T : class, new()
+        {
+            foreach (var propertyInfo in typeof(T).GetProperties())
+            {
+                propertyInfo.SetValue(configFromCache, propertyInfo.GetValue(result));
+            }
+        }
+
+        private T ReadFromCacheOr<T>(Func<T> supplier) where T : class, new()
         {
             return _jsonMule.Cache.TryGetValue(typeof(T), out var existing)
                 ? existing as T
-                : instantiator();
+                : supplier();
         }
 
         private class JsonMule
         {
+            public readonly string Version = DataStoreVersion;
+
             public readonly Dictionary<Type, object> Cache = new Dictionary<Type, object>();
         }
     }
