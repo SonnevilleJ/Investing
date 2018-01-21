@@ -9,7 +9,7 @@ using Sonneville.Fidelity.Shell.Interface;
 using Sonneville.Fidelity.WebDriver;
 using Sonneville.Fidelity.WebDriver.Configuration;
 using Sonneville.Fidelity.WebDriver.Navigation;
-using Sonneville.Utilities.Persistence.v1;
+using Sonneville.Utilities.Persistence.v2;
 
 namespace Sonneville.Fidelity.Shell.Test.AppStartup
 {
@@ -33,27 +33,27 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
         [Test]
         public void ShouldBindConfigStoreAsSingleton()
         {
-            var configStore = _kernel.Get<IConfigStore>();
+            var dataStore = _kernel.Get<IDataStore>();
 
-            Assert.IsNotNull(configStore);
-            Assert.AreSame(configStore, _kernel.Get<IConfigStore>());
+            Assert.IsNotNull(dataStore);
+            Assert.AreSame(dataStore, _kernel.Get<IDataStore>());
         }
 
         [Test]
         public void ShouldCreateFidelityConfiguration()
         {
-            var configStore = _kernel.Get<IConfigStore>();
+            var dataStore = _kernel.Get<IDataStore>();
 
-            var config = configStore.Load<FidelityConfiguration>();
+            var config = dataStore.Load<FidelityConfiguration>();
             Assert.IsNotNull(config);
         }
 
         [Test]
         public void ShouldCreateSeleniumConfiguration()
         {
-            var configStore = _kernel.Get<IConfigStore>();
+            var dataStore = _kernel.Get<IDataStore>();
 
-            var config = configStore.Load<SeleniumConfiguration>();
+            var config = dataStore.Load<SeleniumConfiguration>();
             Assert.IsNotNull(config);
         }
 

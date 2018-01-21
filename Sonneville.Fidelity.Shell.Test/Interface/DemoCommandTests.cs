@@ -11,6 +11,7 @@ using Sonneville.Fidelity.WebDriver.Data;
 using Sonneville.Fidelity.WebDriver.Positions;
 using Sonneville.Fidelity.WebDriver.Transactions;
 using Sonneville.Utilities.Persistence.v1;
+using Sonneville.Utilities.Persistence.v2;
 
 namespace Sonneville.Fidelity.Shell.Test.Interface
 {
@@ -29,7 +30,7 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
         private DateTime _startDate;
         private DateTime _endDate;
 
-        private Mock<IConfigStore> _configStoreMock;
+        private Mock<IDataStore> _dataStoreMock;
 
         private MemoryStream _inputStream;
         private StreamReader _inputReader;
@@ -162,9 +163,9 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
 
             _logMock = new Mock<ILog>();
 
-            _configStoreMock = new Mock<IConfigStore>();
-            _configStoreMock.Setup(configStore => configStore.Load<FidelityConfiguration>()).Returns(_fidelityConfiguration);
-            _configStoreMock.Setup(configStore => configStore.Save(It.IsAny<FidelityConfiguration>())).Callback<FidelityConfiguration>(config => _fidelityConfiguration = config);
+            _dataStoreMock = new Mock<IDataStore>();
+            _dataStoreMock.Setup(configStore => configStore.Load<FidelityConfiguration>()).Returns(_fidelityConfiguration);
+            _dataStoreMock.Setup(configStore => configStore.Save(It.IsAny<FidelityConfiguration>())).Callback<FidelityConfiguration>(config => _fidelityConfiguration = config);
 
             _inputStream = new MemoryStream();
             _inputReader = new StreamReader(_inputStream);
@@ -176,7 +177,7 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
 
             _command = new DemoCommand(
                 _logMock.Object,
-                _configStoreMock.Object,
+                _dataStoreMock.Object,
                 _positionsManagerMock.Object,
                 _transactionManagerMock.Object,
                 new TransactionTranslator());
@@ -289,7 +290,7 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
         [Test]
         public void ShouldSetConfigFromCliArgsAndPersist()
         {
-            _configStoreMock.Setup(configStore => configStore.Save(It.IsAny<FidelityConfiguration>())).Callback<FidelityConfiguration>(config =>
+            _dataStoreMock.Setup(configStore => configStore.Save(It.IsAny<FidelityConfiguration>())).Callback<FidelityConfiguration>(config =>
             {
                 Assert.AreEqual(_username, config.Username);
                 Assert.AreEqual(_password, config.Password);
@@ -299,7 +300,7 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
             _command.Invoke(_inputReader, _outputWriter, args);
 
             _logMock.Verify(log => log.Info(It.Is<string>(message => message.Contains($"Saving credentials for `{_username}`."))));
-            _configStoreMock.Verify(configStore => configStore.Save(_fidelityConfiguration));
+            _dataStoreMock.Verify(configStore => configStore.Save(_fidelityConfiguration));
         }
 
         [Test]
@@ -367,7 +368,7 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
 
         private void AssertUnchangedConfig()
         {
-            _configStoreMock.Verify(configStore => configStore.Save(It.IsAny<object>()), Times.Never);
+            _dataStoreMock.Verify(configStore => configStore.Save(It.IsAny<object>()), Times.Never);
         }
 
         private string ReadOutputText()

@@ -8,14 +8,14 @@ using Sonneville.Fidelity.WebDriver.Configuration;
 using Sonneville.Fidelity.WebDriver.Data;
 using Sonneville.Fidelity.WebDriver.Positions;
 using Sonneville.Fidelity.WebDriver.Transactions;
-using Sonneville.Utilities.Persistence.v1;
+using Sonneville.Utilities.Persistence.v2;
 
 namespace Sonneville.Fidelity.Shell.Interface
 {
     public class DemoCommand : ICommand
     {
         private readonly ILog _log;
-        private readonly IConfigStore _configStore;
+        private readonly IDataStore _dataStore;
         private readonly IPositionsManager _positionsManager;
         private readonly ITransactionManager _transactionManager;
         private readonly TransactionTranslator _transactionTranslator;
@@ -26,19 +26,19 @@ namespace Sonneville.Fidelity.Shell.Interface
 
         public DemoCommand(
             ILog log,
-            IConfigStore configStore,
+            IDataStore dataStore,
             IPositionsManager positionsManager,
             ITransactionManager transactionManager,
             TransactionTranslator transactionTranslator
         )
         {
             _log = log;
-            _configStore = configStore;
+            _dataStore = dataStore;
             _positionsManager = positionsManager;
             _transactionManager = transactionManager;
             _transactionTranslator = transactionTranslator;
 
-            _fidelityConfiguration = _configStore.Load<FidelityConfiguration>();
+            _fidelityConfiguration = _dataStore.Load<FidelityConfiguration>();
             _optionSet = new OptionSet
             {
                 {
@@ -78,10 +78,11 @@ namespace Sonneville.Fidelity.Shell.Interface
             if (_shouldPersistOptions)
             {
                 _log.Info($"Saving credentials for `{_fidelityConfiguration.Username}`.");
-                _configStore.Save(_fidelityConfiguration);
+                _dataStore.Save(_fidelityConfiguration);
             }
 
-            if (!string.IsNullOrEmpty(_fidelityConfiguration.Username) && !string.IsNullOrEmpty(_fidelityConfiguration.Password))
+            if (!string.IsNullOrEmpty(_fidelityConfiguration.Username) &&
+                !string.IsNullOrEmpty(_fidelityConfiguration.Password))
             {
                 _log.Info($"Using cached credentials to access account for user `{_fidelityConfiguration.Username}`.");
             }
@@ -101,7 +102,8 @@ namespace Sonneville.Fidelity.Shell.Interface
             PrintAccountDetails(_positionsManager.GetAccountDetails().ToList(), outputWriter);
             PrintSeparator(outputWriter);
             LogToScreen(outputWriter, "Reading recent transactions...");
-            PrintRecentTransactions(_transactionManager.GetTransactionHistory(DateTime.Today.AddDays(-30), DateTime.Today).ToList()
+            PrintRecentTransactions(
+                _transactionManager.GetTransactionHistory(DateTime.Today.AddDays(-30), DateTime.Today).ToList()
                 , outputWriter);
             PrintSeparator(outputWriter);
             LogToScreen(outputWriter, "Demo completed successfully!");
@@ -110,11 +112,13 @@ namespace Sonneville.Fidelity.Shell.Interface
         private void PrintSeparator(TextWriter outputWriter)
         {
             LogToScreen(outputWriter);
-            LogToScreen(outputWriter, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            LogToScreen(outputWriter,
+                "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             LogToScreen(outputWriter);
         }
 
-        private void PrintAccountSummaries(IReadOnlyCollection<IAccountSummary> accountSummaries, TextWriter outputWriter)
+        private void PrintAccountSummaries(IReadOnlyCollection<IAccountSummary> accountSummaries,
+            TextWriter outputWriter)
         {
             LogToScreen(outputWriter, $"Found {accountSummaries.Count} accounts!");
             foreach (var account in accountSummaries)
@@ -147,12 +151,14 @@ namespace Sonneville.Fidelity.Shell.Interface
             }
         }
 
-        private void PrintRecentTransactions(IReadOnlyCollection<IFidelityTransaction> transactions, TextWriter outputWriter)
+        private void PrintRecentTransactions(IReadOnlyCollection<IFidelityTransaction> transactions,
+            TextWriter outputWriter)
         {
             LogToScreen(outputWriter, $"Found {transactions.Count} recent transactions!");
             foreach (var transaction in transactions)
             {
-                LogToScreen(outputWriter, $"On {transaction.RunDate:d} {transaction.Quantity:F} shares of {transaction.Symbol} were {_transactionTranslator.Translate(transaction.Type)} at {transaction.Price:C} per share");
+                LogToScreen(outputWriter,
+                    $"On {transaction.RunDate:d} {transaction.Quantity:F} shares of {transaction.Symbol} were {_transactionTranslator.Translate(transaction.Type)} at {transaction.Price:C} per share");
             }
 
             LogToScreen(outputWriter);
