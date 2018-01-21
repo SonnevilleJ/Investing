@@ -43,9 +43,9 @@ namespace Sonneville.Utilities.Test.Persistence.v2
         {
             var sampleData = CreateLegacySampleData();
 
-            var legacyConfigStore = new JsonConfigStore(_path);
+            var legacyConfigStore = new JsonConfigStore<SampleData>(_path);
             legacyConfigStore.Save(sampleData);
-            Assert.AreEqual(sampleData.A, legacyConfigStore.Get<SampleData>().A);
+            Assert.AreEqual(sampleData.A, legacyConfigStore.Get().A);
             
             var retrievedSampleData = _store.Get<SampleData>();
             Assert.AreEqual(sampleData.A, retrievedSampleData.A);

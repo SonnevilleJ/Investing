@@ -9,7 +9,7 @@ namespace Sonneville.Utilities.Test.Persistence.v1
     public class JsonConfigStoreIntegrationTests
     {
         private string _path;
-        private JsonConfigStore _configStore;
+        private JsonConfigStore<SampleConfig> _configStore;
 
         [SetUp]
         public void Setup()
@@ -18,7 +18,7 @@ namespace Sonneville.Utilities.Test.Persistence.v1
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 $"{nameof(JsonConfigStoreIntegrationTests)}.json"
             );
-            _configStore = new JsonConfigStore(_path);
+            _configStore = new JsonConfigStore<SampleConfig>(_path);
         }
 
         [TearDown]
@@ -39,9 +39,9 @@ namespace Sonneville.Utilities.Test.Persistence.v1
                 A = "original",
             });
 
-            var configStore = new JsonConfigStore(_path);
-            var one = configStore.Get<SampleConfig>();
-            var two = configStore.Get<SampleConfig>();
+            var configStore = new JsonConfigStore<SampleConfig>(_path);
+            var one = configStore.Get();
+            var two = configStore.Get();
 
             Assert.AreEqual("original", one.A);
             Assert.AreEqual("original", two.A);
@@ -58,7 +58,7 @@ namespace Sonneville.Utilities.Test.Persistence.v1
             _configStore.Save(sampleConfig);
             sampleConfig.A = "changed";
 
-            var result = _configStore.Get<SampleConfig>();
+            var result = _configStore.Get();
             Assert.AreEqual("changed", result.A);
             Assert.AreSame(sampleConfig, result);
         }
@@ -73,7 +73,7 @@ namespace Sonneville.Utilities.Test.Persistence.v1
             _configStore.Save(sampleConfig);
             sampleConfig.A = "changed";
 
-            var result = _configStore.Load<SampleConfig>();
+            var result = _configStore.Load();
             Assert.AreEqual("original", result.A);
             Assert.AreSame(sampleConfig, result);
         }
@@ -83,7 +83,7 @@ namespace Sonneville.Utilities.Test.Persistence.v1
         {
             Assert.False(File.Exists(_path));
 
-            var sampleConfig = _configStore.Load<SampleConfig>();
+            var sampleConfig = _configStore.Load();
 
             Assert.NotNull(sampleConfig);
             foreach (var propertyInfo in typeof(SampleConfig).GetProperties())
@@ -113,7 +113,7 @@ namespace Sonneville.Utilities.Test.Persistence.v1
         [Test]
         public void SaveShouldThrowIfSavingDifferentConfigOfSameType()
         {
-            _configStore.Get<SampleConfig>();
+            _configStore.Get();
 
             var imposter = new SampleConfig();
             Assert.Throws<ArgumentOutOfRangeException>(() => _configStore.Save(imposter));

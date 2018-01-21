@@ -10,7 +10,7 @@ namespace Sonneville.Utilities.Test.Persistence.v1
     public class JsonConfigStoreRoundtripTests
     {
         private string _path;
-        private JsonConfigStore _configStore;
+        private JsonConfigStore<SampleConfig> _configStore;
 
         [SetUp]
         public void Setup()
@@ -19,7 +19,7 @@ namespace Sonneville.Utilities.Test.Persistence.v1
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 $"{nameof(JsonConfigStoreRoundtripTests)}.json"
             );
-            _configStore = new JsonConfigStore(_path);
+            _configStore = new JsonConfigStore<SampleConfig>(_path);
         }
 
         [TearDown]
@@ -44,7 +44,7 @@ namespace Sonneville.Utilities.Test.Persistence.v1
             };
 
             _configStore.Save(sampleConfig);
-            var result = _configStore.Get<SampleConfig>();
+            var result = _configStore.Get();
 
             Assert.AreEqual(sampleConfig.A, result.A);
         }
@@ -61,7 +61,7 @@ namespace Sonneville.Utilities.Test.Persistence.v1
             };
 
             _configStore.Save(sampleConfig);
-            var result = _configStore.Get<SampleConfig>();
+            var result = _configStore.Get();
 
             Assert.AreEqual(sampleConfig.B, result.B);
         }
@@ -78,7 +78,7 @@ namespace Sonneville.Utilities.Test.Persistence.v1
             };
 
             _configStore.Save(sampleConfig);
-            var result = _configStore.Get<SampleConfig>();
+            var result = _configStore.Get();
 
             Assert.AreEqual(sampleConfig.C, result.C, 0.00001);
         }
@@ -95,7 +95,7 @@ namespace Sonneville.Utilities.Test.Persistence.v1
             };
 
             _configStore.Save(sampleConfig);
-            var result = _configStore.Get<SampleConfig>();
+            var result = _configStore.Get();
 
             Assert.AreEqual(sampleConfig.D, result.D);
         }
@@ -112,7 +112,7 @@ namespace Sonneville.Utilities.Test.Persistence.v1
             };
 
             _configStore.Save(sampleConfig);
-            var result = _configStore.Get<SampleConfig>();
+            var result = _configStore.Get();
 
             Assert.AreEqual(sampleConfig.E, result.E);
         }
@@ -129,7 +129,7 @@ namespace Sonneville.Utilities.Test.Persistence.v1
             };
 
             _configStore.Save(sampleConfig);
-            var result = _configStore.Get<SampleConfig>();
+            var result = _configStore.Get();
 
             Assert.AreEqual(sampleConfig.F, result.F);
         }
@@ -146,7 +146,7 @@ namespace Sonneville.Utilities.Test.Persistence.v1
             };
 
             _configStore.Save(sampleConfig);
-            var result = _configStore.Get<SampleConfig>();
+            var result = _configStore.Get();
 
             Assert.AreEqual(sampleConfig.G, result.G);
         }
@@ -164,7 +164,7 @@ namespace Sonneville.Utilities.Test.Persistence.v1
             sampleConfig.H.Add(typeof(string), value);
 
             _configStore.Save(sampleConfig);
-            var result = _configStore.Get<SampleConfig>();
+            var result = _configStore.Get();
 
             Assert.AreEqual(sampleConfig.H, result.H);
         }
@@ -188,7 +188,7 @@ namespace Sonneville.Utilities.Test.Persistence.v1
             };
 
             _configStore.Save(sampleConfig);
-            var result = new JsonConfigStore(_path).Load<SampleConfig>();
+            var result = new JsonConfigStore<SampleConfig>(_path).Load();
 
             Assert.AreEqual(sampleConfig.I, result.I);
         }

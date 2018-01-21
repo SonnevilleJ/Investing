@@ -56,7 +56,7 @@ namespace Sonneville.Utilities.Persistence.v2
                 var serializedVersion = jObject[nameof(JsonMule.Version)]?.Value<string>();
                 if (serializedVersion == null)
                 {
-                    var oldT = new JsonConfigStore(_path).Load<T>();
+                    var oldT = new JsonConfigStore<T>(_path).Load();
                     Merge(configFromCache, oldT);
                 }
                 else if (serializedVersion == DataStoreVersion)

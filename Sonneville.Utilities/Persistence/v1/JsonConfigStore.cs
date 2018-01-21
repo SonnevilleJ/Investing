@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Sonneville.Utilities.Persistence.v1
 {
-    public class JsonConfigStore : IConfigStore
+    public class JsonConfigStore<T> : IConfigStore<T> where T : class, new()
     {
         private readonly string _path;
         private readonly Dictionary<Type, object> _configs = new Dictionary<Type, object>();
@@ -15,14 +15,14 @@ namespace Sonneville.Utilities.Persistence.v1
             _path = path;
         }
 
-        public T Get<T>() where T : class, new()
+        public T Get()
         {
-            var config = ReadFromCacheOrLoad<T>();
+            var config = ReadFromCacheOrLoad();
             _configs[typeof(T)] = config;
             return config;
         }
 
-        public void Save<T>(T config)
+        public void Save(T config)
         {
             var type = typeof(T);
             if (_configs.TryGetValue(type, out var existing) && !ReferenceEquals(existing, config))
@@ -41,14 +41,14 @@ namespace Sonneville.Utilities.Persistence.v1
             if (File.Exists(_path)) File.Delete(_path);
         }
 
-        public T Load<T>() where T : class, new()
+        public T Load()
         {
-            var configFromCache = ReadFromCacheOrNew<T>();
+            var configFromCache = ReadFromCacheOrNew();
 
             if (File.Exists(_path))
             {
                 var jsonFile = File.ReadAllText(_path);
-                var configFromDisk = JsonConvert.DeserializeObject(jsonFile, typeof(T), JsonSerialization.Settings) as T;
+                var configFromDisk = JsonConvert.DeserializeObject<T>(jsonFile, JsonSerialization.Settings);
                 foreach (var propertyInfo in typeof(T).GetProperties())
                 {
                     propertyInfo.SetValue(configFromCache, propertyInfo.GetValue(configFromDisk));
@@ -58,18 +58,18 @@ namespace Sonneville.Utilities.Persistence.v1
             return configFromCache;
         }
 
-        private T ReadFromCacheOrNew<T>() where T : class, new()
+        private T ReadFromCacheOrNew()
         {
             return _configs.TryGetValue(typeof(T), out var existing)
                 ? existing as T
                 : new T();
         }
 
-        private T ReadFromCacheOrLoad<T>() where T : class, new()
+        private T ReadFromCacheOrLoad()
         {
             return _configs.TryGetValue(typeof(T), out var existing)
                 ? existing as T
-                : Load<T>();
+                : Load();
         }
     }
 }

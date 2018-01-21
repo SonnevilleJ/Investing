@@ -1,12 +1,12 @@
 ﻿namespace Sonneville.Utilities.Persistence.v1
 {
-    public interface IConfigStore
+    public interface IConfigStore<T> where T : class, new()
     {
-        T Get<T>() where T : class, new();
+        T Get();
 
-        void Save<T>(T config);
+        void Save(T config);
 
-        T Load<T>() where T : class, new();
+        T Load();
 
         void DeleteAll();
     }
