@@ -9,7 +9,7 @@ using Sonneville.Fidelity.Shell.Interface;
 using Sonneville.Fidelity.WebDriver;
 using Sonneville.Fidelity.WebDriver.Configuration;
 using Sonneville.Fidelity.WebDriver.Navigation;
-using Sonneville.Utilities.Configuration;
+using Sonneville.Utilities.Persistence.v1;
 
 namespace Sonneville.Fidelity.Shell.Test.AppStartup
 {

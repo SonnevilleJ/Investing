@@ -62,9 +62,9 @@
         <Otherwise/>
     </Choose>
     <ItemGroup>
-        <Compile Include="Configuration\JsonConfigStoreTests.cs"/>
         <Compile Include="Extensions\EnumerableExtensionsTests.cs"/>
         <Compile Include="FreezableClockTests.cs"/>
+        <Compile Include="Persistence\v1\JsonConfigStoreTests.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="Reflection\ExecutingAssemblyInfoTests.cs"/>
         <Compile Include="Sleepers\SleepUtilTests.cs"/>

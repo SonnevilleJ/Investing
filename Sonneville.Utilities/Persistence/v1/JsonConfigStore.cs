@@ -6,7 +6,7 @@ using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Sonneville.Utilities.Configuration
+namespace Sonneville.Utilities.Persistence.v1
 {
     public class JsonConfigStore : IConfigStore
     {

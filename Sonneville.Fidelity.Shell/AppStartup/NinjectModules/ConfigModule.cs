@@ -3,7 +3,7 @@ using System.IO;
 using Ninject.Modules;
 using Sonneville.Fidelity.Shell.Configuration;
 using Sonneville.Fidelity.WebDriver.Configuration;
-using Sonneville.Utilities.Configuration;
+using Sonneville.Utilities.Persistence.v1;
 
 namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
 {

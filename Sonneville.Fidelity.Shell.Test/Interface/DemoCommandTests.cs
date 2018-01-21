@@ -10,7 +10,7 @@ using Sonneville.Fidelity.WebDriver.Configuration;
 using Sonneville.Fidelity.WebDriver.Data;
 using Sonneville.Fidelity.WebDriver.Positions;
 using Sonneville.Fidelity.WebDriver.Transactions;
-using Sonneville.Utilities.Configuration;
+using Sonneville.Utilities.Persistence.v1;
 
 namespace Sonneville.Fidelity.Shell.Test.Interface
 {

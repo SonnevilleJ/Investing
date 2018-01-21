@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
-using Sonneville.Utilities.Configuration;
+using Sonneville.Utilities.Persistence.v1;
 
-namespace Sonneville.Utilities.Test.Configuration
+namespace Sonneville.Utilities.Test.Persistence.v1
 {
     [TestFixture]
     public class JsonConfigStoreTests
@@ -17,7 +17,7 @@ namespace Sonneville.Utilities.Test.Configuration
         {
             _path = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                $"{nameof(JsonConfigStoreTests)}.ini"
+                $"{nameof(JsonConfigStoreTests)}.json"
             );
             _configStore = new JsonConfigStore(_path);
         }

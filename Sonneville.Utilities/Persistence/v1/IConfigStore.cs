@@ -1,4 +1,4 @@
-﻿namespace Sonneville.Utilities.Configuration
+﻿namespace Sonneville.Utilities.Persistence.v1
 {
     public interface IConfigStore
     {
