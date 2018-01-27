@@ -21,8 +21,6 @@ namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
             // BindDefaultInterfaces()  - class name must include interface name (i.e. MyClass to IClass)
             // BindSingleInterface()    - class must implement only one interface, no multiple inheritance
 
-            Bind<IWebDriver>().To<ChromeDriver>().InSingletonScope();
-
             Bind<TextReader>().ToConstant(Console.In).WhenInjectedInto<ICommandRouter>();
             Bind<TextWriter>().ToConstant(Console.Out).WhenInjectedInto<ICommandRouter>();
         }
