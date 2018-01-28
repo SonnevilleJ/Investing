@@ -23,18 +23,13 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
         }
 
         [Test]
-        public void ShouldNotExitAfter()
-        {
-            Assert.IsFalse(_command.ExitAfter);
-        }
-
-        [Test]
         public void ShouldGreetWhenInvoked()
         {
-            var outputMock = new Mock<TextWriter>();
-            _command.Invoke(null, outputMock.Object, null);
-            
-            outputMock.Verify(writer => writer.WriteLine(It.IsAny<string>()));
+            var outputWriterMock = new Mock<TextWriter>();
+            var shouldExit = _command.Invoke(null, outputWriterMock.Object, null);
+
+            Assert.IsFalse(shouldExit);
+            outputWriterMock.Verify(writer => writer.WriteLine(It.IsAny<string>()));
         }
     }
 }

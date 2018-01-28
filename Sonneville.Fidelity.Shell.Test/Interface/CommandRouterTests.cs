@@ -124,7 +124,7 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
         {
             var mockCommand = new Mock<ICommand>();
             mockCommand.SetupGet(command => command.CommandName).Returns(commandName);
-            mockCommand.SetupGet(command => command.ExitAfter).Returns(exitAfter);
+            mockCommand.Setup(command => command.Invoke(_inputReader, _outputWriter, It.IsAny<IEnumerable<string>>())).Returns(exitAfter);
             return mockCommand.Object;
         }
 

@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System.IO;
+using Moq;
+using NUnit.Framework;
 using Sonneville.Fidelity.Shell.Interface;
 
 namespace Sonneville.Fidelity.Shell.Test.Interface
@@ -21,9 +23,13 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
         }
 
         [Test]
-        public void ShouldNotExitAfter()
+        public void ShouldPrintHelp()
         {
-            Assert.IsFalse(_command.ExitAfter);
+            var outputWriterMock = new Mock<TextWriter>();
+            var shouldExit = _command.Invoke(null, outputWriterMock.Object, null);
+            
+            Assert.IsFalse(shouldExit);
+            outputWriterMock.Verify(outputWriter => outputWriter.WriteLine(It.IsAny<string>()));
         }
     }
 }

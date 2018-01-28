@@ -7,11 +7,10 @@ namespace Sonneville.Fidelity.Shell.Interface
     {
         public string CommandName { get; } = "exit";
 
-        public bool ExitAfter { get; } = true;
-
-        public void Invoke(TextReader inputReader, TextWriter outputWriter, IEnumerable<string> fullInput)
+        public bool Invoke(TextReader inputReader, TextWriter outputWriter, IEnumerable<string> fullInput)
         {
             outputWriter.WriteLine("Exiting...");
+            return true;
         }
 
         public void Dispose()

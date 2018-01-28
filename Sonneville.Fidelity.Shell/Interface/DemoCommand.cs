@@ -64,15 +64,13 @@ namespace Sonneville.Fidelity.Shell.Interface
 
         public string CommandName { get; } = "demo";
 
-        public bool ExitAfter { get; } = false;
-
-        public void Invoke(TextReader inputReader, TextWriter outputWriter, IEnumerable<string> fullInput)
+        public bool Invoke(TextReader inputReader, TextWriter outputWriter, IEnumerable<string> fullInput)
         {
             _optionSet.Parse(fullInput);
             if (_shouldShowHelp)
             {
                 _optionSet.WriteOptionDescriptions(outputWriter);
-                return;
+                return false;
             }
 
             if (_shouldPersistOptions)
@@ -107,6 +105,8 @@ namespace Sonneville.Fidelity.Shell.Interface
                 , outputWriter);
             PrintSeparator(outputWriter);
             LogToScreen(outputWriter, "Demo completed successfully!");
+            
+            return false;
         }
 
         private void PrintSeparator(TextWriter outputWriter)

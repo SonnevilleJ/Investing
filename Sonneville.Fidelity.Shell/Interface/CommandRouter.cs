@@ -48,8 +48,7 @@ namespace Sonneville.Fidelity.Shell.Interface
         private bool RunCommand(IReadOnlyList<string> tokens)
         {
             var command = GetCommand(tokens[0].ToLowerInvariant());
-            command.Invoke(_inputReader, _outputWriter, tokens);
-            return command.ExitAfter;
+            return command.Invoke(_inputReader, _outputWriter, tokens);
         }
 
         private ICommand GetCommand(string commandName)
