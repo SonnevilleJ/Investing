@@ -53,8 +53,10 @@ namespace Sonneville.Fidelity.Shell.Interface
 
         private ICommand GetCommand(string commandName)
         {
-            return _commands.SingleOrDefault(c => c.CommandName == commandName) ??
-                   _commands.Single(c => c.CommandName == "help");
+            var command = _commands.SingleOrDefault(c => c.CommandName == commandName);
+            if (command != null) return command;
+            _outputWriter.WriteLine("Command not found: " + commandName);
+            return _commands.Single(c => c.CommandName == "help");
         }
 
         public void Dispose()

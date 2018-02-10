@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
 using Sonneville.Fidelity.Shell.Interface;
 
 namespace Sonneville.Fidelity.Shell.Test.Interface
@@ -11,14 +12,14 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
     [TestFixture]
     public class CommandRouterTests
     {
-        private CommandRouter _commandRouter;
         private string[] _cliArgs;
+        private StreamReader _inputReader;
         private StreamWriter _inputWriter;
         private StreamReader _outputReader;
+        private StreamWriter _outputWriter;
         private Task _task;
         private List<ICommand> _commands;
-        private StreamReader _inputReader;
-        private StreamWriter _outputWriter;
+        private CommandRouter _commandRouter;
 
         [SetUp]
         public void Setup()
@@ -66,9 +67,24 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
         }
 
         [Test]
+        [TestCase("asdf", false)]
+        public void ShouldInvokeHelpIfCommandNotFound(string fullInput, bool shouldExit)
+        {
+            _task = Task.Run(() => _commandRouter.Run(_cliArgs));
+
+            SendInput(fullInput);
+            _task.Wait(100);
+
+            var inputArray = fullInput.Split(' ');
+            AssertCommandWasInvoked("help", inputArray);
+            AssertOutputContains($"Command not found: {inputArray.First()}");
+            Assert.AreEqual(shouldExit, _task.IsCompleted);
+        }
+
+        [Test]
         [TestCase("help", "help", false)]
         [TestCase("help", "help 1 2 3 4", false)]
-        [TestCase("help", "asdf", false)]
+        [TestCase("info", "info", false)]
         [TestCase("exit", "exit", true)]
         public void ShouldInvokeCommandFromInputAndWait(string expectedCommand, string fullInput, bool shouldExit)
         {
@@ -77,7 +93,7 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
             SendInput(fullInput);
             _task.Wait(100);
 
-            AssertCommandWasInvoked(expectedCommand, fullInput.Split(' '));
+            AssertCommandWasInvoked(expectedCommand, fullInput.Split(' '), expectedCommand == "info" ? 2 : 1);
             Assert.AreEqual(shouldExit, _task.IsCompleted);
         }
 
@@ -140,6 +156,17 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
         {
             Mock.Get(_commands.Single(command => command.CommandName == commandName))
                 .Verify(command => command.Invoke(_inputReader, _outputWriter, fullInput), Times.Exactly(times));
+        }
+
+        private void AssertOutputContains(string value)
+        {
+            Assert.That(ReadOutputText(), new ContainsConstraint(value));
+        }
+
+        private string ReadOutputText()
+        {
+            _outputReader.BaseStream.Position = 0;
+            return _outputReader.ReadToEnd();
         }
     }
 }
