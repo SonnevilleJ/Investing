@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using log4net;
+using Moq;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using Sonneville.Utilities.Persistence.v1;
@@ -11,6 +13,7 @@ namespace Sonneville.Utilities.Test.Persistence.v2
     [TestFixture]
     public class JsonDataStoreMigrationTests
     {
+        private Mock<ILog> _logMock;
         private string _path;
         private JsonDataStore _store;
 
@@ -22,7 +25,10 @@ namespace Sonneville.Utilities.Test.Persistence.v2
                 $"{nameof(JsonDataStoreMigrationTests)}.json"
             );
             Console.WriteLine($"Path used for tests: {_path}");
-            _store = new JsonDataStore(_path);
+
+            _logMock = new Mock<ILog>();
+            
+            _store = new JsonDataStore(_logMock.Object, _path);
         }
 
         [TearDown]

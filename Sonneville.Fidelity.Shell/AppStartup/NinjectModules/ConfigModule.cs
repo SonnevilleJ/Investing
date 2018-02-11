@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Ninject;
 using Ninject.Modules;
 using Sonneville.Fidelity.Shell.Configuration;
 using Sonneville.Fidelity.WebDriver.Configuration;
@@ -16,11 +17,13 @@ namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
 
         public override void Load()
         {
-            var configStore = new JsonDataStore(_configPath);
-            Rebind<IDataStore>().ToConstant(configStore);
+            Bind<string>().ToConstant(_configPath)
+                .WhenInjectedExactlyInto<JsonDataStore>();
 
-            Rebind<FidelityConfiguration>().ToConstant(configStore.Load<FidelityConfiguration>());
-            Rebind<SeleniumConfiguration>().ToConstant(configStore.Load<SeleniumConfiguration>());
+            Rebind<FidelityConfiguration>().ToMethod(context => DataStore.Get<FidelityConfiguration>());
+            Rebind<SeleniumConfiguration>().ToMethod(context => DataStore.Get<SeleniumConfiguration>());
         }
+
+        private IDataStore DataStore => KernelInstance.Get<JsonDataStore>();
     }
 }

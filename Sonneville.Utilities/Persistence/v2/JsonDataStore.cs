@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using log4net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Sonneville.Utilities.Persistence.v1;
@@ -9,14 +10,15 @@ namespace Sonneville.Utilities.Persistence.v2
 {
     public class JsonDataStore : IDataStore
     {
-        private const string DataStoreVersion = "v2";
+        public const string DataStoreVersion = "v2";
         private readonly string _path;
         private readonly JsonMule _jsonMule;
 
-        public JsonDataStore(string path)
+        public JsonDataStore(ILog log, string path)
         {
             _path = path;
             _jsonMule = new JsonMule();
+            log.Debug($"Initializing with path: {path}");
         }
 
         public T Get<T>() where T : class, new()
@@ -63,8 +65,11 @@ namespace Sonneville.Utilities.Persistence.v2
                 {
                     var jsonSerializer = JsonSerializer.Create(JsonSerialization.Settings);
                     var jsonMule = jObject.ToObject<JsonMule>(jsonSerializer);
-                    var result = JsonConvert.DeserializeObject<T>(jsonMule.Cache[typeof(T)].ToString());
-                    Merge(configFromCache, result);
+                    if (jsonMule.Cache.TryGetValue(typeof(T), out var value))
+                    {
+                        var deserialized = JsonConvert.DeserializeObject<T>(value.ToString());
+                        Merge(configFromCache, deserialized);
+                    }
                 }
                 else
                 {

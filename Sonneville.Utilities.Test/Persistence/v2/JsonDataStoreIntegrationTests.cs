@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using log4net;
+using Moq;
 using NUnit.Framework;
 using Sonneville.Utilities.Persistence.v2;
 
@@ -8,6 +10,7 @@ namespace Sonneville.Utilities.Test.Persistence.v2
     [TestFixture]
     public class JsonDataStoreIntegrationTests
     {
+        private Mock<ILog> _logMock;
         private string _path;
         private JsonDataStore _store;
 
@@ -19,7 +22,10 @@ namespace Sonneville.Utilities.Test.Persistence.v2
                 $"{nameof(JsonDataStoreIntegrationTests)}.json"
             );
             Console.WriteLine($"Path used for tests: {_path}");
-            _store = new JsonDataStore(_path);
+
+            _logMock = new Mock<ILog>();
+            
+            _store = new JsonDataStore(_logMock.Object, _path);
         }
 
         [TearDown]
@@ -43,7 +49,7 @@ namespace Sonneville.Utilities.Test.Persistence.v2
                 A = "original",
             });
 
-            var configStore = new JsonDataStore(_path);
+            var configStore = new JsonDataStore(_logMock.Object, _path);
             var one = configStore.Get<SampleData>();
             var two = configStore.Get<SampleData>();
 
@@ -68,6 +74,34 @@ namespace Sonneville.Utilities.Test.Persistence.v2
         }
 
         [Test]
+        public void GetShouldReturnDefaultIfNotPersisted()
+        {
+            _store.Save(new SampleData
+            {
+                A = "original",
+            });
+
+            var configStore = new JsonDataStore(_logMock.Object, _path);
+            var data = configStore.Get<OtherData>();
+
+            AssertDefaultConfig(data);
+        }
+
+        [Test]
+        public void LoadShouldReturnDefaultIfNotPersisted()
+        {
+            _store.Save(new SampleData
+            {
+                A = "original",
+            });
+
+            var configStore = new JsonDataStore(_logMock.Object, _path);
+            var data = configStore.Load<OtherData>();
+
+            AssertDefaultConfig(data);
+        }
+
+        [Test]
         public void LoadShouldUpdateAndReturnPersistedConfig()
         {
             var data = new SampleData
@@ -89,14 +123,18 @@ namespace Sonneville.Utilities.Test.Persistence.v2
 
             var data = _store.Load<SampleData>();
 
-            Assert.NotNull(data);
-            foreach (var propertyInfo in typeof(SampleData).GetProperties())
-            {
-                var propertyType = propertyInfo.PropertyType;
-                var defaultValue = propertyType.IsValueType ? Activator.CreateInstance(propertyType) : null;
-                var actualValue = propertyInfo.GetValue(data);
-                Assert.AreEqual(defaultValue, actualValue);
-            }
+            AssertDefaultConfig(data);
+        }
+
+        [Test]
+        public void LoadShouldFailIfNewerVersionDetected()
+        {
+            _store.Save(new SampleData());
+
+            var fileContents = File.ReadAllText(_path);
+            File.WriteAllText(_path, fileContents.Replace(JsonDataStore.DataStoreVersion, "asdf"));
+
+            Assert.Throws<NotSupportedException>(() => _store.Load<SampleData>());
         }
 
         [Test]
@@ -121,6 +159,18 @@ namespace Sonneville.Utilities.Test.Persistence.v2
 
             var imposter = new SampleData();
             Assert.Throws<ArgumentOutOfRangeException>(() => _store.Save(imposter));
+        }
+
+        private static void AssertDefaultConfig<T>(T data)
+        {
+            Assert.NotNull(data);
+            foreach (var propertyInfo in typeof(T).GetProperties())
+            {
+                var propertyType = propertyInfo.PropertyType;
+                var defaultValue = propertyType.IsValueType ? Activator.CreateInstance(propertyType) : null;
+                var actualValue = propertyInfo.GetValue(data);
+                Assert.AreEqual(defaultValue, actualValue);
+            }
         }
     }
 }

@@ -20,7 +20,6 @@ namespace Sonneville.Utilities.Persistence.v2
         private class SettingsReaderContractResolver : DefaultContractResolver
         {
             private const BindingFlags Flags = BindingFlags.Public |
-                                               BindingFlags.NonPublic |
                                                BindingFlags.Instance;
 
             protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using log4net;
+using Moq;
 using NUnit.Framework;
 using Sonneville.Utilities.Persistence.v2;
 
@@ -8,6 +10,7 @@ namespace Sonneville.Utilities.Test.Persistence.v2
 {
     public class JsonDataStoreRoundtripTests
     {
+        private Mock<ILog> _logMock;
         private string _path;
         private JsonDataStore _store;
 
@@ -19,7 +22,10 @@ namespace Sonneville.Utilities.Test.Persistence.v2
                 $"{nameof(JsonDataStoreRoundtripTests)}.json"
             );
             Console.WriteLine($"Path used for tests: {_path}");
-            _store = new JsonDataStore(_path);
+
+            _logMock = new Mock<ILog>();
+            
+            _store = new JsonDataStore(_logMock.Object, _path);
         }
 
         [TearDown]
@@ -47,7 +53,7 @@ namespace Sonneville.Utilities.Test.Persistence.v2
             };
 
             _store.Save(data);
-            var result = new JsonDataStore(_path).Load<SampleData>();
+            var result = new JsonDataStore(_logMock.Object, _path).Load<SampleData>();
 
             Assert.AreEqual(data.A, result.A);
         }
@@ -64,7 +70,7 @@ namespace Sonneville.Utilities.Test.Persistence.v2
             };
 
             _store.Save(data);
-            var result = new JsonDataStore(_path).Load<SampleData>();
+            var result = new JsonDataStore(_logMock.Object, _path).Load<SampleData>();
 
             Assert.AreEqual(data.B, result.B);
         }
@@ -81,7 +87,7 @@ namespace Sonneville.Utilities.Test.Persistence.v2
             };
 
             _store.Save(data);
-            var result = new JsonDataStore(_path).Load<SampleData>();
+            var result = new JsonDataStore(_logMock.Object, _path).Load<SampleData>();
 
             Assert.AreEqual(data.C, result.C, 0.00001);
         }
@@ -98,7 +104,7 @@ namespace Sonneville.Utilities.Test.Persistence.v2
             };
 
             _store.Save(data);
-            var result = new JsonDataStore(_path).Load<SampleData>();
+            var result = new JsonDataStore(_logMock.Object, _path).Load<SampleData>();
 
             Assert.AreEqual(data.D, result.D);
         }
@@ -115,7 +121,7 @@ namespace Sonneville.Utilities.Test.Persistence.v2
             };
 
             _store.Save(data);
-            var result = new JsonDataStore(_path).Load<SampleData>();
+            var result = new JsonDataStore(_logMock.Object, _path).Load<SampleData>();
 
             Assert.AreEqual(data.E, result.E);
         }
@@ -132,7 +138,7 @@ namespace Sonneville.Utilities.Test.Persistence.v2
             };
 
             _store.Save(data);
-            var result = new JsonDataStore(_path).Load<SampleData>();
+            var result = new JsonDataStore(_logMock.Object, _path).Load<SampleData>();
 
             Assert.AreEqual(data.F, result.F);
         }
@@ -149,7 +155,7 @@ namespace Sonneville.Utilities.Test.Persistence.v2
             };
 
             _store.Save(data);
-            var result = new JsonDataStore(_path).Load<SampleData>();
+            var result = new JsonDataStore(_logMock.Object, _path).Load<SampleData>();
 
             Assert.AreEqual(data.G, result.G);
         }
@@ -167,7 +173,7 @@ namespace Sonneville.Utilities.Test.Persistence.v2
             data.H.Add(typeof(string), value);
 
             _store.Save(data);
-            var result = new JsonDataStore(_path).Load<SampleData>();
+            var result = new JsonDataStore(_logMock.Object, _path).Load<SampleData>();
 
             Assert.AreEqual(data.H, result.H);
         }
@@ -191,7 +197,7 @@ namespace Sonneville.Utilities.Test.Persistence.v2
             };
 
             _store.Save(data);
-            var result = new JsonDataStore(_path).Load<SampleData>();
+            var result = new JsonDataStore(_logMock.Object, _path).Load<SampleData>();
 
             Assert.AreEqual(data.I, result.I);
         }
@@ -210,8 +216,8 @@ namespace Sonneville.Utilities.Test.Persistence.v2
 
             _store.Save(sampleData);
             _store.Save(otherData);
-            var retrievedSampleData = new JsonDataStore(_path).Get<SampleData>();
-            var retrievedOtherData = new JsonDataStore(_path).Get<OtherData>();
+            var retrievedSampleData = new JsonDataStore(_logMock.Object, _path).Get<SampleData>();
+            var retrievedOtherData = new JsonDataStore(_logMock.Object, _path).Get<OtherData>();
 
             Assert.AreEqual(sampleData.A, retrievedSampleData.A);
             Assert.AreEqual(otherData.A, retrievedOtherData.A);
