@@ -32,7 +32,7 @@ namespace Sonneville.Fidelity.Shell.Interface
             }
             else
             {
-                var exit = RunCommand(new[] {"info"});
+                var exit = RunCommand(new[] {"startup"});
                 while (!_disposed && !exit)
                 {
                     var commandString = _inputReader.ReadLine();
@@ -48,7 +48,7 @@ namespace Sonneville.Fidelity.Shell.Interface
         private bool RunCommand(IReadOnlyList<string> tokens)
         {
             var command = GetCommand(tokens[0].ToLowerInvariant());
-            return command.Invoke(_inputReader, _outputWriter, tokens);
+            return command.Invoke(_inputReader, _outputWriter, tokens.ToArray());
         }
 
         private ICommand GetCommand(string commandName)

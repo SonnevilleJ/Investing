@@ -85,7 +85,7 @@
     <Compile Include="Interface\ExitCommand.cs" />
     <Compile Include="Interface\HelpCommand.cs" />
     <Compile Include="Interface\ICommand.cs" />
-    <Compile Include="Interface\InfoCommand.cs" />
+    <Compile Include="Interface\StartupCommand.cs" />
     <Compile Include="Logging\LogExtentions.cs" />
     <Compile Include="Logging\LoggingWebDriver.cs" />
     <Compile Include="Logging\LoggingWebElement.cs" />

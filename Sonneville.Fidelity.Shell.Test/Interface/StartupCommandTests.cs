@@ -6,20 +6,20 @@ using Sonneville.Fidelity.Shell.Interface;
 namespace Sonneville.Fidelity.Shell.Test.Interface
 {
     [TestFixture]
-    public class InfoCommandTests
+    public class StartupCommandTests
     {
-        private InfoCommand _command;
+        private StartupCommand _command;
 
         [SetUp]
         public void Setup()
         {
-            _command = new InfoCommand();
+            _command = new StartupCommand();
         }
 
         [Test]
         public void HasCorrectTitle()
         {
-            Assert.AreEqual("info", _command.CommandName);
+            Assert.AreEqual("startup", _command.CommandName);
         }
 
         [Test]

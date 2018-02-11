@@ -7,7 +7,7 @@ namespace Sonneville.Fidelity.Shell.Interface
     {
         public string CommandName { get; } = "help";
 
-        public bool Invoke(TextReader inputReader, TextWriter outputWriter, IEnumerable<string> fullInput)
+        public bool Invoke(TextReader inputReader, TextWriter outputWriter, IReadOnlyList<string> fullInput)
         {
             outputWriter.WriteLine("Type `exit` to exit.");
             return false;

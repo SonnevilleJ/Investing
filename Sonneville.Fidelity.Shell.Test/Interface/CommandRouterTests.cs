@@ -12,7 +12,7 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
     [TestFixture]
     public class CommandRouterTests
     {
-        private string[] _cliArgs;
+        private IReadOnlyList<string> _cliArgs;
         private StreamReader _inputReader;
         private StreamWriter _inputWriter;
         private StreamReader _outputReader;
@@ -37,7 +37,7 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
             _commands = new List<ICommand>
             {
                 CreateCommand("help", false),
-                CreateCommand("info", false),
+                CreateCommand("startup", false),
                 CreateCommand("exit", true)
             };
 
@@ -84,7 +84,7 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
         [Test]
         [TestCase("help", "help", false)]
         [TestCase("help", "help 1 2 3 4", false)]
-        [TestCase("info", "info", false)]
+        [TestCase("startup", "startup", false)]
         [TestCase("exit", "exit", true)]
         public void ShouldInvokeCommandFromInputAndWait(string expectedCommand, string fullInput, bool shouldExit)
         {
@@ -93,7 +93,7 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
             SendInput(fullInput);
             _task.Wait(100);
 
-            AssertCommandWasInvoked(expectedCommand, fullInput.Split(' '), expectedCommand == "info" ? 2 : 1);
+            AssertCommandWasInvoked(expectedCommand, fullInput.Split(' '), expectedCommand == "startup" ? 2 : 1);
             Assert.AreEqual(shouldExit, _task.IsCompleted);
         }
 
@@ -112,12 +112,12 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
         }
 
         [Test]
-        public void ShouldInvokeInfoCommandAndWait()
+        public void ShouldInvokestartupCommandAndWait()
         {
             _task = Task.Run(() => _commandRouter.Run(_cliArgs));
             _task.Wait(100);
 
-            AssertCommandWasInvoked("info", new[] {"info"});
+            AssertCommandWasInvoked("startup", new[] {"startup"});
             Assert.IsFalse(_task.IsCompleted);
         }
 
@@ -140,7 +140,8 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
         {
             var mockCommand = new Mock<ICommand>();
             mockCommand.SetupGet(command => command.CommandName).Returns(commandName);
-            mockCommand.Setup(command => command.Invoke(_inputReader, _outputWriter, It.IsAny<IEnumerable<string>>())).Returns(exitAfter);
+            mockCommand.Setup(command => command.Invoke(_inputReader, _outputWriter, It.IsAny<IReadOnlyList<string>>()))
+                .Returns(exitAfter);
             return mockCommand.Object;
         }
 

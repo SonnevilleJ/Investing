@@ -64,7 +64,7 @@ namespace Sonneville.Fidelity.Shell.Interface
 
         public string CommandName { get; } = "demo";
 
-        public bool Invoke(TextReader inputReader, TextWriter outputWriter, IEnumerable<string> fullInput)
+        public bool Invoke(TextReader inputReader, TextWriter outputWriter, IReadOnlyList<string> fullInput)
         {
             _optionSet.Parse(fullInput);
             if (_shouldShowHelp)

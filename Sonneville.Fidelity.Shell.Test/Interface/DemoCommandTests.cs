@@ -163,8 +163,10 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
             _logMock = new Mock<ILog>();
 
             _dataStoreMock = new Mock<IDataStore>();
-            _dataStoreMock.Setup(configStore => configStore.Load<FidelityConfiguration>()).Returns(_fidelityConfiguration);
-            _dataStoreMock.Setup(configStore => configStore.Save(It.IsAny<FidelityConfiguration>())).Callback<FidelityConfiguration>(config => _fidelityConfiguration = config);
+            _dataStoreMock.Setup(configStore => configStore.Load<FidelityConfiguration>())
+                .Returns(_fidelityConfiguration);
+            _dataStoreMock.Setup(configStore => configStore.Save(It.IsAny<FidelityConfiguration>()))
+                .Callback<FidelityConfiguration>(config => _fidelityConfiguration = config);
 
             _inputStream = new MemoryStream();
             _inputReader = new StreamReader(_inputStream);
@@ -288,24 +290,27 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
         [Test]
         public void ShouldSetConfigFromCliArgsAndPersist()
         {
-            _dataStoreMock.Setup(configStore => configStore.Save(It.IsAny<FidelityConfiguration>())).Callback<FidelityConfiguration>(config =>
-            {
-                Assert.AreEqual(_username, config.Username);
-                Assert.AreEqual(_password, config.Password);
-            });
+            _dataStoreMock.Setup(configStore => configStore.Save(It.IsAny<FidelityConfiguration>()))
+                .Callback<FidelityConfiguration>(config =>
+                {
+                    Assert.AreEqual(_username, config.Username);
+                    Assert.AreEqual(_password, config.Password);
+                });
             var args = new[] {"-u", _username, "-p", _password, "-s"};
 
             var shouldExit = _command.Invoke(_inputReader, _outputWriter, args);
 
             Assert.IsFalse(shouldExit);
-            _logMock.Verify(log => log.Info(It.Is<string>(message => message.Contains($"Saving credentials for `{_username}`."))));
+            _logMock.Verify(log =>
+                log.Info(It.Is<string>(message => message.Contains($"Saving credentials for `{_username}`."))));
             _dataStoreMock.Verify(configStore => configStore.Save(_fidelityConfiguration));
         }
 
         [Test]
         public void ShouldDisplayHelpFromCliArgsAndNotPersist()
         {
-            var shouldExit = _command.Invoke(_inputReader, _outputWriter, new[] {"-u", _username, "-p", _password, "-s", "-h"});
+            var input = new[] {"-u", _username, "-p", _password, "-s", "-h"};
+            var shouldExit = _command.Invoke(_inputReader, _outputWriter, input);
 
             Assert.IsFalse(shouldExit);
             var outputText = ReadOutputText();
