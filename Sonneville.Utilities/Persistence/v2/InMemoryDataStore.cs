@@ -5,73 +5,40 @@ using Newtonsoft.Json.Linq;
 
 namespace Sonneville.Utilities.Persistence.v2
 {
-    public class InMemoryDataStore : IDataStore
+    public sealed class InMemoryDataStore : DataStore
     {
         private static Dictionary<Type, object> _persistedCache;
-        private Dictionary<Type, object> _inMemoryCache = new Dictionary<Type, object>();
 
         public InMemoryDataStore()
         {
             if (_persistedCache == null)
             {
-                DeleteAll();
+                ResetPersistedData();
+                ResetCachedData();
             }
         }
 
-        public T Get<T>() where T : class, new()
+        protected override bool TryDepersist<T>(out object retrieved)
         {
-            return ReadFromMemoryOr(Load<T>);
+            return _persistedCache.TryGetValue(typeof(T), out retrieved);
         }
 
-        public void Save<T>(T config)
+        protected override void Persist<T>(T config)
         {
-            var type = typeof(T);
-            if (_inMemoryCache.TryGetValue(type, out var existing) && !ReferenceEquals(existing, config))
-            {
-                throw new ArgumentOutOfRangeException(nameof(config), config, "Must pass original config instance!");
-            }
-            _inMemoryCache[type] = config;
-            
+            _persistedCache[typeof(T)] = Clone(config);
+        }
+
+        protected override void ResetPersistedData()
+        {
+            _persistedCache = new Dictionary<Type, object>();
+        }
+
+        private static T Clone<T>(T config)
+        {
             var json = JsonConvert.SerializeObject(config, JsonSerialization.Settings);
             var jObject = JObject.Parse(json);
             var jsonSerializer = JsonSerializer.Create(JsonSerialization.Settings);
-            var clone = jObject.ToObject<T>(jsonSerializer);
-
-            _persistedCache[type] = clone;
-        }
-
-        public T Load<T>() where T : class, new()
-        {
-            var configFromMemory = ReadFromMemoryOr(() => new T());
-            var configFromPersisted = _persistedCache.TryGetValue(typeof(T), out var retrieved) ? retrieved as T : configFromMemory;
-            return Merge(configFromMemory, configFromPersisted);
-        }
-
-        public void DeleteAll()
-        {
-            _persistedCache = new Dictionary<Type, object>();
-            _inMemoryCache = new Dictionary<Type, object>();
-        }
-
-        private T ReadFromMemoryOr<T>(Func<T> supplier) where T : class, new()
-        {
-            var type = typeof(T);
-            if (!_inMemoryCache.ContainsKey(type))
-            {
-                _inMemoryCache[type] = supplier();
-            }
-
-            return _inMemoryCache[type] as T;
-        }
-
-        private static T Merge<T>(T configFromMemory, T result) where T : class, new()
-        {
-            foreach (var propertyInfo in typeof(T).GetProperties())
-            {
-                propertyInfo.SetValue(configFromMemory, propertyInfo.GetValue(result));
-            }
-
-            return configFromMemory;
+            return jObject.ToObject<T>(jsonSerializer);
         }
     }
 }

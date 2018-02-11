@@ -13,7 +13,7 @@ namespace Sonneville.Utilities.Test.Persistence.v2
         private Mock<ILog> _logMock;
         private string _path;
 
-        protected override IDataStore InstantiateDataStore()
+        protected override DataStore InstantiateDataStore()
         {
             return new JsonDataStore(_logMock.Object, _path);
         }

@@ -47,7 +47,7 @@
     <Compile Include="FreezableClock.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Persistence\v1\JsonSerialization.cs" />
-    <Compile Include="Persistence\v2\IDataStore.cs" />
+    <Compile Include="Persistence\v2\DataStore.cs" />
     <Compile Include="Persistence\v2\InMemoryDataStore.cs" />
     <Compile Include="Persistence\v2\JsonDataStore.cs" />
     <Compile Include="Persistence\v1\IConfigStore.cs" />

@@ -9,7 +9,7 @@ namespace Sonneville.Utilities.Test.Persistence.v2
     {
         protected IDataStore Store;
 
-        protected abstract IDataStore InstantiateDataStore();
+        protected abstract DataStore InstantiateDataStore();
 
         [SetUp]
         public virtual void Setup()

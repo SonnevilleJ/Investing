@@ -17,6 +17,8 @@ namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
 
         public override void Load()
         {
+            Rebind<IDataStore>().To<JsonDataStore>().InSingletonScope();
+            
             Bind<string>().ToConstant(_configPath)
                 .WhenInjectedExactlyInto<JsonDataStore>();
 

@@ -13,7 +13,7 @@ namespace Sonneville.Utilities.Test.Persistence.v2
             Store.DeleteAll();
         }
 
-        protected override IDataStore InstantiateDataStore()
+        protected override DataStore InstantiateDataStore()
         {
             return new InMemoryDataStore();
         }

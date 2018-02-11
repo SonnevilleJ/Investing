@@ -8,9 +8,9 @@ using Sonneville.Utilities.Persistence.v1;
 
 namespace Sonneville.Utilities.Persistence.v2
 {
-    public class JsonDataStore : IDataStore
+    public class JsonDataStore : DataStore
     {
-        public const string DataStoreVersion = "v2";
+        private const string DataStoreVersion = "v2";
         private readonly string _path;
         private readonly JsonMule _jsonMule;
 
@@ -21,93 +21,61 @@ namespace Sonneville.Utilities.Persistence.v2
             log.Debug($"Initializing with path: {path}");
         }
 
-        public T Get<T>() where T : class, new()
+        protected override bool TryDepersist<T>(out object retrieved)
         {
-            var config = ReadFromCacheOr(Load<T>);
-            _jsonMule.Cache[typeof(T)] = config;
-            return config;
-        }
-
-        public void Save<T>(T config)
-        {
-            var type = typeof(T);
-            if (_jsonMule.Cache.TryGetValue(type, out var existing) && !ReferenceEquals(existing, config))
+            if (File.Exists(_path))
             {
-                throw new ArgumentOutOfRangeException(nameof(config), config, "Must pass original config instance!");
+                var json = File.ReadAllText(_path);
+                var jObject = JObject.Parse(json);
+                var serializedVersion = jObject[nameof(JsonMule.Version)]?.Value<string>();
+                switch (serializedVersion)
+                {
+                    case null:
+                        return LoadOldVersion<T>(out retrieved);
+                    case DataStoreVersion:
+                        return LoadCurrentVersion<T>(out retrieved, jObject);
+                    default:
+                        throw new NotSupportedException($"Unable to deserialize version {serializedVersion}!");
+                }
             }
 
+            retrieved = default(T);
+            return false;
+        }
+
+        protected override void Persist<T>(T config)
+        {
             _jsonMule.Cache[typeof(T)] = config;
 
             var json = JsonConvert.SerializeObject(_jsonMule, JsonSerialization.Settings);
             File.WriteAllText(_path, json);
         }
 
-        public void DeleteAll()
+        protected override void ResetPersistedData()
         {
             if (File.Exists(_path)) File.Delete(_path);
             _jsonMule.Cache.Clear();
         }
 
-        public T Load<T>() where T : class, new()
+        private bool LoadOldVersion<T>(out object retrieved) where T : class, new()
         {
-            var configFromCache = ReadFromCacheOr(() => new T());
-
-            if (File.Exists(_path))
-            {
-                var json = File.ReadAllText(_path);
-                MergePersistedData(configFromCache, json);
-            }
-
-            return configFromCache;
+            retrieved = new JsonConfigStore<T>(_path).Load();
+            return true;
         }
 
-        private void MergePersistedData<T>(T configFromCache, string json) where T : class, new()
-        {
-            var jObject = JObject.Parse(json);
-            var serializedVersion = jObject[nameof(JsonMule.Version)]?.Value<string>();
-            switch (serializedVersion)
-            {
-                case null:
-                    MergeOldVersionData(configFromCache);
-                    break;
-                case DataStoreVersion:
-                    MergeCurrentVersionData(jObject, configFromCache);
-                    break;
-                default:
-                    throw new NotSupportedException($"Unable to deserialize version {serializedVersion}!");
-            }
-        }
-
-        private void MergeOldVersionData<T>(T configFromCache) where T : class, new()
-        {
-            var oldT = new JsonConfigStore<T>(_path).Load();
-            Merge(configFromCache, oldT);
-        }
-
-        private void MergeCurrentVersionData<T>(JObject jObject, T configFromCache) where T : class, new()
+        private bool LoadCurrentVersion<T>(out object retrieved, JObject jObject)
         {
             var jsonSerializer = JsonSerializer.Create(JsonSerialization.Settings);
             var jsonMule = jObject.ToObject<JsonMule>(jsonSerializer);
             if (jsonMule.Cache.TryGetValue(typeof(T), out var value))
             {
                 var deserialized = JsonConvert.DeserializeObject<T>(value.ToString());
-                Merge(configFromCache, deserialized);
+                retrieved = deserialized;
+                return true;
             }
-        }
 
-        private static void Merge<T>(T configFromCache, T result) where T : class, new()
-        {
-            foreach (var propertyInfo in typeof(T).GetProperties())
-            {
-                propertyInfo.SetValue(configFromCache, propertyInfo.GetValue(result));
-            }
-        }
-
-        private T ReadFromCacheOr<T>(Func<T> supplier) where T : class, new()
-        {
-            return _jsonMule.Cache.TryGetValue(typeof(T), out var existing)
-                ? existing as T
-                : supplier();
+            retrieved = default(T);
+            return false;
         }
 
         private class JsonMule
