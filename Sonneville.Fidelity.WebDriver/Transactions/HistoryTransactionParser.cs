@@ -133,7 +133,7 @@ namespace Sonneville.Fidelity.WebDriver.Transactions
 
         private DateTime ParseDate(string text)
         {
-            return DateTime.ParseExact(text, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+            return DateTime.Parse(text, CultureInfo.InvariantCulture);
         }
     }
 }
