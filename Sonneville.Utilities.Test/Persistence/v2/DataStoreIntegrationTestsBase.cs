@@ -7,23 +7,26 @@ namespace Sonneville.Utilities.Test.Persistence.v2
     [TestFixture]
     public abstract class DataStoreIntegrationTestsBase
     {
-        protected IDataStore Store;
+        private IDataStore _store;
 
         protected abstract DataStore InstantiateDataStore();
 
         [SetUp]
         public virtual void Setup()
         {
-            Store = InstantiateDataStore();
+            _store = InstantiateDataStore();
+        }
+
+        [TearDown]
+        public virtual void Teardown()
+        {
+            _store.DeleteAll();
         }
 
         [Test]
         public void GetShouldLoadIfNotCached()
         {
-            Store.Save(new SampleData
-            {
-                A = "original",
-            });
+            SetupPersistedData();
 
             var configStore = InstantiateDataStore();
             var one = configStore.Get<SampleData>();
@@ -37,14 +40,11 @@ namespace Sonneville.Utilities.Test.Persistence.v2
         [Test]
         public void GetShouldNotLoadAndReturnCachedIfCached()
         {
-            var data = new SampleData
-            {
-                A = "original",
-            };
-            Store.Save(data);
+            var data = SetupPersistedData();
             data.A = "changed";
 
-            var result = Store.Get<SampleData>();
+            var result = _store.Get<SampleData>();
+
             Assert.AreEqual("changed", result.A);
             Assert.AreSame(data, result);
         }
@@ -52,10 +52,7 @@ namespace Sonneville.Utilities.Test.Persistence.v2
         [Test]
         public void GetShouldReturnDefaultIfNotPersisted()
         {
-            Store.Save(new SampleData
-            {
-                A = "original",
-            });
+            SetupPersistedData();
 
             var configStore = InstantiateDataStore();
             var data = configStore.Get<OtherData>();
@@ -66,10 +63,7 @@ namespace Sonneville.Utilities.Test.Persistence.v2
         [Test]
         public void LoadShouldReturnDefaultIfNotPersisted()
         {
-            Store.Save(new SampleData
-            {
-                A = "original",
-            });
+            SetupPersistedData();
 
             var configStore = InstantiateDataStore();
             var data = configStore.Load<OtherData>();
@@ -80,22 +74,19 @@ namespace Sonneville.Utilities.Test.Persistence.v2
         [Test]
         public void LoadShouldUpdateAndReturnPersistedConfig()
         {
-            var data = new SampleData
-            {
-                A = "original",
-            };
-            Store.Save(data);
+            var data = SetupPersistedData();
             data.A = "changed";
 
-            var result = Store.Load<SampleData>();
+            var result = _store.Load<SampleData>();
+
             Assert.AreEqual("original", result.A);
             Assert.AreSame(data, result);
         }
 
         [Test]
-        public void LoadShouldReturnDefaultConfigdWhenNoFilePresent()
+        public void LoadShouldReturnDefaultConfigWhenNothingIsPersisted()
         {
-            var data = Store.Load<SampleData>();
+            var data = _store.Load<SampleData>();
 
             AssertDefaultConfig(data);
         }
@@ -103,24 +94,30 @@ namespace Sonneville.Utilities.Test.Persistence.v2
         [Test]
         public void DeleteAllShouldEmptyCache()
         {
-            var data = new SampleData
-            {
-                A = "original",
-            };
-            Store.Save(data);
+            SetupPersistedData();
 
-            Store.DeleteAll();
+            _store.DeleteAll();
 
-            AssertDefaultConfig(Store.Get<SampleData>());
+            AssertDefaultConfig(_store.Get<SampleData>());
         }
 
         [Test]
         public void SaveShouldThrowIfSavingDifferentConfigOfSameType()
         {
-            Store.Get<SampleData>();
+            _store.Get<SampleData>();
 
             var imposter = new SampleData();
-            Assert.Throws<ArgumentOutOfRangeException>(() => Store.Save(imposter));
+            Assert.Throws<ArgumentOutOfRangeException>(() => _store.Save(imposter));
+        }
+
+        private SampleData SetupPersistedData()
+        {
+            var data = new SampleData
+            {
+                A = "original",
+            };
+            _store.Save(data);
+            return data;
         }
 
         private static void AssertDefaultConfig<T>(T data)

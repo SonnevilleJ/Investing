@@ -33,7 +33,7 @@ namespace Sonneville.Utilities.Test.Persistence.v2
         }
 
         [TearDown]
-        public void Teardown()
+        public override void Teardown()
         {
             if (File.Exists(_path))
             {

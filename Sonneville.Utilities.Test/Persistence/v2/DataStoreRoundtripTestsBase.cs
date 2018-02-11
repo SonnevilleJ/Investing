@@ -8,14 +8,20 @@ namespace Sonneville.Utilities.Test.Persistence.v2
     [TestFixture]
     public abstract class DataStoreRoundtripTestsBase
     {
-        protected IDataStore Store;
+        private IDataStore _store;
 
         protected abstract IDataStore InstantiateDataStore();
 
         [SetUp]
         public virtual void Setup()
         {
-            Store = InstantiateDataStore();
+            _store = InstantiateDataStore();
+        }
+
+        [TearDown]
+        public virtual void Teardown()
+        {
+            _store.DeleteAll();
         }
         
         [Test]
@@ -29,7 +35,7 @@ namespace Sonneville.Utilities.Test.Persistence.v2
                 A = value,
             };
 
-            Store.Save(data);
+            _store.Save(data);
             var result = InstantiateDataStore().Load<SampleData>();
 
             Assert.AreEqual(data.A, result.A);
@@ -46,7 +52,7 @@ namespace Sonneville.Utilities.Test.Persistence.v2
                 B = value,
             };
 
-            Store.Save(data);
+            _store.Save(data);
             var result = InstantiateDataStore().Load<SampleData>();
 
             Assert.AreEqual(data.B, result.B);
@@ -63,7 +69,7 @@ namespace Sonneville.Utilities.Test.Persistence.v2
                 C = value,
             };
 
-            Store.Save(data);
+            _store.Save(data);
             var result = InstantiateDataStore().Load<SampleData>();
 
             Assert.AreEqual(data.C, result.C, 0.00001);
@@ -80,7 +86,7 @@ namespace Sonneville.Utilities.Test.Persistence.v2
                 D = value,
             };
 
-            Store.Save(data);
+            _store.Save(data);
             var result = InstantiateDataStore().Load<SampleData>();
 
             Assert.AreEqual(data.D, result.D);
@@ -97,7 +103,7 @@ namespace Sonneville.Utilities.Test.Persistence.v2
                 E = value,
             };
 
-            Store.Save(data);
+            _store.Save(data);
             var result = InstantiateDataStore().Load<SampleData>();
 
             Assert.AreEqual(data.E, result.E);
@@ -114,7 +120,7 @@ namespace Sonneville.Utilities.Test.Persistence.v2
                 F = TimeSpan.FromSeconds(seconds),
             };
 
-            Store.Save(data);
+            _store.Save(data);
             var result = InstantiateDataStore().Load<SampleData>();
 
             Assert.AreEqual(data.F, result.F);
@@ -131,7 +137,7 @@ namespace Sonneville.Utilities.Test.Persistence.v2
                 G = new HashSet<string>(new[] {value}),
             };
 
-            Store.Save(data);
+            _store.Save(data);
             var result = InstantiateDataStore().Load<SampleData>();
 
             Assert.AreEqual(data.G, result.G);
@@ -149,7 +155,7 @@ namespace Sonneville.Utilities.Test.Persistence.v2
             };
             data.H.Add(typeof(string), value);
 
-            Store.Save(data);
+            _store.Save(data);
             var result = InstantiateDataStore().Load<SampleData>();
 
             Assert.AreEqual(data.H, result.H);
@@ -173,10 +179,10 @@ namespace Sonneville.Utilities.Test.Persistence.v2
                 },
             };
 
-            Store.Save(data);
+            _store.Save(data);
             var result = InstantiateDataStore().Load<SampleData>();
 
-            Assert.AreEqual(data.I, result.I);
+            CollectionAssert.AreEquivalent(data.I, result.I);
         }
 
         [Test]
@@ -191,8 +197,8 @@ namespace Sonneville.Utilities.Test.Persistence.v2
                 A = "other",
             };
 
-            Store.Save(sampleData);
-            Store.Save(otherData);
+            _store.Save(sampleData);
+            _store.Save(otherData);
             var retrievedSampleData = InstantiateDataStore().Get<SampleData>();
             var retrievedOtherData = InstantiateDataStore().Get<OtherData>();
 
