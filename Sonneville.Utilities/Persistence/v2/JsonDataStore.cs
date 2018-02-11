@@ -54,30 +54,44 @@ namespace Sonneville.Utilities.Persistence.v2
             if (File.Exists(_path))
             {
                 var json = File.ReadAllText(_path);
-                var jObject = JObject.Parse(json);
-                var serializedVersion = jObject[nameof(JsonMule.Version)]?.Value<string>();
-                if (serializedVersion == null)
-                {
-                    var oldT = new JsonConfigStore<T>(_path).Load();
-                    Merge(configFromCache, oldT);
-                }
-                else if (serializedVersion == DataStoreVersion)
-                {
-                    var jsonSerializer = JsonSerializer.Create(JsonSerialization.Settings);
-                    var jsonMule = jObject.ToObject<JsonMule>(jsonSerializer);
-                    if (jsonMule.Cache.TryGetValue(typeof(T), out var value))
-                    {
-                        var deserialized = JsonConvert.DeserializeObject<T>(value.ToString());
-                        Merge(configFromCache, deserialized);
-                    }
-                }
-                else
-                {
-                    throw new NotSupportedException($"Unable to deserialize version {serializedVersion}!");
-                }
+                MergePersistedData(configFromCache, json);
             }
 
             return configFromCache;
+        }
+
+        private void MergePersistedData<T>(T configFromCache, string json) where T : class, new()
+        {
+            var jObject = JObject.Parse(json);
+            var serializedVersion = jObject[nameof(JsonMule.Version)]?.Value<string>();
+            switch (serializedVersion)
+            {
+                case null:
+                    MergeOldVersionData(configFromCache);
+                    break;
+                case DataStoreVersion:
+                    MergeCurrentVersionData(jObject, configFromCache);
+                    break;
+                default:
+                    throw new NotSupportedException($"Unable to deserialize version {serializedVersion}!");
+            }
+        }
+
+        private void MergeOldVersionData<T>(T configFromCache) where T : class, new()
+        {
+            var oldT = new JsonConfigStore<T>(_path).Load();
+            Merge(configFromCache, oldT);
+        }
+
+        private void MergeCurrentVersionData<T>(JObject jObject, T configFromCache) where T : class, new()
+        {
+            var jsonSerializer = JsonSerializer.Create(JsonSerialization.Settings);
+            var jsonMule = jObject.ToObject<JsonMule>(jsonSerializer);
+            if (jsonMule.Cache.TryGetValue(typeof(T), out var value))
+            {
+                var deserialized = JsonConvert.DeserializeObject<T>(value.ToString());
+                Merge(configFromCache, deserialized);
+            }
         }
 
         private static void Merge<T>(T configFromCache, T result) where T : class, new()
