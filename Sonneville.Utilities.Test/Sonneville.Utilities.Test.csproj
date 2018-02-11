@@ -65,6 +65,8 @@
     <Compile Include="Persistence\v1\JsonConfigStoreRoundtripTests.cs" />
     <Compile Include="Persistence\v1\JsonConfigStoreIntegrationTests.cs" />
     <Compile Include="Persistence\v1\SampleConfig.cs" />
+    <Compile Include="Persistence\v2\DataStoreIntegrationTestsBase.cs" />
+    <Compile Include="Persistence\v2\DataStoreRoundtripTestsBase.cs" />
     <Compile Include="Persistence\v2\InMemoryDataStoreIntegrationTests.cs" />
     <Compile Include="Persistence\v2\InMemoryDataStoreRoundtripTests.cs" />
     <Compile Include="Persistence\v2\JsonDataStoreMigrationTests.cs" />

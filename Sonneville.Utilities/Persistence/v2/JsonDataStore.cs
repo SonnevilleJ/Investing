@@ -45,6 +45,7 @@ namespace Sonneville.Utilities.Persistence.v2
         public void DeleteAll()
         {
             if (File.Exists(_path)) File.Delete(_path);
+            _jsonMule.Cache.Clear();
         }
 
         public T Load<T>() where T : class, new()
