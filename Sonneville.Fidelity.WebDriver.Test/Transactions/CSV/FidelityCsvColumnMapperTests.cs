@@ -9,6 +9,7 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions.CSV
         [Test]
         [TestCase(" Run Date ", FidelityCsvColumn.RunDate)]
         [TestCase(" Account ", FidelityCsvColumn.Account)]
+        [TestCase(" Description ", FidelityCsvColumn.Action)]
         [TestCase(" Action ", FidelityCsvColumn.Action)]
         [TestCase(" Symbol ", FidelityCsvColumn.Symbol)]
         [TestCase(" Security Description ", FidelityCsvColumn.SecurityDescription)]

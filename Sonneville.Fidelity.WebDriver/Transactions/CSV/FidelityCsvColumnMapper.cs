@@ -21,6 +21,7 @@ namespace Sonneville.Fidelity.WebDriver.Transactions.CSV
                     return FidelityCsvColumn.RunDate;
                 case "Account":
                     return FidelityCsvColumn.Account;
+                case "Description":
                 case "Action":
                     return FidelityCsvColumn.Action;
                 case "Symbol":
@@ -50,11 +51,10 @@ namespace Sonneville.Fidelity.WebDriver.Transactions.CSV
 
         public IDictionary<FidelityCsvColumn, int> GetColumnMappings(string headerRow)
         {
-            var columns = headerRow.Split(',');
-            var count = 0;
-            return columns.Select(s => new KeyValuePair<FidelityCsvColumn, int>(GetHeader(s), count++))
-                    .Where(header => header.Key != FidelityCsvColumn.Unknown)
-                    .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            return headerRow.Split(',')
+                .Select((s, i) => new KeyValuePair<FidelityCsvColumn, int>(GetHeader(s), i))
+                .Where(header => header.Key != FidelityCsvColumn.Unknown)
+                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
     }
 }
