@@ -10,7 +10,6 @@ namespace Sonneville.Fidelity.Shell.AppStartup
         {
             new AppModule(),
             new ConfigModule(),
-            new LoggingModule(),
             new SeleniumModule(),
         };
 

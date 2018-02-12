@@ -4,12 +4,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("PortfolioManager")]
+[assembly: AssemblyTitle("Fidelity Shell")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("John Sonneville")]
-[assembly: AssemblyProduct("PortfolioManager")]
-[assembly: AssemblyCopyright("Copyright © 2015 John Sonneville")]
+[assembly: AssemblyProduct("Fidelity Shell")]
+[assembly: AssemblyCopyright("Copyright © 2018 John Sonneville")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

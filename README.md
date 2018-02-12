@@ -35,7 +35,7 @@ This project should always be functional if built from the master branch. Loggin
 
 Platform  | Location
 ----------|-------------------------------------------------------
-Windows   | %LocalAppData%\John Sonneville\PortfolioManager\
-Mac/Linux | ~/.local/share/John\ Sonneville/PortfolioManager/
+Windows   | `%LocalAppData%\John Sonneville\Fidelity Shell\`
+Mac/Linux | `~/.local/share/John\ Sonneville/Fidelity Shell/`
 
 Thanks for using this product! Please [create an issue](https://github.com/SonnevilleJ/Investing/issues/new) with any bugs!
