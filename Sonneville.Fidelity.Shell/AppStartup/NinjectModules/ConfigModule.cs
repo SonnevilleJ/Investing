@@ -20,23 +20,9 @@ namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
         public override void Load()
         {
             var workingDirectory = GetWorkingDirectory();
-            
             ConfigureLog4Net(workingDirectory);
-            Bind<ILog>().ToProvider<LogProvider>();
-
-            Rebind<IDataStore>().To<JsonDataStore>().InSingletonScope();
-            var configPath = Path.Combine(
-                workingDirectory,
-                "FidelityWebDriver.Demo.json"
-            );
-            Bind<string>().ToConstant(configPath)
-                .WhenInjectedExactlyInto<JsonDataStore>();
-
-            Rebind<FidelityConfiguration>().ToMethod(context => DataStore.Get<FidelityConfiguration>());
-            Rebind<SeleniumConfiguration>().ToMethod(context => DataStore.Get<SeleniumConfiguration>());
+            ConfigureLocalDataStore(workingDirectory);
         }
-
-        private IDataStore DataStore => KernelInstance.Get<JsonDataStore>();
 
         private static string GetWorkingDirectory()
         {
@@ -47,11 +33,10 @@ namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
             );
         }
 
-        private static void ConfigureLog4Net(string workingDirectory)
+        private void ConfigureLog4Net(string workingDirectory)
         {
-            var localDataPath = workingDirectory;
             var layout = ConfigurePatternLayout();
-            var rollingFileAppender = ConfigureRollingFileAppender(layout, localDataPath);
+            var rollingFileAppender = ConfigureRollingFileAppender(layout, workingDirectory);
             var consoleAppender = ConfigureConsoleAppender(layout);
 
             var hierarchy = (Hierarchy) LogManager.GetRepository();
@@ -59,6 +44,23 @@ namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
             hierarchy.Root.AddAppender(consoleAppender);
             hierarchy.Root.Level = Level.All;
             hierarchy.Configured = true;
+        
+            Bind<ILog>().ToProvider<LogProvider>();
+        }
+
+        private void ConfigureLocalDataStore(string workingDirectory)
+        {
+            Rebind<IDataStore>().To<JsonDataStore>().InSingletonScope();
+            var configPath = Path.Combine(
+                workingDirectory,
+                "FidelityWebDriver.Demo.json"
+            );
+            Bind<string>().ToConstant(configPath)
+                .WhenInjectedExactlyInto<JsonDataStore>();
+
+            var dataStore = KernelInstance.Get<IDataStore>();
+            Rebind<FidelityConfiguration>().ToMethod(context => dataStore.Get<FidelityConfiguration>());
+            Rebind<SeleniumConfiguration>().ToMethod(context => dataStore.Get<SeleniumConfiguration>());
         }
 
         private static T GetAssemblyAttribute<T>()
@@ -69,19 +71,17 @@ namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
                 .Single();
         }
 
-        private static PatternLayout ConfigurePatternLayout()
+        private static ILayout ConfigurePatternLayout()
         {
-            var patternLayout = new PatternLayout
+            return ActivateLayout(new PatternLayout
             {
                 ConversionPattern = "%date [%thread] %-5level %logger - %message%newline"
-            };
-            patternLayout.ActivateOptions();
-            return patternLayout;
+            });
         }
 
-        private static RollingFileAppender ConfigureRollingFileAppender(ILayout layout, string loggingDirectory)
+        private static IAppender ConfigureRollingFileAppender(ILayout layout, string loggingDirectory)
         {
-            var appender = new RollingFileAppender
+            return ActivateAppender(new RollingFileAppender
             {
                 Name = "Default logger",
                 AppendToFile = true,
@@ -93,22 +93,30 @@ namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
                 StaticLogFileName = true,
                 ImmediateFlush = true,
                 Threshold = Level.All,
-            };
-            appender.ActivateOptions();
-            return appender;
+            });
         }
 
         private static IAppender ConfigureConsoleAppender(ILayout layout)
         {
-            var appender = new ConsoleAppender
+            return ActivateAppender(new ConsoleAppender
             {
                 Name = "Console appender",
                 Layout = layout,
                 Target = Console.Error.ToString(),
                 Threshold = Level.Warn,
-            };
+            });
+        }
+
+        private static IAppender ActivateAppender(AppenderSkeleton appender)
+        {
             appender.ActivateOptions();
             return appender;
+        }
+
+        private static ILayout ActivateLayout(LayoutSkeleton layout)
+        {
+            layout.ActivateOptions();
+            return layout;
         }
     }
 }
