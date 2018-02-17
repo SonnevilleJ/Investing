@@ -6,11 +6,11 @@ namespace Sonneville.Utilities.Persistence.v2
     public interface IDataStore
     {
         T Get<T>() where T : class, new();
-     
+
         void Save<T>(T config);
-        
+
         T Load<T>() where T : class, new();
-        
+
         void DeleteAll();
     }
 
@@ -39,7 +39,7 @@ namespace Sonneville.Utilities.Persistence.v2
         public T Load<T>() where T : class, new()
         {
             var configFromMemory = ReadFromMemoryOr(() => new T());
-            var configFromPersisted = TryDepersist<T>(out var retrieved) ? retrieved as T : configFromMemory;
+            var configFromPersisted = Depersist<T>();
             return Merge(configFromMemory, configFromPersisted);
         }
 
@@ -54,7 +54,7 @@ namespace Sonneville.Utilities.Persistence.v2
             _inMemoryCache = new Dictionary<Type, object>();
         }
 
-        protected abstract bool TryDepersist<T>(out object retrieved) where T : class, new();
+        protected abstract T Depersist<T>() where T : class, new();
 
         protected abstract void Persist<T>(T config);
 
@@ -73,9 +73,12 @@ namespace Sonneville.Utilities.Persistence.v2
 
         private static T Merge<T>(T configFromMemory, T result) where T : class, new()
         {
-            foreach (var propertyInfo in typeof(T).GetProperties())
+            if (result != null)
             {
-                propertyInfo.SetValue(configFromMemory, propertyInfo.GetValue(result));
+                foreach (var propertyInfo in typeof(T).GetProperties())
+                {
+                    propertyInfo.SetValue(configFromMemory, propertyInfo.GetValue(result));
+                }
             }
 
             return configFromMemory;

@@ -18,9 +18,11 @@ namespace Sonneville.Utilities.Persistence.v2
             }
         }
 
-        protected override bool TryDepersist<T>(out object retrieved)
+        protected override T Depersist<T>()
         {
-            return _persistedCache.TryGetValue(typeof(T), out retrieved);
+            return _persistedCache.ContainsKey(typeof(T))
+                ? _persistedCache[typeof(T)] as T
+                : default(T);
         }
 
         protected override void Persist<T>(T config)

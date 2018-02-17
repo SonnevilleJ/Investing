@@ -21,7 +21,7 @@ namespace Sonneville.Utilities.Persistence.v2
             log.Debug($"Initializing with path: {path}");
         }
 
-        protected override bool TryDepersist<T>(out object retrieved)
+        protected override T Depersist<T>()
         {
             if (File.Exists(_path))
             {
@@ -31,16 +31,15 @@ namespace Sonneville.Utilities.Persistence.v2
                 switch (serializedVersion)
                 {
                     case null:
-                        return LoadOldVersion<T>(out retrieved);
+                        return LoadOldVersion<T>();
                     case DataStoreVersion:
-                        return LoadCurrentVersion<T>(out retrieved, jObject);
+                        return LoadCurrentVersion<T>(jObject);
                     default:
                         throw new NotSupportedException($"Unable to deserialize version {serializedVersion}!");
                 }
             }
 
-            retrieved = default(T);
-            return false;
+            return default(T);
         }
 
         protected override void Persist<T>(T config)
@@ -57,25 +56,18 @@ namespace Sonneville.Utilities.Persistence.v2
             _jsonMule.Cache.Clear();
         }
 
-        private bool LoadOldVersion<T>(out object retrieved) where T : class, new()
+        private T LoadOldVersion<T>() where T : class, new()
         {
-            retrieved = new JsonConfigStore<T>(_path).Load();
-            return true;
+            return new JsonConfigStore<T>(_path).Load();
         }
 
-        private bool LoadCurrentVersion<T>(out object retrieved, JObject jObject)
+        private T LoadCurrentVersion<T>(JObject jObject)
         {
             var jsonSerializer = JsonSerializer.Create(JsonSerialization.Settings);
             var jsonMule = jObject.ToObject<JsonMule>(jsonSerializer);
-            if (jsonMule.Cache.TryGetValue(typeof(T), out var value))
-            {
-                var deserialized = JsonConvert.DeserializeObject<T>(value.ToString());
-                retrieved = deserialized;
-                return true;
-            }
-
-            retrieved = default(T);
-            return false;
+            return jsonMule.Cache.TryGetValue(typeof(T), out var value)
+                ? JsonConvert.DeserializeObject<T>(value.ToString())
+                : default(T);
         }
 
         private class JsonMule
