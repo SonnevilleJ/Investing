@@ -12,6 +12,8 @@ namespace Sonneville.Utilities.Persistence.v2
         T Load<T>() where T : class, new();
 
         void DeleteAll();
+        
+        int CachedCount { get; }
     }
 
     public abstract class DataStore : IDataStore
@@ -48,6 +50,8 @@ namespace Sonneville.Utilities.Persistence.v2
             ResetPersistedData();
             ResetCachedData();
         }
+
+        public int CachedCount => _inMemoryCache.Count;
 
         protected void ResetCachedData()
         {

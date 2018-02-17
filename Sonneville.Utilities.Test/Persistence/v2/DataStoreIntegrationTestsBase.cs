@@ -110,6 +110,16 @@ namespace Sonneville.Utilities.Test.Persistence.v2
             Assert.Throws<ArgumentOutOfRangeException>(() => _store.Save(imposter));
         }
 
+        [Test]
+        public void CachedCountShouldCountCachedItems()
+        {
+            Assert.AreEqual(0, _store.CachedCount);
+            
+            SetupPersistedData();
+
+            Assert.AreEqual(1, _store.CachedCount);
+        }
+
         private SampleData SetupPersistedData()
         {
             var data = new SampleData
