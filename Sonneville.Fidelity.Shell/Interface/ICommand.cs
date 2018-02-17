@@ -14,8 +14,8 @@ namespace Sonneville.Fidelity.Shell.Interface
         /// <summary>
         /// Invoke the command.
         /// </summary>
-        /// <param name="inputReader">A <see cref="TextReader"/> used to accept input from the user. Typically <see cref="System.In"/>.</param>
-        /// <param name="outputWriter">A <see cref="TextWriter"/> used to provide output to the user. Typically <see cref="System.Out"/>.</param>
+        /// <param name="inputReader">A <see cref="TextReader"/> used to accept input from the user. Typically <see cref="System.Console.In"/>.</param>
+        /// <param name="outputWriter">A <see cref="TextWriter"/> used to provide output to the user. Typically <see cref="System.Console.Out"/>.</param>
         /// <param name="fullInput">The full command entered by the user. The first value will always be the name of the command.</param>
         /// <returns>A bool indicating whether or not the system should exit upon completion of the invocation.</returns>
         bool Invoke(TextReader inputReader, TextWriter outputWriter, IReadOnlyList<string> fullInput);
