@@ -61,12 +61,12 @@ namespace Sonneville.Utilities.Persistence.v2
             return new JsonConfigStore<T>(_path).Load();
         }
 
-        private T LoadCurrentVersion<T>(JObject jObject)
+        private T LoadCurrentVersion<T>(JObject jObject) where T : class
         {
             var jsonSerializer = JsonSerializer.Create(JsonSerialization.Settings);
             var jsonMule = jObject.ToObject<JsonMule>(jsonSerializer);
             return jsonMule.Cache.TryGetValue(typeof(T), out var value)
-                ? JsonConvert.DeserializeObject<T>(value.ToString())
+                ? value as T
                 : default(T);
         }
 

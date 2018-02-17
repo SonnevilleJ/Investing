@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Sonneville.Utilities.Test.Persistence.v2
 {
-    class SampleData
+    internal class SampleData
     {
         public string A { get; set; }
 
@@ -22,5 +22,7 @@ namespace Sonneville.Utilities.Test.Persistence.v2
         public Dictionary<Type, object> H { get; set; }
 
         public List<string> I { get; set; }
+        
+        public List<IData> J { get; set; }
     }
 }

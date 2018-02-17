@@ -15,6 +15,7 @@ namespace Sonneville.Utilities.Persistence.v2
             ContractResolver = new SettingsReaderContractResolver(),
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
             ObjectCreationHandling = ObjectCreationHandling.Replace,
+            TypeNameHandling = TypeNameHandling.Auto,
         };
 
         private class SettingsReaderContractResolver : DefaultContractResolver

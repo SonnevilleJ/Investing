@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 using Sonneville.Utilities.Persistence.v2;
+using Sonneville.Utilities.Reflection;
 
 namespace Sonneville.Utilities.Test.Persistence.v2
 {
@@ -183,6 +184,24 @@ namespace Sonneville.Utilities.Test.Persistence.v2
             var result = InstantiateDataStore().Load<SampleData>();
 
             CollectionAssert.AreEquivalent(data.I, result.I);
+        }
+        
+        [Test]
+        public void ShouldRoundtripInterface()
+        {
+            var data = new SampleData
+            {
+                J = new List<IData>
+                {
+                    new OtherData{ A = "one"},
+                    new OtherData{ A = "two"},
+                }
+            };
+
+            _store.Save(data);
+            var result = InstantiateDataStore().Load<SampleData>();
+
+            CollectionAssert.AreEqual(data.J, result.J, new PropertyComparer());
         }
 
         [Test]
