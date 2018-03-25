@@ -153,9 +153,11 @@ namespace Sonneville.Fidelity.WebDriver.Test.Logging
             IWebElement outer,
             Mock<IWebElement> inner,
             Action<IWebElement> trigger,
-            Expression<Action<IWebElement>> expectedInteraction, int callCount = 1)
+            Expression<Action<IWebElement>> expectedInteraction,
+            int expectedCallCount = 1
+        )
         {
-            var validationsCompleted = false;
+            var completedValidations = 0;
             _seleniumWaiterMock.Setup(waiter =>
                     waiter.WaitUntil(It.IsAny<Func<IWebDriver, bool>>(), It.IsAny<TimeSpan>(), It.IsAny<IWebDriver>()))
                 .Callback<Func<IWebDriver, bool>, TimeSpan, IWebDriver>(
@@ -167,7 +169,7 @@ namespace Sonneville.Fidelity.WebDriver.Test.Logging
                             "WaitUntil condition does not check if IWebElement is Displayed!");
                         Assert.AreEqual(_timeSpan, timeSpan, "WaitUntil called with wrong timespan!");
                         Assert.AreEqual(_webDriverMock.Object, webDriver);
-                        validationsCompleted = true;
+                        completedValidations++;
                     }
                 );
             inner.SetupGet(webElement => webElement.Displayed).Returns(() => _isDisplayed);
@@ -175,13 +177,13 @@ namespace Sonneville.Fidelity.WebDriver.Test.Logging
                 .Callback(() => _seleniumWaiterMock.Verify(waiter =>
                         waiter.WaitUntil(It.IsAny<Func<IWebDriver, bool>>(), It.IsAny<TimeSpan>(),
                             It.IsAny<IWebDriver>()),
-                    Times.Exactly(callCount),
+                    Times.Exactly(expectedCallCount),
                     "Invoked wrapped IWebElement without waiting until it was displayed!"));
             using (var task = Task.Run(() => trigger(outer)))
             {
                 task.Wait(1000);
                 Assert.IsTrue(task.IsCompleted);
-                if (callCount > 1) Assert.IsTrue(validationsCompleted);
+                Assert.AreEqual(expectedCallCount, completedValidations);
                 inner.Verify(expectedInteraction, Times.Once());
             }
         }
