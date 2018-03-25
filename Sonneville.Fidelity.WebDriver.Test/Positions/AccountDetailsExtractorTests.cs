@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using log4net;
 using Moq;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using Sonneville.Fidelity.WebDriver.Data;
+using Sonneville.Fidelity.WebDriver.Logging;
 using Sonneville.Fidelity.WebDriver.Positions;
 
 namespace Sonneville.Fidelity.WebDriver.Test.Positions
@@ -19,6 +21,7 @@ namespace Sonneville.Fidelity.WebDriver.Test.Positions
         private Mock<IPositionDetailsExtractor> _positionDetailsExtractorMock;
         private Mock<ILog> _logMock;
         private Mock<IWebElement> _tableBodyMock;
+        private Mock<ISeleniumWaiter> _seleniumWaiterMock;
 
         [SetUp]
         public void Setup()
@@ -26,8 +29,7 @@ namespace Sonneville.Fidelity.WebDriver.Test.Positions
             _tableBodyMock = new Mock<IWebElement>();
 
             _webDriverMock = new Mock<IWebDriver>();
-            _webDriverMock.Setup(webDriver => webDriver.FindElements(By.ClassName("p-positions-tbody")))
-                .Returns(new List<IWebElement> {new Mock<IWebElement>().Object, _tableBodyMock.Object}.AsReadOnly());
+            StubFindElements(new List<IWebElement> {new Mock<IWebElement>().Object});
 
             _logMock = new Mock<ILog>();
 
@@ -86,7 +88,31 @@ namespace Sonneville.Fidelity.WebDriver.Test.Positions
                     .Returns(accountGroupDivMock.Object);
             }
 
-            _extractor = new AccountDetailsExtractor(new AccountDetailsAggregator(_logMock.Object, _positionDetailsExtractorMock.Object, new PositionRowsAccumulator(), new AccountTypesMapper()));
+            _seleniumWaiterMock = new Mock<ISeleniumWaiter>();
+            _seleniumWaiterMock.Setup(waiter =>
+                    waiter.WaitUntil(It.IsAny<Func<IWebDriver, bool>>(), It.IsAny<TimeSpan>(), It.IsAny<IWebDriver>()))
+                .Callback((Func<IWebDriver, bool> func, TimeSpan timeSpan, IWebDriver driver) =>
+                {
+                    Assert.AreEqual(TimeSpan.FromMinutes(1), timeSpan);
+                    Assert.AreEqual(_webDriverMock.Object, driver);
+                    Assert.IsFalse(func(driver));
+                    StubFindElements(new List<IWebElement> {new Mock<IWebElement>().Object, _tableBodyMock.Object});
+                    Assert.IsTrue(func(driver));
+                });
+
+            var accountDetailsAggregator = new AccountDetailsAggregator(
+                _logMock.Object,
+                _positionDetailsExtractorMock.Object,
+                new PositionRowsAccumulator(),
+                new AccountTypesMapper()
+            );
+            _extractor = new AccountDetailsExtractor(accountDetailsAggregator, _seleniumWaiterMock.Object);
+        }
+
+        private void StubFindElements(List<IWebElement> tBodyElements)
+        {
+            _webDriverMock.Setup(webDriver => webDriver.FindElements(By.ClassName("p-positions-tbody")))
+                .Returns(tBodyElements.AsReadOnly());
         }
 
         [Test]

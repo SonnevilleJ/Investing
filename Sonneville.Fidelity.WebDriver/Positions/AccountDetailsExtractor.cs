@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenQA.Selenium;
 using Sonneville.Fidelity.WebDriver.Data;
+using Sonneville.Fidelity.WebDriver.Logging;
 
 namespace Sonneville.Fidelity.WebDriver.Positions
 {
@@ -13,17 +15,19 @@ namespace Sonneville.Fidelity.WebDriver.Positions
     public class AccountDetailsExtractor : IAccountDetailsExtractor
     {
         private readonly IAccountDetailsAggregator _accountDetailsAggregator;
+        private readonly ISeleniumWaiter _seleniumWaiter;
 
-        public AccountDetailsExtractor(IAccountDetailsAggregator accountDetailsAggregator)
+        public AccountDetailsExtractor(
+            IAccountDetailsAggregator accountDetailsAggregator,
+            ISeleniumWaiter seleniumWaiter)
         {
             _accountDetailsAggregator = accountDetailsAggregator;
+            _seleniumWaiter = seleniumWaiter;
         }
 
         public IEnumerable<IAccountDetails> ExtractAccountDetails(IWebDriver webDriver)
         {
-
             var tableRows = FindAccountDetailsTableRows(webDriver);
-
             using (var e = tableRows.GetEnumerator())
             {
                 while (e.MoveNext())
@@ -36,15 +40,17 @@ namespace Sonneville.Fidelity.WebDriver.Positions
             }
         }
 
-        private static IEnumerable<IWebElement> FindAccountDetailsTableRows(IWebDriver webDriver)
+        private IEnumerable<IWebElement> FindAccountDetailsTableRows(IWebDriver webDriver)
         {
-            var table = FindAccountDetailsTable(webDriver);
-
-            return table.FindElements(By.TagName("tr")).AsEnumerable();
+            return FindAccountDetailsTable(webDriver)
+                .FindElements(By.TagName("tr"))
+                .AsEnumerable();
         }
 
-        private static IWebElement FindAccountDetailsTable(IWebDriver webDriver)
+        private IWebElement FindAccountDetailsTable(IWebDriver webDriver)
         {
+            _seleniumWaiter.WaitUntil(driver => driver.FindElements(By.ClassName("p-positions-tbody")).Count > 1,
+                TimeSpan.FromMinutes(1), webDriver);
             return webDriver.FindElements(By.ClassName("p-positions-tbody"))[1];
         }
 
