@@ -2,9 +2,9 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using OpenQA.Selenium;
-using Sonneville.Fidelity.Shell.Configuration;
+using Sonneville.Fidelity.WebDriver.Configuration;
 
-namespace Sonneville.Fidelity.Shell.Logging
+namespace Sonneville.Fidelity.WebDriver.Logging
 {
     public class PatientWebDriver : WebDriverBase
     {

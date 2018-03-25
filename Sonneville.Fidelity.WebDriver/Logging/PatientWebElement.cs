@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using OpenQA.Selenium;
 
-namespace Sonneville.Fidelity.Shell.Logging
+namespace Sonneville.Fidelity.WebDriver.Logging
 {
     public class PatientWebElement : WebElementBase
     {

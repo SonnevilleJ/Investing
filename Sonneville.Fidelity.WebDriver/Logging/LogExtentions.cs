@@ -3,7 +3,7 @@ using System.Diagnostics;
 using log4net;
 using log4net.Core;
 
-namespace Sonneville.Fidelity.Shell.Logging
+namespace Sonneville.Fidelity.WebDriver.Logging
 {
     public static class LogExtentions
     {

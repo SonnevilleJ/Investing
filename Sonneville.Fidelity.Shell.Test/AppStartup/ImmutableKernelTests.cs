@@ -4,7 +4,6 @@ using Ninject;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using Sonneville.Fidelity.Shell.AppStartup;
-using Sonneville.Fidelity.Shell.Configuration;
 using Sonneville.Fidelity.Shell.Interface;
 using Sonneville.Fidelity.WebDriver;
 using Sonneville.Fidelity.WebDriver.Configuration;

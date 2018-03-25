@@ -2,9 +2,9 @@
 using Moq;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using Sonneville.Fidelity.Shell.Logging;
+using Sonneville.Fidelity.WebDriver.Logging;
 
-namespace Sonneville.Fidelity.Shell.Test.Logging
+namespace Sonneville.Fidelity.WebDriver.Test.Logging
 {
     [TestFixture]
     public class SeleniumWaiterTests

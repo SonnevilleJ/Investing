@@ -37,6 +37,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="WebDriver, Version=3.11.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\Selenium.WebDriver.3.11.0\lib\net45\WebDriver.dll</HintPath>
     </Reference>
@@ -46,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\FidelityConfiguration.cs" />
+    <Compile Include="Configuration\SeleniumConfiguration.cs" />
     <Compile Include="Data\AccountDetails.cs" />
     <Compile Include="Data\AccountSummary.cs" />
     <Compile Include="Data\AccountType.cs" />
@@ -54,6 +56,14 @@
     <Compile Include="Data\TransactionType.cs" />
     <Compile Include="IManager.cs" />
     <Compile Include="IPage.cs" />
+    <Compile Include="Logging\LogExtentions.cs" />
+    <Compile Include="Logging\LoggingWebDriver.cs" />
+    <Compile Include="Logging\LoggingWebElement.cs" />
+    <Compile Include="Logging\PatientWebDriver.cs" />
+    <Compile Include="Logging\PatientWebElement.cs" />
+    <Compile Include="Logging\SeleniumWaiter.cs" />
+    <Compile Include="Logging\WebDriverBase.cs" />
+    <Compile Include="Logging\WebElementBase.cs" />
     <Compile Include="Login\LoginManager.cs" />
     <Compile Include="Login\LoginPage.cs" />
     <Compile Include="Navigation\SiteNavigator.cs" />
@@ -92,6 +102,12 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Sonneville.Fidelity.WebDriver.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sonneville.Investing\Sonneville.Investing.csproj">
+      <Project>{89a1a8e9-dd0f-40bc-b4f1-fcded6910e35}</Project>
+      <Name>Sonneville.Investing</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

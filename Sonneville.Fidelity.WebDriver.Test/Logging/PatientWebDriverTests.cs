@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using Sonneville.Fidelity.Shell.Configuration;
-using Sonneville.Fidelity.Shell.Logging;
+using Sonneville.Fidelity.WebDriver.Configuration;
+using Sonneville.Fidelity.WebDriver.Logging;
 
-namespace Sonneville.Fidelity.Shell.Test.Logging
+namespace Sonneville.Fidelity.WebDriver.Test.Logging
 {
     [TestFixture]
     public class PatientWebDriverTest

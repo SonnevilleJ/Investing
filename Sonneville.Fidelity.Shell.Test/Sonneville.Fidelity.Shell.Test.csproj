@@ -43,7 +43,6 @@
     <Compile Include="AppStartup\BootstrapperTests.cs" />
     <Compile Include="AppStartup\MutableKernelTests.cs" />
     <Compile Include="AppStartup\ImmutableKernelTests.cs" />
-    <Compile Include="Configuration\PortfolioManagerConfigurationTests.cs" />
     <Compile Include="FidelityWebDriver\AccountMapperTests.cs" />
     <Compile Include="FidelityWebDriver\AccountTypeMapperTests.cs" />
     <Compile Include="FidelityWebDriver\PositionMapperTests.cs" />
@@ -53,11 +52,6 @@
     <Compile Include="Interface\HelpCommandTests.cs" />
     <Compile Include="Interface\ImportCommandTests.cs" />
     <Compile Include="Interface\StartupCommandTests.cs" />
-    <Compile Include="Logging\LoggingWebDriverTests.cs" />
-    <Compile Include="Logging\LoggingWebElementTests.cs" />
-    <Compile Include="Logging\PatientWebDriverTests.cs" />
-    <Compile Include="Logging\PatientWebElementTests.cs" />
-    <Compile Include="Logging\SeleniumWaiterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TransactionTranslatorTests.cs" />
   </ItemGroup>

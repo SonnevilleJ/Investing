@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
-using Sonneville.Fidelity.Shell.Configuration;
 using Sonneville.Fidelity.Shell.FidelityWebDriver;
+using Sonneville.Fidelity.WebDriver.Configuration;
 using Sonneville.Fidelity.WebDriver.Data;
 using Sonneville.Fidelity.WebDriver.Positions;
 using Sonneville.Investing.Trading;
@@ -46,12 +46,11 @@ namespace Sonneville.Fidelity.Shell.Test
             _accountMapperMock.Setup(mapper => mapper.Map(accountDetails)).Returns(_tradingAccounts);
 
             var validAccountTypes = _portfolioManagerConfiguration.InScopeAccountTypes;
-            var tradingAccounts = _tradingAccounts.Where(account => validAccountTypes.Contains(account.AccountType))
-                .ToList();
+            var expectedTradingAccounts = new List<TradingAccount>();
 
             _allocationCalculatorMock = new Mock<ISecuritiesAllocationCalculator>();
             _allocationCalculatorMock.Setup(calculator => calculator.CalculateAccountAllocation(
-                It.Is<IReadOnlyList<TradingAccount>>(tas => ValidateTradingAccounts(tas, tradingAccounts))))
+                It.Is<IReadOnlyList<TradingAccount>>(tas => ValidateTradingAccounts(tas, expectedTradingAccounts))))
                 .Verifiable();
 
             _accountRebalancer = new AccountRebalancer(_positionsManagerMock.Object, _accountMapperMock.Object,

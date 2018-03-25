@@ -61,7 +61,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="WebDriver, Version=3.11.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\Selenium.WebDriver.3.11.0\lib\net45\WebDriver.dll</HintPath>
     </Reference>
@@ -75,7 +74,6 @@
     <Compile Include="AppStartup\NinjectModules\ConfigModule.cs" />
     <Compile Include="AppStartup\NinjectModules\LogProvider.cs" />
     <Compile Include="AppStartup\NinjectModules\SeleniumModule.cs" />
-    <Compile Include="Configuration\SeleniumConfiguration.cs" />
     <Compile Include="FidelityWebDriver\AccountMapper.cs" />
     <Compile Include="FidelityWebDriver\AccountTypeMapper.cs" />
     <Compile Include="FidelityWebDriver\PositionMapper.cs" />
@@ -86,14 +84,6 @@
     <Compile Include="Interface\ICommand.cs" />
     <Compile Include="Interface\ImportCommand.cs" />
     <Compile Include="Interface\StartupCommand.cs" />
-    <Compile Include="Logging\LogExtentions.cs" />
-    <Compile Include="Logging\LoggingWebDriver.cs" />
-    <Compile Include="Logging\LoggingWebElement.cs" />
-    <Compile Include="Logging\PatientWebDriver.cs" />
-    <Compile Include="Logging\PatientWebElement.cs" />
-    <Compile Include="Logging\SeleniumWaiter.cs" />
-    <Compile Include="Logging\WebDriverBase.cs" />
-    <Compile Include="Logging\WebElementBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TransactionTranslator.cs" />
   </ItemGroup>

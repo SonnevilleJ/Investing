@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
-using Sonneville.Fidelity.Shell.Configuration;
+using Sonneville.Fidelity.WebDriver.Configuration;
 using Sonneville.Investing.Trading;
 
-namespace Sonneville.Fidelity.Shell.Test.Configuration
+namespace Sonneville.Fidelity.WebDriver.Test.Configuration
 {
     [TestFixture]
-    public class PortfolioManagerConfigurationTests
+    public class SeleniumConfigurationTests
     {
         [Test]
         public void ShouldInitializeToEmptyListOfAccountTypes()

@@ -2,8 +2,6 @@
 using System.IO;
 using Ninject.Extensions.Conventions;
 using Ninject.Modules;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using Sonneville.Fidelity.Shell.Interface;
 
 namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules

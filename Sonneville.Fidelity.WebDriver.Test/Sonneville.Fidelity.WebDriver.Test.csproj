@@ -57,7 +57,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\SeleniumConfigurationTests.cs" />
     <Compile Include="Data\FidelityTransactionTests.cs" />
+    <Compile Include="Logging\LoggingWebDriverTests.cs" />
+    <Compile Include="Logging\LoggingWebElementTests.cs" />
+    <Compile Include="Logging\PatientWebDriverTests.cs" />
+    <Compile Include="Logging\PatientWebElementTests.cs" />
+    <Compile Include="Logging\SeleniumWaiterTests.cs" />
     <Compile Include="Login\LoginManagerTests.cs" />
     <Compile Include="Login\LoginPageTests.cs" />
     <Compile Include="ManagerTestsBase.cs" />
@@ -94,6 +100,10 @@
     <ProjectReference Include="..\Sonneville.Fidelity.WebDriver\Sonneville.Fidelity.WebDriver.csproj">
       <Project>{79449998-2821-4929-8A3A-98637C477F85}</Project>
       <Name>Sonneville.Fidelity.WebDriver</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sonneville.Investing\Sonneville.Investing.csproj">
+      <Project>{89a1a8e9-dd0f-40bc-b4f1-fcded6910e35}</Project>
+      <Name>Sonneville.Investing</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

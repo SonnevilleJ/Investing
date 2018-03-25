@@ -1,7 +1,7 @@
 using System.Collections.ObjectModel;
 using OpenQA.Selenium;
 
-namespace Sonneville.Fidelity.Shell.Logging
+namespace Sonneville.Fidelity.WebDriver.Logging
 {
     public abstract class WebDriverBase : IWebDriver
     {

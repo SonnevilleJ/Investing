@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Sonneville.Investing.Trading;
 
-namespace Sonneville.Fidelity.Shell.Configuration
+namespace Sonneville.Fidelity.WebDriver.Configuration
 {
     public class SeleniumConfiguration
     {
