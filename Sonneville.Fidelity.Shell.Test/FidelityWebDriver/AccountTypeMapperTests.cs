@@ -15,11 +15,26 @@ namespace Sonneville.Fidelity.Shell.Test.FidelityWebDriver
         [TestCase(AccountType.Other, Investing.Trading.AccountType.Other)]
         [TestCase(AccountType.Unknown, Investing.Trading.AccountType.Unknown)]
         [TestCase(-1, Investing.Trading.AccountType.Unknown)]
-        public void ShouldMapEnumValues(AccountType fidelityAccountType, Investing.Trading.AccountType expectedAccountType)
+        public void ShouldMapToInvesting(AccountType fidelityAccountType, Investing.Trading.AccountType investingAccountType)
         {
-            var actualAccountType = new AccountTypeMapper().Map(fidelityAccountType);
+            var actualAccountType = new AccountTypeMapper().MapToInvesting(fidelityAccountType);
 
-            Assert.AreEqual(expectedAccountType, actualAccountType);
+            Assert.AreEqual(investingAccountType, actualAccountType);
+        }
+        
+        [Test]
+        [TestCase(AccountType.HealthSavingsAccount, Investing.Trading.AccountType.HealthSavingsAccount)]
+        [TestCase(AccountType.InvestmentAccount, Investing.Trading.AccountType.InvestmentAccount)]
+        [TestCase(AccountType.RetirementAccount, Investing.Trading.AccountType.RetirementAccount)]
+        [TestCase(AccountType.CreditCard, Investing.Trading.AccountType.CreditCard)]
+        [TestCase(AccountType.Other, Investing.Trading.AccountType.Other)]
+        [TestCase(AccountType.Unknown, Investing.Trading.AccountType.Unknown)]
+        [TestCase(AccountType.Unknown, -1)]
+        public void ShouldMapToFidelity(AccountType fidelityAccountType, Investing.Trading.AccountType investingAccountType)
+        {
+            var actualAccountType = new AccountTypeMapper().MapToFidelity(investingAccountType);
+
+            Assert.AreEqual(fidelityAccountType, actualAccountType);
         }
     }
 }

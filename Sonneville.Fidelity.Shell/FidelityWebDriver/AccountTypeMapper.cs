@@ -5,7 +5,7 @@ namespace Sonneville.Fidelity.Shell.FidelityWebDriver
 {
     public class AccountTypeMapper
     {
-        public AccountType Map(FidelityAccountType accountType)
+        public AccountType MapToInvesting(FidelityAccountType accountType)
         {
             switch (accountType)
             {
@@ -21,6 +21,25 @@ namespace Sonneville.Fidelity.Shell.FidelityWebDriver
                     return AccountType.Other;
                 default:
                     return AccountType.Unknown;
+            }
+        }
+
+        public FidelityAccountType MapToFidelity(AccountType accountType)
+        {
+            switch (accountType)
+            {
+                case AccountType.RetirementAccount:
+                    return FidelityAccountType.RetirementAccount;
+                case AccountType.HealthSavingsAccount:
+                    return FidelityAccountType.HealthSavingsAccount;
+                case AccountType.InvestmentAccount:
+                    return FidelityAccountType.InvestmentAccount;
+                case AccountType.CreditCard:
+                    return FidelityAccountType.CreditCard;
+                case AccountType.Other:
+                    return FidelityAccountType.Other;
+                default:
+                    return FidelityAccountType.Unknown;
             }
         }
     }

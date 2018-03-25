@@ -32,8 +32,9 @@ namespace Sonneville.Fidelity.Shell
 
         public void RebalanceAccounts()
         {
-            var accounts = _accountMapper.Map(_positionsManager.GetAccountDetails())
+            var accounts = _positionsManager.GetAccountDetails()
                 .Where(account => _seleniumConfiguration.InScopeAccountTypes.Contains(account.AccountType))
+                .Select(_accountMapper.Map)
                 .ToList();
 
             var allocations = _securitiesAllocationCalculator.CalculateAccountAllocation(accounts);

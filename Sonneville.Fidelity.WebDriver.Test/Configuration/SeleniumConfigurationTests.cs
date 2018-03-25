@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
 using Sonneville.Fidelity.WebDriver.Configuration;
-using Sonneville.Investing.Trading;
+using Sonneville.Fidelity.WebDriver.Data;
 
 namespace Sonneville.Fidelity.WebDriver.Test.Configuration
 {

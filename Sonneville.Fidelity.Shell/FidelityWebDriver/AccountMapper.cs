@@ -30,7 +30,7 @@ namespace Sonneville.Fidelity.Shell.FidelityWebDriver
                 AccountId = accountDetails.AccountNumber,
                 PendingFunds = accountDetails.PendingActivity,
                 Positions = _positionMapper.Map(accountDetails.Positions).ToList(),
-                AccountType = _accountTypeMapper.Map(accountDetails.AccountType),
+                AccountType = _accountTypeMapper.MapToInvesting(accountDetails.AccountType),
             };
         }
 

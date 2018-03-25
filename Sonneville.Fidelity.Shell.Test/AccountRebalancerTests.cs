@@ -46,7 +46,9 @@ namespace Sonneville.Fidelity.Shell.Test
             _accountMapperMock.Setup(mapper => mapper.Map(accountDetails)).Returns(_tradingAccounts);
 
             var validAccountTypes = _portfolioManagerConfiguration.InScopeAccountTypes;
-            var expectedTradingAccounts = new List<TradingAccount>();
+            var accountTypeMapper = new AccountTypeMapper();
+            var expectedTradingAccounts = _tradingAccounts.Where(account => validAccountTypes.Contains(accountTypeMapper.MapToFidelity(account.AccountType)))
+                .ToList();
 
             _allocationCalculatorMock = new Mock<ISecuritiesAllocationCalculator>();
             _allocationCalculatorMock.Setup(calculator => calculator.CalculateAccountAllocation(
