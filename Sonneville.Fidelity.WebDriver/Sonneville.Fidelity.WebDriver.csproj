@@ -84,20 +84,18 @@
     <Compile Include="Summary\SummaryPage.cs" />
     <Compile Include="Transactions\ActivityPage.cs" />
     <Compile Include="Transactions\AttributeStrings.cs" />
-    <Compile Include="Transactions\CSV\FidelityCsvColumn.cs" />
-    <Compile Include="Transactions\CSV\FidelityCsvColumnMapper.cs" />
-    <Compile Include="Transactions\CSV\TransactionMapper.cs" />
-    <Compile Include="Transactions\CSV\TransactionsMapper.cs" />
     <Compile Include="Transactions\HistoryTransactionParser.cs" />
     <Compile Include="Transactions\TransactionManager.cs" />
-    <Compile Include="Transactions\TransactionTypeMapper.cs" />
-    <Compile Include="Utilities\NumberParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Sonneville.Fidelity.WebDriver.nuspec" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Sonneville.Investing.Fidelity\Sonneville.Investing.Fidelity.csproj">
+      <Project>{47f349c6-57a7-4cd7-aa52-abae634ce96d}</Project>
+      <Name>Sonneville.Investing.Fidelity</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sonneville.Investing\Sonneville.Investing.csproj">
       <Project>{89a1a8e9-dd0f-40bc-b4f1-fcded6910e35}</Project>
       <Name>Sonneville.Investing</Name>

@@ -4,7 +4,7 @@ using System.Linq;
 using log4net;
 using Sonneville.Investing.Domain;
 
-namespace Sonneville.Fidelity.WebDriver.Transactions.CSV
+namespace Sonneville.Investing.Fidelity.CSV
 {
     public interface ITransactionsMapper
     {

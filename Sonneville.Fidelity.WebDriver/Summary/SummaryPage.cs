@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
-using Sonneville.Fidelity.WebDriver.Utilities;
+using Sonneville.Investing.Fidelity.Utilities;
 
 namespace Sonneville.Fidelity.WebDriver.Summary
 {

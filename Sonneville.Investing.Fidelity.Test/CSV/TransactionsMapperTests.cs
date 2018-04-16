@@ -4,10 +4,10 @@ using System.Linq;
 using log4net;
 using Moq;
 using NUnit.Framework;
-using Sonneville.Fidelity.WebDriver.Transactions.CSV;
 using Sonneville.Investing.Domain;
+using Sonneville.Investing.Fidelity.CSV;
 
-namespace Sonneville.Fidelity.WebDriver.Test.Transactions.CSV
+namespace Sonneville.Investing.Fidelity.Test.CSV
 {
     [TestFixture]
     public class TransactionsMapperTests

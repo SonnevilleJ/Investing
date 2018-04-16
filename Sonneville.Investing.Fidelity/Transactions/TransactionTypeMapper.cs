@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Sonneville.Investing.Domain;
 
-namespace Sonneville.Fidelity.WebDriver.Transactions
+namespace Sonneville.Investing.Fidelity.Transactions
 {
     public interface ITransactionTypeMapper
     {

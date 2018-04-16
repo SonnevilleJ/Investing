@@ -6,8 +6,8 @@ using Moq;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using Sonneville.Fidelity.WebDriver.Positions;
-using Sonneville.Fidelity.WebDriver.Utilities;
 using Sonneville.Investing.Domain;
+using Sonneville.Investing.Fidelity.Utilities;
 
 namespace Sonneville.Fidelity.WebDriver.Test.Positions
 {

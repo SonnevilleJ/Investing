@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using log4net;
-using Sonneville.Fidelity.WebDriver.Utilities;
 using Sonneville.Investing.Domain;
+using Sonneville.Investing.Fidelity.Transactions;
+using Sonneville.Investing.Fidelity.Utilities;
 
-namespace Sonneville.Fidelity.WebDriver.Transactions.CSV
+namespace Sonneville.Investing.Fidelity.CSV
 {
     public interface ITransactionMapper
     {

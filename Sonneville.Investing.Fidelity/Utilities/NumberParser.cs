@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using log4net;
 
-namespace Sonneville.Fidelity.WebDriver.Utilities
+namespace Sonneville.Investing.Fidelity.Utilities
 {
     public static class NumberParser
     {

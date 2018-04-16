@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
-using Sonneville.Fidelity.WebDriver.Transactions.CSV;
+using Sonneville.Investing.Fidelity.CSV;
 using Sonneville.Investing.Persistence;
 
 namespace Sonneville.Fidelity.Shell.Interface

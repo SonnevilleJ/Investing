@@ -1,9 +1,9 @@
 ﻿using System;
 using NUnit.Framework;
-using Sonneville.Fidelity.WebDriver.Transactions;
 using Sonneville.Investing.Domain;
+using Sonneville.Investing.Fidelity.Transactions;
 
-namespace Sonneville.Fidelity.WebDriver.Test.Transactions
+namespace Sonneville.Investing.Fidelity.Test.Transactions
 {
     [TestFixture]
     public class TransactionTypeMapperTests

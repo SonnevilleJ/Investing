@@ -4,8 +4,9 @@ using System.Globalization;
 using System.Linq;
 using log4net;
 using OpenQA.Selenium;
-using Sonneville.Fidelity.WebDriver.Utilities;
 using Sonneville.Investing.Domain;
+using Sonneville.Investing.Fidelity.Transactions;
+using Sonneville.Investing.Fidelity.Utilities;
 
 namespace Sonneville.Fidelity.WebDriver.Transactions
 {

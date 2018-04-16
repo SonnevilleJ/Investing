@@ -7,6 +7,7 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using Sonneville.Fidelity.WebDriver.Transactions;
 using Sonneville.Investing.Domain;
+using Sonneville.Investing.Fidelity.Transactions;
 
 namespace Sonneville.Fidelity.WebDriver.Test.Transactions
 {

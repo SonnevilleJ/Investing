@@ -68,6 +68,10 @@
       <Project>{79449998-2821-4929-8A3A-98637C477F85}</Project>
       <Name>Sonneville.Fidelity.WebDriver</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Sonneville.Investing.Fidelity\Sonneville.Investing.Fidelity.csproj">
+      <Project>{47f349c6-57a7-4cd7-aa52-abae634ce96d}</Project>
+      <Name>Sonneville.Investing.Fidelity</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sonneville.Investing.Persistence\Sonneville.Investing.Persistence.csproj">
       <Project>{D5EADD51-DE65-4839-A5F5-CDF878F58AA5}</Project>
       <Name>Sonneville.Investing.Persistence</Name>

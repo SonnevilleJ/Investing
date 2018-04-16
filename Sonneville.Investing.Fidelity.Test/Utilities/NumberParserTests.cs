@@ -2,9 +2,9 @@
 using log4net;
 using Moq;
 using NUnit.Framework;
-using Sonneville.Fidelity.WebDriver.Utilities;
+using Sonneville.Investing.Fidelity.Utilities;
 
-namespace Sonneville.Fidelity.WebDriver.Test.Utilities
+namespace Sonneville.Investing.Fidelity.Test.Utilities
 {
     [TestFixture]
     public class NumberParserTests

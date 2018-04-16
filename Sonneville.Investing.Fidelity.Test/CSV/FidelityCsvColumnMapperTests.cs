@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using Sonneville.Fidelity.WebDriver.Transactions.CSV;
+using Sonneville.Investing.Fidelity.CSV;
 
-namespace Sonneville.Fidelity.WebDriver.Test.Transactions.CSV
+namespace Sonneville.Investing.Fidelity.Test.CSV
 {
     [TestFixture]
     public class FidelityCsvColumnMapperTests

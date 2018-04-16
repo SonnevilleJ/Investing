@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Sonneville.Fidelity.WebDriver.Transactions.CSV
+namespace Sonneville.Investing.Fidelity.CSV
 {
     public interface IFidelityCsvColumnMapper
     {

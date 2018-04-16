@@ -31,6 +31,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.Fidelity.WebDriv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.Fidelity.WebDriver.Test", "Sonneville.Fidelity.WebDriver.Test\Sonneville.Fidelity.WebDriver.Test.csproj", "{28C9B637-3E4E-45BD-9CEE-B32EC6EE4C1A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.Investing.Fidelity.Test", "Sonneville.Investing.Fidelity.Test\Sonneville.Investing.Fidelity.Test.csproj", "{2E77D2E8-097C-4705-A5AD-29062528445F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.Investing.Fidelity", "Sonneville.Investing.Fidelity\Sonneville.Investing.Fidelity.csproj", "{47F349C6-57A7-4CD7-AA52-ABAE634CE96D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +81,14 @@ Global
 		{28C9B637-3E4E-45BD-9CEE-B32EC6EE4C1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28C9B637-3E4E-45BD-9CEE-B32EC6EE4C1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28C9B637-3E4E-45BD-9CEE-B32EC6EE4C1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E77D2E8-097C-4705-A5AD-29062528445F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E77D2E8-097C-4705-A5AD-29062528445F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E77D2E8-097C-4705-A5AD-29062528445F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E77D2E8-097C-4705-A5AD-29062528445F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47F349C6-57A7-4CD7-AA52-ABAE634CE96D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47F349C6-57A7-4CD7-AA52-ABAE634CE96D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47F349C6-57A7-4CD7-AA52-ABAE634CE96D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47F349C6-57A7-4CD7-AA52-ABAE634CE96D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

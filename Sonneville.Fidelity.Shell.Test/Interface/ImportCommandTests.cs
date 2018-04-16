@@ -4,8 +4,8 @@ using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
 using Sonneville.Fidelity.Shell.Interface;
-using Sonneville.Fidelity.WebDriver.Transactions.CSV;
 using Sonneville.Investing.Domain;
+using Sonneville.Investing.Fidelity.CSV;
 using Sonneville.Investing.Persistence;
 
 namespace Sonneville.Fidelity.Shell.Test.Interface

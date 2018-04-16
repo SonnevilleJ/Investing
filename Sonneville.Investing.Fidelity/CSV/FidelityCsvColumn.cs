@@ -1,4 +1,4 @@
-namespace Sonneville.Fidelity.WebDriver.Transactions.CSV
+namespace Sonneville.Investing.Fidelity.CSV
 {
     public enum FidelityCsvColumn
     {

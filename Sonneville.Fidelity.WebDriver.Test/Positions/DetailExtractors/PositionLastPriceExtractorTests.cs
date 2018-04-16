@@ -3,7 +3,7 @@ using Moq;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using Sonneville.Fidelity.WebDriver.Positions.DetailExtractors;
-using Sonneville.Fidelity.WebDriver.Utilities;
+using Sonneville.Investing.Fidelity.Utilities;
 
 namespace Sonneville.Fidelity.WebDriver.Test.Positions.DetailExtractors
 {
