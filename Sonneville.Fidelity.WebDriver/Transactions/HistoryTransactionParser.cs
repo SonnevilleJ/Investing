@@ -4,14 +4,14 @@ using System.Globalization;
 using System.Linq;
 using log4net;
 using OpenQA.Selenium;
-using Sonneville.Fidelity.WebDriver.Data;
 using Sonneville.Fidelity.WebDriver.Utilities;
+using Sonneville.Investing.Domain;
 
 namespace Sonneville.Fidelity.WebDriver.Transactions
 {
     public interface IHistoryTransactionParser
     {
-        IEnumerable<IFidelityTransaction> ParseFidelityTransactions(IWebElement historyRoot);
+        IEnumerable<ITransaction> ParseFidelityTransactions(IWebElement historyRoot);
     }
 
     public class HistoryTransactionParser : IHistoryTransactionParser
@@ -25,7 +25,7 @@ namespace Sonneville.Fidelity.WebDriver.Transactions
             _transactionTypeMapper = transactionTypeMapper;
         }
 
-        public IEnumerable<IFidelityTransaction> ParseFidelityTransactions(IWebElement historyRoot)
+        public IEnumerable<ITransaction> ParseFidelityTransactions(IWebElement historyRoot)
         {
             return historyRoot.FindElements(By.TagName("tbody"))[0]
                 .FindElements(By.TagName("tr"))
@@ -35,9 +35,9 @@ namespace Sonneville.Fidelity.WebDriver.Transactions
                 .Select(transactionRows => ParseTransactionFromRows(transactionRows.ToArray()));
         }
 
-        private IFidelityTransaction ParseTransactionFromRows(IReadOnlyList<IWebElement> normalAndContentRows)
+        private ITransaction ParseTransactionFromRows(IReadOnlyList<IWebElement> normalAndContentRows)
         {
-            var result = new FidelityTransaction();
+            var result = new Transaction();
             normalAndContentRows[0].Click();
             var normalTDs = normalAndContentRows[0].FindElements(By.TagName("td"));
             result.RunDate = ParseDate(normalTDs[0].Text);

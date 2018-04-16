@@ -58,7 +58,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\SeleniumConfigurationTests.cs" />
-    <Compile Include="Data\FidelityTransactionTests.cs" />
     <Compile Include="Logging\LoggingWebDriverTests.cs" />
     <Compile Include="Logging\LoggingWebElementTests.cs" />
     <Compile Include="Logging\PatientWebDriverTests.cs" />

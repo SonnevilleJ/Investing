@@ -48,12 +48,6 @@
   <ItemGroup>
     <Compile Include="Configuration\FidelityConfiguration.cs" />
     <Compile Include="Configuration\SeleniumConfiguration.cs" />
-    <Compile Include="Data\AccountDetails.cs" />
-    <Compile Include="Data\AccountSummary.cs" />
-    <Compile Include="Data\AccountType.cs" />
-    <Compile Include="Data\FidelityTransaction.cs" />
-    <Compile Include="Data\Position.cs" />
-    <Compile Include="Data\TransactionType.cs" />
     <Compile Include="IManager.cs" />
     <Compile Include="IPage.cs" />
     <Compile Include="Logging\LogExtentions.cs" />

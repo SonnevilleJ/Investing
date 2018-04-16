@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Sonneville.Fidelity.WebDriver.Data;
+using Sonneville.Investing.Domain;
 
 namespace Sonneville.Fidelity.Shell.Test
 {

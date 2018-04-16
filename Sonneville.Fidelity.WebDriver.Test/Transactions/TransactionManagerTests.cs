@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
-using Sonneville.Fidelity.WebDriver.Data;
 using Sonneville.Fidelity.WebDriver.Login;
 using Sonneville.Fidelity.WebDriver.Transactions;
+using Sonneville.Investing.Domain;
 
 namespace Sonneville.Fidelity.WebDriver.Test.Transactions
 {
@@ -13,7 +13,7 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions
     {
         private Mock<ILoginManager> _loginManagerMock;
         private Mock<IActivityPage> _activityPageMock;
-        private List<IFidelityTransaction> _transactions;
+        private List<ITransaction> _transactions;
         private DateTime _startDate;
         private DateTime _endDate;
 
@@ -22,9 +22,9 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions
             _startDate = DateTime.MinValue;
             _endDate = DateTime.Today;
 
-            _transactions = new List<IFidelityTransaction>
+            _transactions = new List<ITransaction>
             {
-                new FidelityTransaction()
+                new Transaction()
             };
 
             _activityPageMock = new Mock<IActivityPage>();

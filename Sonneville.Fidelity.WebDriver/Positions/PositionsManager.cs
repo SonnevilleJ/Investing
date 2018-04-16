@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using log4net;
-using Sonneville.Fidelity.WebDriver.Data;
 using Sonneville.Fidelity.WebDriver.Login;
 using Sonneville.Fidelity.WebDriver.Navigation;
+using Sonneville.Investing.Domain;
 
 namespace Sonneville.Fidelity.WebDriver.Positions
 {

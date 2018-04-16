@@ -60,10 +60,6 @@
         <None Include="packages.config"/>
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\Sonneville.Fidelity.WebDriver\Sonneville.Fidelity.WebDriver.csproj">
-            <Project>{79449998-2821-4929-8A3A-98637C477F85}</Project>
-            <Name>Sonneville.Fidelity.WebDriver</Name>
-        </ProjectReference>
         <ProjectReference Include="..\Sonneville.Investing.Persistence\Sonneville.Investing.Persistence.csproj">
             <Project>{D5EADD51-DE65-4839-A5F5-CDF878F58AA5}</Project>
             <Name>Sonneville.Investing.Persistence</Name>

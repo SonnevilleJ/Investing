@@ -1,4 +1,4 @@
-namespace Sonneville.Fidelity.WebDriver.Data
+namespace Sonneville.Investing.Domain
 {
     public interface IAccountSummary
     {

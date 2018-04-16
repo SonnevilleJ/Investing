@@ -4,8 +4,8 @@ using System.Linq;
 using log4net;
 using Moq;
 using NUnit.Framework;
-using Sonneville.Fidelity.WebDriver.Data;
 using Sonneville.Fidelity.WebDriver.Transactions.CSV;
+using Sonneville.Investing.Domain;
 
 namespace Sonneville.Fidelity.WebDriver.Test.Transactions.CSV
 {
@@ -81,16 +81,16 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions.CSV
             return $"{headerRow}{newLine}{string.Join(newLine, records)}";
         }
 
-        private IEnumerable<IFidelityTransaction> SetupExpectedTransactions(IEnumerable<string> csvRecords)
+        private IEnumerable<ITransaction> SetupExpectedTransactions(IEnumerable<string> csvRecords)
         {
             return csvRecords.TakeWhile(record => !string.IsNullOrWhiteSpace(record))
                 .Select(SetupMockTransaction)
                 .ToList();
         }
 
-        private IFidelityTransaction SetupMockTransaction(string record)
+        private ITransaction SetupMockTransaction(string record)
         {
-            var transactionMock = new Mock<IFidelityTransaction>();
+            var transactionMock = new Mock<ITransaction>();
             _transactionMapperMock.Setup(mapper => mapper.CreateTransaction(record, _columnMappings))
                 .Returns(transactionMock.Object);
             return transactionMock.Object;

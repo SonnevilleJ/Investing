@@ -4,8 +4,8 @@ using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
 using Sonneville.Fidelity.Shell.Interface;
-using Sonneville.Fidelity.WebDriver.Data;
 using Sonneville.Fidelity.WebDriver.Transactions.CSV;
+using Sonneville.Investing.Domain;
 using Sonneville.Investing.Persistence;
 
 namespace Sonneville.Fidelity.Shell.Test.Interface
@@ -21,7 +21,7 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
         private Mock<ITransactionsMapper> _transactionsMapperMock;
         private ImportCommand _importCommand;
         private string _fileContents;
-        private List<IFidelityTransaction> _fidelityTransactions;
+        private List<ITransaction> _fidelityTransactions;
         private Mock<ITransactionRepository> _transactionRepository;
 
         [SetUp]
@@ -40,9 +40,9 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
             _outputReader = new StreamReader(outputStream);
             _outputWriter = new StreamWriter(outputStream) {AutoFlush = true};
 
-            _fidelityTransactions = new List<IFidelityTransaction>
+            _fidelityTransactions = new List<ITransaction>
             {
-                new FidelityTransaction()
+                new Transaction()
             };
             
             _transactionsMapperMock = new Mock<ITransactionsMapper>();
@@ -75,7 +75,7 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
             Assert.IsFalse(shouldExit);
             _transactionRepository.Verify(repository =>
                 repository.Save(
-                    It.Is<IEnumerable<IFidelityTransaction>>(transactions => AssertTransactionsMatch(transactions))));
+                    It.Is<IEnumerable<ITransaction>>(transactions => AssertTransactionsMatch(transactions))));
         }
 
         [Test]
@@ -113,7 +113,7 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
             return _outputReader.ReadToEnd();
         }
 
-        private bool AssertTransactionsMatch(IEnumerable<IFidelityTransaction> transactions)
+        private bool AssertTransactionsMatch(IEnumerable<ITransaction> transactions)
         {
             CollectionAssert.AreEquivalent(_fidelityTransactions, transactions);
             return true;

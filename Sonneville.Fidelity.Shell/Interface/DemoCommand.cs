@@ -5,9 +5,9 @@ using System.Linq;
 using log4net;
 using NDesk.Options;
 using Sonneville.Fidelity.WebDriver.Configuration;
-using Sonneville.Fidelity.WebDriver.Data;
 using Sonneville.Fidelity.WebDriver.Positions;
 using Sonneville.Fidelity.WebDriver.Transactions;
+using Sonneville.Investing.Domain;
 using Sonneville.Utilities.Persistence.v2;
 
 namespace Sonneville.Fidelity.Shell.Interface
@@ -151,7 +151,7 @@ namespace Sonneville.Fidelity.Shell.Interface
             }
         }
 
-        private void PrintRecentTransactions(IReadOnlyCollection<IFidelityTransaction> transactions,
+        private void PrintRecentTransactions(IReadOnlyCollection<ITransaction> transactions,
             TextWriter outputWriter)
         {
             LogToScreen(outputWriter, $"Found {transactions.Count} recent transactions!");

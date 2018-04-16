@@ -5,8 +5,8 @@ using log4net;
 using Moq;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using Sonneville.Fidelity.WebDriver.Data;
 using Sonneville.Fidelity.WebDriver.Transactions;
+using Sonneville.Investing.Domain;
 
 namespace Sonneville.Fidelity.WebDriver.Test.Transactions
 {
@@ -43,7 +43,7 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions
         [Test]
         public void GetHistoryShouldParseDepositTransactions()
         {
-            var expectedTransactions = new List<FidelityTransaction>
+            var expectedTransactions = new List<Transaction>
             {
                 CreateDepositTransaction()
             };
@@ -57,7 +57,7 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions
         [Test]
         public void GetHistoryShouldParseDepositBrokerageLinkTransactions()
         {
-            var expectedTransactions = new List<FidelityTransaction>
+            var expectedTransactions = new List<Transaction>
             {
                 CreateDepositBrokeragelinkTransaction()
             };
@@ -71,7 +71,7 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions
         [Test]
         public void GetHistoryShouldParseDepositHsaTransactions()
         {
-            var expectedTransactions = new List<FidelityTransaction>
+            var expectedTransactions = new List<Transaction>
             {
                 CreateDepositHsaTransaction()
             };
@@ -85,7 +85,7 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions
         [Test]
         public void GetHistoryShouldParseDividendReceiptTransactions()
         {
-            var expectedTransactions = new List<FidelityTransaction>
+            var expectedTransactions = new List<Transaction>
             {
                 CreateDividendReceivedTransaction()
             };
@@ -99,7 +99,7 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions
         [Test]
         public void GetHistoryShouldParseDividendReinvestmentTransactions()
         {
-            var expectedTransactions = new List<FidelityTransaction>
+            var expectedTransactions = new List<Transaction>
             {
                 CreateDividendReinvestmentTransaction()
             };
@@ -113,7 +113,7 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions
         [Test]
         public void GetHistoryShouldParseWithdrawalTransactions()
         {
-            var expectedTransactions = new List<FidelityTransaction>
+            var expectedTransactions = new List<Transaction>
             {
                 CreateWithdrawalTransaction()
             };
@@ -127,7 +127,7 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions
         [Test]
         public void GetHistoryShouldParseShortTermCapitalGainTransactions()
         {
-            var expectedTransactions = new List<FidelityTransaction>
+            var expectedTransactions = new List<Transaction>
             {
                 CreateShortTermCapitalGainTransaction()
             };
@@ -141,7 +141,7 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions
         [Test]
         public void GetHistoryShouldParseLongTermCapitalGainTransactions()
         {
-            var expectedTransactions = new List<FidelityTransaction>
+            var expectedTransactions = new List<Transaction>
             {
                 CreateLongTermCapitalGainTransaction()
             };
@@ -155,7 +155,7 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions
         [Test]
         public void GetHistoryShouldParseBuyTransactions()
         {
-            var expectedTransactions = new List<FidelityTransaction>
+            var expectedTransactions = new List<Transaction>
             {
                 CreateBuyTransaction()
             };
@@ -169,7 +169,7 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions
         [Test]
         public void GetHistoryShouldParseSellTransactions()
         {
-            var expectedTransactions = new List<FidelityTransaction>
+            var expectedTransactions = new List<Transaction>
             {
                 CreateSellTransaction()
             };
@@ -183,7 +183,7 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions
         [Test]
         public void GetHistoryShouldParseInLieuOfSellTransactions()
         {
-            var expectedTransactions = new List<FidelityTransaction>
+            var expectedTransactions = new List<Transaction>
             {
                 CreateSellTransaction()
             };
@@ -200,7 +200,7 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions
         public void ShouldLogUnknownTransactionTypes()
         {
             var unknownTransaction = CreateUnknownTransaction();
-            var expectedTransactions = new List<FidelityTransaction>
+            var expectedTransactions = new List<Transaction>
             {
                 unknownTransaction
             };
@@ -214,7 +214,7 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions
                 message.Contains(unknownTransaction.SecurityDescription))));
         }
 
-        private void SetupHistoryTable(IEnumerable<FidelityTransaction> expectedTransactions, ICollection<string> excludedKeys = null)
+        private void SetupHistoryTable(IEnumerable<Transaction> expectedTransactions, ICollection<string> excludedKeys = null)
         {
             _historyTableBodyMock.Setup(div => div.FindElements(By.TagName("tr")))
                 .Returns(expectedTransactions
@@ -223,9 +223,9 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions
                     .AsReadOnly());
         }
 
-        private FidelityTransaction CreateDepositTransaction(TransactionType transactionType = TransactionType.Deposit)
+        private Transaction CreateDepositTransaction(TransactionType transactionType = TransactionType.Deposit)
         {
-            return new FidelityTransaction
+            return new Transaction
             {
                 Type = transactionType,
                 RunDate = new DateTime(2016, 12, 26),
@@ -236,25 +236,25 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions
             };
         }
 
-        private FidelityTransaction CreateDepositBrokeragelinkTransaction()
+        private Transaction CreateDepositBrokeragelinkTransaction()
         {
             return CreateDepositTransaction(TransactionType.DepositBrokeragelink);
         }
 
-        private FidelityTransaction CreateDepositHsaTransaction()
+        private Transaction CreateDepositHsaTransaction()
         {
             return CreateDepositTransaction(TransactionType.DepositHSA);
         }
 
-        private FidelityTransaction CreateWithdrawalTransaction()
+        private Transaction CreateWithdrawalTransaction()
         {
             return CreateDepositTransaction(TransactionType.Withdrawal);
         }
 
-        private FidelityTransaction CreateDividendReceivedTransaction()
+        private Transaction CreateDividendReceivedTransaction()
         {
             const TransactionType transactionType = TransactionType.DividendReceipt;
-            return new FidelityTransaction
+            return new Transaction
             {
                 Type = transactionType,
                 RunDate = new DateTime(2016, 12, 26),
@@ -266,10 +266,10 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions
             };
         }
 
-        private FidelityTransaction CreateDividendReinvestmentTransaction()
+        private Transaction CreateDividendReinvestmentTransaction()
         {
             const TransactionType transactionType = TransactionType.DividendReinvestment;
-            return new FidelityTransaction
+            return new Transaction
             {
                 Type = transactionType,
                 RunDate = new DateTime(2016, 12, 26),
@@ -283,10 +283,10 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions
             };
         }
 
-        private FidelityTransaction CreateShortTermCapitalGainTransaction(
+        private Transaction CreateShortTermCapitalGainTransaction(
             TransactionType transactionType = TransactionType.ShortTermCapGain)
         {
-            return new FidelityTransaction
+            return new Transaction
             {
                 Type = transactionType,
                 RunDate = new DateTime(2016, 12, 26),
@@ -298,15 +298,15 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions
             };
         }
 
-        private FidelityTransaction CreateLongTermCapitalGainTransaction()
+        private Transaction CreateLongTermCapitalGainTransaction()
         {
             return CreateShortTermCapitalGainTransaction(TransactionType.LongTermCapGain);
         }
 
-        private FidelityTransaction CreateBuyTransaction()
+        private Transaction CreateBuyTransaction()
         {
             const TransactionType transactionType = TransactionType.Buy;
-            return new FidelityTransaction
+            return new Transaction
             {
                 Type = transactionType,
                 RunDate = new DateTime(2016, 12, 26),
@@ -321,10 +321,10 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions
             };
         }
 
-        private FidelityTransaction CreateSellTransaction()
+        private Transaction CreateSellTransaction()
         {
             const TransactionType transactionType = TransactionType.Sell;
-            return new FidelityTransaction
+            return new Transaction
             {
                 Type = transactionType,
                 RunDate = new DateTime(2016, 12, 26),
@@ -340,10 +340,10 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions
             };
         }
 
-        private FidelityTransaction CreateUnknownTransaction()
+        private Transaction CreateUnknownTransaction()
         {
             const TransactionType transactionType = TransactionType.Unknown;
-            return new FidelityTransaction
+            return new Transaction
             {
                 Type = transactionType,
                 RunDate = new DateTime(2016, 12, 26),

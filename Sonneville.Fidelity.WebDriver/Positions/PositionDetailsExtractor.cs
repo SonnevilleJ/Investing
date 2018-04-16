@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenQA.Selenium;
-using Sonneville.Fidelity.WebDriver.Data;
 using Sonneville.Fidelity.WebDriver.Positions.DetailExtractors;
+using Sonneville.Investing.Domain;
 
 namespace Sonneville.Fidelity.WebDriver.Positions
 {

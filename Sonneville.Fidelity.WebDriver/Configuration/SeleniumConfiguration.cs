@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Sonneville.Fidelity.WebDriver.Data;
+using Sonneville.Investing.Domain;
 
 namespace Sonneville.Fidelity.WebDriver.Configuration
 {

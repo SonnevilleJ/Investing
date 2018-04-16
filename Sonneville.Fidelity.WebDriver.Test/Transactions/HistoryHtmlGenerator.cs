@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using OpenQA.Selenium;
-using Sonneville.Fidelity.WebDriver.Data;
 using Sonneville.Fidelity.WebDriver.Transactions;
+using Sonneville.Investing.Domain;
 
 namespace Sonneville.Fidelity.WebDriver.Test.Transactions
 {
     public class HistoryHtmlGenerator
     {
-        public IEnumerable<IWebElement> MapToTableRows(IFidelityTransaction transaction, ICollection<string> excludedKeys = null)
+        public IEnumerable<IWebElement> MapToTableRows(ITransaction transaction, ICollection<string> excludedKeys = null)
         {
             var contentRow = CreateContentRow(transaction, excludedKeys ?? new string[0]);
             var normalRow = CreateNormalRow(transaction, contentRow);
@@ -21,7 +21,7 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions
             yield return garbageRow.Object;
         }
 
-        private Mock<IWebElement> CreateNormalRow(IFidelityTransaction transaction, Mock<IWebElement> contentRow)
+        private Mock<IWebElement> CreateNormalRow(ITransaction transaction, Mock<IWebElement> contentRow)
         {
             var trNormalRowExpandableMock = CreateNormalRowMock();
             trNormalRowExpandableMock.Setup(tr => tr.GetAttribute("class")).Returns("normal-row expandable");
@@ -51,7 +51,7 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions
             return trNormalRowExpandableMock;
         }
 
-        private Mock<IWebElement> CreateContentRow(IFidelityTransaction transaction, ICollection<string> excludeKeys)
+        private Mock<IWebElement> CreateContentRow(ITransaction transaction, ICollection<string> excludeKeys)
         {
             var trContentRowMock = CreateContentRowMock();
             trContentRowMock.Setup(tr => tr.FindElement(By.TagName("tbody")))
@@ -59,7 +59,7 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions
             return trContentRowMock;
         }
 
-        private IWebElement CreateActivityTrs(IFidelityTransaction transaction, ICollection<string> excludedKeys)
+        private IWebElement CreateActivityTrs(ITransaction transaction, ICollection<string> excludedKeys)
         {
             var trs = CreateTrDictionary(transaction)
                 .Where(kvp => !excludedKeys.Contains(kvp.Key.Text))
@@ -78,7 +78,7 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions
             return tbodyMock.Object;
         }
 
-        private IEnumerable<KeyValuePair<IWebElement, IWebElement>> CreateTrDictionary(IFidelityTransaction transaction)
+        private IEnumerable<KeyValuePair<IWebElement, IWebElement>> CreateTrDictionary(ITransaction transaction)
         {
             switch (transaction.Type)
             {

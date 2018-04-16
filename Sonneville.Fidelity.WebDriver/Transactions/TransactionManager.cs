@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using log4net;
-using Sonneville.Fidelity.WebDriver.Data;
 using Sonneville.Fidelity.WebDriver.Login;
 using Sonneville.Fidelity.WebDriver.Navigation;
+using Sonneville.Investing.Domain;
 
 namespace Sonneville.Fidelity.WebDriver.Transactions
 {
     public interface ITransactionManager : IManager
     {
-        IList<IFidelityTransaction> GetTransactionHistory(DateTime startDate, DateTime endDate);
+        IList<ITransaction> GetTransactionHistory(DateTime startDate, DateTime endDate);
     }
 
     public class TransactionManager : ITransactionManager
@@ -26,7 +26,7 @@ namespace Sonneville.Fidelity.WebDriver.Transactions
             _loginManager = loginManager;
         }
 
-        public IList<IFidelityTransaction> GetTransactionHistory(DateTime startDate, DateTime endDate)
+        public IList<ITransaction> GetTransactionHistory(DateTime startDate, DateTime endDate)
         {
             _log.Info("Getting transaction history...");
 

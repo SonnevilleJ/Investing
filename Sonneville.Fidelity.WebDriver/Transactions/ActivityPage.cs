@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
-using Sonneville.Fidelity.WebDriver.Data;
+using Sonneville.Investing.Domain;
 
 namespace Sonneville.Fidelity.WebDriver.Transactions
 {
     public interface IActivityPage : IPage
     {
-        IEnumerable<IFidelityTransaction> GetTransactions(DateTime startDate, DateTime endDate);
+        IEnumerable<ITransaction> GetTransactions(DateTime startDate, DateTime endDate);
     }
 
     public class ActivityPage : IActivityPage
@@ -23,7 +23,7 @@ namespace Sonneville.Fidelity.WebDriver.Transactions
             _historyTransactionParser = historyTransactionParser;
         }
 
-        public IEnumerable<IFidelityTransaction> GetTransactions(DateTime startDate, DateTime endDate)
+        public IEnumerable<ITransaction> GetTransactions(DateTime startDate, DateTime endDate)
         {
             ThrowIfDateRangeIsInvalid(startDate, endDate);
 
@@ -37,7 +37,7 @@ namespace Sonneville.Fidelity.WebDriver.Transactions
                 .ToList();
         }
 
-        private IEnumerable<IFidelityTransaction> ParseTransactionsInDateRange(IWebElement historyRoot, DateTime startDate, DateTime endDate)
+        private IEnumerable<ITransaction> ParseTransactionsInDateRange(IWebElement historyRoot, DateTime startDate, DateTime endDate)
         {
             SetTimePeriod(historyRoot, startDate, endDate);
 

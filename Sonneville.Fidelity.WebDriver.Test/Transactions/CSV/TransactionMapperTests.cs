@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using log4net;
 using Moq;
 using NUnit.Framework;
-using Sonneville.Fidelity.WebDriver.Data;
 using Sonneville.Fidelity.WebDriver.Transactions;
 using Sonneville.Fidelity.WebDriver.Transactions.CSV;
+using Sonneville.Investing.Domain;
 
 namespace Sonneville.Fidelity.WebDriver.Test.Transactions.CSV
 {

@@ -2,8 +2,8 @@
 using System.Linq;
 using log4net;
 using OpenQA.Selenium;
-using Sonneville.Fidelity.WebDriver.Data;
 using Sonneville.Fidelity.WebDriver.Utilities;
+using Sonneville.Investing.Domain;
 
 namespace Sonneville.Fidelity.WebDriver.Positions
 {

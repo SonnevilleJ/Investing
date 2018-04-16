@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using log4net;
-using Sonneville.Fidelity.WebDriver.Data;
+using Sonneville.Investing.Domain;
 
 namespace Sonneville.Fidelity.WebDriver.Transactions.CSV
 {
     public interface ITransactionsMapper
     {
-        IEnumerable<IFidelityTransaction> ParseCsv(string csvContent);
+        IEnumerable<ITransaction> ParseCsv(string csvContent);
     }
 
     public class TransactionsMapper : ITransactionsMapper
@@ -27,7 +27,7 @@ namespace Sonneville.Fidelity.WebDriver.Transactions.CSV
             _transactionMapper = transactionMapper;
         }
 
-        public IEnumerable<IFidelityTransaction> ParseCsv(string csvContent)
+        public IEnumerable<ITransaction> ParseCsv(string csvContent)
         {
             var rows = csvContent.Trim().Split(new[] {"\n", "\r\n"}, StringSplitOptions.None);
             var columnIndices = _fidelityCsvColumnMapper.GetColumnMappings(rows.First());

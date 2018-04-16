@@ -5,9 +5,9 @@ using log4net;
 using Moq;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using Sonneville.Fidelity.WebDriver.Data;
 using Sonneville.Fidelity.WebDriver.Logging;
 using Sonneville.Fidelity.WebDriver.Positions;
+using Sonneville.Investing.Domain;
 
 namespace Sonneville.Fidelity.WebDriver.Test.Positions
 {

@@ -1,81 +1,86 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
-    <PropertyGroup>
-        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-        <ProjectGuid>{89A1A8E9-DD0F-40BC-B4F1-FCDED6910E35}</ProjectGuid>
-        <OutputType>Library</OutputType>
-        <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>Sonneville.Investing</RootNamespace>
-        <AssemblyName>Sonneville.Investing</AssemblyName>
-        <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-        <FileAlignment>512</FileAlignment>
-        <TargetFrameworkProfile/>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <DebugSymbols>true</DebugSymbols>
-        <DebugType>full</DebugType>
-        <Optimize>false</Optimize>
-        <OutputPath>bin\Debug\</OutputPath>
-        <DefineConstants>DEBUG;TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <DebugType>pdbonly</DebugType>
-        <Optimize>true</Optimize>
-        <OutputPath>bin\Release\</OutputPath>
-        <DefineConstants>TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-    </PropertyGroup>
-    <ItemGroup>
-        <Reference Include="System"/>
-        <Reference Include="System.Core"/>
-    </ItemGroup>
-    <ItemGroup>
-        <Compile Include="Accounting\PositionsFactory.cs"/>
-        <Compile Include="Accounting\CashStrategies\CanOnlyWithdrawAvailableFundsStrategy.cs"/>
-        <Compile Include="Accounting\CashStrategies\ICashTransactionStrategy.cs"/>
-        <Compile Include="Accounting\CashStrategies\OnlyAcceptNegativeAmountWithdrawalsStrategy.cs"/>
-        <Compile Include="Accounting\CashStrategies\OnlyAcceptPositiveOrZeroAmountDepositsStrategy.cs"/>
-        <Compile Include="Accounting\Cash\CashAccount.cs"/>
-        <Compile Include="Accounting\Cash\CashAccountBalanceCalculator.cs"/>
-        <Compile Include="Accounting\Cash\ICashAccount.cs"/>
-        <Compile Include="Accounting\Cash\ICashAccountBalanceCalculator.cs"/>
-        <Compile Include="Accounting\Cash\Transactions\Deposit.cs"/>
-        <Compile Include="Accounting\Cash\Transactions\ICashTransaction.cs"/>
-        <Compile Include="Accounting\Cash\Transactions\IDeposit.cs"/>
-        <Compile Include="Accounting\Cash\Transactions\IWithdrawal.cs"/>
-        <Compile Include="Accounting\Cash\Transactions\Withdrawal.cs"/>
-        <Compile Include="Accounting\Securities\HeldSharesCalculator.cs"/>
-        <Compile Include="Accounting\Securities\IHeldSharesCalculator.cs"/>
-        <Compile Include="Accounting\Securities\IShareAccount.cs"/>
-        <Compile Include="Accounting\Securities\ShareAccount.cs"/>
-        <Compile Include="Accounting\Securities\Transactions\Buy.cs"/>
-        <Compile Include="Accounting\Securities\Transactions\IBuy.cs"/>
-        <Compile Include="Accounting\Securities\Transactions\ISell.cs"/>
-        <Compile Include="Accounting\Securities\Transactions\IShareTransaction.cs"/>
-        <Compile Include="Accounting\Securities\Transactions\Sell.cs"/>
-        <Compile Include="Accounting\ShareStrategies\CannotSellMoreSharesThanOwnedStrategy.cs"/>
-        <Compile Include="Accounting\ShareStrategies\IShareTransactionStrategy.cs"/>
-        <Compile Include="Accounting\ShareStrategies\WithdrawFundsBeforeBuyingStrategy.cs"/>
-        <Compile Include="Properties\AssemblyInfo.cs"/>
-        <Compile Include="Trading\AccountAllocation.cs"/>
-        <Compile Include="Trading\AccountType.cs"/>
-        <Compile Include="Trading\TransactionType.cs"/>
-        <Compile Include="Trading\PositionAllocation.cs"/>
-        <Compile Include="Trading\Order.cs"/>
-        <Compile Include="Trading\OrderFactory.cs"/>
-        <Compile Include="Trading\Position.cs"/>
-        <Compile Include="Trading\PriceQuote.cs"/>
-        <Compile Include="Trading\SecuritiesAllocationCalculator.cs"/>
-        <Compile Include="Trading\TradingAccount.cs"/>
-        <Compile Include="Trading\TradingAccountBalanceCalculator.cs"/>
-    </ItemGroup>
-    <ItemGroup>
-        <None Include="Sonneville.Investing.nuspec"/>
-    </ItemGroup>
-    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{89A1A8E9-DD0F-40BC-B4F1-FCDED6910E35}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Sonneville.Investing</RootNamespace>
+    <AssemblyName>Sonneville.Investing</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Accounting\PositionsFactory.cs" />
+    <Compile Include="Accounting\CashStrategies\CanOnlyWithdrawAvailableFundsStrategy.cs" />
+    <Compile Include="Accounting\CashStrategies\ICashTransactionStrategy.cs" />
+    <Compile Include="Accounting\CashStrategies\OnlyAcceptNegativeAmountWithdrawalsStrategy.cs" />
+    <Compile Include="Accounting\CashStrategies\OnlyAcceptPositiveOrZeroAmountDepositsStrategy.cs" />
+    <Compile Include="Accounting\Cash\CashAccount.cs" />
+    <Compile Include="Accounting\Cash\CashAccountBalanceCalculator.cs" />
+    <Compile Include="Accounting\Cash\ICashAccount.cs" />
+    <Compile Include="Accounting\Cash\ICashAccountBalanceCalculator.cs" />
+    <Compile Include="Accounting\Cash\Transactions\Deposit.cs" />
+    <Compile Include="Accounting\Cash\Transactions\ICashTransaction.cs" />
+    <Compile Include="Accounting\Cash\Transactions\IDeposit.cs" />
+    <Compile Include="Accounting\Cash\Transactions\IWithdrawal.cs" />
+    <Compile Include="Accounting\Cash\Transactions\Withdrawal.cs" />
+    <Compile Include="Accounting\Securities\HeldSharesCalculator.cs" />
+    <Compile Include="Accounting\Securities\IHeldSharesCalculator.cs" />
+    <Compile Include="Accounting\Securities\IShareAccount.cs" />
+    <Compile Include="Accounting\Securities\ShareAccount.cs" />
+    <Compile Include="Accounting\Securities\Transactions\Buy.cs" />
+    <Compile Include="Accounting\Securities\Transactions\IBuy.cs" />
+    <Compile Include="Accounting\Securities\Transactions\ISell.cs" />
+    <Compile Include="Accounting\Securities\Transactions\IShareTransaction.cs" />
+    <Compile Include="Accounting\Securities\Transactions\Sell.cs" />
+    <Compile Include="Accounting\ShareStrategies\CannotSellMoreSharesThanOwnedStrategy.cs" />
+    <Compile Include="Accounting\ShareStrategies\IShareTransactionStrategy.cs" />
+    <Compile Include="Accounting\ShareStrategies\WithdrawFundsBeforeBuyingStrategy.cs" />
+    <Compile Include="Domain\AccountDetails.cs" />
+    <Compile Include="Domain\AccountSummary.cs" />
+    <Compile Include="Domain\AccountType.cs" />
+    <Compile Include="Domain\Position.cs" />
+    <Compile Include="Domain\Transaction.cs" />
+    <Compile Include="Domain\TransactionType.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Trading\AccountAllocation.cs" />
+    <Compile Include="Trading\AccountType.cs" />
+    <Compile Include="Trading\PositionAllocation.cs" />
+    <Compile Include="Trading\Order.cs" />
+    <Compile Include="Trading\OrderFactory.cs" />
+    <Compile Include="Trading\Position.cs" />
+    <Compile Include="Trading\PriceQuote.cs" />
+    <Compile Include="Trading\SecuritiesAllocationCalculator.cs" />
+    <Compile Include="Trading\TradingAccount.cs" />
+    <Compile Include="Trading\TradingAccountBalanceCalculator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Sonneville.Investing.nuspec" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

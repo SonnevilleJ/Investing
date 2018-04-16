@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using NUnit.Framework;
-using Sonneville.Fidelity.WebDriver.Data;
+using Sonneville.Investing.Domain;
 using Sonneville.Utilities.Persistence.v2;
 
 namespace Sonneville.Investing.Persistence.Test
@@ -9,15 +9,15 @@ namespace Sonneville.Investing.Persistence.Test
     public class TransactionRepositoryTests
     {
         private ITransactionRepository _repository;
-        private List<IFidelityTransaction> _fidelityTransactions;
+        private List<ITransaction> _fidelityTransactions;
         private IDataStore _dataStore;
 
         [SetUp]
         public void Setup()
         {
-            _fidelityTransactions = new List<IFidelityTransaction>
+            _fidelityTransactions = new List<ITransaction>
             {
-                new FidelityTransaction(),
+                new Transaction(),
             };
 
             _repository = InitializeNewRepository();

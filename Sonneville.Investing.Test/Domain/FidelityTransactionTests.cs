@@ -1,8 +1,8 @@
 ﻿using System;
 using NUnit.Framework;
-using Sonneville.Fidelity.WebDriver.Data;
+using Sonneville.Investing.Domain;
 
-namespace Sonneville.Fidelity.WebDriver.Test.Data
+namespace Sonneville.Investing.Test.Domain
 {
     [TestFixture]
     public class FidelityTransactionTests
@@ -10,7 +10,7 @@ namespace Sonneville.Fidelity.WebDriver.Test.Data
         [Test]
         public void ShouldEqualIdenticalTransaction()
         {
-            var one = new FidelityTransaction
+            var one = new Transaction
             {
                 AccountName = "account name",
                 AccountNumber = "account number",
@@ -36,7 +36,7 @@ namespace Sonneville.Fidelity.WebDriver.Test.Data
         [Test]
         public void ShouldCreateStringRepresentation()
         {
-            var one = new FidelityTransaction
+            var one = new Transaction
             {
                 AccountName = "account name",
                 AccountNumber = "account number",
@@ -58,9 +58,9 @@ namespace Sonneville.Fidelity.WebDriver.Test.Data
             Assert.False(string.IsNullOrEmpty(one.ToString()));
         }
 
-        private static FidelityTransaction CopyTransaction(FidelityTransaction source)
+        private static Transaction CopyTransaction(Transaction source)
         {
-            return new FidelityTransaction
+            return new Transaction
             {
                 AccountName = source.AccountName,
                 AccountNumber = source.AccountNumber,

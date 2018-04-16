@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using Sonneville.Fidelity.WebDriver.Data;
 using Sonneville.Fidelity.WebDriver.Transactions;
+using Sonneville.Investing.Domain;
 
 namespace Sonneville.Fidelity.WebDriver.Test.Transactions
 {
@@ -13,7 +13,7 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions
     {
         private DateTime _expectedStartDate;
         private DateTime _expectedEndDate;
-        private List<IFidelityTransaction> _expectedTransactions;
+        private List<ITransaction> _expectedTransactions;
 
         private Mock<IWebElement> _historyRootDivMock;
         private Mock<IWebElement> _historyExpanderLinkMock;
@@ -81,9 +81,9 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions
             _webDriverMock.Setup(webDriver => webDriver.FindElement(By.ClassName("progress-bar")))
                 .Returns(_progressBarDivMock.Object);
 
-            _expectedTransactions = new List<IFidelityTransaction>
+            _expectedTransactions = new List<ITransaction>
             {
-                new FidelityTransaction()
+                new Transaction()
             };
 
             _historyTransactionParserMock = new Mock<IHistoryTransactionParser>();
@@ -142,7 +142,7 @@ namespace Sonneville.Fidelity.WebDriver.Test.Transactions
                 .Callback(SetupVisibleProgressBar);
             _historyTransactionParserMock.Setup(parser => parser.ParseFidelityTransactions(_historyRootDivMock.Object))
                 .Callback(AssertInvisibleProgressBar)
-                .Returns(new List<IFidelityTransaction>());
+                .Returns(new List<ITransaction>());
 
             _activityPage.GetTransactions(_expectedStartDate, _expectedEndDate);
 

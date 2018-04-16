@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Sonneville.Fidelity.WebDriver.Data
+namespace Sonneville.Investing.Domain
 {
     public interface IAccountDetails
     {

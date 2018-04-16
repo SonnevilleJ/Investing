@@ -7,9 +7,9 @@ using Moq;
 using NUnit.Framework;
 using Sonneville.Fidelity.Shell.Interface;
 using Sonneville.Fidelity.WebDriver.Configuration;
-using Sonneville.Fidelity.WebDriver.Data;
 using Sonneville.Fidelity.WebDriver.Positions;
 using Sonneville.Fidelity.WebDriver.Transactions;
+using Sonneville.Investing.Domain;
 using Sonneville.Utilities.Persistence.v2;
 
 namespace Sonneville.Fidelity.Shell.Test.Interface
@@ -23,7 +23,7 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
         private Mock<ILog> _logMock;
         private Mock<IPositionsManager> _positionsManagerMock;
         private Mock<ITransactionManager> _transactionManagerMock;
-        private List<IFidelityTransaction> _transactions;
+        private List<ITransaction> _transactions;
         private List<AccountSummary> _accountSummaries;
         private List<AccountDetails> _accountDetails;
         private DateTime _startDate;
@@ -129,9 +129,9 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
                 },
             };
 
-            _transactions = new List<IFidelityTransaction>
+            _transactions = new List<ITransaction>
             {
-                new FidelityTransaction
+                new Transaction
                 {
                     RunDate = new DateTime(2015, 12, 25),
                     AccountNumber = null,

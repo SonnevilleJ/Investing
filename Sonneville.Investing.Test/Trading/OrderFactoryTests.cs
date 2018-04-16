@@ -1,5 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
+using Sonneville.Investing.Domain;
 using Sonneville.Investing.Trading;
 
 namespace Sonneville.Investing.Test.Trading

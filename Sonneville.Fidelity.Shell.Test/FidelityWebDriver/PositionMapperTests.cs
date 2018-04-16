@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using Sonneville.Fidelity.Shell.FidelityWebDriver;
-using Sonneville.Fidelity.WebDriver.Data;
+using Sonneville.Investing.Domain;
 using TradingPosition = Sonneville.Investing.Trading.Position;
-using WebDriverPosition = Sonneville.Fidelity.WebDriver.Data.Position;
+using WebDriverPosition = Sonneville.Investing.Domain.Position;
 
 namespace Sonneville.Fidelity.Shell.Test.FidelityWebDriver
 {

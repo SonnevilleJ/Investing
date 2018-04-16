@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
-using Sonneville.Fidelity.WebDriver.Data;
 using Sonneville.Fidelity.WebDriver.Login;
 using Sonneville.Fidelity.WebDriver.Positions;
+using Sonneville.Investing.Domain;
 
 namespace Sonneville.Fidelity.WebDriver.Test.Positions
 {

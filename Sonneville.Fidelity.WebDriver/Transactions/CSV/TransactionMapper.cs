@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using log4net;
-using Sonneville.Fidelity.WebDriver.Data;
 using Sonneville.Fidelity.WebDriver.Utilities;
+using Sonneville.Investing.Domain;
 
 namespace Sonneville.Fidelity.WebDriver.Transactions.CSV
 {
     public interface ITransactionMapper
     {
-        IFidelityTransaction CreateTransaction(string row, IDictionary<FidelityCsvColumn, int> headers);
+        ITransaction CreateTransaction(string row, IDictionary<FidelityCsvColumn, int> headers);
     }
 
     public class TransactionMapper : ITransactionMapper
@@ -22,11 +22,11 @@ namespace Sonneville.Fidelity.WebDriver.Transactions.CSV
             _transactionTypeMapper = transactionTypeMapper;
         }
 
-        public IFidelityTransaction CreateTransaction(string row, IDictionary<FidelityCsvColumn, int> headers)
+        public ITransaction CreateTransaction(string row, IDictionary<FidelityCsvColumn, int> headers)
         {
             var values = row.Split(',');
             var actionText = ParseStringField(values[headers[FidelityCsvColumn.Action]]);
-            var transaction = new FidelityTransaction
+            var transaction = new Transaction
                 {
                     RunDate = ParseDateField(values[headers[FidelityCsvColumn.RunDate]]),
                     AccountNumber = ParseAccountNumber(headers, values),

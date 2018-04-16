@@ -1,5 +1,5 @@
 using Sonneville.Investing.Trading;
-using FidelityAccountType = Sonneville.Fidelity.WebDriver.Data.AccountType;
+using FidelityAccountType = Sonneville.Investing.Domain.AccountType;
 
 namespace Sonneville.Fidelity.Shell.FidelityWebDriver
 {

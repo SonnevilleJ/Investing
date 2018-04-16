@@ -1,4 +1,5 @@
 ﻿using System;
+using Sonneville.Investing.Domain;
 
 namespace Sonneville.Investing.Trading
 {

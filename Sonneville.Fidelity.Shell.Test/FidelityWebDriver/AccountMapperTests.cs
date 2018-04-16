@@ -3,8 +3,8 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 using Sonneville.Fidelity.Shell.FidelityWebDriver;
-using Sonneville.Fidelity.WebDriver.Data;
-using FidelityPosition = Sonneville.Fidelity.WebDriver.Data.Position;
+using Sonneville.Investing.Domain;
+using FidelityPosition = Sonneville.Investing.Domain.Position;
 using Position = Sonneville.Investing.Trading.Position;
 
 namespace Sonneville.Fidelity.Shell.Test.FidelityWebDriver

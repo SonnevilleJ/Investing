@@ -2,9 +2,9 @@ using System;
 using System.Reflection;
 using System.Text;
 
-namespace Sonneville.Fidelity.WebDriver.Data
+namespace Sonneville.Investing.Domain
 {
-    public interface IFidelityTransaction : IEquatable<IFidelityTransaction>
+    public interface ITransaction : IEquatable<ITransaction>
     {
         DateTime? RunDate { get; }
 
@@ -37,7 +37,7 @@ namespace Sonneville.Fidelity.WebDriver.Data
         DateTime? SettlementDate { get; }
     }
 
-    public class FidelityTransaction : IFidelityTransaction
+    public class Transaction : ITransaction
     {
         public DateTime? RunDate { get; set; }
 
@@ -72,7 +72,7 @@ namespace Sonneville.Fidelity.WebDriver.Data
         public override string ToString()
         {
             var stringBuilder = new StringBuilder();
-            foreach (var memberInfo in typeof(FidelityTransaction).GetProperties())
+            foreach (var memberInfo in typeof(Transaction).GetProperties())
             {
                 var propertyInfo = (PropertyInfo) memberInfo;
                 stringBuilder.AppendLine($"{propertyInfo.Name} {propertyInfo.GetValue(this, null)}");
@@ -80,7 +80,7 @@ namespace Sonneville.Fidelity.WebDriver.Data
             return stringBuilder.ToString();
         }
 
-        public bool Equals(IFidelityTransaction other)
+        public bool Equals(ITransaction other)
         {
             return other != null &&
                    RunDate.Equals(other.RunDate) &&
@@ -100,7 +100,7 @@ namespace Sonneville.Fidelity.WebDriver.Data
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((FidelityTransaction) obj);
+            return Equals((Transaction) obj);
         }
 
         public override int GetHashCode()
