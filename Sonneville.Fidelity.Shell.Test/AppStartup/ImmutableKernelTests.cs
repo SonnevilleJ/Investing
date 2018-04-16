@@ -5,9 +5,9 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using Sonneville.Fidelity.Shell.AppStartup;
 using Sonneville.Fidelity.Shell.Interface;
-using Sonneville.Fidelity.WebDriver;
-using Sonneville.Fidelity.WebDriver.Configuration;
-using Sonneville.Fidelity.WebDriver.Navigation;
+using Sonneville.Investing.Fidelity.WebDriver;
+using Sonneville.Investing.Fidelity.WebDriver.Configuration;
+using Sonneville.Investing.Fidelity.WebDriver.Navigation;
 using Sonneville.Utilities.Persistence.v2;
 
 namespace Sonneville.Fidelity.Shell.Test.AppStartup

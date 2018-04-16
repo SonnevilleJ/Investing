@@ -27,13 +27,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.Utilities", "Son
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.Utilities.Test", "Sonneville.Utilities.Test\Sonneville.Utilities.Test.csproj", "{CBD97988-2B0E-48E4-AD8E-6D1709E44006}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.Fidelity.WebDriver", "Sonneville.Fidelity.WebDriver\Sonneville.Fidelity.WebDriver.csproj", "{79449998-2821-4929-8A3A-98637C477F85}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.Fidelity.WebDriver.Test", "Sonneville.Fidelity.WebDriver.Test\Sonneville.Fidelity.WebDriver.Test.csproj", "{28C9B637-3E4E-45BD-9CEE-B32EC6EE4C1A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.Investing.Fidelity.Test", "Sonneville.Investing.Fidelity.Test\Sonneville.Investing.Fidelity.Test.csproj", "{2E77D2E8-097C-4705-A5AD-29062528445F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.Investing.Fidelity", "Sonneville.Investing.Fidelity\Sonneville.Investing.Fidelity.csproj", "{47F349C6-57A7-4CD7-AA52-ABAE634CE96D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.Investing.Fidelity.WebDriver", "Sonneville.Investing.Fidelity.WebDriver\Sonneville.Investing.Fidelity.WebDriver.csproj", "{5CCF7D2F-9D06-48C6-ACE1-B28FCF5C3210}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.Investing.Fidelity.WebDriver.Test", "Sonneville.Investing.Fidelity.WebDriver.Test\Sonneville.Investing.Fidelity.WebDriver.Test.csproj", "{92290BB7-BEFB-41B4-BFF2-86A445890C08}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,14 +73,6 @@ Global
 		{CBD97988-2B0E-48E4-AD8E-6D1709E44006}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBD97988-2B0E-48E4-AD8E-6D1709E44006}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CBD97988-2B0E-48E4-AD8E-6D1709E44006}.Release|Any CPU.Build.0 = Release|Any CPU
-		{79449998-2821-4929-8A3A-98637C477F85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{79449998-2821-4929-8A3A-98637C477F85}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{79449998-2821-4929-8A3A-98637C477F85}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{79449998-2821-4929-8A3A-98637C477F85}.Release|Any CPU.Build.0 = Release|Any CPU
-		{28C9B637-3E4E-45BD-9CEE-B32EC6EE4C1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{28C9B637-3E4E-45BD-9CEE-B32EC6EE4C1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{28C9B637-3E4E-45BD-9CEE-B32EC6EE4C1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{28C9B637-3E4E-45BD-9CEE-B32EC6EE4C1A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2E77D2E8-097C-4705-A5AD-29062528445F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2E77D2E8-097C-4705-A5AD-29062528445F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E77D2E8-097C-4705-A5AD-29062528445F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -89,6 +81,14 @@ Global
 		{47F349C6-57A7-4CD7-AA52-ABAE634CE96D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47F349C6-57A7-4CD7-AA52-ABAE634CE96D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47F349C6-57A7-4CD7-AA52-ABAE634CE96D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CCF7D2F-9D06-48C6-ACE1-B28FCF5C3210}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CCF7D2F-9D06-48C6-ACE1-B28FCF5C3210}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CCF7D2F-9D06-48C6-ACE1-B28FCF5C3210}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CCF7D2F-9D06-48C6-ACE1-B28FCF5C3210}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92290BB7-BEFB-41B4-BFF2-86A445890C08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92290BB7-BEFB-41B4-BFF2-86A445890C08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92290BB7-BEFB-41B4-BFF2-86A445890C08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92290BB7-BEFB-41B4-BFF2-86A445890C08}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

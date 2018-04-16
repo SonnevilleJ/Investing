@@ -9,7 +9,7 @@ using log4net.Layout;
 using log4net.Repository.Hierarchy;
 using Ninject;
 using Ninject.Modules;
-using Sonneville.Fidelity.WebDriver.Configuration;
+using Sonneville.Investing.Fidelity.WebDriver.Configuration;
 using Sonneville.Utilities.Persistence.v2;
 
 namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules

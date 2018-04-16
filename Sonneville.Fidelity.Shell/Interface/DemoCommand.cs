@@ -4,10 +4,10 @@ using System.IO;
 using System.Linq;
 using log4net;
 using NDesk.Options;
-using Sonneville.Fidelity.WebDriver.Configuration;
-using Sonneville.Fidelity.WebDriver.Positions;
-using Sonneville.Fidelity.WebDriver.Transactions;
 using Sonneville.Investing.Domain;
+using Sonneville.Investing.Fidelity.WebDriver.Configuration;
+using Sonneville.Investing.Fidelity.WebDriver.Positions;
+using Sonneville.Investing.Fidelity.WebDriver.Transactions;
 using Sonneville.Utilities.Persistence.v2;
 
 namespace Sonneville.Fidelity.Shell.Interface

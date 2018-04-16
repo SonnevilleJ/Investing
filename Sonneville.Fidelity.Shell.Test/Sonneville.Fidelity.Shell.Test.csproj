@@ -64,9 +64,9 @@
       <Project>{E3F2B1D9-2BDD-4AE3-A04D-5444E2DE871C}</Project>
       <Name>Sonneville.Fidelity.Shell</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Sonneville.Fidelity.WebDriver\Sonneville.Fidelity.WebDriver.csproj">
-      <Project>{79449998-2821-4929-8A3A-98637C477F85}</Project>
-      <Name>Sonneville.Fidelity.WebDriver</Name>
+    <ProjectReference Include="..\Sonneville.Investing.Fidelity.WebDriver\Sonneville.Investing.Fidelity.WebDriver.csproj">
+      <Project>{5ccf7d2f-9d06-48c6-ace1-b28fcf5c3210}</Project>
+      <Name>Sonneville.Investing.Fidelity.WebDriver</Name>
     </ProjectReference>
     <ProjectReference Include="..\Sonneville.Investing.Fidelity\Sonneville.Investing.Fidelity.csproj">
       <Project>{47f349c6-57a7-4cd7-aa52-abae634ce96d}</Project>
