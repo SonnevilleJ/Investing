@@ -66,15 +66,5 @@ namespace Sonneville.Utilities.Test.Reflection
 
             Assert.AreEqual(expected, actual);
         }
-
-        [Test]
-        public void ShouldGetAssemblyTrademark()
-        {
-            var expected = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyTrademarkAttribute>().Trademark;
-
-            var actual = ExecutingAssemblyInfo.Trademark;
-
-            Assert.AreEqual(expected, actual);
-        }
     }
 }

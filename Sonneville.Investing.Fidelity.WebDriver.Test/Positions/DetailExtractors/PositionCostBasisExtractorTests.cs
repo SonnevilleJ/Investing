@@ -72,7 +72,7 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Positions.DetailExtractor
 
             var tdMock = new Mock<IWebElement>();
             tdMock.Setup(td => td.FindElements(By.ClassName("magicgrid--stacked-data-value")))
-                .Returns(new List<IWebElement> { perShareSpanMock.Object, totalDivMock.Object }.AsReadOnly());
+                .Returns(new List<IWebElement> {perShareSpanMock.Object, totalDivMock.Object}.AsReadOnly());
 
             return tdMock.Object;
         }

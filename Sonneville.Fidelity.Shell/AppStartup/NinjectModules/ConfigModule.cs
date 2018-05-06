@@ -38,7 +38,7 @@ namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
             var rollingFileAppender = ConfigureRollingFileAppender(layout, workingDirectory);
             var consoleAppender = ConfigureConsoleAppender(layout);
 
-            var hierarchy = (Hierarchy) LogManager.GetRepository();
+            var hierarchy = (Hierarchy) LogManager.GetRepository(Assembly.GetEntryAssembly());
             hierarchy.Root.AddAppender(rollingFileAppender);
             hierarchy.Root.AddAppender(consoleAppender);
             hierarchy.Root.Level = Level.All;

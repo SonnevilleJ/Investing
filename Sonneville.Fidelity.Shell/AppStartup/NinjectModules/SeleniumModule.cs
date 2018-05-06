@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using Ninject.Modules;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -38,7 +40,8 @@ namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
 #if !DEBUG
             chromeOptions.AddArgument("--headless");
 #endif
-            return new ChromeDriver(chromeOptions);
+            var chromeDriverDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            return new ChromeDriver(chromeDriverDirectory, chromeOptions);
         }
     }
 }

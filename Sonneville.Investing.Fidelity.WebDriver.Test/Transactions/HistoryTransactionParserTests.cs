@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using log4net;
 using Moq;
@@ -39,6 +40,12 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Transactions
             _logMock = new Mock<ILog>();
 
             _historyTransactionParser = new HistoryTransactionParser(_logMock.Object, _transactionTypeMapper);
+        }
+
+        [Test]
+        public void AssertLangEnvironmentVariableSet()
+        {
+            Assert.AreEqual("$", NumberFormatInfo.CurrentInfo.CurrencySymbol);
         }
 
         [Test]
