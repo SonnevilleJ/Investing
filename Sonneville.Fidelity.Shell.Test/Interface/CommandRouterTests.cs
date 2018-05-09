@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,7 +38,8 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
             {
                 CreateCommand("help", false),
                 CreateCommand("startup", false),
-                CreateCommand("exit", true)
+                CreateCommand("exit", true),
+                CreateBadCommand("bad"),
             };
 
             _commandRouter = new CommandRouter(_inputReader, _outputWriter, _commands.ToArray());
@@ -135,12 +137,34 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
             Assert.IsTrue(task.IsCompleted);
         }
 
+        [Test]
+        public void ShouldPrintExceptionAndWaitForInputThenExit()
+        {
+            var cliArgs = "bad".Split(' ');
+
+            var task = Task.Run(() => _commandRouter.Run(cliArgs));
+            task.Wait(100);
+
+            AssertCommandWasInvoked("bad", cliArgs);
+            AssertOutputContains("InvalidOperationException");
+            Assert.IsTrue(task.IsCompleted);
+        }
+
         private ICommand CreateCommand(string commandName, bool exitAfter)
         {
             var mockCommand = new Mock<ICommand>();
             mockCommand.SetupGet(command => command.CommandName).Returns(commandName);
             mockCommand.Setup(command => command.Invoke(_inputReader, _outputWriter, It.IsAny<IReadOnlyList<string>>()))
                 .Returns(exitAfter);
+            return mockCommand.Object;
+        }
+
+        private ICommand CreateBadCommand(string commandName)
+        {
+            var mockCommand = new Mock<ICommand>();
+            mockCommand.SetupGet(command => command.CommandName).Returns(commandName);
+            mockCommand.Setup(command => command.Invoke(_inputReader, _outputWriter, It.IsAny<IReadOnlyList<string>>()))
+                .Throws<InvalidOperationException>();
             return mockCommand.Object;
         }
 

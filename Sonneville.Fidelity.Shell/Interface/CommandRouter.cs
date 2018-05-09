@@ -47,8 +47,19 @@ namespace Sonneville.Fidelity.Shell.Interface
 
         private bool RunCommand(IReadOnlyList<string> tokens)
         {
-            var command = GetCommand(tokens[0].ToLowerInvariant());
-            return command.Invoke(_inputReader, _outputWriter, tokens.ToArray());
+            try
+            {
+                var command = GetCommand(tokens[0].ToLowerInvariant());
+                return command.Invoke(_inputReader, _outputWriter, tokens.ToArray());
+            }
+            catch (Exception e)
+            {
+                _outputWriter.WriteLine(e);
+                _outputWriter.WriteLine("Error occurred! Please consider submitting a bug report! ;)");
+                _outputWriter.WriteLine("Press any key to exit...");
+                _inputReader.Read();
+                return true;
+            }
         }
 
         private ICommand GetCommand(string commandName)
