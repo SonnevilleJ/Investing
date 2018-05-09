@@ -36,7 +36,7 @@
     <PackageReference Include="NDesk.Options" Version="0.2.1" />
     <PackageReference Include="Ninject" Version="3.3.4" />
     <PackageReference Include="Ninject.Extensions.Conventions" Version="3.3.0" />
-    <PackageReference Include="Selenium.Chrome.WebDriver" Version="2.38.0" />
     <PackageReference Include="Selenium.WebDriver" Version="3.11.2" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="2.38.0.1" />
   </ItemGroup>
 </Project>
