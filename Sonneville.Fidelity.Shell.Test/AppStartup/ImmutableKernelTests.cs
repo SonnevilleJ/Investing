@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Ninject;
 using NUnit.Framework;
@@ -8,6 +9,8 @@ using Sonneville.Fidelity.Shell.Interface;
 using Sonneville.Investing.Fidelity.WebDriver;
 using Sonneville.Investing.Fidelity.WebDriver.Configuration;
 using Sonneville.Investing.Fidelity.WebDriver.Navigation;
+using Sonneville.Investing.Persistence;
+using Sonneville.Investing.Persistence.EFCore.EntityFrameworkCore;
 using Sonneville.Utilities.Persistence.v2;
 
 namespace Sonneville.Fidelity.Shell.Test.AppStartup
@@ -27,6 +30,18 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
         public void TearDown()
         {
             _kernel?.Dispose();
+        }
+
+        [Test]
+        public void ShouldGetDatabaseConnectionInfo()
+        {
+            Assert.Throws<NotSupportedException>(() => _kernel.Get<DatabaseConnectionInfo>());
+        }
+
+        [Test]
+        public void ShouldGetPersistenceContext()
+        {
+            Assert.Throws<NotSupportedException>(() => _kernel.Get<IPersistenceContext>());
         }
 
         [Test]

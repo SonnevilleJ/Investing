@@ -11,6 +11,7 @@ namespace Sonneville.Fidelity.Shell.AppStartup
             new AppModule(),
             new ConfigModule(),
             new SeleniumModule(),
+            new EfCoreModule(),
         };
 
         public IKernel Build()
