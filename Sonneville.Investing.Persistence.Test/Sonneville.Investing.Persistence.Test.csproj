@@ -1,23 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
-    <IsPackable>false</IsPackable>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyName>Sonneville.Investing.Persistence.Test</AssemblyName>
-    <AssemblyTitle>Sonneville.Investing.Persistence.Test</AssemblyTitle>
-    <Product>Sonneville Investing</Product>
-    <Copyright>Copyright © 2018, John Sonneville</Copyright>
-  </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Sonneville.Investing.Persistence\Sonneville.Investing.Persistence.csproj" />
-    <ProjectReference Include="..\Sonneville.Investing\Sonneville.Investing.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
-    <PackageReference Include="Moq" Version="4.8.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="NUnit" Version="3.10.1" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
-  </ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.0</TargetFramework>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+    <PropertyGroup>
+        <AssemblyName>Sonneville.Investing.Persistence.Test</AssemblyName>
+        <AssemblyTitle>Sonneville.Investing.Persistence.Test</AssemblyTitle>
+        <Product>Sonneville Investing</Product>
+        <Copyright>Copyright © 2018, John Sonneville</Copyright>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Sonneville.Investing.Persistence\Sonneville.Investing.Persistence.csproj" />
+        <ProjectReference Include="..\Sonneville.Investing\Sonneville.Investing.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
+        <PackageReference Include="Moq" Version="4.8.2" />
+        <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+        <PackageReference Include="NUnit" Version="3.10.1" />
+        <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
+    </ItemGroup>
 </Project>

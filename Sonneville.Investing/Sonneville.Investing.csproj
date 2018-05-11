@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyName>Sonneville.Investing</AssemblyName>
-    <AssemblyTitle>Sonneville.Investing</AssemblyTitle>
-    <Product>Sonneville Investing</Product>
-    <Copyright>Copyright © 2018, John Sonneville</Copyright>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+    </PropertyGroup>
+    <PropertyGroup>
+        <AssemblyName>Sonneville.Investing</AssemblyName>
+        <AssemblyTitle>Sonneville.Investing</AssemblyTitle>
+        <Product>Sonneville Investing</Product>
+        <Copyright>Copyright © 2018, John Sonneville</Copyright>
+    </PropertyGroup>
 </Project>

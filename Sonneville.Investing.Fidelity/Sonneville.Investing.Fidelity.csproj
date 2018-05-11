@@ -1,18 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>Sonneville.Investing.Fidelity</AssemblyName>
-    <AssemblyTitle>Sonneville.Investing.Fidelity</AssemblyTitle>
-    <Product>Sonneville Investing</Product>
-    <Copyright>Copyright © 2018, John Sonneville</Copyright>
-  </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Sonneville.Investing\Sonneville.Investing.csproj">
-      <Project>{89a1a8e9-dd0f-40bc-b4f1-fcded6910e35}</Project>
-      <Name>Sonneville.Investing</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="log4net" Version="2.0.8" />
-  </ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <AssemblyName>Sonneville.Investing.Fidelity</AssemblyName>
+        <AssemblyTitle>Sonneville.Investing.Fidelity</AssemblyTitle>
+        <Product>Sonneville Investing</Product>
+        <Copyright>Copyright © 2018, John Sonneville</Copyright>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Sonneville.Investing\Sonneville.Investing.csproj">
+            <Project>{89a1a8e9-dd0f-40bc-b4f1-fcded6910e35}</Project>
+            <Name>Sonneville.Investing</Name>
+        </ProjectReference>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="log4net" Version="2.0.8" />
+    </ItemGroup>
 </Project>
