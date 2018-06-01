@@ -11,15 +11,17 @@ namespace Sonneville.Utilities.Security
         byte[] DigestText(string text, byte[] salt, string algorithm, int iterations, int digestLength);
     }
 
-    public class Pbkdf2SaltedCryptor : ISaltedCryptor, IIteratedSaltedTextHasher
+    public class Pbkdf2SaltedCryptor : SaltGenerator, ISaltedCryptor, IIteratedSaltedTextHasher
     {
         private readonly HashAlgorithm _algorithm;
         private readonly int _iterations;
+        private readonly ISaltGenerator _saltGenerator;
 
-        public Pbkdf2SaltedCryptor(HashAlgorithm algorithm, int iterations)
+        public Pbkdf2SaltedCryptor(HashAlgorithm algorithm, int iterations, ISaltGenerator saltGenerator)
         {
             _algorithm = algorithm;
             _iterations = iterations;
+            _saltGenerator = saltGenerator;
         }
 
         public string Name { get; } = "PBKDF2";
@@ -36,13 +38,7 @@ namespace Sonneville.Utilities.Security
         
         public byte[] GenerateSalt(int byteWidth)
         {
-            var salt = new byte[byteWidth];
-            using (var rng = new RNGCryptoServiceProvider())
-            {
-                rng.GetBytes(salt);
-            }
-
-            return salt;
+            return _saltGenerator.GenerateSalt2(byteWidth);
         }
 
         public byte[] DigestBytes(byte[] data, byte[] salt, string algorithm, int iterations, int digestLength)

@@ -7,13 +7,15 @@ namespace Sonneville.Utilities.Test.Security
     public class FingerprintManagerTests
     {
         private FingerprintManager _fingerprintManager;
+        private SaltGenerator _saltGenerator;
 
         [SetUp]
         public void Setup()
         {
             var hashAlgorithm = HashAlgorithm.SHA512;
             var iterations = 100;
-            _fingerprintManager = new FingerprintManager(new Pbkdf2SaltedCryptor(hashAlgorithm, iterations), hashAlgorithm, iterations);
+            _saltGenerator = new SaltGenerator();
+            _fingerprintManager = new FingerprintManager(new Pbkdf2SaltedCryptor(hashAlgorithm, iterations, _saltGenerator), hashAlgorithm, iterations);
         }
 
         [Test]

@@ -9,12 +9,20 @@ namespace Sonneville.Utilities.Test.Security
     [TestFixture]
     public class Pbkdf2CryptorTests
     {
+        private ISaltGenerator _saltGenerator;
+
+        [SetUp]
+        public void Setup()
+        {
+            _saltGenerator = new SaltGenerator();
+        }
+
         [Test]
         [TestCase(1000000)]
         public void ShouldGenerateRandomSalt(int iterations)
         {
             var hashAlgorithm = HashAlgorithm.SHA512;
-            var cryptor = new Pbkdf2SaltedCryptor(hashAlgorithm, iterations);
+            var cryptor = new Pbkdf2SaltedCryptor(hashAlgorithm, iterations, _saltGenerator);
 
             var salts = new HashSet<byte[]>();
             for (var i = 0; i < iterations; i++)
@@ -34,7 +42,7 @@ namespace Sonneville.Utilities.Test.Security
             string message1, string message2, int saltLength, string algorithm, int iterations, int digestLength
         )
         {
-            var cryptor = new Pbkdf2SaltedCryptor(HashAlgorithm.Parse(algorithm), 1);
+            var cryptor = new Pbkdf2SaltedCryptor(HashAlgorithm.Parse(algorithm), 1, _saltGenerator);
 
             var data1 = StringToBytes(message1);
             var data2 = StringToBytes(message2);
@@ -52,7 +60,7 @@ namespace Sonneville.Utilities.Test.Security
             string message, int saltBytes, string algorithm, int iterations, int digestLength
         )
         {
-            var cryptor = new Pbkdf2SaltedCryptor(HashAlgorithm.Parse(algorithm), iterations);
+            var cryptor = new Pbkdf2SaltedCryptor(HashAlgorithm.Parse(algorithm), iterations, _saltGenerator);
 
             var data = StringToBytes(message);
             var salt = cryptor.GenerateSalt(saltBytes);
@@ -67,7 +75,7 @@ namespace Sonneville.Utilities.Test.Security
             string message, int salt1Length, int salt2Length, string algorithm, int iterations, int digestLength
         )
         {
-            var cryptor = new Pbkdf2SaltedCryptor(HashAlgorithm.Parse(algorithm), iterations);
+            var cryptor = new Pbkdf2SaltedCryptor(HashAlgorithm.Parse(algorithm), iterations, _saltGenerator);
 
             var data = StringToBytes(message);
             var salt1 = new byte[salt1Length];
@@ -85,7 +93,7 @@ namespace Sonneville.Utilities.Test.Security
             string message, int saltBytes, string algorithm, int iterations, int digestLength
         )
         {
-            var cryptor = new Pbkdf2SaltedCryptor(HashAlgorithm.Parse(algorithm), iterations);
+            var cryptor = new Pbkdf2SaltedCryptor(HashAlgorithm.Parse(algorithm), iterations, _saltGenerator);
 
             var data = StringToBytes(message);
             var salt1 = cryptor.GenerateSalt(saltBytes);
@@ -106,8 +114,8 @@ namespace Sonneville.Utilities.Test.Security
             string message, int saltBytes, string algorithm1, string algorithm2, int iterations, int digestLength
         )
         {
-            var cryptor1 = new Pbkdf2SaltedCryptor(HashAlgorithm.Parse(algorithm1), iterations);
-            var cryptor2 = new Pbkdf2SaltedCryptor(HashAlgorithm.Parse(algorithm2), iterations);
+            var cryptor1 = new Pbkdf2SaltedCryptor(HashAlgorithm.Parse(algorithm1), iterations, _saltGenerator);
+            var cryptor2 = new Pbkdf2SaltedCryptor(HashAlgorithm.Parse(algorithm2), iterations, _saltGenerator);
 
             var data = StringToBytes(message);
             var salt = cryptor1.GenerateSalt(saltBytes);
@@ -125,7 +133,7 @@ namespace Sonneville.Utilities.Test.Security
             string message, int saltBytes, string algorithm, int iterations, int digestLength
         )
         {
-            var cryptor = new Pbkdf2SaltedCryptor(HashAlgorithm.Parse(algorithm), iterations);
+            var cryptor = new Pbkdf2SaltedCryptor(HashAlgorithm.Parse(algorithm), iterations, _saltGenerator);
 
             var data = StringToBytes(message);
             var salt = cryptor.GenerateSalt(saltBytes);
@@ -144,8 +152,8 @@ namespace Sonneville.Utilities.Test.Security
             string message, int saltBytes, string algorithm, int iterations1, int iterations2, int digestLength
         )
         {
-            var cryptor1 = new Pbkdf2SaltedCryptor(HashAlgorithm.Parse(algorithm), iterations1);
-            var cryptor2 = new Pbkdf2SaltedCryptor(HashAlgorithm.Parse(algorithm), iterations2);
+            var cryptor1 = new Pbkdf2SaltedCryptor(HashAlgorithm.Parse(algorithm), iterations1, _saltGenerator);
+            var cryptor2 = new Pbkdf2SaltedCryptor(HashAlgorithm.Parse(algorithm), iterations2, _saltGenerator);
 
             var data = StringToBytes(message);
             var salt = cryptor1.GenerateSalt(saltBytes);
@@ -162,7 +170,7 @@ namespace Sonneville.Utilities.Test.Security
             string message, int saltBytes, string algorithm, int iterations, int digestLength
         )
         {
-            var cryptor = new Pbkdf2SaltedCryptor(HashAlgorithm.Parse(algorithm), iterations);
+            var cryptor = new Pbkdf2SaltedCryptor(HashAlgorithm.Parse(algorithm), iterations, _saltGenerator);
 
             var data = StringToBytes(message);
             var salt = cryptor.GenerateSalt(saltBytes);
@@ -178,7 +186,7 @@ namespace Sonneville.Utilities.Test.Security
             string message, int saltBytes, string algorithm, int iterations, int digestLength1, int digestLength2
         )
         {
-            var cryptor = new Pbkdf2SaltedCryptor(HashAlgorithm.Parse(algorithm), iterations);
+            var cryptor = new Pbkdf2SaltedCryptor(HashAlgorithm.Parse(algorithm), iterations, _saltGenerator);
 
             var data = StringToBytes(message);
             var salt = cryptor.GenerateSalt(saltBytes);
@@ -194,7 +202,7 @@ namespace Sonneville.Utilities.Test.Security
             string message, int saltLength, string algorithm, int iterations, int digestLength
         )
         {
-            var cryptor = new Pbkdf2SaltedCryptor(HashAlgorithm.Parse(algorithm), iterations);
+            var cryptor = new Pbkdf2SaltedCryptor(HashAlgorithm.Parse(algorithm), iterations, _saltGenerator);
 
             var data = StringToBytes(message);
             var salt = cryptor.GenerateSalt(saltLength);
@@ -210,7 +218,7 @@ namespace Sonneville.Utilities.Test.Security
             string text, int saltBytes, string algorithm, int iterations, int digestLength
         )
         {
-            var cryptor = new Pbkdf2SaltedCryptor(HashAlgorithm.Parse(algorithm), iterations);
+            var cryptor = new Pbkdf2SaltedCryptor(HashAlgorithm.Parse(algorithm), iterations, _saltGenerator);
 
             var salt = cryptor.GenerateSalt(saltBytes);
             var digestText = cryptor.DigestText(text, salt, algorithm, iterations, digestLength);
