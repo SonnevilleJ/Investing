@@ -11,7 +11,9 @@ namespace Sonneville.Utilities.Test.Security
         [SetUp]
         public void Setup()
         {
-            _fingerprintManager = new FingerprintManager(new Pbkdf2Cryptor(), HashAlgorithm.SHA512, 100);
+            var hashAlgorithm = HashAlgorithm.SHA512;
+            var iterations = 100;
+            _fingerprintManager = new FingerprintManager(new Pbkdf2SaltedCryptor(hashAlgorithm, iterations), hashAlgorithm, iterations);
         }
 
         [Test]

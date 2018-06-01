@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Sonneville.Utilities.Security
@@ -10,8 +11,29 @@ namespace Sonneville.Utilities.Security
         byte[] DigestText(string text, byte[] salt, string algorithm, int iterations, int digestLength);
     }
 
-    public class Pbkdf2Cryptor : IIteratedSaltedTextHasher
+    public class Pbkdf2SaltedCryptor : ISaltedCryptor, IIteratedSaltedTextHasher
     {
+        private readonly HashAlgorithm _algorithm;
+        private readonly int _iterations;
+
+        public Pbkdf2SaltedCryptor(HashAlgorithm algorithm, int iterations)
+        {
+            _algorithm = algorithm;
+            _iterations = iterations;
+        }
+
+        public string Name { get; } = "PBKDF2";
+
+        public byte[] HashString(string message, byte[] salt)
+        {
+            return DigestText(message, salt, _algorithm.Name, _iterations, _algorithm.Length);
+        }
+
+        public byte[] HashBytes(byte[] message, byte[] salt)
+        {
+            throw new NotImplementedException();
+        }
+        
         public byte[] GenerateSalt(int byteWidth)
         {
             var salt = new byte[byteWidth];

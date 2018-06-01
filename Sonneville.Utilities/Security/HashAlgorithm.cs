@@ -1,4 +1,6 @@
-﻿using System.Security.Cryptography;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography;
 
 namespace Sonneville.Utilities.Security
 {
@@ -8,15 +10,30 @@ namespace Sonneville.Utilities.Security
         public HashAlgorithmName HashAlgorithmName { get; }
         public int Length { get; }
 
-        private HashAlgorithm(HashAlgorithmName hashAlgorithmName, int length)
+        private static readonly IDictionary<HashAlgorithmName, int> Algorithms = new Dictionary<HashAlgorithmName, int>
+        {
+            {HashAlgorithmName.SHA1, 160},
+            {HashAlgorithmName.SHA256, 256},
+            {HashAlgorithmName.SHA384, 384},
+            {HashAlgorithmName.SHA512, 512},
+        };
+
+        private HashAlgorithm(HashAlgorithmName hashAlgorithmName)
         {
             HashAlgorithmName = hashAlgorithmName;
-            Length = length;
+            Length = Algorithms[hashAlgorithmName];
         }
 
-        public static readonly HashAlgorithm SHA1 = new HashAlgorithm(HashAlgorithmName.SHA1, 160);
-        public static readonly HashAlgorithm SHA256 = new HashAlgorithm(HashAlgorithmName.SHA256, 256);
-        public static readonly HashAlgorithm SHA384 = new HashAlgorithm(HashAlgorithmName.SHA384, 384);
-        public static readonly HashAlgorithm SHA512 = new HashAlgorithm(HashAlgorithmName.SHA512, 512);
+        public static readonly HashAlgorithm SHA1 = new HashAlgorithm(HashAlgorithmName.SHA1);
+        public static readonly HashAlgorithm SHA256 = new HashAlgorithm(HashAlgorithmName.SHA256);
+        public static readonly HashAlgorithm SHA384 = new HashAlgorithm(HashAlgorithmName.SHA384);
+        public static readonly HashAlgorithm SHA512 = new HashAlgorithm(HashAlgorithmName.SHA512);
+
+        public static HashAlgorithm Parse(string algorithm)
+        {
+            var hashAlgorithmName = Algorithms.Keys.Single(han => han.Name == algorithm);
+
+            return new HashAlgorithm(hashAlgorithmName);
+        }
     }
 }
