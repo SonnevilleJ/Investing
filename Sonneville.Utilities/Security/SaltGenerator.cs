@@ -4,12 +4,12 @@ namespace Sonneville.Utilities.Security
 {
     public interface ISaltGenerator
     {
-        byte[] GenerateSalt2(int byteWidth);
+        byte[] GenerateSalt(int byteWidth);
     }
 
     public class SaltGenerator : ISaltGenerator
     {
-        public byte[] GenerateSalt2(int byteWidth)
+        public byte[] GenerateSalt(int byteWidth)
         {
             var salt = new byte[byteWidth];
             using (var rng = new RNGCryptoServiceProvider())

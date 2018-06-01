@@ -13,17 +13,19 @@ namespace Sonneville.Utilities.Security
         private readonly IIteratedSaltedTextHasher _hasher;
         private readonly HashAlgorithm _hashAlgorithm;
         private readonly int _iterations;
+        private readonly ISaltGenerator _saltGenerator;
 
-        public FingerprintManager(IIteratedSaltedTextHasher hasher, HashAlgorithm hashAlgorithm, int iterations)
+        public FingerprintManager(IIteratedSaltedTextHasher hasher, HashAlgorithm hashAlgorithm, int iterations, ISaltGenerator saltGenerator)
         {
             _hasher = hasher;
             _hashAlgorithm = hashAlgorithm;
             _iterations = iterations;
+            _saltGenerator = saltGenerator;
         }
 
         public Fingerprint HashPassword(string password)
         {
-            var salt = _hasher.GenerateSalt(_hashAlgorithm.Length);
+            var salt = _saltGenerator.GenerateSalt(_hashAlgorithm.Length);
             var digest = _hasher.DigestText(
                 password,
                 salt,
