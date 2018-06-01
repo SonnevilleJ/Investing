@@ -1,16 +1,9 @@
-﻿using System;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 
 namespace Sonneville.Utilities.Security
 {
-    public interface IIteratedSaltedTextHasher
-    {
-        byte[] DigestBytes(byte[] data, byte[] salt, string algorithm, int iterations, int digestLength);
-        byte[] DigestText(string text, byte[] salt, string algorithm, int iterations, int digestLength);
-    }
-
-    public class Pbkdf2SaltedCryptor : ISaltedCryptor, IIteratedSaltedTextHasher
+    public class Pbkdf2SaltedCryptor : ISaltedCryptor
     {
         private readonly HashAlgorithm _algorithm;
         private readonly int _iterations;
@@ -25,27 +18,17 @@ namespace Sonneville.Utilities.Security
 
         public byte[] HashString(string message, byte[] salt)
         {
-            return DigestText(message, salt, _algorithm.Name, _iterations, _algorithm.Length);
+            return HashBytes(Encoding.Unicode.GetBytes(message), salt);
         }
 
         public byte[] HashBytes(byte[] message, byte[] salt)
         {
-            throw new NotImplementedException();
-        }
-
-        public byte[] DigestBytes(byte[] data, byte[] salt, string algorithm, int iterations, int digestLength)
-        {
             using (var pbkdf2 = new Rfc2898DeriveBytes(
-                data,
+                message,
                 salt,
-                iterations,
-                new HashAlgorithmName(algorithm)))
-                return pbkdf2.GetBytes(digestLength);
-        }
-
-        public byte[] DigestText(string text, byte[] salt, string algorithm, int iterations, int digestLength)
-        {
-            return DigestBytes(Encoding.Unicode.GetBytes(text), salt, algorithm, iterations, digestLength);
+                _iterations,
+                _algorithm.HashAlgorithmName))
+                return pbkdf2.GetBytes(_algorithm.Length);
         }
     }
 }

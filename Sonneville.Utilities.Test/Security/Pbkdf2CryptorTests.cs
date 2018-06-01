@@ -28,8 +28,8 @@ namespace Sonneville.Utilities.Test.Security
             var data1 = StringToBytes(message1);
             var data2 = StringToBytes(message2);
             var salt = _saltGenerator.GenerateSalt(saltLength);
-            var digest1 = cryptor.DigestBytes(data1, salt, algorithm, iterations, digestLength);
-            var digest2 = cryptor.DigestBytes(data2, salt, algorithm, iterations, digestLength);
+            var digest1 = cryptor.HashBytes(data1, salt);
+            var digest2 = cryptor.HashBytes(data2, salt);
 
             Assert.AreNotEqual(digest1, digest2);
         }
@@ -47,7 +47,7 @@ namespace Sonneville.Utilities.Test.Security
             var salt = _saltGenerator.GenerateSalt(saltBytes);
 
             Assert.Throws<ArgumentException>(() =>
-                cryptor.DigestBytes(data, salt, algorithm, iterations, digestLength));
+                cryptor.HashBytes(data, salt));
         }
 
         [Test]
@@ -61,8 +61,8 @@ namespace Sonneville.Utilities.Test.Security
             var data = StringToBytes(message);
             var salt1 = new byte[salt1Length];
             var salt2 = new byte[salt2Length];
-            var digest1 = cryptor.DigestBytes(data, salt1, algorithm, iterations, digestLength);
-            var digest2 = cryptor.DigestBytes(data, salt2, algorithm, iterations, digestLength);
+            var digest1 = cryptor.HashBytes(data, salt1);
+            var digest2 = cryptor.HashBytes(data, salt2);
 
             Assert.AreNotEqual(digest1, digest2);
         }
@@ -79,8 +79,8 @@ namespace Sonneville.Utilities.Test.Security
             var data = StringToBytes(message);
             var salt1 = _saltGenerator.GenerateSalt(saltBytes);
             var salt2 = _saltGenerator.GenerateSalt(saltBytes);
-            var digest1 = cryptor.DigestBytes(data, salt1, algorithm, iterations, digestLength);
-            var digest2 = cryptor.DigestBytes(data, salt2, algorithm, iterations, digestLength);
+            var digest1 = cryptor.HashBytes(data, salt1);
+            var digest2 = cryptor.HashBytes(data, salt2);
 
             Assert.AreNotEqual(digest1, digest2);
         }
@@ -100,8 +100,8 @@ namespace Sonneville.Utilities.Test.Security
 
             var data = StringToBytes(message);
             var salt = _saltGenerator.GenerateSalt(saltBytes);
-            var digest1 = cryptor1.DigestBytes(data, salt, algorithm1, iterations, digestLength);
-            var digest2 = cryptor2.DigestBytes(data, salt, algorithm2, iterations, digestLength);
+            var digest1 = cryptor1.HashBytes(data, salt);
+            var digest2 = cryptor2.HashBytes(data, salt);
 
             Assert.AreNotEqual(digest1, digest2);
         }
@@ -120,7 +120,7 @@ namespace Sonneville.Utilities.Test.Security
             var salt = _saltGenerator.GenerateSalt(saltBytes);
 
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                cryptor.DigestBytes(data, salt, algorithm, iterations, digestLength));
+                cryptor.HashBytes(data, salt));
         }
 
         [Test]
@@ -138,41 +138,8 @@ namespace Sonneville.Utilities.Test.Security
 
             var data = StringToBytes(message);
             var salt = _saltGenerator.GenerateSalt(saltBytes);
-            var digest1 = cryptor1.DigestBytes(data, salt, algorithm, iterations1, digestLength);
-            var digest2 = cryptor2.DigestBytes(data, salt, algorithm, iterations2, digestLength);
-
-            Assert.AreNotEqual(digest1, digest2);
-        }
-
-        [Test]
-        [TestCase("secret", 8, "SHA512", 1, -1)]
-        [TestCase("secret", 8, "SHA512", 1, 0)]
-        public void InvalidDigestLengthShouldThrow(
-            string message, int saltBytes, string algorithm, int iterations, int digestLength
-        )
-        {
-            var cryptor = new Pbkdf2SaltedCryptor(HashAlgorithm.Parse(algorithm), iterations);
-
-            var data = StringToBytes(message);
-            var salt = _saltGenerator.GenerateSalt(saltBytes);
-
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-                cryptor.DigestBytes(data, salt, algorithm, iterations, digestLength));
-        }
-
-        [Test]
-        [TestCase("secret", 8, "SHA512", 1, 512, 256)]
-        [TestCase("secret", 8, "SHA512", 1, 512, 1024)]
-        public void DifferentDigestLengthsShouldProduceDifferentDigest(
-            string message, int saltBytes, string algorithm, int iterations, int digestLength1, int digestLength2
-        )
-        {
-            var cryptor = new Pbkdf2SaltedCryptor(HashAlgorithm.Parse(algorithm), iterations);
-
-            var data = StringToBytes(message);
-            var salt = _saltGenerator.GenerateSalt(saltBytes);
-            var digest1 = cryptor.DigestBytes(data, salt, algorithm, iterations, digestLength1);
-            var digest2 = cryptor.DigestBytes(data, salt, algorithm, iterations, digestLength2);
+            var digest1 = cryptor1.HashBytes(data, salt);
+            var digest2 = cryptor2.HashBytes(data, salt);
 
             Assert.AreNotEqual(digest1, digest2);
         }
@@ -187,8 +154,8 @@ namespace Sonneville.Utilities.Test.Security
 
             var data = StringToBytes(message);
             var salt = _saltGenerator.GenerateSalt(saltLength);
-            var digest1 = cryptor.DigestBytes(data, salt, algorithm, iterations, digestLength);
-            var digest2 = cryptor.DigestBytes(data, salt, algorithm, iterations, digestLength);
+            var digest1 = cryptor.HashBytes(data, salt);
+            var digest2 = cryptor.HashBytes(data, salt);
 
             Assert.AreEqual(digest1, digest2);
         }
@@ -202,8 +169,8 @@ namespace Sonneville.Utilities.Test.Security
             var cryptor = new Pbkdf2SaltedCryptor(HashAlgorithm.Parse(algorithm), iterations);
 
             var salt = _saltGenerator.GenerateSalt(saltBytes);
-            var digestText = cryptor.DigestText(text, salt, algorithm, iterations, digestLength);
-            var digestBytes = cryptor.DigestBytes(StringToBytes(text), salt, algorithm, iterations, digestLength);
+            var digestText = cryptor.HashString(text, salt);
+            var digestBytes = cryptor.HashBytes(StringToBytes(text), salt);
 
             Assert.AreEqual(digestBytes, digestText);
         }
