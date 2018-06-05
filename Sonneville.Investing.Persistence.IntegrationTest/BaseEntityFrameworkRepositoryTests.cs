@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NUnit.Framework;
 using Sonneville.Investing.Persistence.EFCore;
 using Sonneville.Investing.Persistence.EFCore.EntityFrameworkCore;
@@ -6,9 +7,9 @@ using Sonneville.Investing.Persistence.EFCore.EntityFrameworkCore;
 namespace Sonneville.Investing.Persistence.IntegrationTest
 {
     [TestFixture]
-    public abstract class BaseRepositoryTests<TEntity, TKey, TRepository>
+    public abstract class BaseEntityFrameworkRepositoryTests<TEntity, TKey, TRepository>
         where TEntity : Entity<TKey>
-        where TRepository : IRepository<TEntity, TKey>
+        where TRepository : IEntityFrameworkRepository<TEntity, TKey>
     {
         protected DataContext DbContext;
         protected TRepository Repository;
@@ -38,7 +39,7 @@ namespace Sonneville.Investing.Persistence.IntegrationTest
         [TearDown]
         public void Teardown()
         {
-            DbContext.Database.EnsureDeleted();
+            InitializeDbContext().Database.EnsureDeleted();
         }
 
         [Test]
@@ -167,6 +168,21 @@ namespace Sonneville.Investing.Persistence.IntegrationTest
 
             Assert.AreEqual(0, Repository.Count());
             Assert.AreEqual(default(TKey), entity.DatabaseId); // never received an ID
+        }
+
+        [Test]
+        public void ShouldDisposeContext()
+        {
+            void Code()
+            {
+                var dbContextDatabase = DbContext.Database;
+            }
+
+            Assert.DoesNotThrow(Code);
+
+            Repository.Dispose();
+
+            Assert.Throws<ObjectDisposedException>(Code);
         }
     }
 }

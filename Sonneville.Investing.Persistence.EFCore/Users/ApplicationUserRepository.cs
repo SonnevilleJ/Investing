@@ -1,16 +1,15 @@
 ﻿using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Sonneville.Investing.Persistence.EFCore.EntityFrameworkCore;
 
 namespace Sonneville.Investing.Persistence.EFCore.Users
 {
-    public interface IApplicationUserRepository : IRepository<ApplicationUser, long>
+    public interface IApplicationUserRepository : IEntityFrameworkRepository<ApplicationUser, long>
     {
         ApplicationUser FindByUserName(string userName);
         bool IsUserNameTaken(string userName);
     }
 
-    public class ApplicationUserRepository : EntityFrameworkBaseRepository<ApplicationUser, long>, IApplicationUserRepository
+    public class ApplicationUserRepository : BaseEntityFrameworkRepository<ApplicationUser, long>, IApplicationUserRepository
     {
         public ApplicationUserRepository(DbContext dataContext) : base(dataContext)
         {

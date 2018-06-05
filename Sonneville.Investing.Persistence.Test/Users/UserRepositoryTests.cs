@@ -90,6 +90,22 @@ namespace Sonneville.Investing.Persistence.Test.Users
             Assert.IsFalse(userNameIsAvailable);
         }
 
+        [Test]
+        public void ShouldDisposeApplicationUserRepository()
+        {
+            _userRepository.Dispose();
+
+            _mockApplicationUserRepository.Verify(repository => repository.Dispose());
+        }
+
+        [Test]
+        public void ShouldDisposeDataContext()
+        {
+            _userRepository.Dispose();
+
+            _mockDataContext.Verify(context => context.Dispose());
+        }
+
         private static ApplicationUser CreateApplicationUser(string firstName, string lastName, string userName)
         {
             return new ApplicationUser

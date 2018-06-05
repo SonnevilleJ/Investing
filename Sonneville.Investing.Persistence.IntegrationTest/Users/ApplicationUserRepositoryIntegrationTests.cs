@@ -6,7 +6,7 @@ namespace Sonneville.Investing.Persistence.IntegrationTest.Users
 {
     [TestFixture]
     public class ApplicationUserRepositoryIntegrationTests
-        : BaseRepositoryTests<ApplicationUser, long, IApplicationUserRepository>
+        : BaseEntityFrameworkRepositoryTests<ApplicationUser, long, IApplicationUserRepository>
     {
         protected override IApplicationUserRepository InitializeRepository(IDataContext dbContext)
         {

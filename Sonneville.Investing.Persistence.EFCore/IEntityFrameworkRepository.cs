@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace Sonneville.Investing.Persistence.EFCore
 {
-    public interface IRepository<TEntity, in TKey> where TEntity : class
+    public interface IEntityFrameworkRepository<TEntity, in TKey> : IDisposable where TEntity : class
     {
         TEntity Get(TKey id);
         IEnumerable<TEntity> GetAll();

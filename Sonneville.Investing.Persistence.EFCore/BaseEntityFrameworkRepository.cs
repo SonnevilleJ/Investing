@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Sonneville.Investing.Persistence.EFCore
 {
-    public abstract class EntityFrameworkBaseRepository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntity : class
+    public abstract class BaseEntityFrameworkRepository<TEntity, TKey> : IEntityFrameworkRepository<TEntity, TKey> where TEntity : class
     {
         private readonly DbContext _dbContext;
 
-        protected EntityFrameworkBaseRepository(DbContext dbContext)
+        protected BaseEntityFrameworkRepository(DbContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -55,6 +55,11 @@ namespace Sonneville.Investing.Persistence.EFCore
         public virtual void RemoveRange(IEnumerable<TEntity> entities)
         {
             DbSet.RemoveRange(entities);
+        }
+
+        public void Dispose()
+        {
+            _dbContext?.Dispose();
         }
     }
 }

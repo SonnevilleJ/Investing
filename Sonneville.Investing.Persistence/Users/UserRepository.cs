@@ -5,7 +5,7 @@ using Sonneville.Investing.Users;
 
 namespace Sonneville.Investing.Persistence.Users
 {
-    public interface IUserRepository
+    public interface IUserRepository : IRepository<User>
     {
         User FindByUserName(string userName);
         void CreateNewUser(User user);
@@ -61,6 +61,12 @@ namespace Sonneville.Investing.Persistence.Users
                     LastName = applicationUser.LastName,
                     UserName = applicationUser.UserName,
                 };
+        }
+
+        public void Dispose()
+        {
+            _dataContext?.Dispose();
+            _applicationUserRepository?.Dispose();
         }
     }
 }

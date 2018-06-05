@@ -5,6 +5,11 @@ A C# library with some basic domain objects for applications interested in manag
 * MSBuild: None! - Please see the [feature backlog](https://github.com/SonnevilleJ/Investing/tree/master/backlog.md) if you'd like to contribute a CI configuration for this project.
 * Mono: None! - Please see the [feature backlog](https://github.com/SonnevilleJ/Investing/tree/master/backlog.md) if you'd like to contribute a CI configuration for this project.
 
+## Integration tests
+This project requires a PostgreSQL database with the [specified connection details](https://github.com/SonnevilleJ/Investing/blob/data-storage/Sonneville.Investing.Persistence.IntegrationTest/IntegrationTestConnection.cs). To use Docker to create a suitable database, run the following command:
+
+`docker run --name=Sonneville-Investing-Postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=pwd -e POSTGRES_DB=investing -p 6543:5432 -d postgres:9.6`
+
 ## Demo app
 The demo app will use the specified credentials to log into the [www.Fidelity.com](https://www.fidelity.com) website. Once logged in, it will print to the console some basic account info as well as the most recent transactions.
 
