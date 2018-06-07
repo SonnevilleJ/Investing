@@ -11,9 +11,10 @@ using System;
 namespace Sonneville.Investing.Persistence.EFCore.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20180606233150_Persist_salted_password_hashes")]
+    partial class Persist_salted_password_hashes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
