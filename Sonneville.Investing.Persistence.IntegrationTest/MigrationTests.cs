@@ -1,35 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
-using Sonneville.Investing.Persistence.EFCore.EntityFrameworkCore;
 
 namespace Sonneville.Investing.Persistence.IntegrationTest
 {
     [TestFixture]
-    public class MigrationTests
+    public class MigrationTests : IntegrationTestsBase
     {
-        private DataContext _dataContext;
-
-        [SetUp]
-        public void Setup()
-        {
-            _dataContext = IntegrationTestConnection.GetDataContext();
-        }
-
-        [TearDown]
-        public void Teardown()
-        {
-            _dataContext.Database.EnsureDeleted();
-        }
-
         [Test]
         public void ShouldMigrateFromScratch()
         {
-            _dataContext.Database.EnsureDeleted();
-            CollectionAssert.IsEmpty(_dataContext.Database.GetAppliedMigrations());
+            DbContext.Database.EnsureDeleted();
+            CollectionAssert.IsEmpty(DbContext.Database.GetAppliedMigrations());
 
-            _dataContext.Database.Migrate();
+            DbContext.Database.Migrate();
 
-            CollectionAssert.IsNotEmpty(_dataContext.Database.GetAppliedMigrations());
+            CollectionAssert.IsNotEmpty(DbContext.Database.GetAppliedMigrations());
         }
     }
 }

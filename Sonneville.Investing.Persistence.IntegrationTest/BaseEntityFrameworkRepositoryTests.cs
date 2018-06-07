@@ -8,16 +8,10 @@ namespace Sonneville.Investing.Persistence.IntegrationTest
 {
     [TestFixture]
     public abstract class BaseEntityFrameworkRepositoryTests<TEntity, TKey, TRepository>
-        where TEntity : Entity<TKey>
+        : IntegrationTestsBase where TEntity : Entity<TKey>
         where TRepository : IEntityFrameworkRepository<TEntity, TKey>
     {
-        protected DataContext DbContext;
         protected TRepository Repository;
-
-        protected virtual DataContext InitializeDbContext()
-        {
-            return IntegrationTestConnection.GetDataContext();
-        }
 
         protected abstract TRepository InitializeRepository(IDataContext dbContext);
 
@@ -26,20 +20,13 @@ namespace Sonneville.Investing.Persistence.IntegrationTest
         protected abstract void AssertEqual(TEntity expected, TEntity actual);
 
         [SetUp]
-        public virtual void Setup()
+        public override void Setup()
         {
-            DbContext = InitializeDbContext();
-
-            DbContext.Database.EnsureDeleted();
-            DbContext.Database.EnsureCreated();
-
+            base.Setup();
+            
+            EnsureCleanDatabase();
+            
             Repository = InitializeRepository(DbContext);
-        }
-
-        [TearDown]
-        public void Teardown()
-        {
-            InitializeDbContext().Database.EnsureDeleted();
         }
 
         [Test]
