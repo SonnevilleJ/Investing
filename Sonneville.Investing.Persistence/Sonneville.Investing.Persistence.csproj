@@ -9,16 +9,13 @@
         <Copyright>Copyright © 2018, John Sonneville</Copyright>
     </PropertyGroup>
     <ItemGroup>
-        <ProjectReference Include="..\Sonneville.Investing.Persistence.EFCore\Sonneville.Investing.Persistence.EFCore.csproj" />
-        <ProjectReference Include="..\Sonneville.Investing\Sonneville.Investing.csproj" />
-        <ProjectReference Include="..\Sonneville.Utilities\Sonneville.Utilities.csproj" />
+        <ProjectReference Include="..\Sonneville.Investing.Persistence.EFCore\Sonneville.Investing.Persistence.EFCore.csproj"/>
+        <ProjectReference Include="..\Sonneville.Investing\Sonneville.Investing.csproj"/>
+        <ProjectReference Include="..\Sonneville.Utilities\Sonneville.Utilities.csproj"/>
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.3" />
-        <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.0.2" />
-    </ItemGroup>
-    <ItemGroup>
-        <Folder Include="Security" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.3"/>
+        <PackageReference Include="Newtonsoft.Json" Version="11.0.2"/>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.0.2"/>
     </ItemGroup>
 </Project>
