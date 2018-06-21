@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 
@@ -31,7 +32,12 @@ namespace Sonneville.Utilities.Security
 
         public static HashAlgorithm Parse(string algorithm)
         {
-            var hashAlgorithmName = Algorithms.Keys.Single(han => han.Name == algorithm);
+            var hashAlgorithmName = Algorithms.Keys.FirstOrDefault(han => han.Name == algorithm);
+
+            if (hashAlgorithmName == default(HashAlgorithmName))
+            {
+                throw new NotSupportedException($"Unsupported algorithm: {algorithm}");
+            }
 
             return new HashAlgorithm(hashAlgorithmName);
         }

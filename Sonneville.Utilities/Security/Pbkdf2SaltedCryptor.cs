@@ -5,13 +5,14 @@ namespace Sonneville.Utilities.Security
 {
     public class Pbkdf2SaltedCryptor : ISaltedCryptor
     {
-        private readonly HashAlgorithm _algorithm;
-        private readonly int _iterations;
+        public HashAlgorithm Algorithm { get; }
+
+        public int Iterations { get; }
 
         public Pbkdf2SaltedCryptor(HashAlgorithm algorithm, int iterations)
         {
-            _algorithm = algorithm;
-            _iterations = iterations;
+            Algorithm = algorithm;
+            Iterations = iterations;
         }
 
         public string Name { get; } = "PBKDF2";
@@ -26,9 +27,9 @@ namespace Sonneville.Utilities.Security
             using (var pbkdf2 = new Rfc2898DeriveBytes(
                 message,
                 salt,
-                _iterations,
-                _algorithm.HashAlgorithmName))
-                return pbkdf2.GetBytes(_algorithm.Length);
+                Iterations,
+                Algorithm.HashAlgorithmName))
+                return pbkdf2.GetBytes(Algorithm.Length);
         }
     }
 }

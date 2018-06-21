@@ -22,10 +22,11 @@ namespace Sonneville.Utilities.Test.Security
         }
 
         [Test]
+        [TestCase("MD5")]
         [TestCase("SHA0")]
         public void ShouldThrowIfUnableToParse(string algorithm)
         {
-            Assert.Throws<InvalidOperationException>(() => HashAlgorithm.Parse(algorithm));
+            Assert.Throws<NotSupportedException>(() => HashAlgorithm.Parse(algorithm));
         }
 
         [Test]
