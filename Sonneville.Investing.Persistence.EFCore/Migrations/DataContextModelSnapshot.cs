@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using Sonneville.Investing.Persistence.EFCore.EntityFrameworkCore;
 using System;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Sonneville.Investing.Persistence.EFCore.Migrations
 {

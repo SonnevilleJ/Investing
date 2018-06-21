@@ -1,42 +1,42 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
-    <OutputType>Exe</OutputType>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyName>Sonneville.Fidelity.Shell</AssemblyName>
-    <AssemblyTitle>Sonneville.Fidelity.Shell</AssemblyTitle>
-    <Product>Sonneville Investing</Product>
-    <Copyright>Copyright © 2018, John Sonneville</Copyright>
-  </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Sonneville.Investing.Fidelity.WebDriver\Sonneville.Investing.Fidelity.WebDriver.csproj">
-      <Project>{5ccf7d2f-9d06-48c6-ace1-b28fcf5c3210}</Project>
-      <Name>Sonneville.Investing.Fidelity.WebDriver</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Sonneville.Investing.Fidelity\Sonneville.Investing.Fidelity.csproj">
-      <Project>{47f349c6-57a7-4cd7-aa52-abae634ce96d}</Project>
-      <Name>Sonneville.Investing.Fidelity</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Sonneville.Investing.Persistence\Sonneville.Investing.Persistence.csproj">
-      <Project>{D5EADD51-DE65-4839-A5F5-CDF878F58AA5}</Project>
-      <Name>Sonneville.Investing.Persistence</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Sonneville.Investing\Sonneville.Investing.csproj">
-      <Project>{89A1A8E9-DD0F-40BC-B4F1-FCDED6910E35}</Project>
-      <Name>Sonneville.Investing</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Sonneville.Utilities\Sonneville.Utilities.csproj">
-      <Project>{5366e2e8-3513-4779-9c73-004f6958cf72}</Project>
-      <Name>Sonneville.Utilities</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="log4net" Version="2.0.8" />
-    <PackageReference Include="NDesk.Options" Version="0.2.1" />
-    <PackageReference Include="Ninject" Version="3.3.4" />
-    <PackageReference Include="Ninject.Extensions.Conventions" Version="3.3.0" />
-    <PackageReference Include="Selenium.WebDriver" Version="3.11.2" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="2.38.0.1" />
-  </ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.0</TargetFramework>
+        <OutputType>Exe</OutputType>
+    </PropertyGroup>
+    <PropertyGroup>
+        <AssemblyName>Sonneville.Fidelity.Shell</AssemblyName>
+        <AssemblyTitle>Sonneville.Fidelity.Shell</AssemblyTitle>
+        <Product>Sonneville Investing</Product>
+        <Copyright>Copyright © 2018, John Sonneville</Copyright>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Sonneville.Investing.Fidelity.WebDriver\Sonneville.Investing.Fidelity.WebDriver.csproj">
+            <Project>{5ccf7d2f-9d06-48c6-ace1-b28fcf5c3210}</Project>
+            <Name>Sonneville.Investing.Fidelity.WebDriver</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Sonneville.Investing.Fidelity\Sonneville.Investing.Fidelity.csproj">
+            <Project>{47f349c6-57a7-4cd7-aa52-abae634ce96d}</Project>
+            <Name>Sonneville.Investing.Fidelity</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Sonneville.Investing.Persistence\Sonneville.Investing.Persistence.csproj">
+            <Project>{D5EADD51-DE65-4839-A5F5-CDF878F58AA5}</Project>
+            <Name>Sonneville.Investing.Persistence</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Sonneville.Investing\Sonneville.Investing.csproj">
+            <Project>{89A1A8E9-DD0F-40BC-B4F1-FCDED6910E35}</Project>
+            <Name>Sonneville.Investing</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Sonneville.Utilities\Sonneville.Utilities.csproj">
+            <Project>{5366e2e8-3513-4779-9c73-004f6958cf72}</Project>
+            <Name>Sonneville.Utilities</Name>
+        </ProjectReference>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="log4net" Version="2.0.8"/>
+        <PackageReference Include="NDesk.Options" Version="0.2.1"/>
+        <PackageReference Include="Ninject" Version="3.3.4"/>
+        <PackageReference Include="Ninject.Extensions.Conventions" Version="3.3.0"/>
+        <PackageReference Include="Selenium.WebDriver" Version="3.12.1"/>
+        <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="2.40.0"/>
+    </ItemGroup>
 </Project>
