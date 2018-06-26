@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using log4net;
 using Moq;
@@ -14,7 +13,7 @@ using Sonneville.Utilities.Persistence.v2;
 
 namespace Sonneville.Fidelity.Shell.Test.Interface
 {
-    public class DemoCommandTests
+    public class DemoCommandTests : BaseCommandTests<DemoCommand>
     {
         private FidelityConfiguration _fidelityConfiguration;
         private string _username;
@@ -31,18 +30,11 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
 
         private Mock<IDataStore> _dataStoreMock;
 
-        private MemoryStream _inputStream;
-        private StreamReader _inputReader;
-        private StreamWriter _inputWriter;
-        private MemoryStream _outputStream;
-        private StreamReader _outputReader;
-        private StreamWriter _outputWriter;
-
-        private DemoCommand _command;
-
         [SetUp]
-        public void Setup()
+        public override void Setup()
         {
+            base.Setup();
+
             _username = "Batman";
             _password = "I am vengeance. I am the night. I am Batman.";
 
@@ -168,15 +160,7 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
             _dataStoreMock.Setup(configStore => configStore.Save(It.IsAny<FidelityConfiguration>()))
                 .Callback<FidelityConfiguration>(config => _fidelityConfiguration = config);
 
-            _inputStream = new MemoryStream();
-            _inputReader = new StreamReader(_inputStream);
-            _inputWriter = new StreamWriter(_inputStream) {AutoFlush = true};
-
-            _outputStream = new MemoryStream();
-            _outputReader = new StreamReader(_outputStream);
-            _outputWriter = new StreamWriter(_outputStream) {AutoFlush = true};
-
-            _command = new DemoCommand(
+            Command = new DemoCommand(
                 _logMock.Object,
                 _dataStoreMock.Object,
                 _positionsManagerMock.Object,
@@ -184,94 +168,63 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
                 new TransactionTranslator());
         }
 
-        [TearDown]
-        public void Teardown()
+        [Test]
+        public override void HasCorrectTitle()
         {
-            _inputStream.Dispose();
-            _inputReader.Dispose();
-            _inputWriter.Dispose();
-
-            _outputStream.Dispose();
-            _outputReader.Dispose();
-            _outputWriter.Dispose();
-
-            _command?.Dispose();
+            Assert.AreEqual("demo", Command.CommandName);
         }
 
         [Test]
-        public void HasCorrectTitle()
+        public override void ShouldDisposeOfDependencies()
         {
-            Assert.AreEqual("demo", _command.CommandName);
+            Command.Dispose();
+
+            _positionsManagerMock.Verify(manager => manager.Dispose());
+            _transactionManagerMock.Verify(manager => manager.Dispose());
         }
 
         [Test]
         public void ShouldFetchAccountSummariesFromPositionsManager()
         {
             CacheCredentials(_username, _password);
-            var shouldExit = _command.Invoke(_inputReader, _outputWriter, new string[0]);
+            
+            var shouldExit = InvokeCommand();
 
             Assert.IsFalse(shouldExit);
-            var outputText = ReadOutputText();
-            _accountSummaries.ForEach(account =>
-            {
-                Assert.IsTrue(outputText.Contains(account.AccountNumber));
-                Assert.IsTrue(outputText.Contains(account.Name));
-                Assert.IsTrue(outputText.Contains(account.MostRecentValue.ToString("C")));
-            });
+            _accountSummaries.ForEach(AssertOutputContainsAccountSummary);
         }
 
         [Test]
         public void ShouldFetchAccountDetailsFromPositionsManager()
         {
             CacheCredentials(_username, _password);
-            var shouldExit = _command.Invoke(_inputReader, _outputWriter, new string[0]);
+            
+            var shouldExit = InvokeCommand();
 
             Assert.IsFalse(shouldExit);
-            var outputText = ReadOutputText();
-            _accountDetails.ForEach(account =>
-            {
-                Assert.IsTrue(outputText.Contains(account.Name));
-                Assert.IsTrue(outputText.Contains(account.AccountNumber));
-                Assert.IsTrue(outputText.Contains(account.AccountType.ToString()));
-                account.Positions.ToList()
-                    .ForEach(position =>
-                    {
-                        Assert.IsTrue(outputText.Contains(position.Ticker));
-                        Assert.IsTrue(outputText.Contains(position.Quantity.ToString("N")));
-                        Assert.IsTrue(outputText.Contains(position.CurrentValue.ToString("C")));
-                        Assert.IsTrue(outputText.Contains(position.CostBasisPerShare.ToString("C")));
-                    });
-            });
+            _accountDetails.ForEach(AssertOutputContainsAccountDetails);
         }
 
         [Test]
         public void ShouldGetTransactionHistoryFromTransactionsManager()
         {
             CacheCredentials(_username, _password);
-            var shouldExit = _command.Invoke(_inputReader, _outputWriter, new string[0]);
+            
+            var shouldExit = InvokeCommand();
 
             Assert.IsFalse(shouldExit);
-            var outputText = ReadOutputText();
-            _transactions.ForEach(transaction =>
-            {
-                Assert.IsTrue(outputText.Contains(transaction.RunDate.Value.ToString("d")));
-                Assert.IsTrue(outputText.Contains(transaction.Quantity.Value.ToString("F")));
-                Assert.IsTrue(outputText.Contains(transaction.Symbol));
-                Assert.IsTrue(outputText.Contains(transaction.Price.Value.ToString("C")));
-            });
-
-            _transactionManagerMock.Verify(manager => manager.GetTransactionHistory(_startDate, _endDate));
+            _transactions.ForEach(AssertOutputContainsTransactionDetails);
         }
 
         [Test]
         public void ShouldPrintCompleteMessage()
         {
             CacheCredentials(_username, _password);
-            var shouldExit = _command.Invoke(_inputReader, _outputWriter, new string[0]);
+
+            var shouldExit = InvokeCommand();
 
             Assert.IsFalse(shouldExit);
-            var outputText = ReadOutputText();
-            Assert.IsTrue(outputText.Contains("Demo completed"));
+            AssertOutputContains("Demo completed");
         }
 
         [Test]
@@ -279,7 +232,7 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
         {
             var args = new[] {"-u", _username, "-p", _password};
 
-            var shouldExit = _command.Invoke(_inputReader, _outputWriter, args);
+            var shouldExit = InvokeCommand(args);
 
             Assert.IsFalse(shouldExit);
             Assert.AreEqual(_username, _fidelityConfiguration.Username);
@@ -298,7 +251,7 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
                 });
             var args = new[] {"-u", _username, "-p", _password, "-s"};
 
-            var shouldExit = _command.Invoke(_inputReader, _outputWriter, args);
+            var shouldExit = InvokeCommand(args);
 
             Assert.IsFalse(shouldExit);
             _logMock.Verify(log =>
@@ -309,13 +262,12 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
         [Test]
         public void ShouldDisplayHelpFromCliArgsAndNotPersist()
         {
-            var input = new[] {"-u", _username, "-p", _password, "-s", "-h"};
-            var shouldExit = _command.Invoke(_inputReader, _outputWriter, input);
+            var args = new[] {"-u", _username, "-p", _password, "-s", "-h"};
+            
+            var shouldExit = InvokeCommand(args);
 
             Assert.IsFalse(shouldExit);
-            var outputText = ReadOutputText();
-            Assert.IsTrue(outputText.Contains("-h"),
-                $"Actual console output follows:{Environment.NewLine}{outputText}");
+            AssertOutputContains("-h");
             AssertUnchangedConfig();
         }
 
@@ -326,13 +278,9 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
         public void ShouldPromptForCredentialsWhenCredentialsAreInsufficientlyCached(string username, string password)
         {
             CacheCredentials(username, password);
+            EnqueueInput(_username, _password);
 
-            _inputWriter.WriteLine(_username);
-            _inputWriter.WriteLine(_password);
-            var endlineLength = Environment.NewLine.Length;
-            _inputStream.Position -= _username.Length + endlineLength + _password.Length + endlineLength;
-
-            var shouldExit = _command.Invoke(_inputReader, _outputWriter, new string[] { });
+            var shouldExit = InvokeCommand();
 
             Assert.IsFalse(shouldExit);
             Assert.AreEqual(_username, _fidelityConfiguration.Username);
@@ -343,28 +291,13 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
         public void ShouldLogWhenCredentialsAreCached()
         {
             CacheCredentials(_username, _password);
-            var shouldExit = _command.Invoke(_inputReader, _outputWriter, new string[] { });
+
+            var shouldExit = InvokeCommand();
 
             Assert.IsFalse(shouldExit);
             _logMock.Verify(log => log.Info(It.Is<string>(message => message.Contains(_username))));
             Assert.AreEqual(_username, _fidelityConfiguration.Username);
             Assert.AreEqual(_password, _fidelityConfiguration.Password);
-        }
-
-        [Test]
-        public void ShouldCascadeDisposeToManagers()
-        {
-            _command.Dispose();
-
-            _positionsManagerMock.Verify(manager => manager.Dispose());
-            _transactionManagerMock.Verify(manager => manager.Dispose());
-        }
-
-        [Test]
-        public void ShouldHandleMultipleDisposals()
-        {
-            _command.Dispose();
-            _command.Dispose();
         }
 
         private void CacheCredentials(string username, string password)
@@ -373,15 +306,40 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
             _fidelityConfiguration.Password = password;
         }
 
+        private void AssertOutputContainsAccountSummary(AccountSummary account)
+        {
+            AssertOutputContains(account.AccountNumber);
+            AssertOutputContains(account.Name);
+            AssertOutputContains(account.MostRecentValue.ToString("C"));
+        }
+
+        private void AssertOutputContainsAccountDetails(AccountDetails account)
+        {
+            AssertOutputContains(account.Name);
+            AssertOutputContains(account.AccountNumber);
+            AssertOutputContains(account.AccountType.ToString());
+            account.Positions.ToList().ForEach(AssertOutputContainsPositionDetails);
+        }
+
+        private void AssertOutputContainsPositionDetails(IPosition position)
+        {
+            AssertOutputContains(position.Ticker);
+            AssertOutputContains(position.Quantity.ToString("N"));
+            AssertOutputContains(position.CurrentValue.ToString("C"));
+            AssertOutputContains(position.CostBasisPerShare.ToString("C"));
+        }
+
+        private void AssertOutputContainsTransactionDetails(ITransaction transaction)
+        {
+            AssertOutputContains(transaction.RunDate.Value.ToString("d"));
+            AssertOutputContains(transaction.Quantity.Value.ToString("F"));
+            AssertOutputContains(transaction.Symbol);
+            AssertOutputContains(transaction.Price.Value.ToString("C"));
+        }
+
         private void AssertUnchangedConfig()
         {
             _dataStoreMock.Verify(configStore => configStore.Save(It.IsAny<object>()), Times.Never);
-        }
-
-        private string ReadOutputText()
-        {
-            _outputStream.Position = 0;
-            return _outputReader.ReadToEnd();
         }
     }
 }

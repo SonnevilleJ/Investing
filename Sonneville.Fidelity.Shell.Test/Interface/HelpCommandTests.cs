@@ -1,35 +1,39 @@
-﻿using System.IO;
-using Moq;
+﻿using System;
 using NUnit.Framework;
 using Sonneville.Fidelity.Shell.Interface;
 
 namespace Sonneville.Fidelity.Shell.Test.Interface
 {
     [TestFixture]
-    public class HelpCommandTests
+    public class HelpCommandTests : BaseCommandTests<HelpCommand>
     {
-        private HelpCommand _command;
-
         [SetUp]
-        public void Setup()
+        public override void Setup()
         {
-            _command = new HelpCommand();
+            base.Setup();
+
+            Command = new HelpCommand();
         }
 
         [Test]
-        public void HasCorrectTitle()
+        public override void HasCorrectTitle()
         {
-            Assert.AreEqual("help", _command.CommandName);
+            Assert.AreEqual("help", Command.CommandName);
+        }
+
+        [Test]
+        public override void ShouldDisposeOfDependencies()
+        {
+            Command.Dispose();
         }
 
         [Test]
         public void ShouldPrintHelp()
         {
-            var outputWriterMock = new Mock<TextWriter>();
-            var shouldExit = _command.Invoke(null, outputWriterMock.Object, null);
+            var shouldExit = InvokeCommand();
             
             Assert.IsFalse(shouldExit);
-            outputWriterMock.Verify(outputWriter => outputWriter.WriteLine(It.IsAny<string>()));
+            AssertOutputContains(Environment.NewLine);
         }
     }
 }
