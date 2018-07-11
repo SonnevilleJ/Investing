@@ -20,6 +20,6 @@
         </ProjectReference>
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Selenium.WebDriver" Version="3.12.1"/>
+        <PackageReference Include="Selenium.WebDriver" Version="3.13.1" />
     </ItemGroup>
 </Project>
