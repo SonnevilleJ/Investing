@@ -40,6 +40,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.Investing.Persis
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.Investing.Persistence.EFCore", "Sonneville.Investing.Persistence.EFCore\Sonneville.Investing.Persistence.EFCore.csproj", "{70A8A1EC-692C-42B5-B93A-DEFA9177EA04}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.Investing.WebApi", "Sonneville.Investing.WebApi\Sonneville.Investing.WebApi.csproj", "{909C300E-458A-4035-A789-EFB0FF18D196}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.Investing.WebApi.Test", "Sonneville.Investing.WebApi.Test\Sonneville.Investing.WebApi.Test.csproj", "{E135AF07-9ED1-4C5F-9C4D-5477B00EE3B6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -102,6 +106,14 @@ Global
 		{70A8A1EC-692C-42B5-B93A-DEFA9177EA04}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70A8A1EC-692C-42B5-B93A-DEFA9177EA04}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70A8A1EC-692C-42B5-B93A-DEFA9177EA04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{909C300E-458A-4035-A789-EFB0FF18D196}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{909C300E-458A-4035-A789-EFB0FF18D196}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{909C300E-458A-4035-A789-EFB0FF18D196}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{909C300E-458A-4035-A789-EFB0FF18D196}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E135AF07-9ED1-4C5F-9C4D-5477B00EE3B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E135AF07-9ED1-4C5F-9C4D-5477B00EE3B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E135AF07-9ED1-4C5F-9C4D-5477B00EE3B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E135AF07-9ED1-4C5F-9C4D-5477B00EE3B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

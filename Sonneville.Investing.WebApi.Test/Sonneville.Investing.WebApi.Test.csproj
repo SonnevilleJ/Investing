@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.0</TargetFramework>
+
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+    <PropertyGroup>
+        <AssemblyName>Sonneville.Investing.WebApi.Test</AssemblyName>
+        <AssemblyTitle>Sonneville.Investing.WebApi.Test</AssemblyTitle>
+        <Product>Sonneville Investing</Product>
+        <Copyright>Copyright © 2018, John Sonneville</Copyright>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Moq" Version="4.8.2" />
+        <PackageReference Include="Ninject" Version="3.3.4" />
+        <PackageReference Include="nunit" Version="3.10.1" />
+        <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.2" />
+    </ItemGroup>
+    <ItemGroup>
+        <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7">
+            <HintPath>..\..\..\..\Users\js86697\.nuget\packages\ninject\3.3.4\lib\netstandard2.0\Ninject.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Sonneville.Investing.WebApi\Sonneville.Investing.WebApi.csproj" />
+    </ItemGroup>
+</Project>
