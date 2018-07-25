@@ -1,7 +1,7 @@
-﻿using Ninject;
-using Sonneville.Fidelity.Shell.Interface;
+using Ninject;
+using Sonneville.Investing.WebApi.AppStartup.NinjectModules;
 
-namespace Sonneville.Fidelity.Shell.AppStartup
+namespace Sonneville.Investing.WebApi.AppStartup
 {
     public static class Bootstrapper
     {
@@ -20,9 +20,9 @@ namespace Sonneville.Fidelity.Shell.AppStartup
         public static void Main(string[] args)
         {
             using (Kernel)
-            using (var commandRouter = Kernel.Get<ICommandRouter>())
+            using (var apiServer = Kernel.Get<IApiServer>())
             {
-                commandRouter.Run(args);
+                apiServer.RunAsync(args);
             }
         }
     }

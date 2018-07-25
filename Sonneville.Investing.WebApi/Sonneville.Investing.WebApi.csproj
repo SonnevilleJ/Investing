@@ -1,13 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>netcoreapp2.0</TargetFramework>
+        <LangVersion>7.1</LangVersion>
     </PropertyGroup>
-
+    <PropertyGroup>
+        <AssemblyName>Sonneville.Investing.WebApi</AssemblyName>
+        <AssemblyTitle>Sonneville.Investing.WebApi</AssemblyTitle>
+        <Product>Sonneville Investing</Product>
+        <Copyright>Copyright © 2018, John Sonneville</Copyright>
+    </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Ninject" Version="3.3.4" />
-        <PackageReference Include="Ninject.Extensions.Conventions" Version="3.3.0" />
+        <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.9"/>
+        <PackageReference Include="Ninject" Version="3.3.4"/>
+        <PackageReference Include="Ninject.Extensions.Conventions" Version="3.3.0"/>
     </ItemGroup>
-
 </Project>
