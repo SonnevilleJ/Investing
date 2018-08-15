@@ -16,13 +16,24 @@ namespace Sonneville.Investing.WebApi.Test.Hello
         [Test]
         public void GetExample()
         {
-            AssertGetMethod(Controller.Hello);
+            AssertGetMethod(
+                Controller.Hello,
+                getMethod => Assert.AreEqual("Hello World!", getMethod())
+            );
         }
 
         [Test]
         public void PostExample()
         {
-            AssertPostMethod<string, CreatedAtRouteResult>(Controller.HelloPost);
+            AssertPostMethod<string, CreatedAtRouteResult>(
+                Controller.HelloPost,
+                postMethod =>
+                {
+                    var createdAtRouteResult = postMethod("");
+                    Assert.AreEqual("blah", createdAtRouteResult.RouteName);
+                    Assert.AreEqual("result", createdAtRouteResult.Value);
+                }
+            );
         }
 
         protected override HelloController InstantiateController()
