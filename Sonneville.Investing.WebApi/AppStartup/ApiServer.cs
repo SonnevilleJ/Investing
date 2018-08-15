@@ -8,17 +8,21 @@ namespace Sonneville.Investing.WebApi.AppStartup
 {
     public interface IApiServer : IDisposable
     {
+        IPEndPoint IpEndPoint { get; }
+        bool Running { get; }
         Task RunAsync(string[] args);
         Task RunAsync(string[] args, CancellationToken cancellationToken);
     }
 
     public class ApiServer : IApiServer
     {
-        public IPEndPoint IpEndPoint { get; private set; }
+        private readonly IWebHostFactory _webHostFactory;
+        public IPEndPoint IpEndPoint { get; }
         public bool Running { get; private set; }
 
-        public ApiServer(IPEndPoint ipEndPoint)
+        public ApiServer(IWebHostFactory webHostFactory, IPEndPoint ipEndPoint)
         {
+            _webHostFactory = webHostFactory;
             IpEndPoint = ipEndPoint;
         }
 
@@ -31,22 +35,18 @@ namespace Sonneville.Investing.WebApi.AppStartup
         {
             using (var webHost = StartServer())
             {
-                webHost.Start();
-
                 while (true)
                 {
                     try
                     {
                         await Task.Delay(TimeSpan.FromMinutes(1), cancellationToken);
                     }
-                    catch (OperationCanceledException)
+                    catch (TaskCanceledException)
                     {
-                        Console.WriteLine("Cancellation detected...");
+                        await StopServer(webHost);
                         break;
                     }
                 }
-
-                await StopServer(webHost);
             }
         }
 
@@ -56,10 +56,8 @@ namespace Sonneville.Investing.WebApi.AppStartup
 
         private IWebHost StartServer()
         {
-            var webHost = new WebHostBuilder()
-                .UseStartup<MvcStartup>()
-                .UseKestrel(options => options.Listen(IpEndPoint))
-                .Build();
+            var webHost = _webHostFactory.CreateWebHost(IpEndPoint);
+            webHost.Start();
             Running = true;
             return webHost;
         }
