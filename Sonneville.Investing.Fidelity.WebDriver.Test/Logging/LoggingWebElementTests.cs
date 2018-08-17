@@ -37,47 +37,73 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Logging
         }
 
         [Test]
-        public void FoundElementShouldLogThenClick()
+        public void FindElementShouldLogThenWrap()
         {
-            AssertFindElementReturnsLoggingWebElements(_outerWebElement, _innerWebElementMock);
+            AssertFindElementReturnsLoggingWebElements(_outerWebElement, _innerWebElementMock, Level.Trace);
         }
 
         [Test]
-        public void FoundElementsShouldLogThenClick()
+        public void FindElementsShouldLogThenWrap()
         {
-            AssertFindElementsReturnsLoggingWebElements(_outerWebElement, _innerWebElementMock);
+            AssertFindElementsReturnsLoggingWebElements(_outerWebElement, _innerWebElementMock, Level.Trace);
         }
 
         [Test]
         public void ShouldLogThenClear()
         {
             AssertSubjectWaitsBeforeInvokingDependency(_outerWebElement, _innerWebElementMock,
-                subject => subject.Clear(),
-                dependency => dependency.Clear()
-            );
+                subject => subject.Clear(), Level.Trace);
         }
 
         [Test]
         public void ShouldLogThenClick()
         {
             AssertSubjectWaitsBeforeInvokingDependency(_outerWebElement, _innerWebElementMock,
-                subject => subject.Click(),
-                dependency => dependency.Click()
-            );
+                webElement => webElement.Click(), Level.Trace);
+        }
+
+        [Test]
+        public void ShouldLogThenGetAttribute()
+        {
+            var input = "input";
+            AssertSubjectLogsAfterInvokingDependency(_outerWebElement, _innerWebElementMock,
+                webElement => webElement.GetAttribute(input), input, Level.Trace);
+        }
+
+        [Test]
+        public void ShouldLogThenGetCssValue()
+        {
+            var input = "input";
+            AssertSubjectLogsAfterInvokingDependency(_outerWebElement, _innerWebElementMock,
+                webElement => webElement.GetCssValue(input), input, Level.Trace);
+        }
+
+        [Test]
+        public void ShouldLogThenGetProperty()
+        {
+            var input = "input";
+            AssertSubjectLogsAfterInvokingDependency(_outerWebElement, _innerWebElementMock,
+                webElement => webElement.GetProperty(input), input, Level.Trace);
+        }
+
+        [Test]
+        public void ShouldLogThenSendKeys()
+        {
+            AssertSubjectWaitsBeforeInvokingDependency(_outerWebElement, _innerWebElementMock,
+                webElement => webElement.SendKeys("hi"), Level.Verbose);
         }
 
         [Test]
         public void ShouldLogThenSubmit()
         {
             AssertSubjectWaitsBeforeInvokingDependency(_outerWebElement, _innerWebElementMock,
-                subject => subject.Submit(),
-                dependency => dependency.Submit()
-            );
+                webElement => webElement.Submit(), Level.Trace);
         }
 
         private void AssertFindElementReturnsLoggingWebElements<T>(
             ISearchContext searchContext,
-            Mock<T> wrappedSearchContextMock
+            Mock<T> wrappedSearchContextMock,
+            Level expectedLevel
         ) where T : class, ISearchContext
         {
             var innerMock = new Mock<IWebElement>();
@@ -89,15 +115,15 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Logging
             var outer = searchContext.FindElement(locator);
 
             AssertSubjectWaitsBeforeInvokingDependency(outer, innerMock,
-                subject => subject.Click(),
-                dependency => dependency.Click(),
+                webElement => webElement.Click(), expectedLevel,
                 2
             );
         }
 
         private void AssertFindElementsReturnsLoggingWebElements<T>(
             ISearchContext searchContext,
-            Mock<T> wrappedSearchContextMock
+            Mock<T> wrappedSearchContextMock,
+            Level expectedLevel
         ) where T : class, ISearchContext
         {
             var innerMock = new Mock<IWebElement>();
@@ -109,15 +135,54 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Logging
             var outer = searchContext.FindElements(locator).Single();
 
             AssertSubjectWaitsBeforeInvokingDependency(outer, innerMock,
-                subject => subject.Click(),
-                dependency => dependency.Click(), 2);
+                webElement => webElement.Click(), expectedLevel, 2);
+        }
+
+        private void AssertSubjectLogsAfterInvokingDependency(
+            IWebElement outer,
+            Mock<IWebElement> inner,
+            Expression<Func<IWebElement, string>> expectedInteraction,
+            string input,
+            Level expectedLevel,
+            int callCount = 1)
+        {
+            var validationsCompleted = false;
+            var returnValue = "return";
+            inner.Setup(expectedInteraction)
+                .Returns(returnValue);
+            _loggerMock.Setup(log =>
+                    log.Log(It.IsAny<Type>(), It.IsAny<Level>(), It.IsAny<object>(), It.IsAny<Exception>()))
+                .Callback<Type, Level, object, Exception>(
+                    (declaringType, level, message, exception) =>
+                    {
+                        Assert.AreEqual(expectedLevel, level);
+                        Assert.IsTrue(message.ToString().Contains(input),
+                            "Did not log argument!");
+                        Assert.IsTrue(message.ToString().Contains(returnValue),
+                            "Did not log return value!");
+                        Assert.IsNull(exception,
+                            $"Exception was unexpected in log event: {exception}");
+                        validationsCompleted = true;
+                    }
+                );
+            using (var task = Task.Run(() => expectedInteraction.Compile().Invoke(outer)))
+            {
+                task.Wait(1000);
+                Assert.IsTrue(task.IsCompleted);
+                Assert.IsTrue(validationsCompleted);
+                inner.Verify(expectedInteraction, Times.Once());
+                _loggerMock.Verify(log =>
+                    log.Log(It.IsAny<Type>(), It.IsAny<Level>(), It.IsAny<object>(), It.IsAny<Exception>()),
+                    Times.Exactly(callCount), "Did not invoke logger!");
+            }
         }
 
         private void AssertSubjectWaitsBeforeInvokingDependency(
             IWebElement outer,
             Mock<IWebElement> inner,
-            Action<IWebElement> trigger,
-            Expression<Action<IWebElement>> expectedInteraction, int callCount = 1)
+            Expression<Action<IWebElement>> expectedInteraction,
+            Level expectedLevel,
+            int callCount = 1)
         {
             var validationsCompleted = false;
             _loggerMock.Setup(log =>
@@ -125,7 +190,7 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Logging
                 .Callback<Type, Level, object, Exception>(
                     (declaringType, level, message, exception) =>
                     {
-                        Assert.AreEqual(Level.Trace, level);
+                        Assert.AreEqual(expectedLevel, level);
                         Assert.IsFalse(string.IsNullOrWhiteSpace(message as string),
                             "Should have logged some helpful message!");
                         Assert.IsNull(exception,
@@ -137,8 +202,8 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Logging
                 .Callback(() => _loggerMock.Verify(log =>
                         log.Log(It.IsAny<Type>(), It.IsAny<Level>(), It.IsAny<object>(), It.IsAny<Exception>()),
                     Times.Exactly(callCount),
-                    "Did not log a trace event!"));
-            using (var task = Task.Run(() => trigger(outer)))
+                    "Did not invoke logger!"));
+            using (var task = Task.Run(() => expectedInteraction.Compile().Invoke(outer)))
             {
                 task.Wait(1000);
                 Assert.IsTrue(task.IsCompleted);
