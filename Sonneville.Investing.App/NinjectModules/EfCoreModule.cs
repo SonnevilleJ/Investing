@@ -2,7 +2,7 @@
 using Ninject.Modules;
 using Sonneville.Investing.Persistence.EFCore.EntityFrameworkCore;
 
-namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
+namespace Sonneville.Investing.App.NinjectModules
 {
     public class EfCoreModule : NinjectModule
     {

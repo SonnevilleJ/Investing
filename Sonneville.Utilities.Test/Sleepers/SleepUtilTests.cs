@@ -1,6 +1,4 @@
 ﻿using System.Diagnostics;
-using System.IO;
-using Moq;
 using NUnit.Framework;
 using Sonneville.Utilities.Sleepers;
 

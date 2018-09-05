@@ -1,7 +1,7 @@
 using System.Linq;
 using Sonneville.Utilities.Security;
 
-namespace Sonneville.Fidelity.Shell.Authentication
+namespace Sonneville.Investing.App.Authentication
 {
     public interface IPasswordService
     {

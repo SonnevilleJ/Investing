@@ -3,12 +3,12 @@ using System.Linq;
 using System.Security.Authentication;
 using Moq;
 using NUnit.Framework;
-using Sonneville.Fidelity.Shell.Authentication;
+using Sonneville.Investing.App.Authentication;
 using Sonneville.Investing.Persistence.Users;
 using Sonneville.Investing.Users;
 using Sonneville.Utilities.Security;
 
-namespace Sonneville.Fidelity.Shell.Test.Authentication
+namespace Sonneville.Investing.App.Test.Authentication
 {
     [TestFixture]
     public class AuthenticationServiceTests

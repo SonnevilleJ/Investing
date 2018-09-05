@@ -1,6 +1,7 @@
 ﻿using Ninject;
 using Ninject.Modules;
 using Sonneville.Fidelity.Shell.AppStartup.NinjectModules;
+using Sonneville.Investing.App.NinjectModules;
 
 namespace Sonneville.Fidelity.Shell.AppStartup
 {
@@ -8,6 +9,7 @@ namespace Sonneville.Fidelity.Shell.AppStartup
     {
         private readonly INinjectModule[] _modules =
         {
+            new DefaultModule(),
             new AppModule(),
             new ConfigModule(),
             new SeleniumModule(),

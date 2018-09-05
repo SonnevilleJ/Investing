@@ -6,7 +6,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using Sonneville.Investing.Fidelity.WebDriver.Logging;
 
-namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
+namespace Sonneville.Investing.App.NinjectModules
 {
     public class SeleniumModule : NinjectModule
     {

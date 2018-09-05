@@ -11,8 +11,10 @@
         <Copyright>Copyright © 2018, John Sonneville</Copyright>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.9"/>
-        <PackageReference Include="Ninject" Version="3.3.4"/>
-        <PackageReference Include="Ninject.Extensions.Conventions" Version="3.3.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.9" />
+        <PackageReference Include="Ninject" Version="3.3.4" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Sonneville.Investing.App\Sonneville.Investing.App.csproj" />
     </ItemGroup>
 </Project>

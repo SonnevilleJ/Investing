@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.0</TargetFramework>
+
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <AssemblyName>Sonneville.Investing.App</AssemblyName>
+        <AssemblyTitle>Sonneville.Investing.App</AssemblyTitle>
+        <Product>Sonneville Investing</Product>
+        <Copyright>Copyright © 2018, John Sonneville</Copyright>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Sonneville.Investing.Fidelity.WebDriver\Sonneville.Investing.Fidelity.WebDriver.csproj" />
+        <ProjectReference Include="..\Sonneville.Investing.Persistence\Sonneville.Investing.Persistence.csproj" />
+        <ProjectReference Include="..\Sonneville.Investing\Sonneville.Investing.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Ninject" Version="3.3.4" />
+        <PackageReference Include="Ninject.Extensions.Conventions" Version="3.3.0" />
+        <PackageReference Include="Selenium.WebDriver" Version="3.13.1" />
+        <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="2.40.0" />
+    </ItemGroup>
+
+</Project>

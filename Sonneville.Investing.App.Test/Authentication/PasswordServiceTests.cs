@@ -1,8 +1,8 @@
 using NUnit.Framework;
-using Sonneville.Fidelity.Shell.Authentication;
+using Sonneville.Investing.App.Authentication;
 using Sonneville.Utilities.Security;
 
-namespace Sonneville.Fidelity.Shell.Test.Authentication
+namespace Sonneville.Investing.App.Test.Authentication
 {
     [TestFixture]
     public class PasswordServiceTests

@@ -2,7 +2,7 @@
 using Sonneville.Investing.Persistence.Users;
 using Sonneville.Investing.Users;
 
-namespace Sonneville.Fidelity.Shell.Authentication
+namespace Sonneville.Investing.App.Authentication
 {
     public class AuthenticationService
     {
