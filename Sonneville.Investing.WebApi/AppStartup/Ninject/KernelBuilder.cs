@@ -1,7 +1,7 @@
 using Ninject;
-using Sonneville.Investing.App.NinjectModules;
+using Sonneville.Investing.App.Ninject;
 
-namespace Sonneville.Investing.WebApi.AppStartup.NinjectModules
+namespace Sonneville.Investing.WebApi.AppStartup.Ninject
 {
     public class KernelBuilder
     {

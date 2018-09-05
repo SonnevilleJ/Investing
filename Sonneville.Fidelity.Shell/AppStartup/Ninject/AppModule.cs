@@ -3,7 +3,7 @@ using System.IO;
 using Ninject.Modules;
 using Sonneville.Fidelity.Shell.Interface;
 
-namespace Sonneville.Fidelity.Shell.AppStartup.NinjectModules
+namespace Sonneville.Fidelity.Shell.AppStartup.Ninject
 {
     public class AppModule : NinjectModule
     {

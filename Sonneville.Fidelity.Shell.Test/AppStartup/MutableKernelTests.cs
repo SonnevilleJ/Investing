@@ -2,7 +2,7 @@
 using Ninject;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using Sonneville.Fidelity.Shell.AppStartup;
+using Sonneville.Fidelity.Shell.AppStartup.Ninject;
 using Sonneville.Fidelity.Shell.Interface;
 
 namespace Sonneville.Fidelity.Shell.Test.AppStartup

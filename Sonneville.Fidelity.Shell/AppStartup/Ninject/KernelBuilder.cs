@@ -1,9 +1,8 @@
 ﻿using Ninject;
 using Ninject.Modules;
-using Sonneville.Fidelity.Shell.AppStartup.NinjectModules;
-using Sonneville.Investing.App.NinjectModules;
+using Sonneville.Investing.App.Ninject;
 
-namespace Sonneville.Fidelity.Shell.AppStartup
+namespace Sonneville.Fidelity.Shell.AppStartup.Ninject
 {
     public class KernelBuilder
     {

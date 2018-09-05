@@ -22,8 +22,7 @@
     <ItemGroup>
         <PackageReference Include="Ninject" Version="3.3.4" />
         <PackageReference Include="Ninject.Extensions.Conventions" Version="3.3.0" />
-        <PackageReference Include="Selenium.WebDriver" Version="3.13.1" />
-        <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="2.40.0" />
+        <PackageReference Include="Selenium.WebDriver" Version="3.14.0" />
     </ItemGroup>
 
 </Project>

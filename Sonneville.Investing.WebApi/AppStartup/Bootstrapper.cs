@@ -1,5 +1,5 @@
 using Ninject;
-using Sonneville.Investing.WebApi.AppStartup.NinjectModules;
+using Sonneville.Investing.WebApi.AppStartup.Ninject;
 
 namespace Sonneville.Investing.WebApi.AppStartup
 {

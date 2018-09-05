@@ -1,4 +1,5 @@
 ﻿using Ninject;
+using Sonneville.Fidelity.Shell.AppStartup.Ninject;
 using Sonneville.Fidelity.Shell.Interface;
 
 namespace Sonneville.Fidelity.Shell.AppStartup

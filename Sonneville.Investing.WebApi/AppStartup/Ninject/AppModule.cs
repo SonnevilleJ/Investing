@@ -1,7 +1,7 @@
 using System.Net;
 using Ninject.Modules;
 
-namespace Sonneville.Investing.WebApi.AppStartup.NinjectModules
+namespace Sonneville.Investing.WebApi.AppStartup.Ninject
 {
     public class AppModule : NinjectModule
     {

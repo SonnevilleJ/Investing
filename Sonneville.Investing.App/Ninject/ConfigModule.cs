@@ -12,7 +12,7 @@ using Ninject.Modules;
 using Sonneville.Investing.Fidelity.WebDriver.Configuration;
 using Sonneville.Utilities.Persistence.v2;
 
-namespace Sonneville.Investing.App.NinjectModules
+namespace Sonneville.Investing.App.Ninject
 {
     public class ConfigModule : NinjectModule
     {
