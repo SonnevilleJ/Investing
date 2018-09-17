@@ -10,9 +10,7 @@
         <Copyright>Copyright © 2018, John Sonneville</Copyright>
     </PropertyGroup>
     <ItemGroup>
-        <ProjectReference Include="..\Sonneville.Investing.Persistence\Sonneville.Investing.Persistence.csproj" />
         <ProjectReference Include="..\Sonneville.Investing\Sonneville.Investing.csproj" />
-        <ProjectReference Include="..\Sonneville.Utilities\Sonneville.Utilities.csproj" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.2" />

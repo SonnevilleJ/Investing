@@ -16,7 +16,6 @@
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.2" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\Sonneville.Investing.Persistence\Sonneville.Investing.Persistence.csproj" />
-        <ProjectReference Include="..\Sonneville.Investing\Sonneville.Investing.csproj" />
+        <ProjectReference Include="..\Sonneville.Investing.Persistence.EFCore\Sonneville.Investing.Persistence.EFCore.csproj" />
     </ItemGroup>
 </Project>

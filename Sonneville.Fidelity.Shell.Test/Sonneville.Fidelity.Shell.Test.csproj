@@ -6,7 +6,6 @@
     <ItemGroup>
         <ProjectReference Include="..\Sonneville.Fidelity.Shell\Sonneville.Fidelity.Shell.csproj" />
         <ProjectReference Include="..\Sonneville.Investing.Fidelity.WebDriver\Sonneville.Investing.Fidelity.WebDriver.csproj" />
-        <ProjectReference Include="..\Sonneville.Investing.Persistence.Test\Sonneville.Investing.Persistence.Test.csproj" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.2" />

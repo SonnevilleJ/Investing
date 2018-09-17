@@ -13,7 +13,4 @@
         <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.1.1" />
     </ItemGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\Sonneville.Utilities\Sonneville.Utilities.csproj" />
-    </ItemGroup>
 </Project>
