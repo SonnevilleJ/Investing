@@ -14,8 +14,8 @@
         <ProjectReference Include="..\Sonneville.Utilities\Sonneville.Utilities.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.3" />
         <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.1.1" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.1.2" />
     </ItemGroup>
 </Project>
