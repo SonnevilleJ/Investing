@@ -14,10 +14,10 @@ namespace Sonneville.Investing.Persistence.IntegrationTest
             PortNumber = 6543,
             UserId = "postgres",
             Password = "pwd",
-            Database = "investing"
+            Database = typeof(IntegrationTestsBase).Assembly.FullName
         };
 
-        protected DataContext InitializeDbContext(DatabaseConnectionInfo connectionInfo = null)
+        private DataContext InitializeDbContext(DatabaseConnectionInfo connectionInfo = null)
         {
             return new DataContext(connectionInfo ?? _defaultConnectionInfo);
         }
