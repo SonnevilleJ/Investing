@@ -17,7 +17,7 @@ namespace Sonneville.Investing.WebApi.Test.Hello
         public void GetExample()
         {
             AssertGetMethod(
-                Controller.Hello,
+                Controller.HelloGet,
                 getMethod => Assert.AreEqual("Hello World!", getMethod())
             );
         }

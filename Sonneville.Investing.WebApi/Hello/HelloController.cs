@@ -6,7 +6,7 @@ namespace Sonneville.Investing.WebApi.Hello
     public class HelloController : ControllerBase
     {
         [HttpGet]
-        public string Hello()
+        public string HelloGet()
         {
             return "Hello World!";
         }
