@@ -36,6 +36,6 @@
         <PackageReference Include="log4net" Version="2.0.8" />
         <PackageReference Include="NDesk.Options" Version="0.2.1" />
         <PackageReference Include="Ninject" Version="3.3.4" />
-        <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="2.41.0" />
+        <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="2.42.0.1" />
     </ItemGroup>
 </Project>
