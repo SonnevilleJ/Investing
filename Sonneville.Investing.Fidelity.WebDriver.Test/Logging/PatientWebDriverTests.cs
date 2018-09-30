@@ -12,7 +12,7 @@ using Sonneville.Investing.Fidelity.WebDriver.Logging;
 namespace Sonneville.Investing.Fidelity.WebDriver.Test.Logging
 {
     [TestFixture]
-    public class PatientWebDriverTest
+    public class PatientWebDriverTests
     {
         private bool _isDisplayed;
 
