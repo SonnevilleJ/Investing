@@ -3,7 +3,7 @@
         <TargetFramework>netstandard2.0</TargetFramework>
     </PropertyGroup>
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>netcoreapp2.1</TargetFramework>
         <AssemblyName>Sonneville.Investing.Fidelity.WebDriver</AssemblyName>
         <AssemblyTitle>Sonneville.Investing.Fidelity.WebDriver</AssemblyTitle>
         <Product>Sonneville Investing</Product>
@@ -18,6 +18,7 @@
             <Project>{89a1a8e9-dd0f-40bc-b4f1-fcded6910e35}</Project>
             <Name>Sonneville.Investing</Name>
         </ProjectReference>
+        <ProjectReference Include="..\Sonneville.Utilities\Sonneville.Utilities.csproj" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Selenium.WebDriver" Version="3.14.0" />

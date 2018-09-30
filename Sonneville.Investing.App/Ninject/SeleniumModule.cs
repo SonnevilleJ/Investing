@@ -16,13 +16,17 @@ namespace Sonneville.Investing.App.Ninject
             {
                 Unbind<IWebDriver>();
 
+                var chromeDriver = CreateWebDriver();
+
                 Bind<IWebDriver>()
-                    .ToMethod(context => CreateWebDriver())
-                    .WhenInjectedInto<PatientWebDriver>();
+                    .ToConstant(chromeDriver)
+                    .WhenInjectedInto<PatientWebDriver>()
+                    .InSingletonScope();
 
                 Bind<IWebDriver>()
                     .To<PatientWebDriver>()
-                    .WhenInjectedInto<LoggingWebDriver>();
+                    .WhenInjectedInto<LoggingWebDriver>()
+                    .InSingletonScope();
                 
                 Bind<IWebDriver>()
                     .To<LoggingWebDriver>()
@@ -34,7 +38,7 @@ namespace Sonneville.Investing.App.Ninject
             }
         }
 
-        private static IWebDriver CreateWebDriver()
+        private static ChromeDriver CreateWebDriver()
         {
             var chromeOptions = new ChromeOptions();
 #if !DEBUG
