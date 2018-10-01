@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Sonneville.Investing.Fidelity.WebDriver.Logging;
 
 namespace Sonneville.Fidelity.Shell.Interface
 {
@@ -15,13 +16,19 @@ namespace Sonneville.Fidelity.Shell.Interface
         private readonly TextReader _inputReader;
         private readonly TextWriter _outputWriter;
         private readonly IReadOnlyCollection<ICommand> _commands;
+        private readonly IExceptionReportGenerator _exceptionReportGenerator;
         private bool _disposed;
 
-        public CommandRouter(TextReader inputReader, TextWriter outputWriter, ICommand[] commands)
+        public CommandRouter(
+            TextReader inputReader,
+            TextWriter outputWriter,
+            ICommand[] commands,
+            IExceptionReportGenerator exceptionReportGenerator)
         {
             _inputReader = inputReader;
             _outputWriter = outputWriter;
             _commands = commands;
+            _exceptionReportGenerator = exceptionReportGenerator;
         }
 
         public void Run(IReadOnlyList<string> args)
@@ -54,10 +61,13 @@ namespace Sonneville.Fidelity.Shell.Interface
             }
             catch (Exception e)
             {
+                var result = _exceptionReportGenerator.DocumentException(e);
                 _outputWriter.WriteLine(e);
+                _outputWriter.WriteLine();
+                result.MatchSome(location => _outputWriter.WriteLine($"Wrote exception report to: {location}"));
                 _outputWriter.WriteLine("Error occurred! Please consider submitting a bug report! ;)");
-                _outputWriter.WriteLine("Press any key to exit...");
-                _inputReader.Read();
+                _outputWriter.WriteLine("Press enter key to exit...");
+                _inputReader.ReadLine();
                 return true;
             }
         }

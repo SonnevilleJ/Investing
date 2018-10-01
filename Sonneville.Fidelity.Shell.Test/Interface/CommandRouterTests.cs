@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
+using Optional;
 using Sonneville.Fidelity.Shell.Interface;
+using Sonneville.Investing.Fidelity.WebDriver.Logging;
 
 namespace Sonneville.Fidelity.Shell.Test.Interface
 {
@@ -20,6 +22,7 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
         private StreamWriter _outputWriter;
         private List<ICommand> _commands;
         private CommandRouter _commandRouter;
+        private Mock<IExceptionReportGenerator> _mockExceptionReportGenerator;
 
         [SetUp]
         public void Setup()
@@ -42,7 +45,12 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
                 CreateBadCommand("bad"),
             };
 
-            _commandRouter = new CommandRouter(_inputReader, _outputWriter, _commands.ToArray());
+            _mockExceptionReportGenerator = new Mock<IExceptionReportGenerator>();
+            _commandRouter = new CommandRouter(
+                _inputReader,
+                _outputWriter,
+                _commands.ToArray(),
+                _mockExceptionReportGenerator.Object);
         }
 
         [TearDown]
@@ -113,7 +121,7 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
         }
 
         [Test]
-        public void ShouldInvokestartupCommandAndWait()
+        public void ShouldInvokeStartupCommandAndWait()
         {
             var task = Task.Run(() => _commandRouter.Run(_cliArgs));
             task.Wait(100);
@@ -138,15 +146,19 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
         }
 
         [Test]
-        public void ShouldPrintExceptionAndWaitForInputThenExit()
+        public void ShouldDocumentExceptionAndWaitForInputThenExit()
         {
             var cliArgs = "bad".Split(' ');
+            const string reportLocation = "report location";
+            _mockExceptionReportGenerator.Setup(generator => generator.DocumentException(It.IsAny<Exception>()))
+                .Returns(Option.Some(reportLocation));
 
             var task = Task.Run(() => _commandRouter.Run(cliArgs));
             task.Wait(100);
 
             AssertCommandWasInvoked("bad", cliArgs);
             AssertOutputContains("InvalidOperationException");
+            AssertOutputContains(reportLocation);
             Assert.IsTrue(task.IsCompleted);
         }
 

@@ -21,6 +21,7 @@
         <ProjectReference Include="..\Sonneville.Utilities\Sonneville.Utilities.csproj" />
     </ItemGroup>
     <ItemGroup>
+        <PackageReference Include="Optional" Version="4.0.0" />
         <PackageReference Include="Selenium.WebDriver" Version="3.14.0" />
     </ItemGroup>
 </Project>

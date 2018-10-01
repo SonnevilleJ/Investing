@@ -10,6 +10,7 @@ using log4net.Repository.Hierarchy;
 using Ninject;
 using Ninject.Modules;
 using Sonneville.Investing.Fidelity.WebDriver.Configuration;
+using Sonneville.Investing.Fidelity.WebDriver.Logging;
 using Sonneville.Utilities.Persistence.v2;
 
 namespace Sonneville.Investing.App.Ninject
@@ -21,6 +22,7 @@ namespace Sonneville.Investing.App.Ninject
             var workingDirectory = GetWorkingDirectory();
             ConfigureLog4Net(workingDirectory);
             ConfigureLocalDataStore(workingDirectory);
+            ConfigureExceptionReports(workingDirectory);
         }
 
         private static string GetWorkingDirectory()
@@ -43,7 +45,7 @@ namespace Sonneville.Investing.App.Ninject
             hierarchy.Root.AddAppender(consoleAppender);
             hierarchy.Root.Level = Level.All;
             hierarchy.Configured = true;
-        
+
             Bind<ILog>().ToProvider<LogProvider>();
         }
 
@@ -60,6 +62,14 @@ namespace Sonneville.Investing.App.Ninject
             var dataStore = KernelInstance.Get<IDataStore>();
             Rebind<FidelityConfiguration>().ToMethod(context => dataStore.Get<FidelityConfiguration>());
             Rebind<SeleniumConfiguration>().ToMethod(context => dataStore.Get<SeleniumConfiguration>());
+        }
+
+        private void ConfigureExceptionReports(string workingDirectory)
+        {
+            Bind<string>()
+                .ToConstant(Path.Combine(workingDirectory, "Error Reports"))
+                .WhenInjectedInto<ExceptionReportGenerator>()
+                .InSingletonScope();
         }
 
         private static T GetAssemblyAttribute<T>()

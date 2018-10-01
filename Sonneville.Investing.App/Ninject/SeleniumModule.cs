@@ -4,6 +4,7 @@ using System.Reflection;
 using Ninject.Modules;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Remote;
 using Sonneville.Investing.Fidelity.WebDriver.Logging;
 
 namespace Sonneville.Investing.App.Ninject
@@ -18,6 +19,10 @@ namespace Sonneville.Investing.App.Ninject
 
                 var chromeDriver = CreateWebDriver();
 
+                Bind<RemoteWebDriver>()
+                    .ToConstant(chromeDriver)
+                    .InSingletonScope();
+
                 Bind<IWebDriver>()
                     .ToConstant(chromeDriver)
                     .WhenInjectedInto<PatientWebDriver>()
@@ -27,9 +32,14 @@ namespace Sonneville.Investing.App.Ninject
                     .To<PatientWebDriver>()
                     .WhenInjectedInto<LoggingWebDriver>()
                     .InSingletonScope();
-                
+
                 Bind<IWebDriver>()
                     .To<LoggingWebDriver>()
+                    .WhenInjectedInto<ExceptionReportingWebDriver>()
+                    .InSingletonScope();
+
+                Bind<IWebDriver>()
+                    .To<ExceptionReportingWebDriver>()
                     .InSingletonScope();
             }
             catch (Exception e)
