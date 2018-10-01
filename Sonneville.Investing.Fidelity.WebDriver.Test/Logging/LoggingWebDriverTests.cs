@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using log4net;
@@ -13,27 +11,26 @@ using Sonneville.Investing.Fidelity.WebDriver.Logging;
 namespace Sonneville.Investing.Fidelity.WebDriver.Test.Logging
 {
     [TestFixture]
-    public class LoggingWebDriverTests
+    public class LoggingWebDriverTests : WebDriverTestsBase<LoggingWebDriver>
     {
         private Mock<ILogger> _loggerMock;
 
         private Mock<ILog> _logMock;
 
-        private Mock<IWebDriver> _webDriverMock;
-
-        private LoggingWebDriver _loggingWebDriver;
-
         [SetUp]
-        public void Setup()
+        public override void Setup()
         {
             _loggerMock = new Mock<ILogger>();
 
             _logMock = new Mock<ILog>();
             _logMock.Setup(log => log.Logger).Returns(_loggerMock.Object);
 
-            _webDriverMock = new Mock<IWebDriver>();
+            base.Setup();
+        }
 
-            _loggingWebDriver = new LoggingWebDriver(_logMock.Object, _webDriverMock.Object);
+        protected override LoggingWebDriver InstantiateWebDriverWrapper(IWebDriver webDriver)
+        {
+            return new LoggingWebDriver(_logMock.Object, webDriver);
         }
 
         [Test]
@@ -41,64 +38,14 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Logging
         {
             var by = By.Id("it");
             var webElementMock = new Mock<IWebElement>();
-            _webDriverMock.Setup(webDriver => webDriver.FindElement(by)).Returns(webElementMock.Object);
+            WebDriverMock.Setup(webDriver => webDriver.FindElement(by)).Returns(webElementMock.Object);
 
-            _loggingWebDriver.FindElement(by);
+            WebDriverWrapper.FindElement(by);
 
             _loggerMock.Verify(logger => logger.Log(It.IsAny<Type>(), Level.Trace, It.IsAny<object>(), null));
         }
 
-        [Test]
-        public void FindElementShouldCreateWrappedWebElement()
-        {
-            AssertFindElementReturnsWrappedWebElements(_loggingWebDriver, _webDriverMock);
-        }
-
-        [Test]
-        public void FindElementsShouldCreatePatientWebElements()
-        {
-            AssertFindElementsReturnsPatientWebElements(_loggingWebDriver, _webDriverMock);
-        }
-
-        private void AssertFindElementReturnsWrappedWebElements<T>(
-            ISearchContext wrapperSearchContext,
-            Mock<T> webDriverMock
-        ) where T : class, ISearchContext
-        {
-            var innerMock = new Mock<IWebElement>();
-
-            var locator = By.Id("some ID");
-            webDriverMock.Setup(webDriver => webDriver.FindElement(locator))
-                .Returns(innerMock.Object);
-
-            var outer = wrapperSearchContext.FindElement(locator);
-
-            AssertSubjectWaitsBeforeInvokingDependency(outer, innerMock,
-                wrapper => wrapper.Click(),
-                inner => inner.Click()
-            );
-        }
-
-        private void AssertFindElementsReturnsPatientWebElements<T>(
-            ISearchContext wrapperSearchContext,
-            Mock<T> innerSearchContextMock
-        ) where T : class, ISearchContext
-        {
-            var innerMock = new Mock<IWebElement>();
-
-            var locator = By.Id("some ID");
-            innerSearchContextMock.Setup(webElement => webElement.FindElements(locator))
-                .Returns(new List<IWebElement> {innerMock.Object}.AsReadOnly());
-
-            var outer = wrapperSearchContext.FindElements(locator).Single();
-
-            AssertSubjectWaitsBeforeInvokingDependency(outer, innerMock,
-                wrapper => wrapper.Click(),
-                inner => inner.Click()
-            );
-        }
-
-        private void AssertSubjectWaitsBeforeInvokingDependency(
+        protected override void AssertSubjectInvokesDependencyCorrectly(
             IWebElement wrapper,
             Mock<IWebElement> innerMock,
             Action<IWebElement> wrapperAction,
