@@ -19,8 +19,13 @@ namespace Sonneville.Investing.App.Ninject
 
                 var chromeDriver = CreateWebDriver();
 
-                Bind<RemoteWebDriver>()
+                Bind<ITakesScreenshot>()
                     .ToConstant(chromeDriver)
+                    .InSingletonScope();
+
+                Bind<IWebDriver>()
+                    .ToConstant(chromeDriver)
+                    .WhenInjectedInto<ExceptionReportGenerator>()
                     .InSingletonScope();
 
                 Bind<IWebDriver>()

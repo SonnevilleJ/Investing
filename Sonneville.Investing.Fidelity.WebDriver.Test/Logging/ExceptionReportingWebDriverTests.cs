@@ -22,7 +22,7 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Logging
 
         protected override ExceptionReportingWebDriver InstantiateWebDriverWrapper(IWebDriver webDriver)
         {
-            return new ExceptionReportingWebDriver(webDriver, _mockExceptionReportGenerator.Object);
+            return new ExceptionReportingWebDriver(_mockExceptionReportGenerator.Object, webDriver);
         }
 
         protected override void AssertSubjectInvokesDependencyCorrectly(

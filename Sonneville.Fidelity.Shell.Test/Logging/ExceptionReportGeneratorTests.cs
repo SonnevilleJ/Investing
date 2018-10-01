@@ -8,7 +8,7 @@ using log4net.Layout;
 using log4net.Repository.Hierarchy;
 using Moq;
 using NUnit.Framework;
-using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium;
 using Optional;
 using Sonneville.Investing.Fidelity.WebDriver.Logging;
 using Sonneville.Utilities;
@@ -19,17 +19,30 @@ namespace Sonneville.Fidelity.Shell.Test.Logging
     public class ExceptionReportGeneratorTests
     {
         private ExceptionReportGenerator _exceptionReportGenerator;
-        private ChromeDriver _remoteWebDriver;
+        private Mock<IWebDriver> _mockWebDriver;
+        private Mock<ITakesScreenshot> _mockTakesScreenshot;
         private FreezableClock _clock;
         private Mock<ILog> _mockLog;
         private string _pathRoot;
+        private Screenshot _screenshot;
+        private string _pageSource;
 
         [SetUp]
         public void Setup()
         {
             _mockLog = new Mock<ILog>();
 
-            _remoteWebDriver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            _pageSource = "page source";
+            
+            _mockWebDriver = new Mock<IWebDriver>();
+            _mockWebDriver.Setup(webDriver => webDriver.PageSource)
+                .Returns(_pageSource);
+
+            _screenshot = new Screenshot("");
+            
+            _mockTakesScreenshot = new Mock<ITakesScreenshot>();
+            _mockTakesScreenshot.Setup(screenshot => screenshot.GetScreenshot())
+                .Returns(_screenshot);
 
             _pathRoot = Path.Combine(Path.GetTempPath(), "Test Reports");
             CreateEmptyDirectory(_pathRoot);
@@ -38,7 +51,8 @@ namespace Sonneville.Fidelity.Shell.Test.Logging
 
             _exceptionReportGenerator = new ExceptionReportGenerator(
                 _mockLog.Object,
-                _remoteWebDriver,
+                _mockWebDriver.Object,
+                _mockTakesScreenshot.Object,
                 _pathRoot,
                 _clock);
         }
@@ -46,8 +60,6 @@ namespace Sonneville.Fidelity.Shell.Test.Logging
         [TearDown]
         public void Teardown()
         {
-            _remoteWebDriver?.Dispose();
-
             TeardownLogger();
 
             _clock.Unfreeze();
@@ -110,7 +122,6 @@ namespace Sonneville.Fidelity.Shell.Test.Logging
             _clock.Freeze(DateTime.Now);
             var reportPath = DetermineReportPath(_clock.Now);
             var testException = CreateTestException();
-            _remoteWebDriver.Navigate().GoToUrl("https://google.com");
 
             _exceptionReportGenerator.DocumentException(testException);
 
@@ -128,7 +139,7 @@ namespace Sonneville.Fidelity.Shell.Test.Logging
 
             var sourceTextFile = GetReportFilePath(reportPath, "source.html");
             FileAssert.Exists(sourceTextFile, "FAIL: HTML source file not found!");
-            Assert.IsTrue(File.ReadAllText(sourceTextFile).Contains(_remoteWebDriver.PageSource));
+            Assert.IsTrue(File.ReadAllText(sourceTextFile).Contains(_pageSource));
         }
 
         [Test]

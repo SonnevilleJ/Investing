@@ -8,9 +8,7 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Logging
     {
         private readonly IExceptionReportGenerator _exceptionReportGenerator;
 
-        public ExceptionReportingWebDriver(
-            IWebDriver webDriver,
-            IExceptionReportGenerator exceptionReportGenerator)
+        public ExceptionReportingWebDriver(IExceptionReportGenerator exceptionReportGenerator, IWebDriver webDriver)
             : base(webDriver)
         {
             _exceptionReportGenerator = exceptionReportGenerator;

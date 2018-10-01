@@ -4,7 +4,6 @@ using System.Linq;
 using log4net;
 using log4net.Appender;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Remote;
 using Optional;
 using Sonneville.Utilities;
 
@@ -15,17 +14,24 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Logging
         Option<string> DocumentException(Exception exception);
     }
     
-    public class ExceptionReportGenerator : IExceptionReportGenerator, IDisposable
+    public class ExceptionReportGenerator : IExceptionReportGenerator
     {
         private readonly ILog _log;
-        private readonly RemoteWebDriver _webDriver;
+        private readonly IWebDriver _webDriver;
+        private readonly ITakesScreenshot _takesScreenshot;
         private readonly string _pathRoot;
         private readonly IClock _clock;
 
-        public ExceptionReportGenerator(ILog log, RemoteWebDriver webDriver, string pathRoot, IClock clock)
+        public ExceptionReportGenerator(
+            ILog log,
+            IWebDriver webDriver,
+            ITakesScreenshot takesScreenshot,
+            string pathRoot,
+            IClock clock)
         {
             _log = log;
             _webDriver = webDriver;
+            _takesScreenshot = takesScreenshot;
             _pathRoot = pathRoot;
             _clock = clock;
             
@@ -40,7 +46,7 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Logging
                 var reportPath = CreateReportPath(exceptionTime);
 
                 SaveException(reportPath, exception);
-                SaveScreenshot(reportPath, _webDriver);
+                SaveScreenshot(reportPath, _takesScreenshot);
                 SavePageSource(reportPath, _webDriver);
                 CopyLogs(reportPath);
                 
@@ -87,20 +93,6 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Logging
                 log.Flush(0);
                 File.Copy(log.File, $"{reportPath}/{Path.GetFileName(log.File)}");
             }
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _webDriver?.Dispose();
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
     }
 }

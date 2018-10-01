@@ -100,10 +100,18 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
         [Test]
         public void ShouldBindWebDriverAsSingleton()
         {
-            using (var webDriver = _kernel.Get<IWebDriver>())
+            AssertSingleton<IWebDriver>();
+        }
+
+        private static void AssertSingleton<T>() where T : IDisposable
+        {
+            using (var first = _kernel.Get<T>())
             {
-                Assert.IsNotNull(webDriver);
-                Assert.AreSame(webDriver, _kernel.Get<IWebDriver>());
+                Assert.IsNotNull(first);
+                using (var second = _kernel.Get<T>())
+                {
+                    Assert.AreSame(first, second);
+                }
             }
         }
 
