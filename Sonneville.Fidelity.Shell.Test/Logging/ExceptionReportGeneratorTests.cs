@@ -29,7 +29,6 @@ namespace Sonneville.Fidelity.Shell.Test.Logging
             _mockLog = new Mock<ILog>();
 
             _remoteWebDriver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-            _remoteWebDriver.Navigate().GoToUrl("https://google.com");
 
             _pathRoot = Path.Combine(Path.GetTempPath(), "Test Reports");
             CreateEmptyDirectory(_pathRoot);
@@ -48,9 +47,17 @@ namespace Sonneville.Fidelity.Shell.Test.Logging
         {
             _remoteWebDriver?.Dispose();
 
+            TeardownLogger();
+
             _clock.Unfreeze();
 
-//            DeleteDirectory(_pathRoot);
+            DeleteDirectory(_pathRoot);
+        }
+
+        [Test]
+        public void ShouldLogReportsDirectoryOnStartup()
+        {
+            _mockLog.Verify(log => log.Info(It.Is<string>(content => content.Contains(_pathRoot))));
         }
 
         [Test]
@@ -62,7 +69,7 @@ namespace Sonneville.Fidelity.Shell.Test.Logging
 
             _exceptionReportGenerator.DocumentException(CreateTestException());
 
-            DirectoryAssert.Exists(Path.Combine(_pathRoot, reportPath));
+            DirectoryAssert.Exists(Path.Combine(_pathRoot, reportPath), "FAIL: Report directory not found!");
             Assert.AreEqual(1, Directory.GetDirectories(_pathRoot).Length);
         }
 
@@ -76,7 +83,7 @@ namespace Sonneville.Fidelity.Shell.Test.Logging
             _exceptionReportGenerator.DocumentException(testException);
 
             var exceptionTextFile = GetReportFilePath(reportPath, "exception.txt");
-            FileAssert.Exists(exceptionTextFile);
+            FileAssert.Exists(exceptionTextFile, "FAIL: Exception file not found!");
             Assert.IsTrue(File.ReadAllText(exceptionTextFile).Contains(testException.ToString()));
         }
 
@@ -86,10 +93,11 @@ namespace Sonneville.Fidelity.Shell.Test.Logging
             _clock.Freeze(DateTime.Now);
             var reportPath = DetermineReportPath(_clock.Now);
             var testException = CreateTestException();
+            _remoteWebDriver.Navigate().GoToUrl("https://google.com");
 
             _exceptionReportGenerator.DocumentException(testException);
 
-            FileAssert.Exists(GetReportFilePath(reportPath, "screenshot.png"));
+            FileAssert.Exists(GetReportFilePath(reportPath, "screenshot.png"), "FAIL: Screenshot file not found!");
         }
 
         [Test]
@@ -102,7 +110,7 @@ namespace Sonneville.Fidelity.Shell.Test.Logging
             _exceptionReportGenerator.DocumentException(testException);
 
             var sourceTextFile = GetReportFilePath(reportPath, "source.html");
-            FileAssert.Exists(sourceTextFile);
+            FileAssert.Exists(sourceTextFile, "FAIL: HTML source file not found!");
             Assert.IsTrue(File.ReadAllText(sourceTextFile).Contains(_remoteWebDriver.PageSource));
         }
 
@@ -116,7 +124,19 @@ namespace Sonneville.Fidelity.Shell.Test.Logging
 
             _exceptionReportGenerator.DocumentException(CreateTestException());
 
-            FileAssert.Exists(GetReportFilePath(reportPath, "screenshot.png"));
+            FileAssert.Exists(GetReportFilePath(reportPath, "Demo.log"), "FAIL: Log file not found!");
+        }
+
+        [Test]
+        public void ShouldLogLocationWhenCompleted()
+        {
+            _clock.Freeze(DateTime.Now);
+            var reportPath = DetermineReportPath(_clock.Now);
+            LogManager.GetLogger(typeof(ExceptionReportGenerator)).Info("sample log entry");
+
+            _exceptionReportGenerator.DocumentException(CreateTestException());
+
+            _mockLog.Verify(log => log.Info(It.Is<string>(content => content.Contains(reportPath))));
         }
 
         private string GetReportFilePath(string reportPath, string filename)
@@ -161,6 +181,11 @@ namespace Sonneville.Fidelity.Shell.Test.Logging
             hierarchy.Root.AddAppender(appender);
             hierarchy.Root.Level = Level.All;
             hierarchy.Configured = true;
+        }
+
+        private static void TeardownLogger()
+        {
+            LogManager.Shutdown();
         }
 
         private static void CreateEmptyDirectory(string path)

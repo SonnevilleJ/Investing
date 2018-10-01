@@ -27,6 +27,8 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Logging
             _webDriver = webDriver;
             _pathRoot = pathRoot;
             _clock = clock;
+            
+            _log.Info($"Exception reports will be generated in {pathRoot}");
         }
 
         public void DocumentException(Exception exception)
@@ -40,6 +42,8 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Logging
                 SaveScreenshot(reportPath, _webDriver);
                 SavePageSource(reportPath, _webDriver);
                 CopyLogs(reportPath);
+                
+                _log.Info($"Wrote exception report to: {reportPath}");
             }
             catch (Exception e)
             {
@@ -50,7 +54,6 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Logging
         private string CreateReportPath(DateTime exceptionTime)
         {
             var reportPath = Path.Combine(_pathRoot, $"Exception-{exceptionTime:O}");
-            _log.Info($"Writing Exception report to: {reportPath}");
             if (!Directory.Exists(reportPath)) Directory.CreateDirectory(reportPath);
             return reportPath;
         }
