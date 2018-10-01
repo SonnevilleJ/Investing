@@ -9,7 +9,12 @@ using Sonneville.Utilities;
 
 namespace Sonneville.Investing.Fidelity.WebDriver.Logging
 {
-    public class ExceptionReportGenerator : IDisposable
+    public interface IExceptionReportGenerator
+    {
+        void DocumentException(Exception exception);
+    }
+    
+    public class ExceptionReportGenerator : IExceptionReportGenerator, IDisposable
     {
         private readonly ILog _log;
         private readonly RemoteWebDriver _webDriver;
