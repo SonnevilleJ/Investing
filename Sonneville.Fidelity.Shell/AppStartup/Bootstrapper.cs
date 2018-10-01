@@ -13,6 +13,7 @@ namespace Sonneville.Fidelity.Shell.AppStartup
 
         public static void InitializeKernel()
         {
+            Kernel?.Dispose();
             Kernel = new KernelBuilder().Build();
         }
 

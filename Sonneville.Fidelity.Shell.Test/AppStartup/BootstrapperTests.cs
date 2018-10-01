@@ -14,7 +14,6 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
         [SetUp]
         public void Setup()
         {
-            Bootstrapper.InitializeKernel();
             _kernel = Bootstrapper.Kernel;
         }
 
