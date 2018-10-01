@@ -9,7 +9,7 @@ using Sonneville.Utilities;
 
 namespace Sonneville.Investing.Fidelity.WebDriver.Logging
 {
-    public interface IExceptionReportGenerator
+    public interface IExceptionReportGenerator : IDisposable
     {
         Option<string> DocumentException(Exception exception);
     }
@@ -93,6 +93,11 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Logging
                 log.Flush(0);
                 File.Copy(log.File, $"{reportPath}/{Path.GetFileName(log.File)}");
             }
+        }
+
+        public void Dispose()
+        {
+            _webDriver?.Dispose();
         }
     }
 }

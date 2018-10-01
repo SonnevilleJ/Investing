@@ -16,19 +16,23 @@ namespace Sonneville.Investing.App.Ninject
             {
                 Unbind<IWebDriver>();
 
-                var chromeDriver = CreateWebDriver();
+                ChromeDriver instance = null;
+                ChromeDriver CreateWebDriver()
+                {
+                    return instance ?? (instance = SeleniumModule.CreateWebDriver());
+                }
 
                 Bind<ITakesScreenshot>()
-                    .ToConstant(chromeDriver)
+                    .ToMethod(context => CreateWebDriver())
                     .InSingletonScope();
 
                 Bind<IWebDriver>()
-                    .ToConstant(chromeDriver)
+                    .ToMethod(context => CreateWebDriver())
                     .WhenInjectedInto<ExceptionReportGenerator>()
                     .InSingletonScope();
 
                 Bind<IWebDriver>()
-                    .ToConstant(chromeDriver)
+                    .ToMethod(context => CreateWebDriver())
                     .WhenInjectedInto<PatientWebDriver>()
                     .InSingletonScope();
 

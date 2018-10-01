@@ -68,6 +68,14 @@ namespace Sonneville.Fidelity.Shell.Test.Logging
         }
 
         [Test]
+        public void ShouldDispose()
+        {
+            _exceptionReportGenerator.Dispose();
+
+            _mockWebDriver.Verify(webDriver => webDriver.Dispose());
+        }
+
+        [Test]
         public void ShouldLogReportsDirectoryOnStartup()
         {
             _mockLog.Verify(log => log.Info(It.Is<string>(content => content.Contains(_pathRoot))));

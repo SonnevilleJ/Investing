@@ -94,6 +94,8 @@ namespace Sonneville.Fidelity.Shell.Interface
                     command.Dispose();
                 }
 
+                _exceptionReportGenerator.Dispose();
+
                 _disposed = true;
             }
         }

@@ -70,6 +70,14 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
         }
 
         [Test]
+        public void ShouldDisposeExceptionReportGenerator()
+        {
+            _commandRouter.Dispose();
+
+            _mockExceptionReportGenerator.Verify(generator => generator.Dispose());
+        }
+
+        [Test]
         public void DisposeShouldNotThrow()
         {
             Assert.DoesNotThrow(() => _commandRouter.Dispose());
