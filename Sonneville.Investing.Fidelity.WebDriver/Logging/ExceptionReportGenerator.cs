@@ -5,13 +5,14 @@ using log4net;
 using log4net.Appender;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
+using Optional;
 using Sonneville.Utilities;
 
 namespace Sonneville.Investing.Fidelity.WebDriver.Logging
 {
     public interface IExceptionReportGenerator
     {
-        void DocumentException(Exception exception);
+        Option<string> DocumentException(Exception exception);
     }
     
     public class ExceptionReportGenerator : IExceptionReportGenerator, IDisposable
@@ -31,7 +32,7 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Logging
             _log.Info($"Exception reports will be generated in {pathRoot}");
         }
 
-        public void DocumentException(Exception exception)
+        public Option<string> DocumentException(Exception exception)
         {
             try
             {
@@ -44,10 +45,12 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Logging
                 CopyLogs(reportPath);
                 
                 _log.Info($"Wrote exception report to: {reportPath}");
+                return Option.Some(reportPath);
             }
             catch (Exception e)
             {
                 _log.ErrorFormat("Exception occurred during report generation: {0}", e);
+                return Option.None<string>();
             }
         }
 

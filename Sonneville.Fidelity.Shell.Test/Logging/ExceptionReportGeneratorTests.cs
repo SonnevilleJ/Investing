@@ -9,6 +9,7 @@ using log4net.Repository.Hierarchy;
 using Moq;
 using NUnit.Framework;
 using OpenQA.Selenium.Chrome;
+using Optional;
 using Sonneville.Investing.Fidelity.WebDriver.Logging;
 using Sonneville.Utilities;
 
@@ -67,10 +68,26 @@ namespace Sonneville.Fidelity.Shell.Test.Logging
             _clock.Freeze(DateTime.Now);
             var reportPath = DetermineReportPath(_clock.Now);
 
-            _exceptionReportGenerator.DocumentException(CreateTestException());
+            var result = _exceptionReportGenerator.DocumentException(CreateTestException());
 
-            DirectoryAssert.Exists(Path.Combine(_pathRoot, reportPath), "FAIL: Report directory not found!");
+            DirectoryAssert.Exists(reportPath, "FAIL: Report directory not found!");
             Assert.AreEqual(1, Directory.GetDirectories(_pathRoot).Length);
+            Assert.AreEqual(Option.Some(reportPath), result);
+        }
+
+        [Test]
+        public void ShouldLogWhenExceptionOccursDuringReportGeneration()
+        {
+            Assert.AreEqual(0, Directory.GetDirectories(_pathRoot).Length);
+            _clock.Freeze(DateTime.Now);
+            var exception = new Exception();
+            _mockLog.Setup(log => log.Info(It.IsAny<string>()))
+                .Throws(exception);
+
+            var result = _exceptionReportGenerator.DocumentException(CreateTestException());
+
+            _mockLog.Verify(log => log.ErrorFormat("Exception occurred during report generation: {0}", exception));
+            Assert.AreEqual(Option.None<string>(), result);
         }
 
         [Test]
@@ -144,9 +161,9 @@ namespace Sonneville.Fidelity.Shell.Test.Logging
             return Path.Combine(_pathRoot, reportPath, filename);
         }
 
-        private static string DetermineReportPath(DateTime time)
+        private string DetermineReportPath(DateTime time)
         {
-            return $"Exception-{time:O}";
+            return Path.Combine(_pathRoot, $"Exception-{time:O}");
         }
 
         private static Exception CreateTestException()
