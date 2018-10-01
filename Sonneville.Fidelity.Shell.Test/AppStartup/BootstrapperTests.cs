@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using log4net;
+using Moq;
 using Ninject;
 using NUnit.Framework;
 using Sonneville.Fidelity.Shell.AppStartup;
@@ -21,6 +22,8 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
         public void Teardown()
         {
             _kernel.Dispose();
+            
+            LogManager.Shutdown();
         }
 
         [Test]

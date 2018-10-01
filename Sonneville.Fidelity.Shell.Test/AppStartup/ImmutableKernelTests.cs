@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using log4net;
+using log4net.Repository.Hierarchy;
 using Ninject;
 using NUnit.Framework;
 using OpenQA.Selenium;
@@ -30,6 +33,8 @@ namespace Sonneville.Fidelity.Shell.Test.AppStartup
         public void TearDown()
         {
             _kernel?.Dispose();
+
+            LogManager.Shutdown();
         }
 
         [Test]
