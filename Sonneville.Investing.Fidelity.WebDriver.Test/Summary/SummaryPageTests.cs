@@ -1,4 +1,6 @@
-﻿using Moq;
+﻿using System;
+using log4net;
+using Moq;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using Sonneville.Investing.Fidelity.WebDriver.Summary;
@@ -20,6 +22,7 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Summary
 
         private Mock<IWebElement> _activityLiMock;
         private Mock<IWebElement> _progressBarDivMock;
+        private Mock<ILog> _logMock;
 
         [SetUp]
         public void Setup()
@@ -41,10 +44,12 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Summary
                 .Returns($"(+{_gainLossPercent:P})");
 
             _positionsLiMock = new Mock<IWebElement>();
+            _positionsLiMock.Setup(li => li.GetAttribute("class")).Returns("");
 
             _progressBarDivMock = new Mock<IWebElement>();
 
             _activityLiMock = new Mock<IWebElement>();
+            _activityLiMock.Setup(li => li.GetAttribute("class")).Returns("");
 
             _webDriverMock = new Mock<IWebDriver>();
             _webDriverMock.Setup(driver => driver.FindElement(By.ClassName("js-total-balance-value")))
@@ -60,7 +65,9 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Summary
             _webDriverMock.Setup(webDriver => webDriver.FindElement(By.ClassName("progress-bar")))
                 .Returns(_progressBarDivMock.Object);
 
-            _summaryPage = new SummaryPage(_webDriverMock.Object);
+            _logMock = new Mock<ILog>();
+
+            _summaryPage = new SummaryPage(_webDriverMock.Object, _logMock.Object);
         }
 
         [Test]
@@ -88,13 +95,22 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Summary
         }
 
         [Test]
-        public void ShouldNavigateToPositionsPage()
+        public void ShouldClickPositionsTabUntilSelected()
         {
+            var callCount = 0;
             SetupVisibleProgressBar();
             _positionsLiMock.Setup(li => li.Click()).Callback(() =>
             {
-                AssertInvisibleProgressBar();
-                SetupVisibleProgressBar();
+                switch (callCount++)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        SuccessfulClick(_positionsLiMock);
+                        break;
+                    default:
+                        throw new InvalidOperationException("Iterated too much!");
+                }
             });
 
             _summaryPage.GoToPositionsPage();
@@ -104,19 +120,45 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Summary
         }
 
         [Test]
-        public void ShouldNavigateToActivityPage()
+        public void ShouldClickActivityTabUntilSelected()
         {
+            var callCount = 0;
             SetupVisibleProgressBar();
             _activityLiMock.Setup(li => li.Click()).Callback(() =>
             {
-                AssertInvisibleProgressBar();
-                SetupVisibleProgressBar();
+                switch (callCount++)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        SuccessfulClick(_activityLiMock);
+                        break;
+                    default:
+                        throw new InvalidOperationException("Iterated too much!");
+                }
             });
 
             _summaryPage.GoToActivityPage();
 
             _activityLiMock.Verify(li => li.Click());
             AssertInvisibleProgressBar();
+        }
+
+        private void SuccessfulClick(Mock<IWebElement> liMock)
+        {
+            ActivateTab(liMock);
+            AssertInvisibleProgressBar();
+            SetupVisibleProgressBar();
+        }
+
+        private void ActivateTab(Mock<IWebElement> liMock)
+        {
+            liMock.Setup(li => li.GetAttribute("class")).Returns("tabs--selected");
+        }
+
+        private void AssertInvisibleProgressBar()
+        {
+            Assert.IsFalse(_progressBarDivMock.Object.Displayed, "Progress bar div is obstructing element!");
         }
 
         private void SetupVisibleProgressBar()
@@ -133,11 +175,6 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Summary
                         _progressBarDivMock.Setup(div => div.Displayed).Returns(false);
                     }
                 });
-        }
-
-        private void AssertInvisibleProgressBar()
-        {
-            Assert.IsFalse(_progressBarDivMock.Object.Displayed, "Progress bar div is obstructing element!");
         }
     }
 }
