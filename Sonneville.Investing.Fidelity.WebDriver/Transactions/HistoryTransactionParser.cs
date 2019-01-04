@@ -30,7 +30,9 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Transactions
         {
             return historyRoot.FindElements(By.TagName("tbody"))[0]
                 .FindElements(By.TagName("tr"))
-                .Where(row => row.GetAttribute("class").Contains("normal-row") || row.GetAttribute("class").Contains("content-row"))
+                .Where(row =>
+                    row.GetAttribute("class").Contains("normal-row") ||
+                    row.GetAttribute("class").Contains("content-row"))
                 .Select((row, index) => new KeyValuePair<int, IWebElement>(index, row))
                 .GroupBy(kvp => kvp.Key / 2, kvp => kvp.Value, (i, elements) => elements)
                 .Select(transactionRows => ParseTransactionFromRows(transactionRows.ToArray()));
@@ -43,7 +45,11 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Transactions
             var normalTDs = normalAndContentRows[0].FindElements(By.TagName("td"));
             result.RunDate = ParseDate(normalTDs[0].Text);
             result.AccountName = ParseAccountName(normalTDs[1]);
+
+            // this breaks when an account is selected on the history/activity page...
+            // selecting an account means there is no account number column.
             result.AccountNumber = ParseAccountNumber(normalTDs[1]);
+
             result.SecurityDescription = ParseSecurityDescription(normalTDs[2]);
             result.Type = ParseType(result.SecurityDescription);
 
@@ -71,8 +77,10 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Transactions
                     result.Symbol = contentDictionary[AttributeStrings.Symbol];
                     result.Quantity = ParseQuantity(contentDictionary[AttributeStrings.Quantity]);
                     result.Price = ParseDecimal(contentDictionary[AttributeStrings.Price]);
-                    if (contentDictionary.Keys.Contains(AttributeStrings.Commission)) result.Commission = ParseCurrency(contentDictionary[AttributeStrings.Commission]);
-                    if (contentDictionary.Keys.Contains(AttributeStrings.SettlementDate)) result.SettlementDate = ParseDate(contentDictionary[AttributeStrings.SettlementDate]);
+                    if (contentDictionary.Keys.Contains(AttributeStrings.Commission))
+                        result.Commission = ParseCurrency(contentDictionary[AttributeStrings.Commission]);
+                    if (contentDictionary.Keys.Contains(AttributeStrings.SettlementDate))
+                        result.SettlementDate = ParseDate(contentDictionary[AttributeStrings.SettlementDate]);
                     break;
                 case TransactionType.DividendReceipt:
                 case TransactionType.ShortTermCapGain:
@@ -85,11 +93,10 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Transactions
                     result.Quantity = ParseQuantity(contentDictionary[AttributeStrings.Quantity]);
                     result.Price = ParseDecimal(contentDictionary[AttributeStrings.Price]);
                     break;
-                case TransactionType.Unknown:
-                    _log.Warn($"Not parsing some details for unknown transaction type in account `{result.AccountNumber}` with description `{result.SecurityDescription}`");
-                    break;
                 default:
-                    throw new NotImplementedException();
+                    _log.Warn(
+                        $"Not parsing some details for unknown transaction type in account `{result.AccountNumber}` with description `{result.SecurityDescription}`");
+                    break;
             }
 
             return result;
