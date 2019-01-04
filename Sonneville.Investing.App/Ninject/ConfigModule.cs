@@ -67,7 +67,7 @@ namespace Sonneville.Investing.App.Ninject
         private void ConfigureExceptionReports(string workingDirectory)
         {
             Bind<string>()
-                .ToConstant(Path.Combine(workingDirectory, "Error Reports"))
+                .ToConstant(Path.Combine(workingDirectory, "ErrorReports"))
                 .WhenInjectedInto<ExceptionReportGenerator>()
                 .InSingletonScope();
         }
@@ -101,7 +101,7 @@ namespace Sonneville.Investing.App.Ninject
                 RollingStyle = RollingFileAppender.RollingMode.Size,
                 StaticLogFileName = true,
                 ImmediateFlush = true,
-                Threshold = Level.All,
+                Threshold = Level.All
             });
         }
 
@@ -112,7 +112,7 @@ namespace Sonneville.Investing.App.Ninject
                 Name = "Console appender",
                 Layout = layout,
                 Target = Console.Error.ToString(),
-                Threshold = Level.Warn,
+                Threshold = Level.Warn
             });
         }
 
