@@ -1,9 +1,6 @@
-using System;
 using System.Globalization;
-using System.Threading;
 using log4net;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
 using Sonneville.Investing.Fidelity.Utilities;
 
 namespace Sonneville.Investing.Fidelity.WebDriver.Summary
@@ -23,12 +20,14 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Summary
 
     public class SummaryPage : ISummaryPage
     {
-        private readonly IWebDriver _webDriver;
         private readonly ILog _log;
+        private readonly IPageWaiter _pageWaiter;
+        private readonly IWebDriver _webDriver;
 
-        public SummaryPage(IWebDriver webDriver, ILog log)
+        public SummaryPage(IWebDriver webDriver, IPageWaiter pageWaiter, ILog log)
         {
             _webDriver = webDriver;
+            _pageWaiter = pageWaiter;
             _log = log;
         }
 
@@ -58,16 +57,16 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Summary
 
         public void GoToPositionsPage()
         {
-            WaitUntilNotDisplayed(_webDriver, By.ClassName("progress-bar"));
+            _pageWaiter.WaitUntilNotDisplayed(_webDriver, By.ClassName("progress-bar"));
             ActivateTab(By.CssSelector("[data-tab-name='Positions']"));
-            WaitUntilNotDisplayed(_webDriver, By.ClassName("progress-bar"));
+            _pageWaiter.WaitUntilNotDisplayed(_webDriver, By.ClassName("progress-bar"));
         }
 
         public void GoToActivityPage()
         {
-            WaitUntilNotDisplayed(_webDriver, By.ClassName("progress-bar"));
+            _pageWaiter.WaitUntilNotDisplayed(_webDriver, By.ClassName("progress-bar"));
             ActivateTab(By.CssSelector("[data-tab-name='Activity']"));
-            WaitUntilNotDisplayed(_webDriver, By.ClassName("progress-bar"));
+            _pageWaiter.WaitUntilNotDisplayed(_webDriver, By.ClassName("progress-bar"));
         }
 
         private void ActivateTab(By by)
@@ -84,12 +83,6 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Summary
             var attribute = webElement.GetAttribute("class");
             var tabIsSelected = attribute.Contains("tabs--selected");
             return tabIsSelected;
-        }
-
-        private void WaitUntilNotDisplayed(IWebDriver webDriver, By element)
-        {
-            new WebDriverWait(webDriver, TimeSpan.FromMinutes(1))
-                .Until(driver => !driver.FindElement(element).Displayed);
         }
     }
 }
