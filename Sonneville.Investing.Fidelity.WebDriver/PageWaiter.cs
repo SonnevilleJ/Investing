@@ -14,7 +14,7 @@ namespace Sonneville.Investing.Fidelity.WebDriver
         public void WaitUntilNotDisplayed(IWebDriver webDriver, By selector)
         {
             new WebDriverWait(webDriver, TimeSpan.FromMinutes(1))
-                .Until(driver => !driver.FindElement(selector).Displayed);
+                .Until(driver => webDriver.FindElement(selector).GetCssValue("display") == "none");
         }
     }
 }
