@@ -15,8 +15,8 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Positions
 
     public class AccountIdentifierExtractor : IAccountIdentifierExtractor
     {
-        private readonly ILog _log;
         private readonly IAccountTypesMapper _accountTypesMapper;
+        private readonly ILog _log;
 
         public AccountIdentifierExtractor(ILog log, IAccountTypesMapper accountTypesMapper)
         {
@@ -40,11 +40,13 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Positions
 
         public AccountType ExtractAccountType(IWebElement accountDefinitionRow, IWebDriver webDriver)
         {
-            var accountTypesByAccountNumber = _accountTypesMapper.ReadAccountTypes(webDriver);
+            var accountTypesByAccountNumber = _accountTypesMapper.MapAccountNumbersToAccountType(webDriver);
 
-            if (!accountTypesByAccountNumber.TryGetValue(ExtractAccountNumber(accountDefinitionRow), out var accountType))
+            if (!accountTypesByAccountNumber.TryGetValue(ExtractAccountNumber(accountDefinitionRow),
+                out var accountType))
             {
-                _log.Warn($"NOT able to parse unknown account type for account: {ExtractAccountNumber(accountDefinitionRow)}");
+                _log.Warn(
+                    $"NOT able to parse unknown account type for account: {ExtractAccountNumber(accountDefinitionRow)}");
                 return AccountType.Unknown;
             }
 
