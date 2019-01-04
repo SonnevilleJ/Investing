@@ -15,7 +15,7 @@ pgAdmin 4: `docker run --name=Sonneville-Investing-pgAdmin -e PGADMIN_DEFAULT_EM
 The demo app will use the specified credentials to log into the [www.Fidelity.com](https://www.fidelity.com) website. Once logged in, it will print to the console some basic account info as well as the most recent transactions.
 
 ### Launching the demo
-1. Complie the solution and run Sonneville.FidelityWebDriver.Demo.exe, typing `demo` at the prompt, including any of the below parameters:
+1. Compile the solution and run Sonneville.FidelityWebDriver.Demo.exe, typing `demo` at the prompt, including any of the below parameters:
 ```
   -u, --username=VALUE       the username to use when logging into Fidelity.
   -p, --password=VALUE       the password to use when logging into Fidelity.

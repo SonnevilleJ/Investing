@@ -2,7 +2,6 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>netcoreapp2.1</TargetFramework>
-        <LangVersion>7.1</LangVersion>
     </PropertyGroup>
     <PropertyGroup>
         <AssemblyName>Sonneville.Investing.WebApi</AssemblyName>
@@ -13,7 +12,7 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.4" />
         <PackageReference Include="Ninject" Version="3.3.4" />
-        <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="2.42.0.1" />
+        <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="2.45.0" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Sonneville.Investing.App\Sonneville.Investing.App.csproj" />
