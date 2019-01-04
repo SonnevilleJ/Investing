@@ -15,15 +15,18 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Positions
     {
         private readonly IAccountDetailsExtractor _accountDetailsExtractor;
         private readonly IAccountSummariesExtractor _accountSummariesExtractor;
+        private readonly IPageWaiter _pageWaiter;
         private readonly IWebDriver _webDriver;
 
         public PositionsPage(IWebDriver webDriver,
             IAccountSummariesExtractor accountSummariesExtractor,
-            IAccountDetailsExtractor accountDetailsExtractor)
+            IAccountDetailsExtractor accountDetailsExtractor,
+            IPageWaiter pageWaiter)
         {
             _webDriver = webDriver;
             _accountSummariesExtractor = accountSummariesExtractor;
             _accountDetailsExtractor = accountDetailsExtractor;
+            _pageWaiter = pageWaiter;
         }
 
         public IEnumerable<IAccountSummary> GetAccountSummaries()
@@ -33,7 +36,9 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Positions
 
         public IEnumerable<IAccountDetails> GetAccountDetails()
         {
+            _pageWaiter.WaitUntilNotDisplayed(_webDriver, By.ClassName("progress-bar"));
             _webDriver.FindElement(By.ClassName("account-selector--tab-all")).Click();
+            _pageWaiter.WaitUntilNotDisplayed(_webDriver, By.ClassName("progress-bar"));
 
             return _accountDetailsExtractor.ExtractAccountDetails(_webDriver);
         }

@@ -23,12 +23,17 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Positions
                 _webDriverMock.Setup(webDriver => webDriver.FindElement(By.ClassName(c)))
                     .Returns(_allAccountSelectorDiv.Object);
 
+            _mockPageWaiter = new Mock<IPageWaiter>();
+
             _accountSummariesExtractorMock = new Mock<IAccountSummariesExtractor>();
 
             _accountDetailsExtractorMock = new Mock<IAccountDetailsExtractor>();
 
-            _positionsPage = new PositionsPage(_webDriverMock.Object,
-                _accountSummariesExtractorMock.Object, _accountDetailsExtractorMock.Object);
+            _positionsPage = new PositionsPage(
+                _webDriverMock.Object,
+                _accountSummariesExtractorMock.Object,
+                _accountDetailsExtractorMock.Object,
+                _mockPageWaiter.Object);
         }
 
         private PositionsPage _positionsPage;
@@ -36,17 +41,7 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Positions
         private Mock<IAccountSummariesExtractor> _accountSummariesExtractorMock;
         private Mock<IAccountDetailsExtractor> _accountDetailsExtractorMock;
         private Mock<IWebElement> _allAccountSelectorDiv;
-
-        [Test]
-        public void ShouldClickAllAccountsBeforeParsingDetails()
-        {
-            _accountDetailsExtractorMock.Setup(extractor => extractor.ExtractAccountDetails(_webDriverMock.Object))
-                .Callback(() => { _allAccountSelectorDiv.Verify(div => div.Click()); });
-
-            _positionsPage.GetAccountDetails();
-
-            _accountDetailsExtractorMock.Verify(extractor => extractor.ExtractAccountDetails(_webDriverMock.Object));
-        }
+        private Mock<IPageWaiter> _mockPageWaiter;
 
         [Test]
         public void ShouldReturnExtractedDetails()
@@ -72,6 +67,31 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Positions
             var actualSummaries = _positionsPage.GetAccountSummaries();
 
             Assert.AreSame(expectedSummaries, actualSummaries);
+        }
+
+        [Test]
+        public void ShouldWaitForProgressBarThenClickAllAccountsBeforeParsingDetails()
+        {
+            _allAccountSelectorDiv.Setup(div => div.Click())
+                .Callback(() =>
+                {
+                    _mockPageWaiter.Verify(pageWaiter =>
+                            pageWaiter.WaitUntilNotDisplayed(_webDriverMock.Object, By.ClassName("progress-bar")),
+                        "Failed to wait for progress bar before clicking!");
+                    _mockPageWaiter.Reset();
+                });
+            _accountDetailsExtractorMock.Setup(extractor => extractor.ExtractAccountDetails(_webDriverMock.Object))
+                .Callback(() =>
+                {
+                    _allAccountSelectorDiv.Verify(div => div.Click());
+                    _mockPageWaiter.Verify(div =>
+                            div.WaitUntilNotDisplayed(_webDriverMock.Object, By.ClassName("progress-bar")),
+                        "Failed to wait for progress bar after clicking!");
+                });
+
+            _positionsPage.GetAccountDetails();
+
+            _accountDetailsExtractorMock.Verify(extractor => extractor.ExtractAccountDetails(_webDriverMock.Object));
         }
     }
 }
