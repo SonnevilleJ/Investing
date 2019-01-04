@@ -13,9 +13,9 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Positions
 
     public class PositionsPage : IPositionsPage
     {
-        private readonly IWebDriver _webDriver;
-        private readonly IAccountSummariesExtractor _accountSummariesExtractor;
         private readonly IAccountDetailsExtractor _accountDetailsExtractor;
+        private readonly IAccountSummariesExtractor _accountSummariesExtractor;
+        private readonly IWebDriver _webDriver;
 
         public PositionsPage(IWebDriver webDriver,
             IAccountSummariesExtractor accountSummariesExtractor,
@@ -33,6 +33,8 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Positions
 
         public IEnumerable<IAccountDetails> GetAccountDetails()
         {
+            _webDriver.FindElement(By.ClassName("account-selector--tab-all")).Click();
+
             return _accountDetailsExtractor.ExtractAccountDetails(_webDriver);
         }
     }

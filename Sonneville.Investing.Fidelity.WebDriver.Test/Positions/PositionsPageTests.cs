@@ -10,15 +10,18 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Positions
     [TestFixture]
     public class PositionsPageTests
     {
-        private PositionsPage _positionsPage;
-        private Mock<IWebDriver> _webDriverMock;
-        private Mock<IAccountSummariesExtractor> _accountSummariesExtractorMock;
-        private Mock<IAccountDetailsExtractor> _accountDetailsExtractorMock;
-
         [SetUp]
         public void Setup()
         {
+            var classes = "account-selector--tab-all account-selector--target-tab"; // actual div has both
+            _allAccountSelectorDiv = new Mock<IWebElement>();
+            _allAccountSelectorDiv.Setup(div => div.GetAttribute("class"))
+                .Returns(classes);
+
             _webDriverMock = new Mock<IWebDriver>();
+            foreach (var c in classes.Split(" "))
+                _webDriverMock.Setup(webDriver => webDriver.FindElement(By.ClassName(c)))
+                    .Returns(_allAccountSelectorDiv.Object);
 
             _accountSummariesExtractorMock = new Mock<IAccountSummariesExtractor>();
 
@@ -28,17 +31,21 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Positions
                 _accountSummariesExtractorMock.Object, _accountDetailsExtractorMock.Object);
         }
 
+        private PositionsPage _positionsPage;
+        private Mock<IWebDriver> _webDriverMock;
+        private Mock<IAccountSummariesExtractor> _accountSummariesExtractorMock;
+        private Mock<IAccountDetailsExtractor> _accountDetailsExtractorMock;
+        private Mock<IWebElement> _allAccountSelectorDiv;
+
         [Test]
-        public void ShouldReturnExtractedSummaries()
+        public void ShouldClickAllAccountsBeforeParsingDetails()
         {
-            var expectedSummaries = new List<IAccountSummary>();
-            _accountSummariesExtractorMock
-                .Setup(extractor => extractor.ExtractAccountSummaries(_webDriverMock.Object))
-                .Returns(expectedSummaries);
+            _accountDetailsExtractorMock.Setup(extractor => extractor.ExtractAccountDetails(_webDriverMock.Object))
+                .Callback(() => { _allAccountSelectorDiv.Verify(div => div.Click()); });
 
-            var actualSummaries = _positionsPage.GetAccountSummaries();
+            _positionsPage.GetAccountDetails();
 
-            Assert.AreSame(expectedSummaries, actualSummaries);
+            _accountDetailsExtractorMock.Verify(extractor => extractor.ExtractAccountDetails(_webDriverMock.Object));
         }
 
         [Test]
@@ -52,6 +59,19 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Positions
             var actualDetails = _positionsPage.GetAccountDetails();
 
             Assert.AreSame(expectedDetails, actualDetails);
+        }
+
+        [Test]
+        public void ShouldReturnExtractedSummaries()
+        {
+            var expectedSummaries = new List<IAccountSummary>();
+            _accountSummariesExtractorMock
+                .Setup(extractor => extractor.ExtractAccountSummaries(_webDriverMock.Object))
+                .Returns(expectedSummaries);
+
+            var actualSummaries = _positionsPage.GetAccountSummaries();
+
+            Assert.AreSame(expectedSummaries, actualSummaries);
         }
     }
 }
