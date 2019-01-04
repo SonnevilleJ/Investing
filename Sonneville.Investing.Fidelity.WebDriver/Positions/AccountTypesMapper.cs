@@ -21,24 +21,21 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Positions
                 {AccountType.HealthSavingsAccount, "HS"},
                 {AccountType.Other, "OA"},
                 {AccountType.CreditCard, "CC"},
-                {AccountType.CheckingSavings, "SC"},
+                {AccountType.CheckingSavings, "SC"}
             };
 
         public Dictionary<string, AccountType> MapAccountNumbersToAccountType(IWebDriver webDriver)
         {
-            var dictionary1 = CodesForKnownAccountTypes.ToDictionary(
+            return CodesForKnownAccountTypes.ToDictionary(
                 map => map.Key,
                 map => FindWebElementsOfAccountType(webDriver, map.Value)
-            );
-            var keyValuePairs = dictionary1.SelectMany(kvp => kvp.Value.ToDictionary(
+            ).SelectMany(kvp => kvp.Value.ToDictionary(
                 webElement => webElement.Text,
                 webElement => kvp.Key)
-            );
-            var dictionary2 = keyValuePairs.ToDictionary(
+            ).ToDictionary(
                 kvp => kvp.Key,
                 kvp => kvp.Value
             );
-            return dictionary2;
         }
 
         private static ReadOnlyCollection<IWebElement> FindWebElementsOfAccountType(
