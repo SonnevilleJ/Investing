@@ -18,7 +18,7 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Logging
         public override IWebElement FindElement(By by)
         {
             _log.Trace($"Finding element {by}.");
-            return Wrap(base.FindElement(@by));
+            return Wrap(base.FindElement(by));
         }
 
         public override ReadOnlyCollection<IWebElement> FindElements(By by)

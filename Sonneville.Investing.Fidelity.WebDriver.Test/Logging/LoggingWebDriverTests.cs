@@ -13,36 +13,34 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Logging
     [TestFixture]
     public class LoggingWebDriverTests : WebDriverTestsBase<LoggingWebDriver>
     {
-        private Mock<ILogger> _loggerMock;
-
-        private Mock<ILog> _logMock;
-
         [SetUp]
         public override void Setup()
         {
-            _loggerMock = new Mock<ILogger>();
+            _webDriverLoggerMock = new Mock<ILogger>();
 
-            _logMock = new Mock<ILog>();
-            _logMock.Setup(log => log.Logger).Returns(_loggerMock.Object);
+            _webDriverLogMock = new Mock<ILog>();
+            _webDriverLogMock.Setup(log => log.Logger).Returns(_webDriverLoggerMock.Object);
+
+            _webElementLoggerMock = new Mock<ILogger>();
+
+            _webElementLogMock = new Mock<ILog>();
+            _webElementLogMock.Setup(log => log.Logger).Returns(_webElementLoggerMock.Object);
 
             base.Setup();
         }
 
+        private Mock<ILogger> _webDriverLoggerMock;
+        private Mock<ILogger> _webElementLoggerMock;
+
+        private Mock<ILog> _webDriverLogMock;
+        private Mock<ILog> _webElementLogMock;
+
         protected override LoggingWebDriver InstantiateWebDriverWrapper(IWebDriver webDriver)
         {
-            return new LoggingWebDriver(_logMock.Object, webDriver);
-        }
-
-        [Test]
-        public void ShouldLogOnFindElement()
-        {
-            var by = By.Id("it");
-            var webElementMock = new Mock<IWebElement>();
-            WebDriverMock.Setup(webDriver => webDriver.FindElement(by)).Returns(webElementMock.Object);
-
-            WebDriverWrapper.FindElement(by);
-
-            _loggerMock.Verify(logger => logger.Log(It.IsAny<Type>(), Level.Trace, It.IsAny<object>(), null));
+            return new LoggingWebDriver(
+                webDriver,
+                _webDriverLogMock.Object,
+                _webElementLogMock.Object);
         }
 
         protected override void AssertSubjectInvokesDependencyCorrectly(
@@ -53,7 +51,7 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Logging
         )
         {
             var validationsCompleted = false;
-            _loggerMock.Setup(logger =>
+            _webElementLoggerMock.Setup(logger =>
                     logger.Log(It.IsAny<Type>(), It.IsAny<Level>(), It.IsAny<object>(), It.IsAny<Exception>()))
                 .Callback<Type, Level, object, Exception>(
                     (declaringType, level, message, exception) =>
@@ -76,9 +74,21 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Logging
 
         private void VerifyLoggingOccurred()
         {
-            _loggerMock.Verify(logger =>
+            _webDriverLoggerMock.Verify(logger =>
                     logger.Log(It.IsAny<Type>(), It.IsAny<Level>(), It.IsAny<object>(), It.IsAny<Exception>()),
                 Times.AtLeastOnce(), "Failed to log a trace message!");
+        }
+
+        [Test]
+        public void ShouldLogOnFindElement()
+        {
+            var by = By.Id("it");
+            var webElementMock = new Mock<IWebElement>();
+            WebDriverMock.Setup(webDriver => webDriver.FindElement(by)).Returns(webElementMock.Object);
+
+            WebDriverWrapper.FindElement(by);
+
+            _webDriverLoggerMock.Verify(logger => logger.Log(It.IsAny<Type>(), Level.Trace, It.IsAny<object>(), null));
         }
     }
 }
