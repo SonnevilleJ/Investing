@@ -17,6 +17,7 @@ namespace Sonneville.Investing.App.Ninject
                 Unbind<IWebDriver>();
 
                 ChromeDriver instance = null;
+
                 ChromeDriver CreateWebDriver()
                 {
                     return instance ?? (instance = SeleniumModule.CreateWebDriver());
@@ -52,7 +53,7 @@ namespace Sonneville.Investing.App.Ninject
             }
             catch (Exception e)
             {
-                Console.WriteLine($"ERROR: Failed to initialize WebDriver: {e}");
+                Console.Error.WriteLine($"ERROR: Failed to initialize WebDriver: {e}");
             }
         }
 
