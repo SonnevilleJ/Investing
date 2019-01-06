@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenQA.Selenium;
@@ -26,18 +25,14 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Positions
             using (var e = tableRows.GetEnumerator())
             {
                 while (e.MoveNext())
-                {
                     if (IsNewAccountRow(e.Current))
-                    {
                         yield return _accountDetailsAggregator.ParseAccountDetails(e, webDriver);
-                    }
-                }
             }
         }
 
         private static IEnumerable<IWebElement> FindAccountDetailsTableRows(IWebDriver webDriver)
         {
-            return webDriver.FindElements(By.ClassName("p-positions-tbody"))[1]
+            return webDriver.FindElements(By.ClassName("p-positions-tbody")).Last()
                 .FindElements(By.TagName("tr"))
                 .AsEnumerable();
         }

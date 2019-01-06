@@ -12,23 +12,26 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Positions
     [TestFixture]
     public class AccountDetailsExtractorTests
     {
-        private AccountDetailsExtractor _extractor;
-        private Mock<IWebDriver> _webDriverMock;
-        private List<IAccountDetails> _expectedAccountDetails;
-        private Dictionary<string, List<IPosition>> _positionsByAccount;
-        private Mock<IPositionDetailsExtractor> _positionDetailsExtractorMock;
-        private Mock<ILog> _logMock;
-        private Mock<IWebElement> _tableBodyMock;
-
         [SetUp]
         public void Setup()
         {
             _webDriverMock = new Mock<IWebDriver>();
-            
-            _tableBodyMock = new Mock<IWebElement>();
+
+            _mockTableBodyWithoutChildren = new Mock<IWebElement>();
+            _mockTableBodyWithoutChildren.Setup(tableBody => tableBody.FindElements(By.TagName("tr")))
+                .Returns(new List<IWebElement>().AsReadOnly);
+
+            _mockTableBodyWithChildren = new Mock<IWebElement>();
+            _mockTableBodyWithChildren.Setup(tableBody => tableBody.FindElements(By.TagName("tr")))
+                .Returns(new List<IWebElement>
+                {
+                    new Mock<IWebElement>().Object
+                }.AsReadOnly);
 
             _webDriverMock.Setup(webDriver => webDriver.FindElements(By.ClassName("p-positions-tbody")))
-                .Returns(new List<IWebElement> {new Mock<IWebElement>().Object, _tableBodyMock.Object}.AsReadOnly());
+                .Returns(
+                    new List<IWebElement> {_mockTableBodyWithoutChildren.Object, _mockTableBodyWithChildren.Object}
+                        .AsReadOnly());
 
             _logMock = new Mock<ILog>();
 
@@ -63,7 +66,7 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Positions
                     AccountNumber = "qwerty57†",
                     PendingActivity = 0,
                     Positions = new List<IPosition> {new Mock<IPosition>().Object}
-                },
+                }
             };
             foreach (var accountType in AccountTypesMapper.CodesForKnownAccountTypes.Keys)
             {
@@ -83,7 +86,8 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Positions
                 accountGroupDivMock.Setup(div => div.FindElements(By.ClassName("account-selector--account-number")))
                     .Returns(accountNumberSpans);
 
-                _webDriverMock.Setup(webDriver => webDriver.FindElement(By.ClassName(AccountTypesMapper.CodesForKnownAccountTypes[accountType])))
+                _webDriverMock.Setup(webDriver =>
+                        webDriver.FindElement(By.ClassName(AccountTypesMapper.CodesForKnownAccountTypes[accountType])))
                     .Returns(accountGroupDivMock.Object);
             }
 
@@ -96,49 +100,14 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Positions
             _extractor = new AccountDetailsExtractor(accountDetailsAggregator);
         }
 
-        [Test]
-        public void ShouldLogWhenNewAccountTypeFound()
-        {
-            const string newAccountNumber = "new9999";
-            _expectedAccountDetails.Add(new AccountDetails
-                {
-                    AccountType = AccountType.Unknown,
-                    Name = "NEW ACCOUNT",
-                    AccountNumber = newAccountNumber,
-                    PendingActivity = 12.34m,
-                    TotalGainDollar = .56m,
-                    TotalGainPercent = .7890m,
-                    Positions = new List<IPosition> {new Mock<IPosition>().Object}
-                });
-            SetupPageContent(_expectedAccountDetails);
-
-            var result = _extractor.ExtractAccountDetails(_webDriverMock.Object).ToList();
-
-            _logMock.Verify(log => log.Warn(It.Is<object>(message => message.ToString().Contains(newAccountNumber))));
-            Assert.AreEqual(_expectedAccountDetails.Count, result.Count);
-        }
-
-        [Test]
-        public void ShouldExtractAccountDetails()
-        {
-            SetupPageContent(_expectedAccountDetails);
-
-            var actuals = _extractor.ExtractAccountDetails(_webDriverMock.Object).ToList();
-
-            Assert.AreEqual(_expectedAccountDetails.Count, actuals.Count);
-            foreach (var actual in actuals)
-            {
-                var matchingExpected = _expectedAccountDetails.Single(
-                    expected => FilterIllegalCharacters(expected.AccountNumber) == actual.AccountNumber);
-
-                Assert.AreEqual(matchingExpected.Name, actual.Name);
-                Assert.AreEqual(matchingExpected.AccountType, actual.AccountType);
-                Assert.AreSame(_positionsByAccount[actual.Name], actual.Positions);
-                Assert.AreEqual(matchingExpected.PendingActivity, actual.PendingActivity);
-                Assert.AreEqual(matchingExpected.TotalGainDollar, actual.TotalGainDollar);
-                Assert.AreEqual(matchingExpected.TotalGainPercent, actual.TotalGainPercent);
-            }
-        }
+        private AccountDetailsExtractor _extractor;
+        private Mock<IWebDriver> _webDriverMock;
+        private List<IAccountDetails> _expectedAccountDetails;
+        private Dictionary<string, List<IPosition>> _positionsByAccount;
+        private Mock<IPositionDetailsExtractor> _positionDetailsExtractorMock;
+        private Mock<ILog> _logMock;
+        private Mock<IWebElement> _mockTableBodyWithChildren;
+        private Mock<IWebElement> _mockTableBodyWithoutChildren;
 
         private string FilterIllegalCharacters(string accountNumber)
         {
@@ -149,7 +118,7 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Positions
         {
             _positionsByAccount = new Dictionary<string, List<IPosition>>();
             var tableRows = accountDetails.SelectMany(SetupAccountRows).ToList();
-            _tableBodyMock.Setup(tableBody => tableBody.FindElements(By.TagName("tr")))
+            _mockTableBodyWithChildren.Setup(tableBody => tableBody.FindElements(By.TagName("tr")))
                 .Returns(tableRows.AsReadOnly);
         }
 
@@ -159,7 +128,7 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Positions
                 {
                     SetupIgnoredRow(),
                     SetupAccountTitleRow(account.Name, account.AccountNumber),
-                    SetupIgnoredRow(),
+                    SetupIgnoredRow()
                 }
                 .Concat(SetupAccountDetailsRows(account))
                 .ToList();
@@ -239,7 +208,8 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Positions
                 totalGainPercentSpanMock.Setup(row => row.ToString()).Returns("Total Gain - Percent != 0");
             }
 
-            var totalGainSpans = new List<IWebElement> {totalGainDollarSpanMock.Object, totalGainPercentSpanMock.Object};
+            var totalGainSpans = new List<IWebElement>
+                {totalGainDollarSpanMock.Object, totalGainPercentSpanMock.Object};
             totalRowMock.Setup(row => row.FindElements(By.ClassName("magicgrid--stacked-data-value")))
                 .Returns(totalGainSpans.AsReadOnly());
         }
@@ -258,7 +228,8 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Positions
 
                 var pendingActivityTdMock = new Mock<IWebElement>();
                 pendingActivityTdMock.Setup(td => td.Text).Returns("you have xyz in pending activity");
-                pendingActivityTdMock.Setup(td => td.FindElement(By.ClassName("magicgrid--total-pending-activity-link")))
+                pendingActivityTdMock
+                    .Setup(td => td.FindElement(By.ClassName("magicgrid--total-pending-activity-link")))
                     .Returns(pendingActivityAnchorMock.Object);
 
                 totalRowMock.Setup(row => row.FindElement(By.ClassName("magicgrid--total-pending-activity-link-cell")))
@@ -326,9 +297,9 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Positions
             var accountDescriptionSpanMock = SetupAccountDescriptionSpan(accountId);
             accountTitleRowMock.Setup(row => row.FindElement(By.ClassName("magicgrid--account-title-description")))
                 .Returns(accountDescriptionSpanMock);
-            
+
             accountTitleRowMock.Setup(row => row.ToString()).Returns("Account Title Row");
-            
+
             return accountTitleRowMock.Object;
         }
 
@@ -346,6 +317,75 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Positions
             accountIdSpanMock.Setup(span => span.Text).Returns(accountId);
             accountIdSpanMock.Setup(span => span.ToString()).Returns("Account Description Span");
             return accountIdSpanMock.Object;
+        }
+
+        [Test]
+        public void ShouldExtractAccountDetailsWhenBothTablesArePresent()
+        {
+            SetupPageContent(_expectedAccountDetails);
+
+            var actuals = _extractor.ExtractAccountDetails(_webDriverMock.Object).ToList();
+
+            Assert.AreEqual(_expectedAccountDetails.Count, actuals.Count);
+            foreach (var actual in actuals)
+            {
+                var matchingExpected = _expectedAccountDetails.Single(
+                    expected => FilterIllegalCharacters(expected.AccountNumber) == actual.AccountNumber);
+
+                Assert.AreEqual(matchingExpected.Name, actual.Name);
+                Assert.AreEqual(matchingExpected.AccountType, actual.AccountType);
+                Assert.AreSame(_positionsByAccount[actual.Name], actual.Positions);
+                Assert.AreEqual(matchingExpected.PendingActivity, actual.PendingActivity);
+                Assert.AreEqual(matchingExpected.TotalGainDollar, actual.TotalGainDollar);
+                Assert.AreEqual(matchingExpected.TotalGainPercent, actual.TotalGainPercent);
+            }
+        }
+
+        [Test]
+        public void ShouldExtractAccountDetailsWhenOnlyOneTableArePresent()
+        {
+            _webDriverMock.Setup(webDriver => webDriver.FindElements(By.ClassName("p-positions-tbody")))
+                .Returns(new List<IWebElement> {_mockTableBodyWithChildren.Object}.AsReadOnly());
+
+            SetupPageContent(_expectedAccountDetails);
+
+            var actuals = _extractor.ExtractAccountDetails(_webDriverMock.Object).ToList();
+
+            Assert.AreEqual(_expectedAccountDetails.Count, actuals.Count);
+            foreach (var actual in actuals)
+            {
+                var matchingExpected = _expectedAccountDetails.Single(
+                    expected => FilterIllegalCharacters(expected.AccountNumber) == actual.AccountNumber);
+
+                Assert.AreEqual(matchingExpected.Name, actual.Name);
+                Assert.AreEqual(matchingExpected.AccountType, actual.AccountType);
+                Assert.AreSame(_positionsByAccount[actual.Name], actual.Positions);
+                Assert.AreEqual(matchingExpected.PendingActivity, actual.PendingActivity);
+                Assert.AreEqual(matchingExpected.TotalGainDollar, actual.TotalGainDollar);
+                Assert.AreEqual(matchingExpected.TotalGainPercent, actual.TotalGainPercent);
+            }
+        }
+
+        [Test]
+        public void ShouldLogWhenNewAccountTypeFound()
+        {
+            const string newAccountNumber = "new9999";
+            _expectedAccountDetails.Add(new AccountDetails
+            {
+                AccountType = AccountType.Unknown,
+                Name = "NEW ACCOUNT",
+                AccountNumber = newAccountNumber,
+                PendingActivity = 12.34m,
+                TotalGainDollar = .56m,
+                TotalGainPercent = .7890m,
+                Positions = new List<IPosition> {new Mock<IPosition>().Object}
+            });
+            SetupPageContent(_expectedAccountDetails);
+
+            var result = _extractor.ExtractAccountDetails(_webDriverMock.Object).ToList();
+
+            _logMock.Verify(log => log.Warn(It.Is<object>(message => message.ToString().Contains(newAccountNumber))));
+            Assert.AreEqual(_expectedAccountDetails.Count, result.Count);
         }
     }
 }
