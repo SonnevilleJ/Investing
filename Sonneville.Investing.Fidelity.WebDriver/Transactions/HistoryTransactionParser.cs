@@ -46,7 +46,7 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Transactions
             result.RunDate = ParseDate(normalTDs[0].Text);
             result.AccountName = ParseAccountName(normalTDs[1]);
 
-            // this breaks when an account is selected on the history/activity page...
+            // TODO: This breaks when an account is selected on the history/activity page...
             // selecting an account means there is no account number column.
             result.AccountNumber = ParseAccountNumber(normalTDs[1]);
 
@@ -54,11 +54,18 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Transactions
             result.Type = ParseType(result.SecurityDescription);
 
             var contentBody = normalAndContentRows[1].FindElement(By.TagName("tbody"));
-            var tHeaders = contentBody.FindElements(By.TagName("th"));
-            var tDatas = contentBody.FindElements(By.TagName("td"));
+            var tHeaders = contentBody.FindElements(By.TagName("th")).ToList();
+            var tDatas = contentBody.FindElements(By.TagName("td")).ToList();
 
+            Console.WriteLine(string.Join(",", tHeaders.Select(header => header.Text)));
+            Console.WriteLine(string.Join(",", tDatas.Select(datas => datas.Text)));
+
+            // TODO: This line throws System.ArgumentException: An item with the same key has already been added.
+            // TH is column headers (I think) and TD is cells
+            // Zip() should NOT produce two of the same key...???
             var contentDictionary = tHeaders.Zip(tDatas, (th, td) => new KeyValuePair<string, string>(th.Text, td.Text))
                 .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
             result.Amount = ParseCurrency(contentDictionary[AttributeStrings.Amount]);
             switch (result.Type)
             {

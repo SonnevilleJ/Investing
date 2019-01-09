@@ -32,6 +32,7 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Positions
 
         private static IEnumerable<IWebElement> FindAccountDetailsTableRows(IWebDriver webDriver)
         {
+            // TODO: this throws System.InvalidOperationException on Last() when no elements exist
             return webDriver.FindElements(By.ClassName("p-positions-tbody")).Last()
                 .FindElements(By.TagName("tr"))
                 .AsEnumerable();

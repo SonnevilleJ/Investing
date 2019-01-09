@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
@@ -22,6 +23,7 @@ namespace Sonneville.Investing.Fidelity.WebDriver
             new WebDriverWait(webDriver, timeout)
                 .Until(driver => webDriver.FindElements(selector)
                     .All(element => element.GetCssValue("display") == "none"));
+            Thread.Sleep(TimeSpan.FromSeconds(1));
         }
     }
 }

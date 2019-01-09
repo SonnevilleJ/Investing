@@ -14,13 +14,13 @@ namespace Sonneville.Fidelity.Shell.Interface
 {
     public class DemoCommand : ICommand
     {
-        private readonly ILog _log;
         private readonly IDataStore _dataStore;
+        private readonly FidelityConfiguration _fidelityConfiguration;
+        private readonly ILog _log;
+        private readonly OptionSet _optionSet;
         private readonly IPositionsManager _positionsManager;
         private readonly ITransactionManager _transactionManager;
         private readonly TransactionTranslator _transactionTranslator;
-        private readonly FidelityConfiguration _fidelityConfiguration;
-        private readonly OptionSet _optionSet;
         private bool _shouldPersistOptions;
         private bool _shouldShowHelp;
 
@@ -56,7 +56,7 @@ namespace Sonneville.Fidelity.Shell.Interface
                 {
                     "h|help", "shows this message and exits.",
                     help => { _shouldShowHelp = true; }
-                },
+                }
             };
 
             _log.Info("App initialized");
@@ -93,20 +93,26 @@ namespace Sonneville.Fidelity.Shell.Interface
                 _fidelityConfiguration.Password = inputReader.ReadLine();
             }
 
-            LogToScreen(outputWriter, "Reading account summaries.....");
-            PrintAccountSummaries(_positionsManager.GetAccountSummaries().ToList(), outputWriter);
-            PrintSeparator(outputWriter);
-            LogToScreen(outputWriter, "Reading account details.......");
-            PrintAccountDetails(_positionsManager.GetAccountDetails().ToList(), outputWriter);
-            PrintSeparator(outputWriter);
+//            LogToScreen(outputWriter, "Reading account summaries.....");
+//            PrintAccountSummaries(_positionsManager.GetAccountSummaries().ToList(), outputWriter);
+//            PrintSeparator(outputWriter);
+//            LogToScreen(outputWriter, "Reading account details.......");
+//            PrintAccountDetails(_positionsManager.GetAccountDetails().ToList(), outputWriter);
+//            PrintSeparator(outputWriter);
             LogToScreen(outputWriter, "Reading recent transactions...");
             PrintRecentTransactions(
                 _transactionManager.GetTransactionHistory(DateTime.Today.AddDays(-30), DateTime.Today).ToList()
                 , outputWriter);
             PrintSeparator(outputWriter);
             LogToScreen(outputWriter, "Demo completed successfully!");
-            
+
             return false;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         private void PrintSeparator(TextWriter outputWriter)
@@ -156,10 +162,8 @@ namespace Sonneville.Fidelity.Shell.Interface
         {
             LogToScreen(outputWriter, $"Found {transactions.Count} recent transactions!");
             foreach (var transaction in transactions)
-            {
                 LogToScreen(outputWriter,
                     $"On {transaction.RunDate:d} {transaction.Quantity:F} shares of {transaction.Symbol} were {_transactionTranslator.Translate(transaction.Type)} at {transaction.Price:C} per share");
-            }
 
             LogToScreen(outputWriter);
         }
@@ -177,12 +181,6 @@ namespace Sonneville.Fidelity.Shell.Interface
                 _positionsManager?.Dispose();
                 _transactionManager?.Dispose();
             }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
     }
 }
