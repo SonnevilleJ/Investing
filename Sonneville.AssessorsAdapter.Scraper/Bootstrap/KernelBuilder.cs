@@ -7,7 +7,8 @@ namespace Sonneville.AssessorsAdapter.Scraper.Bootstrap
         public IKernel Build()
         {
             return new StandardKernel(
-                new DefaultModule());
+                new DefaultModule(),
+                new CsvModule());
         }
     }
 }
