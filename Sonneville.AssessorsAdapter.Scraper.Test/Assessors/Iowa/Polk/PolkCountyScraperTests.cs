@@ -1,4 +1,5 @@
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 using OpenQA.Selenium.Chrome;
@@ -37,7 +38,6 @@ namespace Sonneville.AssessorsAdapter.Scraper.Test.Assessors.Iowa.Polk
         {
             var record = _scraper.CollectAssessment("5166 Raintree Dr");
 
-
             Assert.AreEqual("5166 RAINTREE DR", record.Location.Address);
             Assert.AreEqual("WEST DES MOINES", record.Location.City);
             Assert.AreEqual(50265, record.Location.Zip);
@@ -62,8 +62,8 @@ namespace Sonneville.AssessorsAdapter.Scraper.Test.Assessors.Iowa.Polk
             Assert.AreEqual(1, record.Residence.ToiletRooms);
             Assert.AreEqual(3, record.Residence.Bedrooms);
             Assert.AreEqual(7, record.Residence.Rooms);
-            
-            Assert.AreEqual(253000, record.Assessments[2017].Total);
+
+            Assert.AreEqual(253000, record.Assessments.Single(assessment => assessment.Year == 2017).Total);
 
             Assert.AreEqual(253000, record.CurrentValue);
         }

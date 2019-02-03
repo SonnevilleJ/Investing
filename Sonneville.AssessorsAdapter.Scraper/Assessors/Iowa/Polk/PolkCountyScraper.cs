@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Threading;
 using OpenQA.Selenium;
 
 namespace Sonneville.AssessorsAdapter.Scraper.Assessors.Iowa.Polk
@@ -21,8 +20,6 @@ namespace Sonneville.AssessorsAdapter.Scraper.Assessors.Iowa.Polk
         public RealEstateRecord CollectAssessment(string address)
         {
             NavigateToProperty(address);
-            Thread.Sleep(3000);
-
             return new RealEstateRecord
             {
                 Location = ParseLocation(),
@@ -35,76 +32,99 @@ namespace Sonneville.AssessorsAdapter.Scraper.Assessors.Iowa.Polk
         private LocationRecord ParseLocation()
         {
             var table = FindTable("Location");
-            var dictionary = ConstructDictionary(table);
-
+            var dictionary = ConstructDictionaryFromInterleavedData(table);
             return new LocationRecord
             {
-                Address = ParseString(dictionary, "Address"),
-                City = ParseString(dictionary, "City"),
-                Zip = ParseInt(dictionary, "Zip"),
+                Address = dictionary["Address"],
+                City = dictionary["City"],
+                Zip = ParseInt(dictionary["Zip"]),
             };
         }
 
         private LandRecord ParseLand()
         {
             var table = FindTable("Land");
-            var dictionary = ConstructDictionary(table);
-
+            var dictionary = ConstructDictionaryFromInterleavedData(table);
             return new LandRecord
             {
-                Acres = double.Parse(ParseString(dictionary, "Acres")),
-                SquareFeet = ParseInt(dictionary, "Square Feet"),
-                YearPlatted = ParseInt(dictionary, "Year Platted"),
-                Shape = ParseString(dictionary, "Shape"),
-                Vacancy = ParseString(dictionary, "Vacancy"),
-                Topography = ParseString(dictionary, "Topography"),
-                Unbuildable = ParseString(dictionary, "Unbuildable") != "No",
+                Acres = double.Parse(dictionary["Acres"]),
+                SquareFeet = ParseInt(dictionary["Square Feet"]),
+                YearPlatted = ParseInt(dictionary["Year Platted"]),
+                Shape = dictionary["Shape"],
+                Vacancy = dictionary["Vacancy"],
+                Topography = dictionary["Topography"],
+                Unbuildable = dictionary["Unbuildable"] != "No",
             };
         }
 
         private ResidenceRecord ParseResidence()
         {
             var table = FindTable("Residences");
-            var dictionary = ConstructDictionary(table);
-
-            var record = new ResidenceRecord();
-            record.Occupancy = ParseString(dictionary, "Occupancy");
-            record.ResidenceType = ParseString(dictionary, "Residence Type");
-            record.BuildingStyle = ParseString(dictionary, "Building Style");
-            record.YearBuilt = ParseInt(dictionary, "Year Built");
-            record.NumberOfFamilies = ParseInt(dictionary, "Number Families");
-            record.Grade = ParseString(dictionary, "Grade");
-            record.Condition = ParseString(dictionary, "Condition");
-            record.LivingAreaSquareFootage = new Dictionary<int, int>
+            var dictionary = ConstructDictionaryFromInterleavedData(table);
+            return new ResidenceRecord
             {
-                {0, ParseInt(dictionary, "Main Living Area")},
-                {1, ParseInt(dictionary, "Upper Living Area")}
+                Occupancy = dictionary["Occupancy"],
+                ResidenceType = dictionary["Residence Type"],
+                BuildingStyle = dictionary["Building Style"],
+                YearBuilt = ParseInt(dictionary["Year Built"]),
+                NumberOfFamilies = ParseInt(dictionary["Number Families"]),
+                Grade = dictionary["Grade"],
+                Condition = dictionary["Condition"],
+                LivingAreaSquareFootage = new Dictionary<int, int>
+                {
+                    {0, ParseInt(dictionary["Main Living Area"])},
+                    {1, ParseInt(dictionary["Upper Living Area"])}
+                },
+                UnfinishedBasementSquareFootage = ParseInt(dictionary["Basement Area"]),
+                AttachedGarageSquareFootage = ParseInt(dictionary["Attached Garage Square Foot"]),
+                OpenPorchArea = ParseInt(dictionary["Open Porch Area"]),
+                DeckArea = ParseInt(dictionary["Deck Area"]),
+                VeneerArea = ParseInt(dictionary["Veneer Area"]),
+                Foundation = dictionary["Foundation"],
+                ExteriorWallType = dictionary["Exterior Wall Type"],
+                RoofType = dictionary["Roof Type"],
+                RoofMaterial = dictionary["Roof Material"],
+                Fireplaces = ParseInt(dictionary["Number Fireplaces"]),
+                Heating = dictionary["Heating"],
+                AirConditioning = ParseInt(dictionary["Air Conditioning"]),
+                Bathrooms = ParseInt(dictionary["Number Bathrooms"]),
+                ToiletRooms = ParseInt(dictionary["Number Toilet Rooms"]),
+                Bedrooms = ParseInt(dictionary["Bedrooms"]),
+                Rooms = ParseInt(dictionary["Rooms"])
             };
-            record.UnfinishedBasementSquareFootage = ParseInt(dictionary, "Basement Area");
-            record.AttachedGarageSquareFootage = ParseInt(dictionary, "Attached Garage Square Foot");
-            record.OpenPorchArea = ParseInt(dictionary, "Open Porch Area");
-            record.DeckArea = ParseInt(dictionary, "Deck Area");
-            record.VeneerArea = ParseInt(dictionary, "Veneer Area");
-            record.Foundation = ParseString(dictionary, "Foundation");
-            record.ExteriorWallType = ParseString(dictionary, "Exterior Wall Type");
-            record.RoofType = ParseString(dictionary, "Roof Type");
-            record.RoofMaterial = ParseString(dictionary, "Roof Material");
-            record.Fireplaces = ParseInt(dictionary, "Number Fireplaces");
-            record.Heating = ParseString(dictionary, "Heating");
-            record.AirConditioning = ParseInt(dictionary, "Air Conditioning");
-            record.Bathrooms = ParseInt(dictionary, "Number Bathrooms");
-            record.ToiletRooms = ParseInt(dictionary, "Number Toilet Rooms");
-            record.Bedrooms = ParseInt(dictionary, "Bedrooms");
-            record.Rooms = ParseInt(dictionary, "Rooms");
-            return record;
         }
 
-        private IDictionary<int, Assessment> ParseAssessments()
+        private List<Assessment> ParseAssessments()
         {
             var table = FindTable("Historical Values");
-            var dictionary = ConstructDictionary(table);
+            var columns = table
+                .FindElement(By.TagName("thead"))
+                .FindElements(By.TagName("th"))
+                .Select(th => th.Text)
+                .Select(KeyValuePair.Create)
+                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            return table
+                .FindElement(By.TagName("tbody"))
+                .FindElements(By.TagName("tr"))
+                .Select(tr => CreateAssessment(tr, columns))
+                .ToList();
+        }
 
-            return new Dictionary<int, Assessment>();
+        private Assessment CreateAssessment(IWebElement tr, IReadOnlyDictionary<string, int> columns)
+        {
+            var values = tr
+                .FindElements(By.TagName("td"))
+                .Select(td => td.Text)
+                .ToList();
+            return new Assessment
+            {
+                Land = ParseInt(values[columns["Land"]]),
+                Year = ParseInt(values[columns["Yr"]]),
+                Building = ParseInt(values[columns["Bldg"]]),
+                Class = values[columns["Class"]],
+                Kind = values[columns["Kind"]],
+                Type = values[columns["Type"]]
+            };
         }
 
         private void NavigateToProperty(string address)
@@ -116,14 +136,13 @@ namespace Sonneville.AssessorsAdapter.Scraper.Assessors.Iowa.Polk
 
         private IWebElement FindTable(string heading)
         {
-            var table = _webDriver
+            return _webDriver
                 .FindElements(By.TagName("caption"))
                 .Single(element => element.Text.Trim().StartsWith(heading))
                 .FindElement(By.XPath(".."));
-            return table;
         }
 
-        private static Dictionary<string, string> ConstructDictionary(IWebElement table)
+        private static Dictionary<string, string> ConstructDictionaryFromInterleavedData(IWebElement table)
         {
             var keys = table
                 .FindElements(By.TagName("tr"))
@@ -136,24 +155,13 @@ namespace Sonneville.AssessorsAdapter.Scraper.Assessors.Iowa.Polk
                 .SelectMany(element => element.FindElements(By.TagName("td")))
                 .Select(element => element.Text)
                 .ToList();
-            var dictionary = keys.Zip(values, (key, value) => new KeyValuePair<string, string>(key, value))
+            return keys.Zip(values, KeyValuePair.Create)
                 .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-            return dictionary;
         }
 
-        private static string ParseString(
-            IReadOnlyDictionary<string, string> dictionary,
-            string key)
+        private static int ParseInt(string value, NumberStyles numberStyles = NumberStyles.Any)
         {
-            return dictionary[key];
-        }
-
-        private static int ParseInt(
-            IReadOnlyDictionary<string, string> dictionary,
-            string key,
-            NumberStyles numberStyles = NumberStyles.Any)
-        {
-            return int.Parse(dictionary[key], numberStyles);
+            return int.Parse(value, numberStyles);
         }
     }
 }
