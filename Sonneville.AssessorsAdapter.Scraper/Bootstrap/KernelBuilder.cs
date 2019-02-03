@@ -8,6 +8,7 @@ namespace Sonneville.AssessorsAdapter.Scraper.Bootstrap
         {
             return new StandardKernel(
                 new DefaultModule(),
+                new SeleniumModule(),
                 new CsvModule());
         }
     }
