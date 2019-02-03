@@ -5,7 +5,7 @@ using OpenQA.Selenium;
 
 namespace Sonneville.AssessorsAdapter.Scraper.Assessors.Iowa.Polk
 {
-    public class PolkCountyScraper : IScraper
+    public sealed class PolkCountyScraper : IScraper
     {
         private const string SearchPage =
             "http://web.assess.co.polk.ia.us/cgi-bin/web/tt/form.cgi?tt=simplegeneralform";
@@ -19,7 +19,7 @@ namespace Sonneville.AssessorsAdapter.Scraper.Assessors.Iowa.Polk
 
         public RealEstateRecord CollectAssessment(string address)
         {
-            NavigateToProperty(address);
+            QueryForAddress(address);
             return new RealEstateRecord
             {
                 Location = ParseLocation(),
@@ -132,7 +132,7 @@ namespace Sonneville.AssessorsAdapter.Scraper.Assessors.Iowa.Polk
             };
         }
 
-        private void NavigateToProperty(string address)
+        private void QueryForAddress(string address)
         {
             _webDriver.Navigate().GoToUrl(SearchPage);
             _webDriver.FindElement(By.Id("straddr__address")).SendKeys(address);
