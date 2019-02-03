@@ -1,7 +1,9 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Moq;
 using NUnit.Framework;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using Sonneville.AssessorsAdapter.Scraper.Assessors.Iowa.Polk;
 
@@ -21,16 +23,26 @@ namespace Sonneville.AssessorsAdapter.Scraper.Test.Assessors.Iowa.Polk
         public void Teardown()
         {
             _chromeDriver?.Dispose();
+            _scraper?.Dispose();
         }
 
         private PolkCountyScraper _scraper;
-        private ChromeDriver _chromeDriver;
+        private IWebDriver _chromeDriver;
 
-        private ChromeDriver CreateWebDriver()
+        private IWebDriver CreateWebDriver()
         {
             var chromeOptions = new ChromeOptions();
             var chromeDriverDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             return new ChromeDriver(chromeDriverDirectory, chromeOptions);
+        }
+
+        [Test]
+        public void ShouldDisposeWebDriver()
+        {
+            var mockWebDriver = new Mock<IWebDriver>();
+            new PolkCountyScraper(mockWebDriver.Object).Dispose();
+
+            mockWebDriver.Verify(webDriver => webDriver.Dispose());
         }
 
         [Test]

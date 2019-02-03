@@ -29,6 +29,11 @@ namespace Sonneville.AssessorsAdapter.Scraper.Assessors.Iowa.Polk
             };
         }
 
+        public void Dispose()
+        {
+            _webDriver?.Dispose();
+        }
+
         private LocationRecord ParseLocation()
         {
             var table = FindTable("Location");
