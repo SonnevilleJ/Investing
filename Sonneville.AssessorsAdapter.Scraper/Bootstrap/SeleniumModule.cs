@@ -10,7 +10,7 @@ namespace Sonneville.AssessorsAdapter.Scraper.Bootstrap
     {
         public override void Load()
         {
-            Bind<IWebDriver>().ToConstant(CreateWebDriver());
+            Bind<IWebDriver>().ToMethod(context => CreateWebDriver()).InSingletonScope();
         }
 
         private static ChromeDriver CreateWebDriver()
