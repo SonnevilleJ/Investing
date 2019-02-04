@@ -40,9 +40,9 @@ namespace Sonneville.AssessorsAdapter.Scraper.Assessors.Iowa.Polk
             var dictionary = ConstructDictionaryFromInterleavedData(table);
             return new LocationRecord
             {
-                Address = dictionary["Address"],
-                City = dictionary["City"],
-                Zip = ParseInt(dictionary["Zip"]),
+                Address = ParseString(dictionary, "Address"),
+                City = ParseString(dictionary, "City"),
+                Zip = ParseInt(dictionary, "Zip"),
             };
         }
 
@@ -53,12 +53,12 @@ namespace Sonneville.AssessorsAdapter.Scraper.Assessors.Iowa.Polk
             return new LandRecord
             {
                 Acres = double.Parse(dictionary["Acres"]),
-                SquareFeet = ParseInt(dictionary["Square Feet"]),
-                YearPlatted = ParseInt(dictionary["Year Platted"]),
-                Shape = dictionary["Shape"],
-                Vacancy = dictionary["Vacancy"],
-                Topography = dictionary["Topography"],
-                Unbuildable = dictionary["Unbuildable"] != "No",
+                SquareFeet = ParseInt(dictionary, "Square Feet"),
+                YearPlatted = ParseInt(dictionary, "Year Platted"),
+                Shape = ParseString(dictionary, "Shape"),
+                Vacancy = ParseString(dictionary, "Vacancy"),
+                Topography = ParseString(dictionary, "Topography"),
+                Unbuildable = ParseString(dictionary, "Unbuildable") != "No",
             };
         }
 
@@ -68,34 +68,35 @@ namespace Sonneville.AssessorsAdapter.Scraper.Assessors.Iowa.Polk
             var dictionary = ConstructDictionaryFromInterleavedData(table);
             return new ResidenceRecord
             {
-                Occupancy = dictionary["Occupancy"],
-                ResidenceType = dictionary["Residence Type"],
-                BuildingStyle = dictionary["Building Style"],
-                YearBuilt = ParseInt(dictionary["Year Built"]),
-                NumberOfFamilies = ParseInt(dictionary["Number Families"]),
-                Grade = dictionary["Grade"],
-                Condition = dictionary["Condition"],
-                LivingAreaSquareFootage = new Dictionary<int, int>
+                Occupancy = ParseString(dictionary, "Occupancy"),
+                ResidenceType = ParseString(dictionary, "Residence Type"),
+                BuildingStyle = ParseString(dictionary, "Building Style"),
+                YearBuilt = ParseInt(dictionary, "Year Built"),
+                NumberOfFamilies = ParseInt(dictionary, "Number Families"),
+                Grade = ParseString(dictionary, "Grade"),
+                Condition = ParseString(dictionary, "Condition"),
+                LivingAreaSquareFootage = new Dictionary<int, int?>
                 {
-                    {0, ParseInt(dictionary["Main Living Area"])},
-                    {1, ParseInt(dictionary["Upper Living Area"])}
+                    {-1, ParseInt(dictionary, "Total Basement Finish")},
+                    {0, ParseInt(dictionary, "Main Living Area")},
+                    {1, ParseInt(dictionary, "Upper Living Area")}
                 },
-                UnfinishedBasementSquareFootage = ParseInt(dictionary["Basement Area"]),
-                AttachedGarageSquareFootage = ParseInt(dictionary["Attached Garage Square Foot"]),
-                OpenPorchArea = ParseInt(dictionary["Open Porch Area"]),
-                DeckArea = ParseInt(dictionary["Deck Area"]),
-                VeneerArea = ParseInt(dictionary["Veneer Area"]),
-                Foundation = dictionary["Foundation"],
-                ExteriorWallType = dictionary["Exterior Wall Type"],
-                RoofType = dictionary["Roof Type"],
-                RoofMaterial = dictionary["Roof Material"],
-                Fireplaces = ParseInt(dictionary["Number Fireplaces"]),
-                Heating = dictionary["Heating"],
-                AirConditioning = ParseInt(dictionary["Air Conditioning"]),
-                Bathrooms = ParseInt(dictionary["Number Bathrooms"]),
-                ToiletRooms = ParseInt(dictionary["Number Toilet Rooms"]),
-                Bedrooms = ParseInt(dictionary["Bedrooms"]),
-                Rooms = ParseInt(dictionary["Rooms"])
+                UnfinishedBasementSquareFootage = ParseInt(dictionary, "Basement Area"),
+                AttachedGarageSquareFootage = ParseInt(dictionary, "Attached Garage Square Foot"),
+                OpenPorchArea = ParseInt(dictionary, "Open Porch Area"),
+                DeckArea = ParseInt(dictionary, "Deck Area"),
+                VeneerArea = ParseInt(dictionary, "Veneer Area"),
+                Foundation = ParseString(dictionary, "Foundation"),
+                ExteriorWallType = ParseString(dictionary, "Exterior Wall Type"),
+                RoofType = ParseString(dictionary, "Roof Type"),
+                RoofMaterial = ParseString(dictionary, "Roof Material"),
+                Fireplaces = ParseInt(dictionary, "Number Fireplaces"),
+                Heating = ParseString(dictionary, "Heating"),
+                AirConditioning = ParseInt(dictionary, "Air Conditioning"),
+                Bathrooms = ParseInt(dictionary, "Number Bathrooms"),
+                ToiletRooms = ParseInt(dictionary, "Number Toilet Rooms"),
+                Bedrooms = ParseInt(dictionary, "Bedrooms"),
+                Rooms = ParseInt(dictionary, "Rooms")
             };
         }
 
@@ -164,9 +165,23 @@ namespace Sonneville.AssessorsAdapter.Scraper.Assessors.Iowa.Polk
                 .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
 
+        private static int? ParseInt(Dictionary<string, string> dictionary, string key)
+        {
+            return dictionary.TryGetValue(key, out var stringValue)
+                ? ParseInt(stringValue)
+                : (int?) null;
+        }
+
         private static int ParseInt(string value, NumberStyles numberStyles = NumberStyles.Any)
         {
             return int.Parse(value, numberStyles);
+        }
+
+        private static string ParseString(Dictionary<string, string> dictionary, string key)
+        {
+            return dictionary.TryGetValue(key, out var stringValue)
+                ? stringValue
+                : default(string);
         }
     }
 }

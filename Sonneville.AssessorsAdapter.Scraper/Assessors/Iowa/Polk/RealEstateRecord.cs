@@ -10,8 +10,7 @@ namespace Sonneville.AssessorsAdapter.Scraper.Assessors.Iowa.Polk
         public ResidenceRecord Residence { get; set; }
         public List<Assessment> Assessments { get; set; }
 
-        public int CurrentValue => Assessments
-            .OrderByDescending(assessment => assessment.Year)
+        public int? CurrentValue => Assessments
             .First().Total;
     }
 }

@@ -46,6 +46,22 @@ namespace Sonneville.AssessorsAdapter.Scraper.Test.Assessors.Iowa.Polk
         }
 
         [Test]
+        public void ShouldParseHouseWithFinishedBasement()
+        {
+            var record = _scraper.CollectAssessment("1513 NW Prairie Creek Dr");
+
+            Assert.AreEqual(1100, record.Residence.LivingAreaSquareFootage[-1]);
+        }
+
+        [Test]
+        public void ShouldParseHouseWithMissingData()
+        {
+            var record = _scraper.CollectAssessment("1610 63rd St");
+
+            Assert.IsNull(record.Land.YearPlatted);
+        }
+
+        [Test]
         public void ShouldParseJohnsHouse()
         {
             var record = _scraper.CollectAssessment("5166 Raintree Dr");
