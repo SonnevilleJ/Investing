@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Sonneville.AssessorsAdapter.Scraper.Assessors.Iowa.Polk
+namespace Sonneville.AssessorsAdapter.Scraper.Assessors
 {
     public class RealEstateRecord
     {

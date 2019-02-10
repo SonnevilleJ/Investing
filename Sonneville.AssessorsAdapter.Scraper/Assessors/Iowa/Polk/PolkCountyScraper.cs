@@ -54,11 +54,6 @@ namespace Sonneville.AssessorsAdapter.Scraper.Assessors.Iowa.Polk
             {
                 Acres = double.Parse(dictionary["Acres"]),
                 SquareFeet = ParseInt(dictionary, "Square Feet"),
-                YearPlatted = ParseInt(dictionary, "Year Platted"),
-                Shape = ParseString(dictionary, "Shape"),
-                Vacancy = ParseString(dictionary, "Vacancy"),
-                Topography = ParseString(dictionary, "Topography"),
-                Unbuildable = ParseString(dictionary, "Unbuildable") != "No",
             };
         }
 

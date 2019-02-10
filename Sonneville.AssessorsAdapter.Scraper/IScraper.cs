@@ -1,5 +1,5 @@
 using System;
-using Sonneville.AssessorsAdapter.Scraper.Assessors.Iowa.Polk;
+using Sonneville.AssessorsAdapter.Scraper.Assessors;
 
 namespace Sonneville.AssessorsAdapter.Scraper
 {

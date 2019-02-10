@@ -1,4 +1,4 @@
-namespace Sonneville.AssessorsAdapter.Scraper.Assessors.Iowa.Polk
+namespace Sonneville.AssessorsAdapter.Scraper.Assessors
 {
     public class Assessment
     {

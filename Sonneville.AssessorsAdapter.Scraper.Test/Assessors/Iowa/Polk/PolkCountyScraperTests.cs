@@ -1,10 +1,7 @@
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using Moq;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using Sonneville.AssessorsAdapter.Scraper.Assessors.Iowa.Polk;
 
 namespace Sonneville.AssessorsAdapter.Scraper.Test.Assessors.Iowa.Polk
@@ -15,26 +12,19 @@ namespace Sonneville.AssessorsAdapter.Scraper.Test.Assessors.Iowa.Polk
         [SetUp]
         public void Setup()
         {
-            _chromeDriver = CreateWebDriver();
-            _scraper = new PolkCountyScraper(_chromeDriver);
+            _webDriver = WebDriverFactory.CreateChromeDriver();
+            _scraper = new PolkCountyScraper(_webDriver);
         }
 
         [TearDown]
         public void Teardown()
         {
-            _chromeDriver?.Dispose();
+            _webDriver?.Dispose();
             _scraper?.Dispose();
         }
 
         private PolkCountyScraper _scraper;
-        private IWebDriver _chromeDriver;
-
-        private IWebDriver CreateWebDriver()
-        {
-            var chromeOptions = new ChromeOptions();
-            var chromeDriverDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            return new ChromeDriver(chromeDriverDirectory, chromeOptions);
-        }
+        private IWebDriver _webDriver;
 
         [Test]
         public void ShouldDisposeWebDriver()
@@ -54,14 +44,6 @@ namespace Sonneville.AssessorsAdapter.Scraper.Test.Assessors.Iowa.Polk
         }
 
         [Test]
-        public void ShouldParseHouseWithMissingData()
-        {
-            var record = _scraper.CollectAssessment("1610 63rd St");
-
-            Assert.IsNull(record.Land.YearPlatted);
-        }
-
-        [Test]
         public void ShouldParseJohnsHouse()
         {
             var record = _scraper.CollectAssessment("5166 Raintree Dr");
@@ -72,7 +54,6 @@ namespace Sonneville.AssessorsAdapter.Scraper.Test.Assessors.Iowa.Polk
 
             Assert.AreEqual(0.287, record.Land.Acres, 0.0001);
             Assert.AreEqual(12501, record.Land.SquareFeet);
-            Assert.AreEqual(1992, record.Land.YearPlatted);
 
             Assert.AreEqual(1995, record.Residence.YearBuilt);
             Assert.AreEqual("3-05", record.Residence.Grade);
