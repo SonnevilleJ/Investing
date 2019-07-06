@@ -10,8 +10,8 @@
         <PackageReference Include="Ninject" Version="3.3.4" />
         <PackageReference Include="Ninject.Extensions.Conventions" Version="3.3.0" />
         <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
-        <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="2.46.0" />
-        <PackageReference Include="TinyCsvParser" Version="2.0.0" />
+        <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="75.0.3770.90" />
+        <PackageReference Include="TinyCsvParser" Version="2.5.1" />
     </ItemGroup>
 
 </Project>
