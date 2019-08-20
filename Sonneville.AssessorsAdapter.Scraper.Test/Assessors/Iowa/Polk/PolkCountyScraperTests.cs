@@ -73,8 +73,6 @@ namespace Sonneville.AssessorsAdapter.Scraper.Test.Assessors.Iowa.Polk
             Assert.AreEqual(7, record.Residence.Rooms);
 
             Assert.AreEqual(253000, record.Assessments.Single(assessment => assessment.Year == 2017).Total);
-
-            Assert.AreEqual(253000, record.CurrentValue);
         }
     }
 }
