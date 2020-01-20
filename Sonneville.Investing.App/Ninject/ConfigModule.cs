@@ -17,7 +17,6 @@ namespace Sonneville.Investing.App.Ninject
         {
             var workingDirectory = GetWorkingDirectory();
             ConfigureLocalDataStore(workingDirectory);
-            ConfigureExceptionReports(workingDirectory);
         }
 
         private static string GetWorkingDirectory()
@@ -42,14 +41,6 @@ namespace Sonneville.Investing.App.Ninject
             var dataStore = KernelInstance.Get<IDataStore>();
             Rebind<FidelityConfiguration>().ToMethod(context => dataStore.Get<FidelityConfiguration>());
             Rebind<SeleniumConfiguration>().ToMethod(context => dataStore.Get<SeleniumConfiguration>());
-        }
-
-        private void ConfigureExceptionReports(string workingDirectory)
-        {
-            Bind<string>()
-                .ToConstant(Path.Combine(workingDirectory, "ErrorReports"))
-                .WhenInjectedInto<ExceptionReportGenerator>()
-                .InSingletonScope();
         }
 
         private static T GetAssemblyAttribute<T>()

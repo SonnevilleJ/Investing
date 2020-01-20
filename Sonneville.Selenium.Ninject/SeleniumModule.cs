@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Ninject.Modules;
 using OpenQA.Selenium;
@@ -54,6 +55,8 @@ namespace Sonneville.Selenium.Ninject
             {
                 Console.WriteLine($"ERROR: Failed to initialize WebDriver: {e}");
             }
+            var workingDirectory = GetWorkingDirectory();
+            ConfigureExceptionReports(workingDirectory);
         }
 
         private static ChromeDriver CreateWebDriver()
@@ -64,6 +67,31 @@ namespace Sonneville.Selenium.Ninject
 #endif
             var chromeDriverDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             return new ChromeDriver(chromeDriverDirectory, chromeOptions);
+        }
+
+        private static string GetWorkingDirectory()
+        {
+            return Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                GetAssemblyAttribute<AssemblyCompanyAttribute>().Company,
+                GetAssemblyAttribute<AssemblyTitleAttribute>().Title
+            );
+        }
+
+        private void ConfigureExceptionReports(string workingDirectory)
+        {
+            Bind<string>()
+                .ToConstant(Path.Combine(workingDirectory, "ErrorReports"))
+                .WhenInjectedInto<ExceptionReportGenerator>()
+                .InSingletonScope();
+        }
+
+        private static T GetAssemblyAttribute<T>()
+        {
+            return Assembly.GetExecutingAssembly()
+                .GetCustomAttributes(typeof(T), false)
+                .Cast<T>()
+                .Single();
         }
     }
 }
