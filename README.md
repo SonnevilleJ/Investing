@@ -1,17 +1,25 @@
 # Project Overview
-A C# library with some basic domain objects for applications interested in managing financial investments. A command line interface (CLI) is also available, see the Sonneville.Fidelity.Shell project in this repository.
+This is a mono repository with a few different projects
+* Sonneville.AssessorsAdapter: An application to parse the Iowa Polk County Assessor's site for real estate data. 
+* Sonneville.Investing: A library with some basic domain objects for applications interested in managing financial investments. A command line interface (CLI) is also available, see the Sonneville.Fidelity.Shell project in this repository.
+* Various libraries for facilitating the above
 
-## Current build status
+## Assessors Adapter
+Documentation to be updated later.
+
+## Investing
+
+### Current build status
 * MSBuild: None! - Please see the [feature backlog](https://github.com/SonnevilleJ/Investing/tree/master/backlog.md) if you'd like to contribute a CI configuration for this project.
 * Mono: None! - Please see the [feature backlog](https://github.com/SonnevilleJ/Investing/tree/master/backlog.md) if you'd like to contribute a CI configuration for this project.
 
-## Integration tests
+### Integration tests
 This project requires a PostgreSQL database with the [specified connection details](https://github.com/SonnevilleJ/Investing/blob/data-storage/Sonneville.Investing.Persistence.IntegrationTest/IntegrationTestConnection.cs). To use Docker for Postgres/pgAdmin, run the following command(s):
 
 PosgreSQL: `docker run --name=Sonneville-Investing-Postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=pwd -e POSTGRES_DB=investing -p 6543:5432 -d postgres:9.6`
 pgAdmin 4: `docker run --name=Sonneville-Investing-pgAdmin -e PGADMIN_DEFAULT_EMAIL=postgres -e PGADMIN_DEFAULT_PASSWORD=pwd -p 8080:80 -d dpage/pgadmin4`
 
-## Demo app
+### Demo app
 The demo app will use the specified credentials to log into the [www.Fidelity.com](https://www.fidelity.com) website. Once logged in, it will print to the console some basic account info as well as the most recent transactions.
 
 ### Launching the demo
@@ -24,7 +32,7 @@ The demo app will use the specified credentials to log into the [www.Fidelity.co
 ```
 If the `--save` argument is given, settings are stored to `FidelityWebDriver.Demo.json` allowing future demo executions to omit the `-u` and `-p` parameters. NOTE: This is intended purely as a convenience and is not a secure storage mechanism. Please consider the risks.
 
-## Fidelity Web Driver
+### Fidelity Web Driver
 This project includes a library (Sonneville.Fidelity.WebDriver) as a wrapper around the [Selenium WebDriver](http://www.seleniumhq.org/projects/webdriver). This library is used to perform semantic interaction with the Fidelity website.
 
 ### Managers - these managers work for you!
@@ -36,7 +44,7 @@ Login Manager        | manages login state for the Fidelity.com website
 Positions Manager    | retrieves current positions
 Transactions Manager | retrieves previous transactions
 
-## Troubleshooting
+### Troubleshooting
 This project should always be functional if built from the master branch. Logging is achieved via [Apache log4net](https://logging.apache.org/log4net). Log files for the demo app can be retrieved from the following location:
 
 Platform  | Location
