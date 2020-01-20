@@ -1,3 +1,6 @@
+using Ninject.Extensions.Conventions;
+using Ninject.Modules;
+
 namespace Sonneville.Ninject
 {
     public class DefaultModule : NinjectModule

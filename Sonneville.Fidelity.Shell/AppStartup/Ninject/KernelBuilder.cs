@@ -1,6 +1,7 @@
 ﻿using Ninject;
 using Ninject.Modules;
 using Sonneville.Investing.App.Ninject;
+using Sonneville.Ninject;
 
 namespace Sonneville.Fidelity.Shell.AppStartup.Ninject
 {

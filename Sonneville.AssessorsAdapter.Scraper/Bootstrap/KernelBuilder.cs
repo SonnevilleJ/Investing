@@ -1,4 +1,5 @@
 using Ninject;
+using Sonneville.Ninject;
 
 namespace Sonneville.AssessorsAdapter.Scraper.Bootstrap
 {

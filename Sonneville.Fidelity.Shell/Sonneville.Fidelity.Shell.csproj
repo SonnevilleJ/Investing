@@ -27,6 +27,7 @@
             <Project>{89A1A8E9-DD0F-40BC-B4F1-FCDED6910E35}</Project>
             <Name>Sonneville.Investing</Name>
         </ProjectReference>
+        <ProjectReference Include="..\Sonneville.Ninject\Sonneville.Ninject.csproj" />
         <ProjectReference Include="..\Sonneville.Utilities\Sonneville.Utilities.csproj">
             <Project>{5366e2e8-3513-4779-9c73-004f6958cf72}</Project>
             <Name>Sonneville.Utilities</Name>

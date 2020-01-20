@@ -18,5 +18,6 @@
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\Sonneville.Investing.App\Sonneville.Investing.App.csproj" />
+      <ProjectReference Include="..\Sonneville.Ninject\Sonneville.Ninject.csproj" />
     </ItemGroup>
 </Project>
