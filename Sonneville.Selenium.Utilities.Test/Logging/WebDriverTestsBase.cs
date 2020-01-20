@@ -6,7 +6,7 @@ using Moq;
 using NUnit.Framework;
 using OpenQA.Selenium;
 
-namespace Sonneville.Investing.Fidelity.WebDriver.Test.Logging
+namespace Sonneville.Selenium.Utilities.Test.Logging
 {
     public abstract class WebDriverTestsBase<T> where T : class, IWebDriver
     {

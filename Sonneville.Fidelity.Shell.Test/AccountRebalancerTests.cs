@@ -8,6 +8,7 @@ using Sonneville.Investing.Domain;
 using Sonneville.Investing.Fidelity.WebDriver.Configuration;
 using Sonneville.Investing.Fidelity.WebDriver.Positions;
 using Sonneville.Investing.Trading;
+using Sonneville.Selenium.Utilities;
 using AccountType = Sonneville.Investing.Trading.AccountType;
 
 namespace Sonneville.Fidelity.Shell.Test
@@ -20,12 +21,12 @@ namespace Sonneville.Fidelity.Shell.Test
         private Mock<ISecuritiesAllocationCalculator> _allocationCalculatorMock;
         private Mock<IAccountMapper> _accountMapperMock;
         private List<TradingAccount> _tradingAccounts;
-        private SeleniumConfiguration _portfolioManagerConfiguration;
+        private FidelityConfiguration _portfolioManagerConfiguration;
 
         [SetUp]
         public void Setup()
         {
-            _portfolioManagerConfiguration = new SeleniumConfiguration();
+            _portfolioManagerConfiguration = new FidelityConfiguration();
             var accountDetails = new List<IAccountDetails>
             {
                 new AccountDetails

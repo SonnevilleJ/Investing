@@ -10,7 +10,7 @@ using Moq;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using Optional;
-using Sonneville.Investing.Fidelity.WebDriver.Logging;
+using Sonneville.Selenium.Utilities.Logging;
 using Sonneville.Utilities;
 
 namespace Sonneville.Fidelity.Shell.Test.Logging

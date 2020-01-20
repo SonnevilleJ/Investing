@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using Sonneville.Investing.Fidelity.WebDriver.Configuration;
-using Sonneville.Investing.Fidelity.WebDriver.Logging;
+using Sonneville.Selenium.Utilities.Configuration;
+using Sonneville.Selenium.Utilities.Logging;
 
-namespace Sonneville.Investing.Fidelity.WebDriver.Test.Logging
+namespace Sonneville.Selenium.Utilities.Test.Logging
 {
     [TestFixture]
     public class PatientWebDriverTests : WebDriverTestsBase<PatientWebDriver>
@@ -69,7 +69,7 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Logging
                     "Invoked wrapped IWebElement without waiting until it was displayed!"));
             var task = Task.Run(() => wrapperAction(outer));
             task.Wait(1000);
-            Assert.IsTrue(task.IsCompleted);
+            Assert.IsTrue((bool) task.IsCompleted);
             Assert.IsTrue(validationsCompleted);
             innerMock.Verify(expectedInnerInvocation, Times.Once());
         }

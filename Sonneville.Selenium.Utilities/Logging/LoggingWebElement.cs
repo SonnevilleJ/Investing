@@ -3,7 +3,7 @@ using System.Linq;
 using log4net;
 using OpenQA.Selenium;
 
-namespace Sonneville.Investing.Fidelity.WebDriver.Logging
+namespace Sonneville.Selenium.Utilities.Logging
 {
     public class LoggingWebElement : WebElementBase
     {
@@ -17,13 +17,13 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Logging
 
         public override IWebElement FindElement(By by)
         {
-            _log.Trace($"Finding element {by}.");
+            LogExtentions.Trace(_log, $"Finding element {by}.");
             return Wrap(base.FindElement(by));
         }
 
         public override ReadOnlyCollection<IWebElement> FindElements(By by)
         {
-            _log.Trace($"Finding elements {by}.");
+            LogExtentions.Trace(_log, $"Finding elements {by}.");
             return base.FindElements(by)
                 .Select(Wrap)
                 .ToList()
@@ -32,46 +32,46 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Logging
 
         public override void Clear()
         {
-            _log.Trace($"Clearing tag `{base.TagName}`");
+            LogExtentions.Trace(_log, $"Clearing tag `{base.TagName}`");
             base.Clear();
         }
 
         public override void SendKeys(string text)
         {
-            _log.Verbose($"Sending keys: `{text}` to tag `{base.TagName}`.");
+            LogExtentions.Verbose(_log, $"Sending keys: `{text}` to tag `{base.TagName}`.");
             base.SendKeys(text);
         }
 
         public override void Submit()
         {
-            _log.Trace($"Submitting tag `{base.TagName}` with text `{base.Text}`");
+            LogExtentions.Trace(_log, $"Submitting tag `{base.TagName}` with text `{base.Text}`");
             base.Submit();
         }
 
         public override void Click()
         {
-            _log.Trace($"Clicking tag `{base.TagName}` with text `{base.Text}`");
+            LogExtentions.Trace(_log, $"Clicking tag `{base.TagName}` with text `{base.Text}`");
             base.Click();
         }
 
         public override string GetAttribute(string attributeName)
         {
             var attribute = base.GetAttribute(attributeName);
-            _log.Trace($"Got attribute `{attributeName}` for tag `{base.TagName}`: `{attribute}`");
+            LogExtentions.Trace(_log, $"Got attribute `{attributeName}` for tag `{base.TagName}`: `{attribute}`");
             return attribute;
         }
 
         public override string GetProperty(string propertyName)
         {
             var property = base.GetProperty(propertyName);
-            _log.Trace($"Got property `{propertyName}` for tag `{base.TagName}: `{property}`");
+            LogExtentions.Trace(_log, $"Got property `{propertyName}` for tag `{base.TagName}: `{property}`");
             return property;
         }
 
         public override string GetCssValue(string propertyName)
         {
             var cssValue = base.GetCssValue(propertyName);
-            _log.Trace($"Got CSS value `{propertyName}` for tag `{base.TagName}`: `{cssValue}`");
+            LogExtentions.Trace(_log, $"Got CSS value `{propertyName}` for tag `{base.TagName}`: `{cssValue}`");
             return cssValue;
         }
 

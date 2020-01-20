@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using OpenQA.Selenium;
 
-namespace Sonneville.Investing.Fidelity.WebDriver.Logging
+namespace Sonneville.Selenium.Utilities.Logging
 {
     public class ExceptionReportingWebElement : WebElementBase
     {
@@ -47,12 +47,12 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Logging
 
         public override string GetAttribute(string attributeName)
         {
-            return CallBaseMethod(() => base.GetAttribute(attributeName));
+            return CallBaseMethod<string>(() => base.GetAttribute(attributeName));
         }
 
         public override string GetProperty(string propertyName)
         {
-            return CallBaseMethod(() => base.GetProperty(propertyName));
+            return CallBaseMethod<string>(() => base.GetProperty(propertyName));
         }
 
         public override void SendKeys(string text)
@@ -62,7 +62,7 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Logging
 
         public override string GetCssValue(string propertyName)
         {
-            return CallBaseMethod(() => base.GetCssValue(propertyName));
+            return CallBaseMethod<string>(() => base.GetCssValue(propertyName));
         }
 
         private void CallBaseMethod(Action action)

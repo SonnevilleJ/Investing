@@ -3,7 +3,7 @@ using System.Linq;
 using log4net;
 using OpenQA.Selenium;
 
-namespace Sonneville.Investing.Fidelity.WebDriver.Logging
+namespace Sonneville.Selenium.Utilities.Logging
 {
     public class LoggingWebDriver : WebDriverBase
     {
@@ -21,20 +21,20 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Logging
             get => base.Url;
             set
             {
-                _webDriverLog.Trace($"Setting web driver URL: {value}");
+                LogExtentions.Trace(_webDriverLog, $"Setting web driver URL: {value}");
                 base.Url = value;
             }
         }
 
         public override IWebElement FindElement(By by)
         {
-            _webDriverLog.Trace($"Finding element {by}.");
+            LogExtentions.Trace(_webDriverLog, $"Finding element {by}.");
             return Wrap(base.FindElement(by));
         }
 
         public override ReadOnlyCollection<IWebElement> FindElements(By by)
         {
-            _webDriverLog.Trace($"Finding elements {by}.");
+            LogExtentions.Trace(_webDriverLog, $"Finding elements {by}.");
             return base.FindElements(by)
                 .Select(Wrap)
                 .ToList()
@@ -43,13 +43,13 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Logging
 
         public override void Close()
         {
-            _webDriverLog.Trace("Closing web driver...");
+            LogExtentions.Trace(_webDriverLog, "Closing web driver...");
             base.Close();
         }
 
         public override void Quit()
         {
-            _webDriverLog.Trace("Quitting web driver...");
+            LogExtentions.Trace(_webDriverLog, "Quitting web driver...");
             base.Quit();
         }
 

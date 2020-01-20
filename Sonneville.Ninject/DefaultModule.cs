@@ -1,7 +1,4 @@
-﻿using Ninject.Extensions.Conventions;
-using Ninject.Modules;
-
-namespace Sonneville.Investing.App.Ninject
+namespace Sonneville.Ninject
 {
     public class DefaultModule : NinjectModule
     {

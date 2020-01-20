@@ -7,7 +7,7 @@ using OpenQA.Selenium;
 using Optional;
 using Sonneville.Utilities;
 
-namespace Sonneville.Investing.Fidelity.WebDriver.Logging
+namespace Sonneville.Selenium.Utilities.Logging
 {
     public interface IExceptionReportGenerator : IDisposable
     {

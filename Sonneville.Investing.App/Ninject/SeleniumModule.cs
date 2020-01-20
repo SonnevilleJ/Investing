@@ -4,7 +4,7 @@ using System.Reflection;
 using Ninject.Modules;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using Sonneville.Investing.Fidelity.WebDriver.Logging;
+using Sonneville.Selenium.Utilities.Logging;
 
 namespace Sonneville.Investing.App.Ninject
 {

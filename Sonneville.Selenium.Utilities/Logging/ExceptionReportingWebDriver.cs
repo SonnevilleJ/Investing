@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using OpenQA.Selenium;
 
-namespace Sonneville.Investing.Fidelity.WebDriver.Logging
+namespace Sonneville.Selenium.Utilities.Logging
 {
     public class ExceptionReportingWebDriver : WebDriverBase
     {

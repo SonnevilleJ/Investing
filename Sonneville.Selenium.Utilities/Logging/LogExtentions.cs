@@ -3,7 +3,7 @@ using System.Diagnostics;
 using log4net;
 using log4net.Core;
 
-namespace Sonneville.Investing.Fidelity.WebDriver.Logging
+namespace Sonneville.Selenium.Utilities.Logging
 {
     public static class LogExtentions
     {

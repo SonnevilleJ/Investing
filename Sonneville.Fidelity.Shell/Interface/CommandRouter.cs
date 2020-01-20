@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Sonneville.Investing.Fidelity.WebDriver.Logging;
+using Sonneville.Selenium.Utilities.Logging;
 
 namespace Sonneville.Fidelity.Shell.Interface
 {

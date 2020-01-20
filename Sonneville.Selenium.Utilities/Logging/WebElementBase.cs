@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using OpenQA.Selenium;
 
-namespace Sonneville.Investing.Fidelity.WebDriver.Logging
+namespace Sonneville.Selenium.Utilities.Logging
 {
     public abstract class WebElementBase : IWebElement
     {

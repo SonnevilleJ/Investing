@@ -8,7 +8,7 @@ using NUnit.Framework;
 using NUnit.Framework.Constraints;
 using Optional;
 using Sonneville.Fidelity.Shell.Interface;
-using Sonneville.Investing.Fidelity.WebDriver.Logging;
+using Sonneville.Selenium.Utilities.Logging;
 
 namespace Sonneville.Fidelity.Shell.Test.Interface
 {

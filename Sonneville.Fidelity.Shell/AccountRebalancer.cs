@@ -17,12 +17,12 @@ namespace Sonneville.Fidelity.Shell
         private readonly IPositionsManager _positionsManager;
         private readonly IAccountMapper _accountMapper;
         private readonly ISecuritiesAllocationCalculator _securitiesAllocationCalculator;
-        private readonly SeleniumConfiguration _seleniumConfiguration;
+        private readonly FidelityConfiguration _seleniumConfiguration;
 
         public AccountRebalancer(IPositionsManager positionsManager,
             IAccountMapper accountMapper,
             ISecuritiesAllocationCalculator securitiesAllocationCalculator,
-            SeleniumConfiguration seleniumConfiguration)
+            FidelityConfiguration seleniumConfiguration)
         {
             _positionsManager = positionsManager;
             _accountMapper = accountMapper;

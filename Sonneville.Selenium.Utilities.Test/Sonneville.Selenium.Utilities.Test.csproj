@@ -1,30 +1,25 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.0</TargetFramework>
 
         <IsPackable>false</IsPackable>
-
-        <RootNamespace>Sonneville.AssessorsAdapter.Scraper.Test</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="CsvHelper" Version="13.0.0" />
         <PackageReference Include="Moq" Version="4.13.1" />
-        <PackageReference Include="Ninject" Version="3.3.4" />
         <PackageReference Include="nunit" Version="3.12.0" />
         <PackageReference Include="NUnit3TestAdapter" Version="3.16.1" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
         <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
-        <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="79.0.3945.3600" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Sonneville.AssessorsAdapter.Scraper\Sonneville.AssessorsAdapter.Scraper.csproj" />
+      <ProjectReference Include="..\Sonneville.Selenium.Utilities\Sonneville.Selenium.Utilities.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Include="HtmlResources/*.html" />
+      <Folder Include="Configuration" />
     </ItemGroup>
 
 </Project>

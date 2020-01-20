@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Sonneville.Investing.Domain;
 using Sonneville.Investing.Fidelity.WebDriver.Configuration;
@@ -6,12 +6,12 @@ using Sonneville.Investing.Fidelity.WebDriver.Configuration;
 namespace Sonneville.Investing.Fidelity.WebDriver.Test.Configuration
 {
     [TestFixture]
-    public class SeleniumConfigurationTests
+    public class FidelityConfigurationTests
     {
         [Test]
         public void ShouldInitializeToEmptyListOfAccountTypes()
         {
-            var configuration = new SeleniumConfiguration();
+            var configuration = new FidelityConfiguration();
 
             CollectionAssert.IsEmpty(configuration.InScopeAccountTypes);
         }
@@ -24,7 +24,7 @@ namespace Sonneville.Investing.Fidelity.WebDriver.Test.Configuration
                 AccountType.InvestmentAccount,
                 AccountType.RetirementAccount,
             };
-            var configuration = new SeleniumConfiguration();
+            var configuration = new FidelityConfiguration();
             configuration.InScopeAccountTypes = accountTypes;
 
             CollectionAssert.AreEquivalent(accountTypes, configuration.InScopeAccountTypes);

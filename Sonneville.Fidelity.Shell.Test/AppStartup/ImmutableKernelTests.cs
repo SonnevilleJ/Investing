@@ -14,6 +14,8 @@ using Sonneville.Investing.Fidelity.WebDriver.Configuration;
 using Sonneville.Investing.Fidelity.WebDriver.Navigation;
 using Sonneville.Investing.Persistence;
 using Sonneville.Investing.Persistence.EFCore.EntityFrameworkCore;
+using Sonneville.Selenium.Utilities;
+using Sonneville.Selenium.Utilities.Configuration;
 using Sonneville.Utilities.Persistence.v2;
 
 namespace Sonneville.Fidelity.Shell.Test.AppStartup
