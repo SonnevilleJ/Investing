@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.Utilities", "Sonneville.Utilities\Sonneville.Utilities.csproj", "{7038EA1F-7945-4475-A340-64BAB9CC9190}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.Utilities.Test", "Sonneville.Utilities.Test\Sonneville.Utilities.Test.csproj", "{1076A5E3-D506-4652-AA3A-0BF0A9490960}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7038EA1F-7945-4475-A340-64BAB9CC9190}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7038EA1F-7945-4475-A340-64BAB9CC9190}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7038EA1F-7945-4475-A340-64BAB9CC9190}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7038EA1F-7945-4475-A340-64BAB9CC9190}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1076A5E3-D506-4652-AA3A-0BF0A9490960}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1076A5E3-D506-4652-AA3A-0BF0A9490960}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1076A5E3-D506-4652-AA3A-0BF0A9490960}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1076A5E3-D506-4652-AA3A-0BF0A9490960}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
