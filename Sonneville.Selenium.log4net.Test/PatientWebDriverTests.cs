@@ -4,10 +4,9 @@ using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using Sonneville.Selenium.Utilities.Configuration;
-using Sonneville.Selenium.Utilities.Logging;
+using Sonneville.Selenium.Config;
 
-namespace Sonneville.Selenium.Utilities.Test.Logging
+namespace Sonneville.Selenium.log4net.Test
 {
     [TestFixture]
     public class PatientWebDriverTests : WebDriverTestsBase<PatientWebDriver>

@@ -3,7 +3,7 @@ using System.Linq;
 using log4net;
 using OpenQA.Selenium;
 
-namespace Sonneville.Selenium.Utilities.Logging
+namespace Sonneville.Selenium.log4net
 {
     public class LoggingWebElement : WebElementBase
     {

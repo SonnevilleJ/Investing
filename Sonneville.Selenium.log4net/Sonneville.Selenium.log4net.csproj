@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="log4net" Version="2.0.8" />
+      <PackageReference Include="Optional" Version="4.0.0" />
+      <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Sonneville.Selenium.Config\Sonneville.Selenium.Config.csproj" />
+      <ProjectReference Include="..\Sonneville.Utilities\Sonneville.Utilities.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -6,7 +6,7 @@ using Moq;
 using NUnit.Framework;
 using OpenQA.Selenium;
 
-namespace Sonneville.Selenium.Utilities.Test.Logging
+namespace Sonneville.Selenium.log4net.Test
 {
     public abstract class WebDriverTestsBase<T> where T : class, IWebDriver
     {

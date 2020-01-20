@@ -2,9 +2,9 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using OpenQA.Selenium;
-using Sonneville.Selenium.Utilities.Configuration;
+using Sonneville.Selenium.Config;
 
-namespace Sonneville.Selenium.Utilities.Logging
+namespace Sonneville.Selenium.log4net
 {
     public class PatientWebDriver : WebDriverBase
     {

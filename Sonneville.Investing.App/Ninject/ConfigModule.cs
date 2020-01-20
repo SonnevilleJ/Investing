@@ -10,8 +10,8 @@ using log4net.Repository.Hierarchy;
 using Ninject;
 using Ninject.Modules;
 using Sonneville.Investing.Fidelity.WebDriver.Configuration;
-using Sonneville.Selenium.Utilities.Configuration;
-using Sonneville.Selenium.Utilities.Logging;
+using Sonneville.Selenium.Config;
+using Sonneville.Selenium.log4net;
 using Sonneville.Utilities.Persistence.v2;
 
 namespace Sonneville.Investing.App.Ninject

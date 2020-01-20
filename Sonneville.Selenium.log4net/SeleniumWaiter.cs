@@ -2,7 +2,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
-namespace Sonneville.Selenium.Utilities.Logging
+namespace Sonneville.Selenium.log4net
 {
     public interface ISeleniumWaiter
     {

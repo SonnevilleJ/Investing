@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using log4net;
-using log4net.Repository.Hierarchy;
 using Ninject;
 using NUnit.Framework;
 using OpenQA.Selenium;
@@ -14,7 +12,6 @@ using Sonneville.Investing.Fidelity.WebDriver.Configuration;
 using Sonneville.Investing.Fidelity.WebDriver.Navigation;
 using Sonneville.Investing.Persistence;
 using Sonneville.Investing.Persistence.EFCore.EntityFrameworkCore;
-using Sonneville.Selenium.Utilities;
 using Sonneville.Selenium.Utilities.Configuration;
 using Sonneville.Utilities.Persistence.v2;
 

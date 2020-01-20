@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Sonneville.Selenium.Utilities.Logging;
+using Sonneville.Selenium.log4net;
 
 namespace Sonneville.Fidelity.Shell.Interface
 {

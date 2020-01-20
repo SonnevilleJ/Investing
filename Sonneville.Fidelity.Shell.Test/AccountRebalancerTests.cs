@@ -8,7 +8,6 @@ using Sonneville.Investing.Domain;
 using Sonneville.Investing.Fidelity.WebDriver.Configuration;
 using Sonneville.Investing.Fidelity.WebDriver.Positions;
 using Sonneville.Investing.Trading;
-using Sonneville.Selenium.Utilities;
 using AccountType = Sonneville.Investing.Trading.AccountType;
 
 namespace Sonneville.Fidelity.Shell.Test

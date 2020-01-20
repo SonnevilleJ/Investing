@@ -18,8 +18,4 @@
       <ProjectReference Include="..\Sonneville.Selenium.Utilities\Sonneville.Selenium.Utilities.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Configuration" />
-    </ItemGroup>
-
 </Project>

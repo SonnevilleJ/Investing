@@ -8,9 +8,8 @@ using log4net.Core;
 using Moq;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using Sonneville.Selenium.Utilities.Logging;
 
-namespace Sonneville.Selenium.Utilities.Test.Logging
+namespace Sonneville.Selenium.log4net.Test
 {
     [TestFixture]
     public class LoggingWebElementTests

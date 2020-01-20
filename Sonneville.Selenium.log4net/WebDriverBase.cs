@@ -1,7 +1,7 @@
 using System.Collections.ObjectModel;
 using OpenQA.Selenium;
 
-namespace Sonneville.Selenium.Utilities.Logging
+namespace Sonneville.Selenium.log4net
 {
     public abstract class WebDriverBase : IWebDriver
     {

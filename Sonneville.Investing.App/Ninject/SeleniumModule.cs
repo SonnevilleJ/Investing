@@ -4,7 +4,7 @@ using System.Reflection;
 using Ninject.Modules;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using Sonneville.Selenium.Utilities.Logging;
+using Sonneville.Selenium.log4net;
 
 namespace Sonneville.Investing.App.Ninject
 {

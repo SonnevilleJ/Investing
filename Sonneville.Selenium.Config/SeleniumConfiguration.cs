@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Sonneville.Selenium.Utilities.Configuration
+namespace Sonneville.Selenium.Config
 {
     public class SeleniumConfiguration
     {

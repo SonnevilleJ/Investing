@@ -7,7 +7,7 @@ using OpenQA.Selenium;
 using Optional;
 using Sonneville.Utilities;
 
-namespace Sonneville.Selenium.Utilities.Logging
+namespace Sonneville.Selenium.log4net
 {
     public interface IExceptionReportGenerator : IDisposable
     {
