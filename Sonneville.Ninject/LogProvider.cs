@@ -1,7 +1,7 @@
-﻿using log4net;
+using log4net;
 using Ninject.Activation;
 
-namespace Sonneville.Investing.App.Ninject
+namespace Sonneville.Ninject
 {
     public class LogProvider : Provider<ILog>
     {

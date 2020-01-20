@@ -6,11 +6,11 @@
 
     <ItemGroup>
       <PackageReference Include="Ninject" Version="3.3.4" />
-      <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Sonneville.Selenium.log4net\Sonneville.Selenium.log4net.csproj" />
+      <ProjectReference Include="..\Sonneville.log4net\Sonneville.log4net.csproj" />
+      <ProjectReference Include="..\Sonneville.Ninject\Sonneville.Ninject.csproj" />
     </ItemGroup>
 
 </Project>

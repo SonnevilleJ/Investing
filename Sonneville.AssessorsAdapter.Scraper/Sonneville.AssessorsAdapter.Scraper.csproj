@@ -15,7 +15,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Sonneville.log4net.Ninject\Sonneville.log4net.Ninject.csproj" />
       <ProjectReference Include="..\Sonneville.Ninject\Sonneville.Ninject.csproj" />
+      <ProjectReference Include="..\Sonneville.Selenium.Ninject\Sonneville.Selenium.Ninject.csproj" />
     </ItemGroup>
 
 </Project>

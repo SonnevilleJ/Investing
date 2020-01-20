@@ -17,6 +17,7 @@
         <ProjectReference Include="..\Sonneville.Investing.Fidelity.WebDriver\Sonneville.Investing.Fidelity.WebDriver.csproj" />
         <ProjectReference Include="..\Sonneville.Investing.Persistence\Sonneville.Investing.Persistence.csproj" />
         <ProjectReference Include="..\Sonneville.Investing\Sonneville.Investing.csproj" />
+        <ProjectReference Include="..\Sonneville.log4net\Sonneville.log4net.csproj" />
         <ProjectReference Include="..\Sonneville.Selenium.log4net\Sonneville.Selenium.log4net.csproj" />
         <ProjectReference Include="..\Sonneville.Selenium.Utilities\Sonneville.Selenium.Utilities.csproj" />
     </ItemGroup>

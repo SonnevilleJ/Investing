@@ -1,7 +1,10 @@
 ﻿using Ninject;
 using Ninject.Modules;
 using Sonneville.Investing.App.Ninject;
+using Sonneville.log4net.Ninject;
 using Sonneville.Ninject;
+using Sonneville.Selenium.log4net;
+using Sonneville.Selenium.Ninject;
 
 namespace Sonneville.Fidelity.Shell.AppStartup.Ninject
 {
@@ -11,6 +14,7 @@ namespace Sonneville.Fidelity.Shell.AppStartup.Ninject
         {
             new DefaultModule(),
             new AppModule(),
+            new LoggingModule(),
             new ConfigModule(),
             new SeleniumModule(),
             new EfCoreModule(),

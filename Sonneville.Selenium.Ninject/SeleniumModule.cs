@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Reflection;
 using Ninject.Modules;
@@ -6,7 +6,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using Sonneville.Selenium.log4net;
 
-namespace Sonneville.Investing.App.Ninject
+namespace Sonneville.Selenium.Ninject
 {
     public class SeleniumModule : NinjectModule
     {

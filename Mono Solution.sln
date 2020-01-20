@@ -56,6 +56,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.Selenium.log4net
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.Selenium.Config", "Sonneville.Selenium.Config\Sonneville.Selenium.Config.csproj", "{56BA648E-8320-460D-9847-67276DB1CC6D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonneville.log4net.Ninject", "Sonneville.log4net.Ninject\Sonneville.log4net.Ninject.csproj", "{50CFFDAF-19D2-49DC-81EB-2AE9847A6628}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -162,6 +164,10 @@ Global
 		{56BA648E-8320-460D-9847-67276DB1CC6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56BA648E-8320-460D-9847-67276DB1CC6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56BA648E-8320-460D-9847-67276DB1CC6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50CFFDAF-19D2-49DC-81EB-2AE9847A6628}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50CFFDAF-19D2-49DC-81EB-2AE9847A6628}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50CFFDAF-19D2-49DC-81EB-2AE9847A6628}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50CFFDAF-19D2-49DC-81EB-2AE9847A6628}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B92BD560-F7F2-408B-8D79-A0DEA96E0AEE} = {652F9E82-553A-48DD-87DC-5B5C88D0B43A}
@@ -189,5 +195,6 @@ Global
 		{11D8CB23-D7F2-475C-A16F-11FFDFBE4053} = {0B68C79F-83A4-41DD-8836-8E91B2698A36}
 		{F71A8442-0E1C-401E-94CC-D2803149B6C5} = {0B68C79F-83A4-41DD-8836-8E91B2698A36}
 		{56BA648E-8320-460D-9847-67276DB1CC6D} = {0B68C79F-83A4-41DD-8836-8E91B2698A36}
+		{50CFFDAF-19D2-49DC-81EB-2AE9847A6628} = {0B68C79F-83A4-41DD-8836-8E91B2698A36}
 	EndGlobalSection
 EndGlobal
