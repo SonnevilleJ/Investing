@@ -43,6 +43,8 @@ namespace Sonneville.AssessorsAdapter.Scraper.Assessors.Iowa.Polk
                 Address = ParseString(dictionary, "Address"),
                 City = ParseString(dictionary, "City"),
                 Zip = ParseInt(dictionary, "Zip"),
+                County = "Polk",
+                State = "Iowa",
             };
         }
 
@@ -176,7 +178,7 @@ namespace Sonneville.AssessorsAdapter.Scraper.Assessors.Iowa.Polk
         {
             return dictionary.TryGetValue(key, out var stringValue)
                 ? stringValue
-                : default(string);
+                : default;
         }
     }
 }

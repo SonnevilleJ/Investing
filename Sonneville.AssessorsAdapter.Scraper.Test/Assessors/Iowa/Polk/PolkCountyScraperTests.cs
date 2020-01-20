@@ -51,6 +51,8 @@ namespace Sonneville.AssessorsAdapter.Scraper.Test.Assessors.Iowa.Polk
             Assert.AreEqual("5166 RAINTREE DR", record.Location.Address);
             Assert.AreEqual("WEST DES MOINES", record.Location.City);
             Assert.AreEqual(50265, record.Location.Zip);
+            Assert.AreEqual("Polk", record.Location.County);
+            Assert.AreEqual("Iowa", record.Location.State);
 
             Assert.AreEqual(0.287, record.Land.Acres, 0.0001);
             Assert.AreEqual(12501, record.Land.SquareFeet);
