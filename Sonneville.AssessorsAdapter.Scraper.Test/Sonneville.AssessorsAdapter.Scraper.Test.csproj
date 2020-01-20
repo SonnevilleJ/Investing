@@ -9,6 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="CsvHelper" Version="13.0.0" />
         <PackageReference Include="Moq" Version="4.13.1" />
         <PackageReference Include="Ninject" Version="3.3.4" />
         <PackageReference Include="nunit" Version="3.12.0" />
@@ -16,7 +17,6 @@
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
         <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
         <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="79.0.3945.3600" />
-        <PackageReference Include="TinyCsvParser" Version="2.5.2" />
     </ItemGroup>
 
     <ItemGroup>

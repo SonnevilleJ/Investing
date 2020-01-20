@@ -30,6 +30,7 @@ namespace Sonneville.AssessorsAdapter.Scraper.Assessors
         public int? Bathrooms { get; set; }
         public int? ToiletRooms { get; set; }
         public int? Bedrooms { get; set; }
+        public int? BasementBedrooms { get; set; }
         public int? Rooms { get; set; }
     }
 }
