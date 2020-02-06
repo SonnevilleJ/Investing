@@ -267,7 +267,7 @@ namespace Sonneville.Fidelity.Shell.Test.Interface
             var shouldExit = InvokeCommand(args);
 
             Assert.IsFalse(shouldExit);
-            AssertOutputContains("-h");
+            AssertOutputContains("--help");
             AssertUnchangedConfig();
         }
 

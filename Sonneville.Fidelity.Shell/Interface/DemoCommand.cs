@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using CommandLine;
 using log4net;
-using NDesk.Options;
 using Sonneville.Investing.Domain;
 using Sonneville.Investing.Fidelity.WebDriver.Configuration;
 using Sonneville.Investing.Fidelity.WebDriver.Positions;
@@ -20,9 +20,6 @@ namespace Sonneville.Fidelity.Shell.Interface
         private readonly ITransactionManager _transactionManager;
         private readonly TransactionTranslator _transactionTranslator;
         private readonly FidelityConfiguration _fidelityConfiguration;
-        private readonly OptionSet _optionSet;
-        private bool _shouldPersistOptions;
-        private bool _shouldShowHelp;
 
         public DemoCommand(
             ILog log,
@@ -37,28 +34,7 @@ namespace Sonneville.Fidelity.Shell.Interface
             _positionsManager = positionsManager;
             _transactionManager = transactionManager;
             _transactionTranslator = transactionTranslator;
-
             _fidelityConfiguration = _dataStore.Load<FidelityConfiguration>();
-            _optionSet = new OptionSet
-            {
-                {
-                    "u|username=", "the username to use when logging into Fidelity.",
-                    username => { _fidelityConfiguration.Username = username; }
-                },
-                {
-                    "p|password=", "the password to use when logging into Fidelity.",
-                    password => { _fidelityConfiguration.Password = password; }
-                },
-                {
-                    "s|save", "indicates options should be persisted to demo.ini file.",
-                    save => { _shouldPersistOptions = true; }
-                },
-                {
-                    "h|help", "shows this message and exits.",
-                    help => { _shouldShowHelp = true; }
-                },
-            };
-
             _log.Info("App initialized");
         }
 
@@ -66,54 +42,73 @@ namespace Sonneville.Fidelity.Shell.Interface
 
         public bool Invoke(TextReader inputReader, TextWriter outputWriter, IReadOnlyList<string> fullInput)
         {
-            _optionSet.Parse(fullInput);
-            if (_shouldShowHelp)
+            var run = false;
+            var parser = new Parser(settings => settings.HelpWriter = outputWriter);
+            parser.ParseArguments<DemoOptions>(fullInput).WithParsed(options =>
             {
-                _optionSet.WriteOptionDescriptions(outputWriter);
-                return false;
+                if (!string.IsNullOrEmpty(options.Username))
+                {
+                    _fidelityConfiguration.Username = options.Username;
+                }
+
+                if (!string.IsNullOrEmpty(options.Password))
+                {
+                    _fidelityConfiguration.Password = options.Password;
+                }
+
+                if (options.SaveOptions)
+                {
+                    var message = $"Saving credentials for `{_fidelityConfiguration.Username}`.";
+                    _log.Info(message);
+                    _dataStore.Save(_fidelityConfiguration);
+                }
+
+                if (!string.IsNullOrEmpty(_fidelityConfiguration.Username) &&
+                    !string.IsNullOrEmpty(_fidelityConfiguration.Password))
+                {
+                    var message =
+                        $"Using cached credentials to access account for user `{_fidelityConfiguration.Username}`.";
+                    _log.Info(message);
+                }
+                else
+                {
+                    _log.Info("No username configured; requesting credentials from user.");
+                    outputWriter.Write("Please enter a username for Fidelity.com: ");
+                    _fidelityConfiguration.Username = inputReader.ReadLine();
+                    outputWriter.Write("Please enter a password for Fidelity.com: ");
+                    _fidelityConfiguration.Password = inputReader.ReadLine();
+                }
+
+                run = true;
+            });
+            if (run)
+            {
+                LogToScreen(outputWriter, "Reading account summaries.....");
+                PrintAccountSummaries(_positionsManager.GetAccountSummaries().ToList(), outputWriter);
+                PrintSeparator(outputWriter);
+                LogToScreen(outputWriter, "Reading account details.......");
+                PrintAccountDetails(_positionsManager.GetAccountDetails().ToList(), outputWriter);
+                PrintSeparator(outputWriter);
+                LogToScreen(outputWriter, "Reading recent transactions...");
+
+                PrintRecentTransactions(
+                    _transactionManager.GetTransactionHistory(DateTime.Today.AddDays(-30), DateTime.Today).ToList()
+                    , outputWriter);
+                PrintSeparator(outputWriter);
+
+                LogToScreen(outputWriter, "Demo completed successfully!");
             }
 
-            if (_shouldPersistOptions)
-            {
-                _log.Info($"Saving credentials for `{_fidelityConfiguration.Username}`.");
-                _dataStore.Save(_fidelityConfiguration);
-            }
-
-            if (!string.IsNullOrEmpty(_fidelityConfiguration.Username) &&
-                !string.IsNullOrEmpty(_fidelityConfiguration.Password))
-            {
-                _log.Info($"Using cached credentials to access account for user `{_fidelityConfiguration.Username}`.");
-            }
-            else
-            {
-                _log.Info("No username configured; requesting credentials from user.");
-                outputWriter.Write("Please enter a username for Fidelity.com: ");
-                _fidelityConfiguration.Username = inputReader.ReadLine();
-                outputWriter.Write("Please enter a password for Fidelity.com: ");
-                _fidelityConfiguration.Password = inputReader.ReadLine();
-            }
-
-            LogToScreen(outputWriter, "Reading account summaries.....");
-            PrintAccountSummaries(_positionsManager.GetAccountSummaries().ToList(), outputWriter);
-            PrintSeparator(outputWriter);
-            LogToScreen(outputWriter, "Reading account details.......");
-            PrintAccountDetails(_positionsManager.GetAccountDetails().ToList(), outputWriter);
-            PrintSeparator(outputWriter);
-            LogToScreen(outputWriter, "Reading recent transactions...");
-            PrintRecentTransactions(
-                _transactionManager.GetTransactionHistory(DateTime.Today.AddDays(-30), DateTime.Today).ToList()
-                , outputWriter);
-            PrintSeparator(outputWriter);
-            LogToScreen(outputWriter, "Demo completed successfully!");
-            
             return false;
         }
 
         private void PrintSeparator(TextWriter outputWriter)
         {
             LogToScreen(outputWriter);
+
             LogToScreen(outputWriter,
                 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
             LogToScreen(outputWriter);
         }
 
