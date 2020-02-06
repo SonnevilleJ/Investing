@@ -9,7 +9,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Sonneville.log4net\Sonneville.log4net.csproj" />
       <ProjectReference Include="..\Sonneville.Ninject\Sonneville.Ninject.csproj" />
     </ItemGroup>
 
