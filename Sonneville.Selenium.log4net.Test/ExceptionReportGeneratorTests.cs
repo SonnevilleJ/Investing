@@ -87,7 +87,6 @@ namespace Sonneville.Selenium.log4net.Test
 
             var reportPath = _exceptionReportGenerator.DetermineReportPath(_clock.Now);
 
-            Assert.Throws<IOException>(() => new DirectoryInfo("C:\\|%:/").EnumerateFileSystemInfos());
             Assert.Throws<DirectoryNotFoundException>(() => new DirectoryInfo(reportPath).EnumerateFileSystemInfos());
         }
 
