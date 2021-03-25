@@ -10,10 +10,9 @@ using Moq;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using Optional;
-using Sonneville.Selenium.log4net;
 using Sonneville.Utilities;
 
-namespace Sonneville.Fidelity.Shell.Test.Logging
+namespace Sonneville.Selenium.log4net.Test
 {
     [TestFixture]
     public class ExceptionReportGeneratorTests
@@ -33,13 +32,13 @@ namespace Sonneville.Fidelity.Shell.Test.Logging
             _mockLog = new Mock<ILog>();
 
             _pageSource = "page source";
-            
+
             _mockWebDriver = new Mock<IWebDriver>();
             _mockWebDriver.Setup(webDriver => webDriver.PageSource)
                 .Returns(_pageSource);
 
             _screenshot = new Screenshot("");
-            
+
             _mockTakesScreenshot = new Mock<ITakesScreenshot>();
             _mockTakesScreenshot.Setup(screenshot => screenshot.GetScreenshot())
                 .Returns(_screenshot);
@@ -79,6 +78,17 @@ namespace Sonneville.Fidelity.Shell.Test.Logging
         public void ShouldLogReportsDirectoryOnStartup()
         {
             _mockLog.Verify(log => log.Info(It.Is<string>(content => content.Contains(_pathRoot))));
+        }
+
+        [Test]
+        public void ShouldReplaceInvalidPathCharsInReportPath()
+        {
+            _clock.Freeze(DateTime.Now);
+
+            var reportPath = _exceptionReportGenerator.DetermineReportPath(_clock.Now);
+
+            Assert.Throws<IOException>(() => new DirectoryInfo("C:\\|%:/").EnumerateFileSystemInfos());
+            Assert.Throws<DirectoryNotFoundException>(() => new DirectoryInfo(reportPath).EnumerateFileSystemInfos());
         }
 
         [Test]
@@ -182,7 +192,7 @@ namespace Sonneville.Fidelity.Shell.Test.Logging
 
         private string DetermineReportPath(DateTime time)
         {
-            return Path.Combine(_pathRoot, $"Exception-{time:O}");
+            return _exceptionReportGenerator.DetermineReportPath(time);
         }
 
         private static Exception CreateTestException()

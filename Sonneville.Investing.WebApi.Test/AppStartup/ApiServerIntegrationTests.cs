@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Threading;
@@ -41,8 +42,10 @@ namespace Sonneville.Investing.WebApi.Test.AppStartup
             
             StartServer();
 
-            listeners = IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners();
-            CollectionAssert.Contains(listeners, _ipEndPoint);
+            var newListeners = IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners();
+            var remainingListeners = newListeners.Except(listeners).ToList();
+            
+            CollectionAssert.Contains(remainingListeners, _ipEndPoint);
         }
 
         [Test]

@@ -30,7 +30,7 @@ namespace Sonneville.AssessorsAdapter.Scraper.Bootstrap
             using (var streamReader = new StreamReader(path, Encoding.UTF8))
             {
                 var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture);
-                csvReader.Configuration.RegisterClassMap<PolkCountyMapping>();
+                csvReader.Context.RegisterClassMap<PolkCountyMapping>();
 
                 var realEstateRecords = csvReader.GetRecords<PolkCountyHouseData>()
                     .Select(data => LogData("input", data))

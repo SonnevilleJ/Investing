@@ -62,9 +62,19 @@ namespace Sonneville.Selenium.log4net
 
         private string CreateReportPath(DateTime exceptionTime)
         {
-            var reportPath = Path.Combine(_pathRoot, $"Exception-{exceptionTime:O}");
+            var reportPath = DetermineReportPath(exceptionTime);
             if (!Directory.Exists(reportPath)) Directory.CreateDirectory(reportPath);
             return reportPath;
+        }
+
+        public string DetermineReportPath(DateTime exceptionTime)
+        {
+            return Path.Combine(_pathRoot,
+                Path.GetInvalidFileNameChars().Aggregate(
+                    $"Exception-{exceptionTime:O}",
+                    (folderName, invalid) => folderName.Replace(invalid, '-')
+                )
+            );
         }
 
         private static void SaveException(string reportPath, Exception exception)

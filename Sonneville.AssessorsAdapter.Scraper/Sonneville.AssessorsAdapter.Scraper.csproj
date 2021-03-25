@@ -7,11 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="CsvHelper" Version="13.0.0" />
+        <PackageReference Include="CsvHelper" Version="26.1.0" />
         <PackageReference Include="Ninject" Version="3.3.4" />
         <PackageReference Include="Ninject.Extensions.Conventions" Version="3.3.0" />
         <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
-        <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="79.0.3945.3600" />
+        <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="89.0.4389.2300" />
     </ItemGroup>
 
     <ItemGroup>

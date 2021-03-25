@@ -8,7 +8,6 @@ namespace Sonneville.Investing.WebApi.AppStartup
     {
         public override void Configure(IApplicationBuilder applicationBuilder)
         {
-            applicationBuilder.UseMvc();
         }
 
         public override void ConfigureServices(IServiceCollection services)
