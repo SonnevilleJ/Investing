@@ -45,7 +45,7 @@ namespace Sonneville.Investing.Persistence.EFCore.EntityFrameworkCore
                     hashedDigest => hashedDigest.UserDatabaseId
                 );
 
-            modelBuilder.ForNpgsqlUseSerialColumns();
+            modelBuilder.UseSerialColumns();
             base.OnModelCreating(modelBuilder);
         }
 
